@@ -1,0 +1,14 @@
+{
+  "api": {
+    "shumEndpoint": "https://klef.newfacecards.com/shum-api/api.php",
+    "baseId": "appqEsxLao3gflxBG",
+    "tableName": "loveshack_reservations"
+  },
+  "settings": {
+    "autoSyncOnConfirm": true,
+    "localBackupPath": "./data/reservations.json"
+  },
+  "airtable":{
+    "full_url": "https://airtable.com/appqEsxLao3gflxBG/tblMvoeaQNwJqVili/viwOv6RW0iV8ilcud?blocks=hide"
+  }
+}

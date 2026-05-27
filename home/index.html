@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#09090b" />
+  
+  <title>Kitchen Valenzuela — Catálogo e Inventario de Equipamiento Industrial</title>
+  <meta name="description" content="Catálogo e Inventario interactivo de equipos industriales para cocina, refacciones y componentes originales de marcas líderes. Solicita cotizaciones al instante." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Google+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Iconography: Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+  <!-- Custom CSS Design System -->
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+
+  <div class="app-shell">
+    
+    <!-- ==========================================
+         BARRA SUPERIOR (HEADER)
+         ========================================== -->
+    <header class="app-header" id="main-header">
+      <div class="brand-wrapper">
+        <div class="brand-logo-wrapper">KV</div>
+        <div class="brand-text">
+          <h1>KITCHEN VALENZUELA</h1>
+          <span>Catálogo & Inventario Industrial</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Cambiar tema visual" title="Cambiar Tema">
+          <i class="ti ti-sun"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         PANEL DE ANALITICAS (METRIC CARDS)
+         ========================================== -->
+    <section class="app-dashboard" aria-label="Resumen de Inventario">
+      <div class="metric-card" id="card-total-products">
+        <div class="metric-icon products">
+          <i class="ti ti-chef-hat"></i>
+        </div>
+        <div class="metric-info">
+          <h3 id="metric-total-products">0</h3>
+          <p>Equipos Registrados</p>
+        </div>
+      </div>
+
+      <div class="metric-card" id="card-total-stock">
+        <div class="metric-icon stock">
+          <i class="ti ti-packages"></i>
+        </div>
+        <div class="metric-info">
+          <h3 id="metric-total-stock">0</h3>
+          <p>Unidades Totales</p>
+        </div>
+      </div>
+
+      <div class="metric-card" id="card-low-stock">
+        <div class="metric-icon alert">
+          <i class="ti ti-alert-circle"></i>
+        </div>
+        <div class="metric-info">
+          <h3 id="metric-low-stock">0</h3>
+          <p>Alertas de Stock</p>
+        </div>
+      </div>
+
+      <div class="metric-card" id="card-total-brands">
+        <div class="metric-icon brands">
+          <i class="ti ti-certificate"></i>
+        </div>
+        <div class="metric-info">
+          <h3 id="metric-total-brands">0</h3>
+          <p>Marcas Distribuidas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FILTROS Y BUSQUEDA (FILTER CONTROLS)
+         ========================================== -->
+    <section class="app-filters" aria-label="Panel de Filtros">
+      
+      <!-- Search Input -->
+      <div class="search-container">
+        <i class="ti ti-search search-icon"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Buscar equipo industrial, código SKU, marca o especificaciones..." aria-label="Buscador de productos" />
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="category-tabs" id="category-tabs" role="tablist">
+        <button class="tab-btn active" data-category="all" role="tab" aria-selected="true">
+          <i class="ti ti-grid-pattern"></i> Todos <span class="tab-badge" id="count-badge-all">0</span>
+        </button>
+        <button class="tab-btn" data-category="01" role="tab" aria-selected="false">
+          <i class="ti ti-flame"></i> Cocción <span class="tab-badge" id="count-badge-01">0</span>
+        </button>
+        <button class="tab-btn" data-category="02" role="tab" aria-selected="false">
+          <i class="ti ti-settings-2"></i> Refacciones <span class="tab-badge" id="count-badge-02">0</span>
+        </button>
+        <button class="tab-btn" data-category="03" role="tab" aria-selected="false">
+          <i class="ti ti-droplet-half-2"></i> Limpieza <span class="tab-badge" id="count-badge-03">0</span>
+        </button>
+        <button class="tab-btn" data-category="other" role="tab" aria-selected="false">
+          <i class="ti ti-box-seam"></i> Otros <span class="tab-badge" id="count-badge-other">0</span>
+        </button>
+      </div>
+
+      <!-- Secondary Filters Controls -->
+      <div class="filter-controls-row">
+        <!-- Brand Select Dropdown -->
+        <div class="filter-select-wrapper">
+          <select id="brand-filter" class="filter-select" aria-label="Filtrar por marca de fabricante">
+            <option value="all">Todas las Marcas</option>
+          </select>
+        </div>
+
+        <!-- Stock Selector -->
+        <div class="filter-select-wrapper">
+          <select id="stock-filter" class="filter-select" aria-label="Filtrar por stock disponible">
+            <option value="all">Todo el Inventario</option>
+            <option value="in-stock">En Existencia (> 0)</option>
+            <option value="low-stock">Alerta / Bajo Inventario</option>
+          </select>
+        </div>
+
+        <!-- Sort Selector -->
+        <div class="filter-select-wrapper">
+          <select id="sort-filter" class="filter-select" aria-label="Ordenar listado por criterio">
+            <option value="name-asc">Ordenar: Nombre (A-Z)</option>
+            <option value="price-asc">Ordenar: Precio (Menor a Mayor)</option>
+            <option value="price-desc">Ordenar: Precio (Mayor a Menor)</option>
+            <option value="stock-desc">Ordenar: Stock (Mayor a Menor)</option>
+          </select>
+        </div>
+
+        <!-- Layout grid vs list switcher buttons -->
+        <div class="view-switchers">
+          <button class="view-btn active" id="view-grid" title="Vista de Cuadrícula" aria-label="Cambiar a vista de cuadrícula">
+            <i class="ti ti-layout-grid"></i>
+          </button>
+          <button class="view-btn" id="view-list" title="Vista de Lista" aria-label="Cambiar a vista de lista">
+            <i class="ti ti-layout-list"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         GRID PRINCIPAL DE PRODUCTOS
+         ========================================== -->
+    <main id="products-container" class="products-grid" aria-live="polite">
+      <!-- Skeleton Loaders or Product Cards are injected here -->
+    </main>
+
+  </div>
+
+  <!-- ==========================================
+       SCRIM & OVERLAY LAYER
+       ========================================== -->
+  <div class="scrim" id="app-scrim" aria-hidden="true"></div>
+
+  <!-- ==========================================
+       CAJÓN DE DETALLES DEL PRODUCTO (DRAWER)
+       ========================================== -->
+  <aside class="detail-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-prod-title">
+    <div class="drawer-header">
+      <h2 class="drawer-title" id="drawer-prod-title">Ficha Técnica de Equipo</h2>
+      <button class="close-drawer-btn" id="close-drawer-btn" aria-label="Cerrar cajón de detalles">
+        <i class="ti ti-x"></i>
+      </button>
+    </div>
+    
+    <div class="drawer-body" id="drawer-body">
+      <!-- Product detailed specs loaded dynamically here -->
+    </div>
+    
+    <div class="drawer-actions" id="drawer-actions">
+      <!-- CTA Button loaded dynamically here -->
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       BARRA DE COTIZACIÓN FLOTANTE (BOTTOM ISLAND)
+       ========================================== -->
+  <nav class="bottom-island" id="bottom-island" data-sheet-state="closed" aria-label="Barra de cotización activa" style="display: none;">
+    <!-- Handle bar for swipe/click interactions -->
+    <div class="island-handle-bar" id="island-handle-bar" title="Ver Cotización" role="button" aria-expanded="false">
+      <div class="island-handle"></div>
+    </div>
+
+    <!-- Compact status row -->
+    <div class="island-compact-row" id="island-compact-row">
+      <div class="island-cart-badge">
+        <div class="cart-icon-wrapper">
+          <i class="ti ti-shopping-cart"></i>
+          <span class="cart-counter" id="cart-counter">0</span>
+        </div>
+        <span id="cart-count-text">0 productos</span>
+      </div>
+      <div class="island-quote-total" id="island-total-text">$0.00 MXN</div>
+      <button class="island-action-trigger" id="island-action-trigger">Ver Lista</button>
+    </div>
+
+    <!-- Full sheet expanded view -->
+    <div class="island-expanded-body" id="island-expanded-body">
+      <div class="quote-sheet-header">
+        <h3 class="quote-sheet-title"><i class="ti ti-file-text"></i> Lista de Cotización</h3>
+        <button class="clear-cart-btn" id="clear-cart-btn">Vaciar Todo</button>
+      </div>
+
+      <!-- Selected items list -->
+      <div class="cart-items-container" id="cart-items-container">
+        <!-- Injected cart rows -->
+      </div>
+
+      <!-- Summation card -->
+      <div class="quote-sheet-pricing">
+        <div class="pricing-calc-row">
+          <span>Subtotal Neto:</span>
+          <span id="quote-subtotal">$0.00 MXN</span>
+        </div>
+        <div class="pricing-calc-row">
+          <span>Impuesto IVA (16%):</span>
+          <span id="quote-iva">$0.00 MXN</span>
+        </div>
+        <div class="pricing-calc-row final-total">
+          <span>Total Estimado:</span>
+          <span id="quote-total">$0.00 MXN</span>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="quote-export-actions">
+        <button class="export-btn whatsapp" id="btn-export-whatsapp" title="Enviar cotización a WhatsApp">
+          <i class="ti ti-brand-whatsapp"></i> WhatsApp
+        </button>
+        <button class="export-btn pdf" id="btn-export-pdf" title="Imprimir o guardar en PDF">
+          <i class="ti ti-printer"></i> Imprimir PDF
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       PLANTILLA DE IMPRESIÓN EXCLUSIVA (PRINT-ONLY LAYOUT)
+       ========================================== -->
+  <div id="print-quote-invoice" class="print-quote-invoice">
+    <!-- Populated dynamically when print is fired -->
+  </div>
+
+  <!-- Custom Core Javascript logic -->
+  <script src="app.js"></script>
+</body>
+</html>

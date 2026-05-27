@@ -1,0 +1,107 @@
+{
+  "foodOptions": [
+    {
+      "name": "MEXICAN BUFFET & NATIONAL OPEN BAR",
+      "description": "Mexican Buffet: Chicken and beef Skewers, guacamole, chips, tortillas, quesadillas, and salsas. National Open Bar: Tequila, Rum, Vodka, light canned Beer, Soft drinks, and bottled water."
+    },
+    {
+      "name": "CHICKEN & VEGETARIAN MENU WITH NATIONAL OPEN BAR",
+      "description": "Chicken and vegetarian skewers, guacamole, chips, tortillas, quesadillas, and salsas. National Open Bar: Tequila, Rum, Vodka, light canned Beer, Soft drinks, and bottled water."
+    },
+    {
+      "name": "TACOS & NATIONAL OPEN BAR",
+      "description": "Beef and chicken tacos, guacamole, chips, tortillas, quesadillas, and salsas. National Open Bar: Tequila, Rum, Vodka, light canned Beer, Soft drinks, and bottled water."
+    },
+    {
+      "name": "FISHING HALF DAY MENU",
+      "description": "Fishing Menu: Bagels, Croissants, Toast bread, Quesadillas. Charcuterie: Cold cuts, Cheese & fruit board. Salsas, Guacamole & Tortilla chips."
+    },
+    {
+      "name": "FISHING FULL DAY MENU",
+      "description": "Fishing Menu: Bagels, Croissants, Toast bread, Quesadillas. Charcuterie: Cold cuts, Cheese & fruit board. Salsas, Guacamole & Tortilla chips. Plus: Charcoal-grilled beef and chicken tacos."
+    },
+    {
+      "name": "SNACKS & NATIONAL OPEN BAR",
+      "description": "Snacks: Chips, Guacamole, Mexican Salsas. Charcutery: Tapas, cheese, crackers, nuts, and fresh fruit. Muffins. National Open Bar: Tequila, Rum, Vodka, light canned Beer, Soft drinks, and bottled water."
+    }
+
+  ],
+  "tourNames": [
+    "SNORKEL",
+    "SUNSET",
+    "WHALE WATCHING",
+    "FISHING HALF DAY",
+    "FISHING FULL DAY",
+    "BAY TRIP"
+  ],
+  "reservationSources": [
+    {
+      "name": "Contacto Directo",
+      "percentage": "0%",
+      "hourlyRate": "600",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "WhatsApp",
+      "percentage": "0%",
+      "hourlyRate": "600",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "Booking.com",
+      "percentage": "15%",
+      "hourlyRate": "705",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "TripAdvisor",
+      "percentage": "15%",
+      "hourlyRate": "705",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "Viator",
+      "percentage": "0%",
+      "hourlyRate": "600",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "Airbnb",
+      "percentage": "20%",
+      "hourlyRate": "750",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "Referido",
+      "percentage": "0%",
+      "hourlyRate": "600",
+      "extraPassengerFee": "100"
+    },
+    {
+      "name": "Transcabo",
+      "percentage": "35%",
+      "hourlyRate": "923.25",
+      "extraPassengerFee": "110"
+    },
+    {
+      "name": "Get My Boat",
+      "percentage": "0%",
+      "hourlyRate": "500",
+      "extraPassengerFee": "100"
+    }
+  ],
+  "paymentMethods": [
+    "CASH",
+    "CREDIT CARD",
+    "TRANSFER",
+    "PAYPAL",
+    "STRIPE",
+    "CXC"
+  ],
+  "statusOptions": [
+    "pending",
+    "confirmed",
+    "completed",
+    "cancelled"
+  ]
+}

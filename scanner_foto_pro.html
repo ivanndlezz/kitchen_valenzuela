@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scanner Foto Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <header class="bg-slate-900 text-white p-4 shadow-md text-center font-bold">
+        Captura y Escanea
+    </header>
+
+    <main class="p-4 max-w-md mx-auto w-full flex flex-col gap-6">
+        
+        <div id="previewArea" class="hidden flex flex-col gap-4">
+            <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900">
+                <img id="imagePreview" class="w-full h-auto" src="" alt="Previsualización">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <button id="retakeBtn" class="bg-slate-200 text-slate-700 py-4 rounded-2xl font-bold active:scale-95 transition-all">Repetir</button>
+                <button id="processBtn" class="bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-500/30 active:scale-95 transition-all">Escanear</button>
+            </div>
+        </div>
+
+        <div id="initialState" class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 text-center">
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+            <button id="triggerBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-6 rounded-2xl font-bold text-xl flex flex-col items-center gap-3 transition-all active:scale-95">
+                <i data-lucide="camera" class="w-8 h-8"></i> Abrir Cámara
+            </button>
+        </div>
+
+        <div>
+            <h2 class="text-slate-800 font-bold mb-3 px-2">Resultados Recientes</h2>
+            <ul id="resultsList" class="space-y-3">
+                <li id="emptyState" class="text-slate-400 text-sm text-center py-6 italic">Sin escaneos aún.</li>
+            </ul>
+        </div>
+    </main>
+
+    <canvas id="hiddenCanvas" class="hidden"></canvas>
+
+    <script>
+        lucide.createIcons();
+
+        const cameraInput = document.getElementById('cameraInput');
+        const triggerBtn = document.getElementById('triggerBtn');
+        const previewArea = document.getElementById('previewArea');
+        const initialState = document.getElementById('initialState');
+        const imagePreview = document.getElementById('imagePreview');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const processBtn = document.getElementById('processBtn');
+        const resultsList = document.getElementById('resultsList');
+        const hiddenCanvas = document.getElementById('hiddenCanvas');
+
+        triggerBtn.addEventListener('click', () => cameraInput.click());
+
+        cameraInput.addEventListener('change', (e) => {
+            if (e.target.files.length === 0) return;
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                imagePreview.src = event.target.result;
+                initialState.classList.add('hidden');
+                previewArea.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        retakeBtn.addEventListener('click', () => {
+            previewArea.classList.add('hidden');
+            initialState.classList.remove('hidden');
+            cameraInput.value = '';
+        });
+
+        processBtn.addEventListener('click', async () => {
+            processBtn.disabled = true;
+            processBtn.textContent = "Procesando...";
+
+            const img = new Image();
+            img.src = imagePreview.src;
+            
+            img.onload = async () => {
+                // Redimensionar para evitar errores de memoria o límites de API
+                const MAX_WIDTH = 1280;
+                let scale = 1;
+                if (img.width > MAX_WIDTH) scale = MAX_WIDTH / img.width;
+
+                const ctx = hiddenCanvas.getContext('2d');
+                hiddenCanvas.width = img.width * scale;
+                hiddenCanvas.height = img.height * scale;
+                ctx.drawImage(img, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
+
+                if ('BarcodeDetector' in window) {
+                    try {
+                        const detector = new BarcodeDetector({ formats: ['qr_code', 'ean_13', 'code_128', 'ean_8', 'upc_a'] });
+                        const barcodes = await detector.detect(hiddenCanvas);
+                        
+                        if (barcodes.length > 0) {
+                            addResult(barcodes[0].rawValue);
+                            resetFlow();
+                        } else {
+                            alert("No se detectó código. Intenta con mejor luz o más cerca.");
+                        }
+                    } catch (err) {
+                        console.error("Error de BarcodeDetector:", err);
+                        alert("Error en el detector: " + err.message);
+                    }
+                } else {
+                    alert("BarcodeDetector no está disponible en este navegador. Intenta usar Chrome o Edge actualizado.");
+                }
+                processBtn.disabled = false;
+                processBtn.textContent = "Escanear";
+            };
+
+            img.onerror = () => {
+                alert("Error al cargar la imagen.");
+                processBtn.disabled = false;
+                processBtn.textContent = "Escanear";
+            };
+        });
+
+        function resetFlow() {
+            previewArea.classList.add('hidden');
+            initialState.classList.remove('hidden');
+            cameraInput.value = '';
+        }
+
+        function addResult(code) {
+            document.getElementById('emptyState')?.remove();
+            const li = document.createElement('li');
+            li.className = "bg-white p-4 rounded-2xl border border-emerald-100 shadow-sm font-mono text-emerald-800 font-bold flex justify-between";
+            li.innerHTML = `<span>${code}</span> <i data-lucide="check" class="text-emerald-500"></i>`;
+            resultsList.prepend(li);
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
