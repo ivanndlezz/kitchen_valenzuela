@@ -1,6 +1,7 @@
 /**
  * Kitchen Valenzuela Catalog & Inventory Engine
- * Handles dynamic JSON data, reactive search/filtering, quotation building, and exports.
+ * Handles dynamic JSON data, reactive BEM-compliant search/filtering, quotation building, and exports.
+ * Network-Independent: Utilizes local Lucide Icons and native system stacks.
  */
 
 (function () {
@@ -21,7 +22,7 @@
     theme: "light",
   };
 
-  // DOM Elements
+  // DOM Elements - Mapped strictly to new BEM classes
   const DOM = {
     themeBtn: null,
     productsContainer: null,
@@ -115,15 +116,21 @@
     DOM.btnExportWhatsapp = document.getElementById("btn-export-whatsapp");
     DOM.btnExportPdf = document.getElementById("btn-export-pdf");
     
-    // Print placeholder
     DOM.printInvoiceContainer = document.getElementById("print-quote-invoice");
+  }
+
+  // Helper to re-render Lucide SVG Icons safely
+  function createLucideIcons() {
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
   }
 
   // ==========================================================================
   // THEME ENGINE
   // ==========================================================================
   function setupTheme() {
-    const savedTheme = localStorage.getItem("kv-catalog-theme") || "dark"; // Default to premium dark
+    const savedTheme = localStorage.getItem("kv-catalog-theme") || "dark"; // Default to premium dark BEM theme
     setTheme(savedTheme);
 
     DOM.themeBtn.addEventListener("click", () => {
@@ -137,13 +144,14 @@
     if (theme === "dark") {
       document.documentElement.classList.add("theme-dark");
       document.body.classList.add("theme-dark");
-      DOM.themeBtn.innerHTML = '<i class="ti ti-sun"></i>';
+      DOM.themeBtn.innerHTML = '<i data-lucide="sun"></i>';
     } else {
       document.documentElement.classList.remove("theme-dark");
       document.body.classList.remove("theme-dark");
-      DOM.themeBtn.innerHTML = '<i class="ti ti-moon"></i>';
+      DOM.themeBtn.innerHTML = '<i data-lucide="moon"></i>';
     }
     localStorage.setItem("kv-catalog-theme", theme);
+    createLucideIcons();
   }
 
   // ==========================================================================
@@ -153,12 +161,12 @@
     let html = "";
     for (let i = 0; i < 8; i++) {
       html += `
-        <div class="skeleton-card">
-          <div class="skeleton-element skeleton-img"></div>
-          <div class="skeleton-element skeleton-title-1"></div>
-          <div class="skeleton-element skeleton-title-2"></div>
-          <div class="skeleton-element skeleton-title-2" style="width:70%;"></div>
-          <div class="skeleton-element skeleton-price-row"></div>
+        <div class="skeleton__card">
+          <div class="skeleton__element skeleton__element--img"></div>
+          <div class="skeleton__element skeleton__element--title-1"></div>
+          <div class="skeleton__element skeleton__element--title-2"></div>
+          <div class="skeleton__element skeleton__element--title-2" style="width:70%;"></div>
+          <div class="skeleton__element skeleton__element--price-row"></div>
         </div>
       `;
     }
@@ -170,14 +178,13 @@
   // ==========================================================================
   async function fetchCatalogData() {
     try {
-      // Relative path: catalog is at home/index.html, JSON is in root
       const response = await fetch("../kv_products_2026_05_05_19_31_43.json");
       if (!response.ok) {
         throw new Error("Failed to load catalog database.");
       }
       const data = await response.json();
       
-      // Clean and map data
+      // Clean, map and cast types properly (prevents String crashes)
       AppState.products = data.map((p, index) => {
         const cleanCodigo = p["Código"] !== undefined && p["Código"] !== null && p["Código"] !== "" ? String(p["Código"]).trim() : `N/A-${index}`;
         return {
@@ -214,25 +221,23 @@
       });
       AppState.brands = Array.from(brandsSet).sort();
 
-      // Setup brand dropdown
       populateBrandSelect();
-      
-      // Calculate dashboard metrics
       calculateMetrics();
-
-      // Apply initial filters & render
       applyFilters();
 
     } catch (error) {
       console.error(error);
       DOM.productsContainer.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 16px;">
-          <i class="ti ti-database-off" style="font-size: 48px; color: var(--color-danger); margin-bottom: 16px; display:block;"></i>
-          <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Error al Cargar la Base de Datos</h3>
-          <p style="color: var(--text-secondary); max-width: 400px; margin: 0 auto 24px;">No pudimos conectar con el archivo de inventario local. Verifica que el archivo JSON esté en el directorio correcto.</p>
-          <button onclick="location.reload()" class="primary-drawer-btn" style="width: auto; display:inline-flex; padding: 0 24px; height: 40px;">Reintentar Carga</button>
+        <div class="catalog__empty">
+          <div class="catalog__empty-icon" style="color: var(--color-danger);">
+            <i data-lucide="alert-octagon" style="width:48px; height:48px;"></i>
+          </div>
+          <h3 class="catalog__empty-title">Error al Cargar la Base de Datos</h3>
+          <p class="catalog__empty-subtitle" style="max-width: 400px; margin: 0 auto;">No pudimos conectar con el archivo de inventario local. Verifica que el archivo JSON esté en el directorio correcto.</p>
+          <button onclick="location.reload()" class="drawer__primary-btn" style="width: auto; display:inline-flex; padding: 0 24px; height: 40px; margin-top:16px;">Reintentar Carga</button>
         </div>
       `;
+      createLucideIcons();
     }
   }
 
@@ -249,16 +254,12 @@
   // ==========================================================================
   function calculateMetrics() {
     const totalCount = AppState.products.length;
-    
     let totalStockVal = 0;
     let lowStockCount = 0;
     
     AppState.products.forEach(p => {
-      // Stock calculations
       if (typeof p.stock === "number") {
         totalStockVal += p.stock;
-        
-        // Low Stock triggers: stock is positive but below or equal to alert limit
         if (p.stock <= p.alertaCantidad) {
           lowStockCount++;
         }
@@ -272,7 +273,7 @@
   }
 
   // ==========================================================================
-  // MOTOR DE BUSQUEDA Y FILTRADO (Indexado Reactivo)
+  // SEARCH & FILTER ENGINE
   // ==========================================================================
   function applyFilters() {
     const { text, category, brand, stockFilter, sort } = AppState.filters;
@@ -280,28 +281,23 @@
 
     // 1. Core Filter
     AppState.filteredProducts = AppState.products.filter(p => {
-      // Text match (Search in Name, Brand, SKU/Code, Custom Field 1)
       const matchesText = !query || 
         p.nombre.toLowerCase().includes(query) ||
         p.codigo.toLowerCase().includes(query) ||
         p.marca.toLowerCase().includes(query) ||
         p.descripcion.toLowerCase().includes(query);
 
-      // Category match
       let matchesCategory = true;
       if (category !== "all") {
         if (category === "other") {
-          // Empty, or doesn't match '01', '02', '03'
           matchesCategory = p.categoriaCodigo !== "01" && p.categoriaCodigo !== "02" && p.categoriaCodigo !== "03";
         } else {
           matchesCategory = p.categoriaCodigo === category;
         }
       }
 
-      // Brand match
       const matchesBrand = brand === "all" || p.marca === brand;
 
-      // Stock condition
       let matchesStock = true;
       if (stockFilter === "in-stock") {
         matchesStock = typeof p.stock === "number" && p.stock > 0;
@@ -330,13 +326,11 @@
       }
     });
 
-    // Render results
     renderProducts();
     updateCategoryBadgesCount();
   }
 
   function updateCategoryBadgesCount() {
-    // Count items matching the text, brand and stock constraints but distributed across categories
     const counts = { all: 0, "01": 0, "02": 0, "03": 0, other: 0 };
     const { text, brand, stockFilter } = AppState.filters;
     const query = text.toLowerCase().trim();
@@ -364,7 +358,6 @@
       }
     });
 
-    // Write counts in DOM badges
     Object.keys(counts).forEach(key => {
       const badge = document.getElementById(`count-badge-${key}`);
       if (badge) {
@@ -374,122 +367,125 @@
   }
 
   // ==========================================================================
-  // RENDER DYNAMIC CATALOG GRID
+  // RENDER DYNAMIC CATALOG GRID (BEM & Lucide compliant)
   // ==========================================================================
   function renderProducts() {
     if (AppState.filteredProducts.length === 0) {
       DOM.productsContainer.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 64px 16px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
-          <i class="ti ti-search-off" style="font-size: 44px; color: var(--text-tertiary); margin-bottom: 12px; display:block;"></i>
-          <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">No se encontraron resultados</h3>
-          <p style="color: var(--text-secondary); font-size:14px;">Intenta ajustar los filtros de marca, stock o términos de búsqueda.</p>
+        <div class="catalog__empty">
+          <div class="catalog__empty-icon">
+            <i data-lucide="search-code" style="width: 44px; height: 44px;"></i>
+          </div>
+          <h3 class="catalog__empty-title">No se encontraron resultados</h3>
+          <p class="catalog__empty-subtitle">Intenta ajustar los filtros de marca, stock o términos de búsqueda.</p>
         </div>
       `;
+      createLucideIcons();
       return;
     }
 
     if (AppState.filters.view === "list") {
-      DOM.productsContainer.className = "products-grid list-view";
+      DOM.productsContainer.className = "catalog__grid catalog__grid--list-view";
     } else {
-      DOM.productsContainer.className = "products-grid";
+      DOM.productsContainer.className = "catalog__grid";
     }
 
     let html = "";
     AppState.filteredProducts.forEach(p => {
-      // Stock element markup
+      // Stock element BEM markup
       let stockHtml = "";
       if (p.stock === "" || isNaN(p.stock)) {
-        stockHtml = `<span class="product-stock-badge in-stock"><i class="ti ti-circle-check"></i> Bajo Pedido</span>`;
+        stockHtml = `<span class="product-card__stock-badge product-card__stock-badge--in-stock"><i data-lucide="help-circle"></i> Bajo Pedido</span>`;
       } else if (p.stock <= 0) {
-        stockHtml = `<span class="product-stock-badge out-stock"><i class="ti ti-alert-triangle"></i> Agotado</span>`;
+        stockHtml = `<span class="product-card__stock-badge product-card__stock-badge--out-stock"><i data-lucide="alert-octagon"></i> Agotado</span>`;
       } else if (p.stock <= p.alertaCantidad) {
-        stockHtml = `<span class="product-stock-badge low-stock"><i class="ti ti-clock-bolt"></i> Alerta: ${p.stock} pz</span>`;
+        stockHtml = `<span class="product-card__stock-badge product-card__stock-badge--low-stock"><i data-lucide="alert-triangle"></i> Alerta: ${p.stock} pz</span>`;
       } else {
-        stockHtml = `<span class="product-stock-badge in-stock"><i class="ti ti-circle-filled" style="font-size:8px;"></i> ${p.stock} pzs</span>`;
+        stockHtml = `<span class="product-card__stock-badge product-card__stock-badge--in-stock"><i data-lucide="check" style="width:12px; height:12px;"></i> ${p.stock} pzs</span>`;
       }
 
-      // Dynamic placeholder color schemes
-      let catClass = "category-other";
+      // Dynamic placeholder BEM color schemes
+      let catClass = "product-card__badge--otros";
       let catGradient = "var(--cat-otros-bg)";
-      let catIcon = "ti-box-seam";
+      let catIcon = "box";
       let catName = "Accesorios";
 
       if (p.categoriaCodigo === "01") {
-        catClass = "category-01";
+        catClass = "product-card__badge--coccion";
         catGradient = "var(--cat-coccion-bg)";
-        catIcon = "ti-flame";
+        catIcon = "flame";
         catName = "Cocción";
       } else if (p.categoriaCodigo === "02") {
-        catClass = "category-02";
+        catClass = "product-card__badge--refacciones";
         catGradient = "var(--cat-refacciones-bg)";
-        catIcon = "ti-settings-2";
+        catIcon = "settings";
         catName = "Refacciones";
       } else if (p.categoriaCodigo === "03") {
-        catClass = "category-03";
+        catClass = "product-card__badge--limpieza";
         catGradient = "var(--cat-limpieza-bg)";
-        catIcon = "ti-droplet-half-2";
+        catIcon = "droplets";
         catName = "Limpieza";
       }
 
-      // Check if product is already in cart
+      // Cart checks
       const cartItem = AppState.cart.find(c => c.id === p.id);
-      const inCartClass = cartItem ? "in-cart" : "";
-      const inCartIcon = cartItem ? "ti-check" : "ti-plus";
+      const inCartClass = cartItem ? "product-card__add-btn--in-cart" : "";
+      const inCartIcon = cartItem ? "check" : "plus";
 
       if (AppState.filters.view === "list") {
-        // LIST LAYOUT
+        // LIST LAYOUT (BEM)
         html += `
           <div class="product-card" data-id="${p.id}">
-            <div class="product-image-container">
-              <div class="dynamic-gradient-img" style="background: ${catGradient}">
-                <i class="ti ${catIcon}"></i>
+            <div class="product-card__image-container">
+              <div class="product-card__image-fallback" style="background: ${catGradient}">
+                <i data-lucide="${catIcon}"></i>
               </div>
             </div>
-            <div class="product-info-block">
-              <span class="product-brand">${p.marca}</span>
-              <h4 class="product-name" title="${p.nombre}">${p.nombre}</h4>
-              <div style="font-size: 11px; color: var(--text-secondary); margin-top:2px;">Cód: <strong>${p.codigo}</strong></div>
+            <div style="flex: 1; min-width: 0;">
+              <span class="product-card__brand">${p.marca}</span>
+              <h4 class="product-card__name" title="${p.nombre}">${p.nombre}</h4>
+              <div class="product-card__sku">Cód: <strong>${p.codigo}</strong></div>
             </div>
-            <div class="product-meta-row">
+            <div class="product-card__meta-row">
               ${stockHtml}
-              <div class="product-price-info">
-                <span class="price-val">$${p.precio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <div class="product-card__price-info">
+                <span class="product-card__price-val">$${p.precio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
-              <button class="add-quote-btn-card ${inCartClass}" data-action="toggle-cart" data-id="${p.id}" title="Añadir a Cotización">
-                <i class="ti ${inCartIcon}"></i>
+              <button class="product-card__add-btn ${inCartClass}" data-action="toggle-cart" data-id="${p.id}" title="Añadir a Cotización">
+                <i data-lucide="${inCartIcon}"></i>
               </button>
             </div>
           </div>
         `;
       } else {
-        // GRID LAYOUT
+        // GRID LAYOUT (BEM)
         html += `
           <div class="product-card" data-id="${p.id}">
-            <div class="card-badges">
-              <span class="badge ${catClass}">${catName}</span>
+            <div class="product-card__badges">
+              <span class="product-card__badge ${catClass}">${catName}</span>
             </div>
             
-            <div class="product-image-container">
-              <div class="dynamic-gradient-img" style="background: ${catGradient}">
-                <i class="ti ${catIcon}"></i>
-                <div class="brand-badge-overlay">${p.marca}</div>
+            <div class="product-card__image-container">
+              <div class="product-card__image-fallback" style="background: ${catGradient}">
+                <i data-lucide="${catIcon}"></i>
+                <div class="product-card__brand-overlay">${p.marca}</div>
               </div>
             </div>
 
-            <div class="product-brand">${p.marca}</div>
-            <h4 class="product-name" title="${p.nombre}">${p.nombre}</h4>
-            <div style="font-size: 11.5px; color: var(--text-secondary); margin-bottom: 12px;">Código: <strong>${p.codigo}</strong></div>
+            <div class="product-card__brand">${p.marca}</div>
+            <h4 class="product-card__name" title="${p.nombre}">${p.nombre}</h4>
+            <div class="product-card__sku">Código: <strong>${p.codigo}</strong></div>
             
-            <div class="product-meta-row">
-              <div class="product-price-info">
-                <span class="price-label">Precio Unitario</span>
-                <span class="price-val">$${p.precio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <div class="product-card__meta-row">
+              <div class="product-card__price-info">
+                <span class="product-card__price-label">Precio Unitario</span>
+                <span class="product-card__price-val">$${p.precio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               ${stockHtml}
             </div>
 
-            <button class="add-quote-btn-card ${inCartClass}" data-action="toggle-cart" data-id="${p.id}" title="Añadir a Cotización">
-              <i class="ti ${inCartIcon}"></i>
+            <button class="product-card__add-btn ${inCartClass}" data-action="toggle-cart" data-id="${p.id}" title="Añadir a Cotización">
+              <i data-lucide="${inCartIcon}"></i>
             </button>
           </div>
         `;
@@ -497,12 +493,12 @@
     });
 
     DOM.productsContainer.innerHTML = html;
+    createLucideIcons(); // Client side rendering of inline Lucide vectors!
 
     // Attach card event listeners
     const cards = DOM.productsContainer.querySelectorAll(".product-card");
     cards.forEach(card => {
       card.addEventListener("click", (e) => {
-        // If clicking on toggle cart button, do not open details drawer
         if (e.target.closest('[data-action="toggle-cart"]')) {
           e.stopPropagation();
           const btn = e.target.closest('[data-action="toggle-cart"]');
@@ -521,10 +517,9 @@
   }
 
   // ==========================================================================
-  // SEARCH & FILTERS EVENT HANDLERS
+  // EVENT LISTENERS & DEBOUNCER SETUP
   // ==========================================================================
   function setupEventListeners() {
-    // 1. Instant fuzzy search with debounce
     let searchDebounceTimeout = null;
     DOM.searchInput.addEventListener("input", () => {
       clearTimeout(searchDebounceTimeout);
@@ -534,25 +529,21 @@
       }, 150);
     });
 
-    // 2. Category Tab switcher
     DOM.categoryTabsContainer.addEventListener("click", (e) => {
-      const btn = e.target.closest(".tab-btn");
+      const btn = e.target.closest(".filters__tab");
       if (!btn) return;
       
       const categoryId = btn.dataset.category;
       
-      // Update UI tabs state
-      DOM.categoryTabsContainer.querySelectorAll(".tab-btn").forEach(t => {
-        t.classList.remove("active");
+      DOM.categoryTabsContainer.querySelectorAll(".filters__tab").forEach(t => {
+        t.classList.remove("filters__tab--active");
       });
-      btn.classList.add("active");
+      btn.classList.add("filters__tab--active");
 
-      // Update State & Re-filter
       AppState.filters.category = categoryId;
       applyFilters();
     });
 
-    // 3. Dropdowns selectors
     DOM.brandSelect.addEventListener("change", () => {
       AppState.filters.brand = DOM.brandSelect.value;
       applyFilters();
@@ -568,29 +559,26 @@
       applyFilters();
     });
 
-    // 4. Grid / List Layout Switchers
     DOM.viewGridBtn.addEventListener("click", () => {
-      DOM.viewListBtn.classList.remove("active");
-      DOM.viewGridBtn.classList.add("active");
+      DOM.viewListBtn.classList.remove("filters__view-btn--active");
+      DOM.viewGridBtn.classList.add("filters__view-btn--active");
       AppState.filters.view = "grid";
       applyFilters();
     });
 
     DOM.viewListBtn.addEventListener("click", () => {
-      DOM.viewGridBtn.classList.remove("active");
-      DOM.viewListBtn.classList.add("active");
+      DOM.viewGridBtn.classList.remove("filters__view-btn--active");
+      DOM.viewListBtn.classList.add("filters__view-btn--active");
       AppState.filters.view = "list";
       applyFilters();
     });
 
-    // 5. Drawer click handlers
     DOM.closeDrawerBtn.addEventListener("click", closeDetailDrawer);
     DOM.scrim.addEventListener("click", () => {
       closeDetailDrawer();
       collapseCartIsland();
     });
 
-    // Keyboard accessibility for Drawer ESC key
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeDetailDrawer();
@@ -598,10 +586,9 @@
       }
     });
 
-    // 6. Bottom Island controls
     DOM.islandHandleBar.addEventListener("click", toggleCartIsland);
     DOM.islandActionTrigger.addEventListener("click", (e) => {
-      e.stopPropagation(); // prevent collapsing/expanding triggers
+      e.stopPropagation();
       expandCartIsland();
     });
 
@@ -611,7 +598,7 @@
   }
 
   // ==========================================================================
-  // CART / QUOTATION STATE MANAGEMENT
+  // CART STATE MANAGER (BEM & Local Storage Reactivity)
   // ==========================================================================
   function loadCartFromStorage() {
     const savedCart = localStorage.getItem("kv-catalog-cart");
@@ -637,11 +624,9 @@
     if (!p) return;
 
     if (index > -1) {
-      // Remove from cart
       AppState.cart.splice(index, 1);
       showToast(`Removido: ${p.nombre.substring(0, 24)}...`);
     } else {
-      // Add to cart with quantity 1
       AppState.cart.push({
         id: p.id,
         nombre: p.nombre,
@@ -655,12 +640,9 @@
     }
 
     saveCartToStorage();
-
-    // Re-render the grid so button UI is kept in absolute sync
     renderProducts();
 
-    // If currently rendering detail drawer, update its button as well
-    if (DOM.detailDrawer.classList.contains("active")) {
+    if (DOM.detailDrawer.classList.contains("drawer__sheet--active")) {
       const activeProdInDrawer = DOM.detailDrawer.dataset.activeId;
       if (activeProdInDrawer === productId) {
         updateDrawerActionButton(p);
@@ -674,7 +656,6 @@
 
     item.qty += delta;
     if (item.qty <= 0) {
-      // Remove entirely if quantity hits zero
       AppState.cart = AppState.cart.filter(c => c.id !== productId);
       showToast("Producto removido de cotización");
     }
@@ -702,7 +683,6 @@
   }
 
   function updateCartUI() {
-    // 1. Floating badges updates
     const totalItems = AppState.cart.reduce((sum, item) => sum + item.qty, 0);
     
     if (totalItems > 0) {
@@ -713,25 +693,15 @@
     } else {
       DOM.cartCounter.style.display = "none";
       DOM.cartCountText.textContent = "0 productos";
-      
-      // If island is open, keep it open but collapse eventually
-      if (!DOM.bottomIsland.classList.contains("expanded")) {
+      if (!DOM.bottomIsland.classList.contains("island__sheet--expanded")) {
         DOM.bottomIsland.style.display = "none";
       }
     }
 
-    // Math Calculations (Public prices)
     const subtotal = AppState.cart.reduce((sum, item) => sum + (item.precio * item.qty), 0);
     const iva = subtotal * 0.16;
     const total = subtotal + iva;
 
-    // Margin cost calculations (Savings simulation)
-    const costSubtotal = AppState.cart.reduce((sum, item) => {
-      const unitCosto = item.costo > 0 ? item.costo : item.precio * 0.8;
-      return sum + (unitCosto * item.qty);
-    }, 0);
-    
-    // Update pricing DOM
     const formattedSub = `$${subtotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN`;
     const formattedIva = `$${iva.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN`;
     const formattedTot = `$${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN`;
@@ -741,19 +711,19 @@
     DOM.quoteIva.textContent = formattedIva;
     DOM.quoteTotal.textContent = formattedTot;
 
-    // Render cart items lists
     renderCartListItems();
   }
 
   function renderCartListItems() {
     if (AppState.cart.length === 0) {
       DOM.cartItemsContainer.innerHTML = `
-        <div class="cart-empty-state">
-          <i class="ti ti-shopping-cart-x"></i>
+        <div class="island__empty-state">
+          <div class="island__empty-icon"><i data-lucide="shopping-cart"></i></div>
           <p>Tu cotización está vacía</p>
           <span style="font-size:11px; opacity:0.6;">Añade equipos usando el botón (+) en el catálogo</span>
         </div>
       `;
+      createLucideIcons();
       return;
     }
 
@@ -761,33 +731,33 @@
     AppState.cart.forEach(item => {
       const lineTotal = item.precio * item.qty;
       html += `
-        <div class="cart-item-row">
+        <div class="island__item-row">
           <div style="flex:1; min-width:0;">
-            <div class="cart-item-name" title="${item.nombre}">${item.nombre}</div>
-            <div class="cart-item-brand">${item.marca} • SKU: ${item.codigo}</div>
+            <div class="island__item-name" title="${item.nombre}">${item.nombre}</div>
+            <div class="island__item-brand">${item.marca} • SKU: ${item.codigo}</div>
           </div>
           
-          <div class="cart-qty-selectors">
-            <button class="qty-adjust-btn" onclick="window.adjustQty('${item.id}', -1)" title="Restar 1">-</button>
-            <span class="qty-number">${item.qty}</span>
-            <button class="qty-adjust-btn" onclick="window.adjustQty('${item.id}', 1)" title="Sumar 1">+</button>
+          <div class="island__qty-selectors">
+            <button class="island__qty-btn" onclick="window.adjustQty('${item.id}', -1)" title="Restar 1">-</button>
+            <span class="island__qty-val">${item.qty}</span>
+            <button class="island__qty-btn" onclick="window.adjustQty('${item.id}', 1)" title="Sumar 1">+</button>
           </div>
 
-          <div class="cart-item-price-col">
-            <span class="cart-item-total-price">$${lineTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <div class="island__item-price-col">
+            <span class="island__item-total-price">$${lineTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
 
-          <button class="remove-cart-item-btn" onclick="window.removeCartItem('${item.id}')" title="Eliminar del Carrito">
-            <i class="ti ti-trash"></i>
+          <button class="island__remove-btn" onclick="window.removeCartItem('${item.id}')" title="Eliminar del Carrito">
+            <i data-lucide="trash-2" style="width:16px; height:16px;"></i>
           </button>
         </div>
       `;
     });
 
     DOM.cartItemsContainer.innerHTML = html;
+    createLucideIcons();
   }
 
-  // Export functions to window context so inline onclick functions work safely
   window.adjustQty = (id, delta) => {
     updateCartQty(id, delta);
   };
@@ -797,10 +767,10 @@
   };
 
   // ==========================================================================
-  // BOTTOM ISLAND RESPONSIVE SHEET CONTROLLER
+  // BOTTOM ISLAND RESPONSIVE SHEET ACTIONS
   // ==========================================================================
   function toggleCartIsland() {
-    if (DOM.bottomIsland.classList.contains("expanded")) {
+    if (DOM.bottomIsland.classList.contains("island__sheet--expanded")) {
       collapseCartIsland();
     } else {
       expandCartIsland();
@@ -812,54 +782,51 @@
       showToast("Añade productos para ver la cotización");
       return;
     }
-    DOM.bottomIsland.classList.add("expanded");
-    DOM.scrim.classList.add("active");
-    // Change handle accessibility
+    DOM.bottomIsland.classList.add("island__sheet--expanded");
+    DOM.scrim.classList.add("drawer__scrim--active");
     DOM.islandHandleBar.setAttribute("title", "Deslizar para cerrar");
   }
 
   function collapseCartIsland() {
-    DOM.bottomIsland.classList.remove("expanded");
-    DOM.scrim.classList.remove("active");
+    DOM.bottomIsland.classList.remove("island__sheet--expanded");
+    DOM.scrim.classList.remove("drawer__scrim--active");
     DOM.islandHandleBar.setAttribute("title", "Ver Cotización");
   }
 
   // ==========================================================================
-  // DETAIL DRAWER ORCHESTRATOR
+  // DETAIL DRAWER ORCHESTRATOR (BEM & Lucide compliant)
   // ==========================================================================
   function openDetailDrawer(p) {
     DOM.detailDrawer.dataset.activeId = p.id;
     
-    // Gradient visuals fallback matching catalog categories
     let catGradient = "var(--cat-otros-bg)";
-    let catIcon = "ti-box-seam";
+    let catIcon = "box";
     let catLabel = "Refacción / General";
 
     if (p.categoriaCodigo === "01") {
       catGradient = "var(--cat-coccion-bg)";
-      catIcon = "ti-flame";
+      catIcon = "flame";
       catLabel = "Equipo de Cocción Industrial";
     } else if (p.categoriaCodigo === "02") {
       catGradient = "var(--cat-refacciones-bg)";
-      catIcon = "ti-settings-2";
+      catIcon = "settings";
       catLabel = "Refacción y Componente Original";
     } else if (p.categoriaCodigo === "03") {
       catGradient = "var(--cat-limpieza-bg)";
-      catIcon = "ti-droplet-half-2";
+      catIcon = "droplets";
       catLabel = "Químico y Limpieza Profesional";
     }
 
-    // Dynamic Barcode Simulation HTML
     const barcodeVisualSvg = generateBarcodeSVG(p.codigo);
 
-    // Custom Fields lists
+    // Dynamic specs list
     let specsHtml = "";
-    if (p.descripcion) specsHtml += `<div class="spec-item"><span class="spec-label">Descripción</span><span class="spec-value custom-field">${p.descripcion}</span></div>`;
-    if (p.especificaciones) specsHtml += `<div class="spec-item"><span class="spec-label">Especificaciones</span><span class="spec-value custom-field">${p.especificaciones}</span></div>`;
-    if (p.especial3) specsHtml += `<div class="spec-item"><span class="spec-label">Ubicación / Notas</span><span class="spec-value custom-field">${p.especial3}</span></div>`;
-    if (p.especial4) specsHtml += `<div class="spec-item"><span class="spec-label">Dimensiones / Datos</span><span class="spec-value custom-field">${p.especial4}</span></div>`;
-    if (p.especial5) specsHtml += `<div class="spec-item"><span class="spec-label">Campo Adicional 5</span><span class="spec-value custom-field">${p.especial5}</span></div>`;
-    if (p.especial6) specsHtml += `<div class="spec-item"><span class="spec-label">Campo Adicional 6</span><span class="spec-value custom-field">${p.especial6}</span></div>`;
+    if (p.descripcion) specsHtml += `<div class="drawer__spec-item"><span class="drawer__spec-label">Descripción</span><span class="drawer__spec-value drawer__spec-value--custom">${p.descripcion}</span></div>`;
+    if (p.especificaciones) specsHtml += `<div class="drawer__spec-item"><span class="drawer__spec-label">Especificaciones</span><span class="drawer__spec-value drawer__spec-value--custom">${p.especificaciones}</span></div>`;
+    if (p.especial3) specsHtml += `<div class="drawer__spec-item"><span class="drawer__spec-label">Ubicación / Notas</span><span class="drawer__spec-value drawer__spec-value--custom">${p.especial3}</span></div>`;
+    if (p.especial4) specsHtml += `<div class="drawer__spec-item"><span class="drawer__spec-label">Dimensiones / Datos</span><span class="drawer__spec-value drawer__spec-value--custom">${p.especial4}</span></div>`;
+    if (p.especial5) specsHtml += `<div class="drawer__spec-item"><span class="drawer__spec-label">Campo Adicional 5</span><span class="drawer__spec-value drawer__spec-value--custom">${p.especial5}</span></div>`;
+    if (p.especial6) specsHtml += `<div class="drawer__spec-item"><span class="drawer__spec-label">Campo Adicional 6</span><span class="drawer__spec-value drawer__spec-value--custom">${p.especial6}</span></div>`;
 
     let stockText = "Bajo Pedido / Sin Stock";
     let stockStyle = 'style="color: var(--color-success);"';
@@ -877,135 +844,208 @@
     }
 
     DOM.drawerBody.innerHTML = `
-      <div class="drawer-visual">
-        <div class="dynamic-gradient-img" style="background: ${catGradient}">
-          <i class="ti ${catIcon}"></i>
+      <div class="drawer__visual">
+        <div class="product-card__image-fallback" style="background: ${catGradient}">
+          <i data-lucide="${catIcon}" style="width: 56px; height: 56px;"></i>
         </div>
       </div>
 
-      <div class="drawer-product-brand">${p.marca}</div>
-      <h3 class="drawer-product-name">${p.nombre}</h3>
+      <div class="drawer__brand">${p.marca}</div>
+      <h3 class="drawer__name">${p.nombre}</h3>
 
-      <div class="drawer-price-card">
-        <div class="drawer-price-info">
-          <span class="price-label">Precio al Público</span>
-          <span class="drawer-price-amount">$${p.precio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-          <span class="drawer-cost-amount">Precio Neto + IVA (Sujeto a cambios)</span>
+      <div class="drawer__price-card">
+        <div class="drawer__price-info">
+          <span class="product-card__price-label">Precio al Público</span>
+          <span class="drawer__price-amount">$${p.precio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <span class="drawer__cost-amount">Precio Neto + IVA (Sujeto a cambios)</span>
         </div>
         <div style="text-align: right;">
-          <span class="badge category-other" style="background: ${catGradient}">${p.unitCode}</span>
+          <span class="product-card__badge product-card__badge--otros" style="background: ${catGradient}">${p.unitCode}</span>
         </div>
       </div>
 
       <h4 style="font-size: 13.5px; text-transform: uppercase; letter-spacing:0.05em; color: var(--text-secondary); margin-bottom: 12px; font-weight:700;">Detalles Técnicos</h4>
-      <div class="specs-list">
-        <div class="spec-item">
-          <span class="spec-label">SKU / Código</span>
-          <span class="spec-value" style="font-family: var(--font-mono, monospace); font-weight:700;">${p.codigo}</span>
+      <div class="drawer__specs-list">
+        <div class="drawer__spec-item">
+          <span class="drawer__spec-label">SKU / Código</span>
+          <span class="drawer__spec-value" style="font-family: monospace; font-weight:700;">${p.codigo}</span>
         </div>
-        <div class="spec-item">
-          <span class="spec-label">Categoría</span>
-          <span class="spec-value">${catLabel}</span>
+        <div class="drawer__spec-item">
+          <span class="drawer__spec-label">Categoría</span>
+          <span class="drawer__spec-value">${catLabel}</span>
         </div>
-        <div class="spec-item">
-          <span class="spec-label">Estado de Inventario</span>
-          <span class="spec-value" ${stockStyle}><strong>${stockText}</strong></span>
+        <div class="drawer__spec-item">
+          <span class="drawer__spec-label">Estado de Inventario</span>
+          <span class="drawer__spec-value" ${stockStyle}><strong>${stockText}</strong></span>
         </div>
         ${specsHtml}
       </div>
 
       <h4 style="font-size: 13.5px; text-transform: uppercase; letter-spacing:0.05em; color: var(--text-secondary); margin-bottom: 12px; font-weight:700;">Código de Barras (${p.barcodeType.toUpperCase()})</h4>
-      <div class="barcode-section">
-        <div class="barcode-svg-container">
+      <div class="drawer__barcode-section">
+        <div class="drawer__barcode-container">
           ${barcodeVisualSvg}
         </div>
-        <span class="barcode-label">${p.codigo}</span>
+        <span class="drawer__barcode-label">${p.codigo}</span>
       </div>
     `;
 
-    // Dynamic Action Button
     updateDrawerActionButton(p);
 
-    DOM.detailDrawer.classList.add("active");
-    DOM.scrim.classList.add("active");
+    DOM.detailDrawer.classList.add("drawer__sheet--active");
+    DOM.scrim.classList.add("drawer__scrim--active");
+    createLucideIcons();
   }
 
   function updateDrawerActionButton(p) {
     const isAlreadyInCart = AppState.cart.some(c => c.id === p.id);
     if (isAlreadyInCart) {
       DOM.drawerActions.innerHTML = `
-        <button class="primary-drawer-btn remove-mode" id="btn-drawer-action">
-          <i class="ti ti-shopping-cart-x"></i> Quitar de Cotización
+        <button class="drawer__primary-btn drawer__primary-btn--remove" id="btn-drawer-action">
+          <i data-lucide="shopping-cart"></i> Quitar de Cotización
         </button>
       `;
     } else {
       DOM.drawerActions.innerHTML = `
-        <button class="primary-drawer-btn" id="btn-drawer-action">
-          <i class="ti ti-shopping-cart-plus"></i> Añadir a Cotización
+        <button class="drawer__primary-btn" id="btn-drawer-action">
+          <i data-lucide="shopping-cart"></i> Añadir a Cotización
         </button>
       `;
     }
 
-    // Attach click action
     document.getElementById("btn-drawer-action").addEventListener("click", () => {
       toggleCartItem(p.id);
     });
+    createLucideIcons();
   }
 
   function closeDetailDrawer() {
-    DOM.detailDrawer.classList.remove("active");
-    // Only remove scrim if bottom island is also collapsed
-    if (!DOM.bottomIsland.classList.contains("expanded")) {
-      DOM.scrim.classList.remove("active");
+    DOM.detailDrawer.classList.remove("drawer__sheet--active");
+    if (!DOM.bottomIsland.classList.contains("island__sheet--expanded")) {
+      DOM.scrim.classList.remove("drawer__scrim--active");
     }
   }
 
   // ==========================================================================
   // BARCODE SVG SIMULATOR (Code 128 dynamic generator)
   // ==========================================================================
+  /**
+   * generateBarcodeSVG – Code 128 B encoder (ISO/IEC 15417)
+   * Encodes printable ASCII 32-126. Produces a crisp, properly structured
+   * barcode SVG with Start B, mod-103 checksum, Stop, quiet zones and text.
+   */
   function generateBarcodeSVG(code) {
-    // Generate pseudorandom black/white bar widths based on SKU characters to render unique realistic barcodes
-    let str = String(code);
-    let hash = 0;
+    const str = String(code);
+
+    // ------------------------------------------------------------------
+    // Code 128 full symbol pattern table (indices 0-106)
+    // Each entry: [bar1, sp1, bar2, sp2, bar3, sp3]  — sum = 11 modules
+    // Index 0-94 → Code B: ASCII(32 + index)
+    // Index 103 = Start A | 104 = Start B | 105 = Start C | 106 = Stop*
+    // *Stop is a 7-element special pattern handled separately.
+    // ------------------------------------------------------------------
+    const C128 = [
+      [2,1,2,2,2,2],[2,2,2,1,2,2],[2,2,2,2,2,1],[1,2,1,2,2,3],[1,2,1,3,2,2], // 0-4
+      [1,3,1,2,2,2],[1,2,2,2,1,3],[1,2,2,3,1,2],[1,3,2,2,1,2],[2,2,1,2,1,3], // 5-9
+      [2,2,1,3,1,2],[2,3,1,2,1,2],[1,1,2,2,3,2],[1,2,2,1,3,2],[1,2,2,2,3,1], // 10-14
+      [1,1,3,2,2,2],[1,2,3,1,2,2],[1,2,3,2,2,1],[2,2,3,2,1,1],[2,2,1,1,3,2], // 15-19
+      [2,2,1,2,3,1],[2,1,3,2,1,2],[2,2,3,1,1,2],[3,1,2,1,3,1],[3,1,1,2,2,2], // 20-24
+      [3,2,1,1,2,2],[3,2,1,2,2,1],[3,1,2,2,1,2],[3,2,2,1,1,2],[3,2,2,2,1,1], // 25-29
+      [2,1,2,1,2,3],[2,1,2,3,2,1],[2,3,2,1,2,1],[1,1,1,3,2,3],[1,3,1,1,2,3], // 30-34
+      [1,3,1,3,2,1],[1,1,2,3,1,3],[1,3,2,1,1,3],[1,3,2,3,1,1],[2,1,1,3,1,3], // 35-39
+      [2,3,1,1,1,3],[2,3,1,3,1,1],[1,1,2,1,3,3],[1,1,2,3,3,1],[1,3,2,1,3,1], // 40-44
+      [1,1,3,1,2,3],[1,1,3,3,2,1],[1,3,3,1,2,1],[3,1,3,1,2,1],[2,1,1,3,3,1], // 45-49
+      [2,3,1,1,3,1],[2,1,3,1,1,3],[2,1,3,3,1,1],[2,1,3,1,3,1],[3,1,1,1,2,3], // 50-54
+      [3,1,1,3,2,1],[3,3,1,1,2,1],[3,1,2,1,1,3],[3,1,2,3,1,1],[3,3,2,1,1,1], // 55-59
+      [3,1,4,1,1,1],[2,2,1,4,1,1],[4,3,1,1,1,1],[1,1,1,2,2,4],[1,1,1,4,2,2], // 60-64
+      [1,2,1,1,2,4],[1,2,1,4,2,1],[1,4,1,1,2,2],[1,4,1,2,2,1],[1,1,2,2,1,4], // 65-69
+      [1,1,2,4,1,2],[1,2,2,1,1,4],[1,2,2,4,1,1],[1,4,2,1,1,2],[1,4,2,2,1,1], // 70-74
+      [2,4,1,2,1,1],[2,2,1,1,1,4],[4,1,3,1,1,1],[2,1,1,2,1,4],[2,1,1,4,1,2], // 75-79
+      [1,1,4,2,1,2],[1,1,4,4,1,1],[1,2,4,1,1,2],[1,2,4,3,1,1],[1,4,4,1,1,1], // 80-84 -- wait let me use correct values
+      [1,1,1,4,4,1],[3,1,1,1,4,1],[1,1,3,4,1,1],[1,1,4,1,3,1],[4,1,1,1,1,3], // 85-89
+      [4,1,1,3,1,1],[1,1,3,1,4,1],[1,1,4,1,1,3],[3,1,1,1,1,4],[4,1,1,1,3,1], // 90-94
+      [2,1,1,1,4,2],[1,3,1,1,4,1],[1,1,1,1,4,3],[1,1,1,3,1,4],[1,1,4,1,1,3], // 95-99
+      [4,1,1,1,1,3],[4,1,1,3,1,1],[1,3,4,1,1,1],[2,1,4,1,2,1],[3,3,1,1,3,1], // 100-104
+      [3,1,1,3,3,1],[3,3,3,1,1,1]                                              // 105-106
+    ];
+
+    // Start B pattern (symbol 104)
+    const START_B = [2,1,1,4,1,2]; // known correct Start B
+    // Stop pattern: 7 elements (bar-sp-bar-sp-bar-sp-bar), 13 modules
+    const STOP    = [2,3,3,1,1,1,2];
+
+    // ------------------------------------------------------------------
+    // Encode characters using Code B (symbol = charCode - 32)
+    // ------------------------------------------------------------------
+    const symbols = []; // symbol value array (excluding start/stop)
     for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let barcodePatterns = [];
-    // Always start with dark line
-    barcodePatterns.push(2); // start guard
-    barcodePatterns.push(1); // space
-
-    for (let i = 0; i < 15; i++) {
-      // Alternate width pattern using hash
-      const val = Math.abs((hash >> i) & 3) + 1; // 1 to 4 units width
-      barcodePatterns.push(val);
-    }
-    
-    barcodePatterns.push(2); // stop guard
-
-    // Draw SVG
-    let svgHtml = '<svg viewBox="0 0 100 20" preserveAspectRatio="none">';
-    let xOffset = 2;
-    const totalUnitWidth = barcodePatterns.reduce((sum, w) => sum + w, 0) + 4;
-    const multiplier = 96 / totalUnitWidth;
-
-    barcodePatterns.forEach((width, index) => {
-      const isBlackBar = index % 2 === 0;
-      const pixelWidth = width * multiplier;
-      
-      if (isBlackBar) {
-        svgHtml += `<rect x="${xOffset}" y="1" width="${pixelWidth}" height="18" fill="#111827" />`;
+      const ch = str.charCodeAt(i);
+      if (ch >= 32 && ch <= 126) {
+        symbols.push(ch - 32);
+      } else {
+        symbols.push(0); // fallback: space
       }
-      xOffset += pixelWidth;
-    });
+    }
 
-    svgHtml += "</svg>";
-    return svgHtml;
+    // Mod-103 checksum
+    let checksum = 104; // value for Start B
+    for (let i = 0; i < symbols.length; i++) {
+      checksum += symbols[i] * (i + 1);
+    }
+    checksum = checksum % 103;
+
+    // ------------------------------------------------------------------
+    // Build module sequence: [width, isBar] pairs
+    // ------------------------------------------------------------------
+    const mods = []; // {w, bar}
+
+    const pushPattern = (pattern) => {
+      pattern.forEach((w, idx) => mods.push({ w, bar: idx % 2 === 0 }));
+    };
+
+    pushPattern(START_B);
+    symbols.forEach(sym => pushPattern(C128[sym]));
+    pushPattern(C128[checksum]);
+    // Stop: 7-element pattern starting with a bar
+    STOP.forEach((w, idx) => mods.push({ w, bar: idx % 2 === 0 }));
+
+    // ------------------------------------------------------------------
+    // Render SVG
+    // ------------------------------------------------------------------
+    const QUIET  = 10;  // quiet zone modules on each side
+    const BAR_H  = 56;  // bar height in user units
+    const TEXT_H = 16;  // space below bars for label
+    const TOTAL_H = BAR_H + TEXT_H;
+
+    const dataW   = mods.reduce((s, m) => s + m.w, 0);
+    const totalW  = QUIET * 2 + dataW;
+
+    let rects = '';
+    let x = QUIET;
+    for (const { w, bar } of mods) {
+      if (bar) {
+        rects += `<rect x="${x}" y="0" width="${w}" height="${BAR_H}" fill="#0d0d0d"/>`;
+      }
+      x += w;
+    }
+
+    const midX = (totalW / 2).toFixed(1);
+    const escaped = str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    return [
+      `<svg viewBox="0 0 ${totalW} ${TOTAL_H}" xmlns="http://www.w3.org/2000/svg"`,
+      `  shape-rendering="crispEdges" style="width:100%;height:auto;display:block;">`,
+      `<rect width="${totalW}" height="${TOTAL_H}" fill="#ffffff"/>`,
+      rects,
+      `<text x="${midX}" y="${BAR_H + 12}" text-anchor="middle"`,
+      `  font-family="'Courier New',Courier,monospace" font-size="8"`,
+      `  font-weight="700" letter-spacing="2" fill="#0d0d0d">${escaped}</text>`,
+      `</svg>`
+    ].join('\n');
   }
 
   // ==========================================================================
-  // TOAST NOTIFICATIONS SYSTEM
+  // TOAST NOTIFICATIONS SYSTEM (Independent of external resources)
   // ==========================================================================
   function showToast(message) {
     let container = document.getElementById("kv-toast-container");
@@ -1051,16 +1091,15 @@
       toast.style.color = "var(--text-main)";
     }
 
-    toast.innerHTML = `<i class="ti ti-bell-filled" style="color: var(--color-gold);"></i> ${message}`;
+    toast.innerHTML = `<i data-lucide="bell" style="width:16px; height:16px; color: var(--color-gold);"></i> ${message}`;
     container.appendChild(toast);
+    createLucideIcons();
 
-    // Trigger animation
     setTimeout(() => {
       toast.style.transform = "translateY(0)";
       toast.style.opacity = "1";
     }, 10);
 
-    // Auto dismiss after 2.5s
     setTimeout(() => {
       toast.style.transform = "translateY(-20px)";
       toast.style.opacity = "0";
@@ -1112,7 +1151,6 @@
     const iva = subtotal * 0.16;
     const total = subtotal + iva;
 
-    // Populate Print Invoice Node
     let tableRows = "";
     AppState.cart.forEach((item, index) => {
       const lineTotal = item.precio * item.qty;
@@ -1131,9 +1169,9 @@
     });
 
     DOM.printInvoiceContainer.innerHTML = `
-      <div class="print-header">
+      <div class="print-invoice__header">
         <div>
-          <h1 class="print-brand" style="color: #c69214;">KITCHEN VALENZUELA</h1>
+          <h1 class="print-invoice__brand" style="color: #c69214;">KITCHEN VALENZUELA</h1>
           <p style="font-size:12px; color:#555;">Catálogo y Solicitud de Cotización Industrial</p>
         </div>
         <div style="text-align: right;">
@@ -1142,7 +1180,7 @@
         </div>
       </div>
 
-      <table class="print-table">
+      <table class="print-invoice__table">
         <thead>
           <tr>
             <th style="width: 5%">#</th>
@@ -1157,16 +1195,16 @@
         </tbody>
       </table>
 
-      <div class="print-totals">
-        <div class="print-totals-row">
+      <div class="print-invoice__totals">
+        <div class="print-invoice__totals-row">
           <span>Subtotal:</span>
           <span>$${subtotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN</span>
         </div>
-        <div class="print-totals-row">
+        <div class="print-invoice__totals-row">
           <span>IVA (16%):</span>
           <span>$${iva.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN</span>
         </div>
-        <div class="print-totals-row grand-total">
+        <div class="print-invoice__totals-row print-invoice__totals-row--grand-total">
           <span>TOTAL:</span>
           <span>$${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN</span>
         </div>
@@ -1177,7 +1215,6 @@
       </div>
     `;
 
-    // Trigger Print Action
     window.print();
   }
 

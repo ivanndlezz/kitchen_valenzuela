@@ -7,41 +7,44 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#09090b" />
-  
-  <title>Kitchen Valenzuela — Catálogo e Inventario de Equipamiento Industrial</title>
-  <meta name="description" content="Catálogo e Inventario interactivo de equipos industriales para cocina, refacciones y componentes originales de marcas líderes. Solicita cotizaciones al instante." />
 
-  <!-- Local Script: Lucide Icons (Independent of CDNs) -->
+  <title>Kitchen Valenzuela — Inventario Persistente</title>
+  <meta name="description" content="Inventario autogestionado de equipos industriales. Escanea códigos de barras para registrar productos automáticamente." />
+
+  <!-- Local Icons & Scanner -->
   <script src="../shared/utilities/scanning/lucide.min.js"></script>
+  <script src="../shared/utilities/scanning/html5-qrcode.min.js"></script>
 
-  <!-- Custom CSS Design System (BEM, Variable Driven) -->
-  <link rel="stylesheet" href="app.css" />
+  <link rel="stylesheet" href="inventory.css" />
 </head>
 <body>
 
   <div class="app-shell">
-    
+
     <!-- ==========================================
-         BARRA SUPERIOR (HEADER)
+         HEADER
          ========================================== -->
-    <header class="header" id="main-header">
+    <header class="header">
       <div class="header__brand">
         <div class="header__logo">KV</div>
         <div class="header__text">
           <h1 class="header__title">KITCHEN VALENZUELA</h1>
-          <span class="header__subtitle">Catálogo & Inventario Industrial</span>
+          <span class="header__subtitle">Inventario Persistente por Escaneo</span>
         </div>
       </div>
-      
+
       <div class="header__actions">
-        <button class="header__theme-toggle" id="theme-toggle-btn" aria-label="Cambiar tema visual" title="Cambiar Tema">
+        <button class="header__scan-btn" id="scan-btn" aria-label="Escanear código de barras">
+          <i data-lucide="scan-barcode"></i> Escanear Código
+        </button>
+        <button class="header__theme-toggle" id="theme-toggle-btn" aria-label="Cambiar tema">
           <i data-lucide="sun"></i>
         </button>
       </div>
     </header>
 
     <!-- ==========================================
-         PANEL DE ANALITICAS (METRIC CARDS)
+         DASHBOARD METRICS
          ========================================== -->
     <section class="dashboard" aria-label="Resumen de Inventario">
       <div class="dashboard__card" id="card-total-products">
@@ -86,17 +89,14 @@
     </section>
 
     <!-- ==========================================
-         FILTROS Y BUSQUEDA (FILTER CONTROLS)
+         FILTERS
          ========================================== -->
     <section class="filters" aria-label="Panel de Filtros">
-      
-      <!-- Search Input -->
       <div class="filters__search-container">
         <i data-lucide="search" class="filters__search-icon"></i>
         <input type="text" id="search-input" class="filters__search-input" placeholder="Buscar equipo industrial, código SKU, marca o especificaciones..." aria-label="Buscador de productos" />
       </div>
 
-      <!-- Category Filter Tabs -->
       <div class="filters__tabs" id="category-tabs" role="tablist">
         <button class="filters__tab filters__tab--active" data-category="all" role="tab" aria-selected="true">
           <i data-lucide="layout-grid"></i> Todos <span class="filters__tab-badge" id="count-badge-all">0</span>
@@ -115,27 +115,23 @@
         </button>
       </div>
 
-      <!-- Secondary Filters Controls -->
       <div class="filters__row">
-        <!-- Brand Select Dropdown -->
         <div class="filters__select-wrapper">
-          <select id="brand-filter" class="filters__select" aria-label="Filtrar por marca de fabricante">
+          <select id="brand-filter" class="filters__select" aria-label="Filtrar por marca">
             <option value="all">Todas las Marcas</option>
           </select>
         </div>
 
-        <!-- Stock Selector -->
         <div class="filters__select-wrapper">
-          <select id="stock-filter" class="filters__select" aria-label="Filtrar por stock disponible">
+          <select id="stock-filter" class="filters__select" aria-label="Filtrar por stock">
             <option value="all">Todo el Inventario</option>
-            <option value="in-stock">En Existencia (> 0)</option>
+            <option value="in-stock">En Existencia (&gt; 0)</option>
             <option value="low-stock">Alerta / Bajo Inventario</option>
           </select>
         </div>
 
-        <!-- Sort Selector -->
         <div class="filters__select-wrapper">
-          <select id="sort-filter" class="filters__select" aria-label="Ordenar listado por criterio">
+          <select id="sort-filter" class="filters__select" aria-label="Ordenar listado">
             <option value="name-asc">Ordenar: Nombre (A-Z)</option>
             <option value="price-asc">Ordenar: Precio (Menor a Mayor)</option>
             <option value="price-desc">Ordenar: Precio (Mayor a Menor)</option>
@@ -143,7 +139,6 @@
           </select>
         </div>
 
-        <!-- Layout grid vs list switcher buttons -->
         <div class="filters__view-switch">
           <button class="filters__view-btn filters__view-btn--active" id="view-grid" title="Vista de Cuadrícula" aria-label="Cambiar a vista de cuadrícula">
             <i data-lucide="layout-grid"></i>
@@ -156,109 +151,93 @@
     </section>
 
     <!-- ==========================================
-         GRID PRINCIPAL DE PRODUCTOS
+         PRODUCT GRID
          ========================================== -->
     <main id="products-container" class="catalog__grid" aria-live="polite">
-      <!-- Skeleton Loaders or Product Cards are injected here -->
+      <!-- Products injected here -->
     </main>
 
   </div>
 
   <!-- ==========================================
-       SCRIM & OVERLAY LAYER
+       SCRIM
        ========================================== -->
   <div class="drawer__scrim" id="app-scrim" aria-hidden="true"></div>
 
   <!-- ==========================================
-       CAJÓN DE DETALLES DEL PRODUCTO (DRAWER)
+       SCANNER MODAL
+       ========================================== -->
+  <div class="scanner-modal" id="scanner-modal" role="dialog" aria-modal="true" aria-labelledby="scanner-title">
+    <div class="scanner-modal__overlay">
+      <div class="scanner-modal__header">
+        <h2 class="scanner-modal__title" id="scanner-title">Escanear Código de Barras</h2>
+        <button class="scanner-modal__close" id="scanner-close-btn" aria-label="Cerrar escáner">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="scanner__tabs" role="tablist">
+        <button class="scanner__tab scanner__tab--active" data-scanner-tab="photo" role="tab">
+          <i data-lucide="camera"></i> Foto (System)
+        </button>
+        <button class="scanner__tab" data-scanner-tab="video" role="tab">
+          <i data-lucide="video"></i> Video (Apple)
+        </button>
+      </div>
+
+      <!-- Photo Mode -->
+      <div class="scanner__panel scanner__panel--active" data-scanner-panel="photo">
+        <input type="file" id="camera-input" accept="image/*" capture="environment" class="scanner__file-input" />
+        <div class="scanner__photo-box">
+          <button class="scanner__photo-btn" id="trigger-photo-btn">
+            <i data-lucide="camera"></i> Tomar Foto
+          </button>
+          <p class="scanner__hint">Toma una foto del código de barras o selecciona una imagen de tu galería.</p>
+        </div>
+      </div>
+
+      <!-- Video Mode -->
+      <div class="scanner__panel" data-scanner-panel="video">
+        <div class="scanner__reader-wrap">
+          <div id="reader" class="scanner__reader"></div>
+        </div>
+        <button class="scanner__video-btn" id="start-video-btn">Iniciar Cámara</button>
+        <button class="scanner__video-btn scanner__video-btn--stop" id="stop-video-btn" style="display:none;">Detener Cámara</button>
+        <p class="scanner__hint">Posiciona el código de barras dentro del recuadro de la cámara.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       DETAIL DRAWER
        ========================================== -->
   <aside class="drawer__sheet" id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-prod-title">
     <div class="drawer__header">
-      <h2 class="drawer__title" id="drawer-prod-title">Ficha Técnica de Equipo</h2>
-      <button class="drawer__close-btn" id="close-drawer-btn" aria-label="Cerrar cajón de detalles">
+      <h2 class="drawer__title" id="drawer-prod-title">Ficha Técnica</h2>
+      <button class="drawer__close-btn" id="close-drawer-btn" aria-label="Cerrar cajón">
         <i data-lucide="x"></i>
       </button>
     </div>
-    
-    <div class="drawer__body" id="drawer-body">
-      <!-- Product detailed specs loaded dynamically here -->
+
+    <div class="drawer__tabs" role="tablist">
+      <button class="drawer__tab drawer__tab--active" data-drawer-tab="product" role="tab">Producto</button>
+      <button class="drawer__tab" data-drawer-tab="form" role="tab">Editar</button>
     </div>
-    
+
+    <div class="drawer__body" id="drawer-body">
+      <div class="drawer__view drawer__view--active" data-drawer-view="product" id="drawer-view-product">
+        <!-- Dynamic product details -->
+      </div>
+      <div class="drawer__view" data-drawer-view="form" id="drawer-view-form">
+        <!-- Dynamic edit form -->
+      </div>
+    </div>
+
     <div class="drawer__actions" id="drawer-actions">
-      <!-- CTA Button loaded dynamically here -->
+      <!-- CTA buttons -->
     </div>
   </aside>
 
-  <!-- ==========================================
-       BARRA DE COTIZACIÓN FLOTANTE (BOTTOM ISLAND)
-       ========================================== -->
-  <nav class="island__sheet" id="bottom-island" data-sheet-state="closed" aria-label="Barra de cotización activa" style="display: none;">
-    <!-- Handle bar for swipe/click interactions -->
-    <div class="island__handle-bar" id="island-handle-bar" title="Ver Cotización" role="button" aria-expanded="false">
-      <div class="island__handle"></div>
-    </div>
-
-    <!-- Compact status row -->
-    <div class="island__compact-row" id="island-compact-row">
-      <div class="island__cart-badge">
-        <div class="island__cart-icon-wrapper">
-          <i data-lucide="shopping-cart"></i>
-          <span class="island__cart-counter" id="cart-counter">0</span>
-        </div>
-        <span id="cart-count-text" class="island__cart-count-text">0 productos</span>
-      </div>
-      <div class="island__total" id="island-total-text">$0.00 MXN</div>
-      <button class="island__action-trigger" id="island-action-trigger">Ver Lista</button>
-    </div>
-
-    <!-- Full sheet expanded view -->
-    <div class="island__expanded-body" id="island-expanded-body">
-      <div class="island__expanded-header">
-        <h3 class="island__expanded-title"><i data-lucide="file-text"></i> Lista de Cotización</h3>
-        <button class="island__clear-btn" id="clear-cart-btn">Vaciar Todo</button>
-      </div>
-
-      <!-- Selected items list -->
-      <div class="island__items-container" id="cart-items-container">
-        <!-- Injected cart rows -->
-      </div>
-
-      <!-- Summation card -->
-      <div class="island__pricing-summary">
-        <div class="island__pricing-row">
-          <span>Subtotal Neto:</span>
-          <span id="quote-subtotal" class="island__pricing-val">$0.00 MXN</span>
-        </div>
-        <div class="island__pricing-row">
-          <span>Impuesto IVA (16%):</span>
-          <span id="quote-iva" class="island__pricing-val">$0.00 MXN</span>
-        </div>
-        <div class="island__pricing-row island__pricing-row--total">
-          <span>Total Estimado:</span>
-          <span id="quote-total" class="island__pricing-val">$0.00 MXN</span>
-        </div>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="island__export-actions">
-        <button class="island__export-btn island__export-btn--whatsapp" id="btn-export-whatsapp" title="Enviar cotización a WhatsApp">
-          <i data-lucide="message-square"></i> WhatsApp
-        </button>
-        <button class="island__export-btn island__export-btn--pdf" id="btn-export-pdf" title="Imprimir o guardar en PDF">
-          <i data-lucide="printer"></i> Imprimir PDF
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ==========================================
-       PLANTILLA DE IMPRESIÓN EXCLUSIVA (PRINT-ONLY LAYOUT)
-       ========================================== -->
-  <div id="print-quote-invoice" class="print-quote-invoice">
-    <!-- Populated dynamically when print is fired -->
-  </div>
-
-  <!-- Custom Core Javascript logic -->
-  <script src="app.js"></script>
+  <script src="inventory.js"></script>
 </body>
 </html>
