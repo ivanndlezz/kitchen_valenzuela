@@ -72,6 +72,16 @@
   let html5QrcodeScanner = null;
   const QR_READER_ID = "reader";
 
+  // Utility to encode product IDs (making special characters like '-( ' attribute and URL safe)
+  function encodeId(id) {
+    return encodeURIComponent(String(id)).replace(/-/g, '%2D').replace(/\(/g, '%28').replace(/\)/g, '%29');
+  }
+
+  // Utility to decode product IDs back to their original state
+  function decodeId(encoded) {
+    return decodeURIComponent(encoded);
+  }
+
   document.addEventListener("DOMContentLoaded", init);
 
   function init() {
@@ -428,9 +438,10 @@
 
       const formattedPrice = `$${(p.precio || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
+      const encodedId = encodeId(p.id);
       if (isList) {
         html += `
-          <div class="product-card" onclick="window.viewProduct('${p.id}')">
+          <div class="product-card" data-open-id="${encodedId}">
             <div class="product-card__image-container">
               <div class="product-card__image-fallback" style="background: ${gradient}">
                 <i data-lucide="${icon}"></i>
@@ -454,7 +465,7 @@
         `;
       } else {
         html += `
-          <div class="product-card" onclick="window.viewProduct('${p.id}')">
+          <div class="product-card" data-open-id="${encodedId}">
             <div class="product-card__badges">
               <span class="product-card__badge ${badgeClass}">${badgeLabel}</span>
             </div>
@@ -484,17 +495,23 @@
     createLucideIcons();
   }
 
-  window.viewProduct = (id) => {
-    const p = AppState.products.find(x => x.id === id);
-    if (p) openProductDrawer(p);
-  };
-
   // ==========================================================================
   // EVENT LISTENERS CONTROL
   // ==========================================================================
   function setupEventListeners() {
     // Open Scanner
     DOM.scanBtn.addEventListener("click", openScanner);
+
+    // Product card click delegation (removes hardcoded inline onclick)
+    DOM.productsContainer.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-open-id]");
+      if (card) {
+        const encodedId = card.getAttribute("data-open-id");
+        const decodedId = decodeId(encodedId);
+        const p = AppState.products.find(x => x.id === decodedId);
+        if (p) openProductDrawer(p);
+      }
+    });
 
     // Search Input Reactivity
     DOM.searchInput.addEventListener("input", (e) => {
@@ -908,32 +925,34 @@
 
     // Render delete CTA button inside actions
     DOM.drawerActions.innerHTML = `
-      <button class="drawer__primary-btn" onclick="window.closeProductDrawer()">
+      <button class="drawer__primary-btn" id="btn-close-drawer">
         Cerrar Detalle
       </button>
-      <button class="drawer__primary-btn drawer__primary-btn--danger" onclick="window.deleteProduct('${p.id}')">
+      <button class="drawer__primary-btn drawer__primary-btn--danger" id="btn-delete-product">
         <i data-lucide="trash-2"></i> Eliminar de Inventario
       </button>
     `;
+
+    document.getElementById("btn-close-drawer").addEventListener("click", closeProductDrawer);
+    document.getElementById("btn-delete-product").addEventListener("click", () => {
+      deleteProduct(p.id);
+    });
+
     createLucideIcons();
   }
 
-  window.closeProductDrawer = () => {
-    closeProductDrawer();
-  };
-
-  window.deleteProduct = (id) => {
+  function deleteProduct(id) {
     if (confirm("¿Estás seguro de que deseas eliminar permanentemente este producto del inventario? Esta acción no se puede deshacer.")) {
       AppState.products = AppState.products.filter(p => p.id !== id);
       saveProductsToStorage();
       showToast("Producto eliminado correctamente", "danger");
       closeProductDrawer();
     }
-  };
+  }
 
   function renderDrawerViewForm(p) {
     DOM.drawerViewForm.innerHTML = `
-      <form id="edit-product-form" onsubmit="event.preventDefault(); window.saveProductForm('${p.id}');">
+      <form id="edit-product-form">
         
         <div class="form-group">
           <label class="form-group__label">Código SKU (Escaneado)</label>
@@ -1030,10 +1049,16 @@
         </div>
       </form>
     `;
+
+    document.getElementById("edit-product-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      saveProductForm(p.id);
+    });
+
     createLucideIcons();
   }
 
-  window.saveProductForm = (id) => {
+  function saveProductForm(id) {
     const p = AppState.products.find(x => x.id === id);
     if (!p) return;
 
@@ -1058,7 +1083,7 @@
 
     // Switch back to detail product view
     openProductDrawer(p);
-  };
+  }
 
   // ==========================================================================
   // BARCODE SVG SIMULATOR (Code 128 dynamic generator)
