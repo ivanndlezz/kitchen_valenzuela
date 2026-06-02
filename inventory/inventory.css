@@ -664,6 +664,20 @@ svg {
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 
+.product-card__image-fallback img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.product-card__image-fallback img.loaded {
+  opacity: 1;
+}
+
 .product-card__brand-overlay {
   position: absolute;
   bottom: 8px;
@@ -969,6 +983,7 @@ svg {
 
 .drawer__visual {
   height: 220px;
+  max-width: 220px;;
   border-radius: var(--radius-lg);
   margin-bottom: 20px;
   overflow: hidden;

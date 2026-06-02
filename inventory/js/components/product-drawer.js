@@ -93,10 +93,12 @@ function renderDrawerViewProduct(p) {
     stockStyle = 'style="color: var(--color-warning);"';
   }
 
+  const drawerImgUrl = window.Config.resolveImageUrl(p.imagen);
+
   window.DOM.drawerViewProduct.innerHTML = `
     <div class="drawer__visual">
-      <div class="product-card__image-fallback" style="background: ${catGradient}">
-        <i data-lucide="${catIcon}" style="width: 56px; height: 56px;"></i>
+      <div class="product-card__image-fallback" style="background: var(--cat-refacciones-bg)">
+        ${drawerImgUrl ? `<img src="${drawerImgUrl}" alt="${p.nombre}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()" />` : `<i data-lucide="${catIcon}" style="width: 56px; height: 56px;"></i>`}
       </div>
     </div>
 

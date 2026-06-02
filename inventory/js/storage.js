@@ -124,7 +124,11 @@ function normalizeJsonProduct(p) {
     alertaCantidad: parseFloat(p["Cantidad de alerta"] || p.alertaCantidad) || 0,
     tasaImpuesto: p["Tasa de impuestos"] || p.tasaImpuesto || "IVA",
     metodoImpuesto: p["Método de impuestos"] || p.metodoImpuesto || "Exclusivo",
-    imagen: p["Imagen"] || p.imagen || "no_image.png",
+    imagen: (function(){
+        const img = p["Imagen"] || p.imagen || "no_image.png";
+        if (img.startsWith('http')) return img;
+        return (window.Config && window.Config.IMAGE_BASE_URL ? window.Config.IMAGE_BASE_URL : "") + img;
+    })(),
     subCategoria: p["Código de la Sub categoría"] || p.subCategoria || "",
     descripcion: p["Producto de campo personalizado 1"] || p.descripcion || "",
     especificaciones: p["Producto Campo Personalizadoo 2"] || p.especificaciones || "",

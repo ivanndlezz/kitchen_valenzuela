@@ -212,12 +212,13 @@ function renderProducts() {
     const formattedPrice = `$${(p.precio || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     const encodedId = typeof encodeId === "function" ? encodeId(p.id) : p.id;
+    const imgUrl = window.Config.resolveImageUrl(p.imagen);
     if (isList) {
       html += `
         <div class="product-card" data-open-id="${encodedId}">
           <div class="product-card__image-container">
             <div class="product-card__image-fallback" style="background: ${gradient}">
-              <i data-lucide="${icon}"></i>
+              ${imgUrl ? `<img src="${imgUrl}" alt="${p.nombre}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()" />` : `<i data-lucide="${icon}"></i>`}
             </div>
           </div>
           <div style="flex: 1; min-width: 0;">
@@ -244,7 +245,7 @@ function renderProducts() {
           </div>
           <div class="product-card__image-container">
             <div class="product-card__image-fallback" style="background: ${gradient}">
-              <i data-lucide="${icon}"></i>
+              ${imgUrl ? `<img src="${imgUrl}" alt="${p.nombre}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()" />` : `<i data-lucide="${icon}"></i>`}
             </div>
             <div class="product-card__brand-overlay">${p.marca}</div>
           </div>
