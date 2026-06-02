@@ -34,6 +34,9 @@
       </div>
 
       <div class="header__actions">
+        <button class="header__sync-btn" id="sync-btn" aria-label="Sincronización y Comparación">
+          <i data-lucide="refresh-cw"></i> Sincronizar
+        </button>
         <button class="header__scan-btn" id="scan-btn" aria-label="Escanear código de barras">
           <i data-lucide="scan-barcode"></i> Escanear Código
         </button>
@@ -237,6 +240,130 @@
       <!-- CTA buttons -->
     </div>
   </aside>
+
+  <!-- ==========================================
+       SYNC COMPARISON MODAL
+       ========================================== -->
+  <div class="sync-modal" id="sync-modal" role="dialog" aria-modal="true" aria-labelledby="sync-title">
+    <div class="sync-modal__overlay">
+      <div class="sync-modal__header">
+        <div class="sync-modal__title-group">
+          <h2 class="sync-modal__title" id="sync-title">Comparativa y Sincronización</h2>
+          <span class="sync-modal__subtitle">LocalStorage vs Backup JSON vs Nube (Airtable)</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="sync-modal__btn" id="bulk-cloud-btn" title="Importar Nube a JSON Local">
+            <i data-lucide="cloud-download"></i> Nube a JSON
+          </button>
+          <button class="sync-modal__btn" id="bulk-sync-btn" title="Sincronizar todo">
+            <i data-lucide="refresh-cw"></i> Sincronizar Todo
+          </button>
+          <button class="sync-modal__close" id="sync-close-btn" aria-label="Cerrar comparativa">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="sync-modal__body">
+        <!-- Summary metrics -->
+        <div class="sync-summary-grid" id="sync-summary">
+          <div class="sync-card">
+            <div class="sync-card__value">0</div>
+            <div class="sync-card__label">Total únicos</div>
+          </div>
+          <div class="sync-card">
+            <div class="sync-card__value" style="color: var(--color-success);">0</div>
+            <div class="sync-card__label">Sincronizados</div>
+          </div>
+          <div class="sync-card">
+            <div class="sync-card__value" style="color: var(--color-warning);">0</div>
+            <div class="sync-card__label">Sin Nube</div>
+          </div>
+          <div class="sync-card">
+            <div class="sync-card__value" style="color: var(--color-danger);">0</div>
+            <div class="sync-card__label">Conflictos</div>
+          </div>
+        </div>
+
+        <!-- Source count banners -->
+        <div class="sync-source-banners" id="sync-source-banners">
+          <div class="source-banner source-banner--local">
+            <i data-lucide="database"></i>
+            <div>
+              <div class="source-banner-count" id="sync-count-local">0</div>
+              <div class="source-banner-label">LocalStorage</div>
+            </div>
+          </div>
+          <div class="source-banner source-banner--json">
+            <i data-lucide="file-json"></i>
+            <div>
+              <div class="source-banner-count" id="sync-count-json">0</div>
+              <div class="source-banner-label">kv_products...json</div>
+            </div>
+          </div>
+          <div class="source-banner source-banner--cloud">
+            <i data-lucide="cloud"></i>
+            <div>
+              <div class="source-banner-count" id="sync-count-cloud">0</div>
+              <div class="source-banner-label">Airtable (Nube)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters tabs -->
+        <div class="sync-filter-tabs" id="sync-filter-tabs">
+          <button class="sync-tab sync-tab--active" data-sync-filter="all">Todos <span class="sync-tab-badge" id="sync-badge-all">0</span></button>
+          <button class="sync-tab" data-sync-filter="synced">Sincronizados <span class="sync-tab-badge" id="sync-badge-synced">0</span></button>
+          <button class="sync-tab" data-sync-filter="pending">Sin Nube <span class="sync-tab-badge" id="sync-badge-pending">0</span></button>
+          <button class="sync-tab" data-sync-filter="conflicts">Conflictos <span class="sync-tab-badge" id="sync-badge-conflicts">0</span></button>
+          <button class="sync-tab" data-sync-filter="local-only">Solo Local <span class="sync-tab-badge" id="sync-badge-local-only">0</span></button>
+        </div>
+
+        <!-- Loading view -->
+        <div class="sync-loading" id="sync-loading">
+          <div class="sync-spinner"></div>
+          <p>Consultando y comparando bases de datos...</p>
+        </div>
+
+        <!-- Comparison table container -->
+        <div class="sync-table-container" id="sync-table-wrapper" style="display: none;">
+          <table class="sync-table">
+            <thead>
+              <tr>
+                <th>Producto / SKU</th>
+                <th>Marca</th>
+                <th class="center"><span class="th-dot local"></span>Local</th>
+                <th class="center"><span class="th-dot json"></span>JSON</th>
+                <th class="center"><span class="th-dot airtable"></span>Nube</th>
+                <th>Estado Sync</th>
+                <th class="right">Precio</th>
+                <th class="right">Stock</th>
+              </tr>
+            </thead>
+            <tbody id="sync-tbody">
+              <!-- JS Injected rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Sheet Overlay for field comparative -->
+  <div class="compare-sheet-overlay" id="compare-sheet-overlay" aria-hidden="true">
+    <div class="compare-sheet-scrim" id="compare-sheet-scrim"></div>
+    <div class="compare-sheet" id="compare-detail-sheet">
+      <div class="compare-sheet-header">
+        <h3 class="compare-sheet-title">Comparador Detallado</h3>
+        <button class="compare-sheet-close" id="compare-sheet-close-btn" aria-label="Cerrar detalles">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="compare-sheet-body" id="compare-sheet-body">
+        <!-- Injected comparison field-by-field -->
+      </div>
+    </div>
+  </div>
 
   <script src="inventory.js"></script>
 </body>

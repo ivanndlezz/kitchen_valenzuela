@@ -84,15 +84,16 @@
 
   document.addEventListener("DOMContentLoaded", init);
 
-  function init() {
+  async function init() {
     cacheElements();
     setupTheme();
     setupToastContainer();
-    loadProductsFromStorage();
+    await loadProductsFromStorage();
     setupEventListeners();
     setupScannerLogic();
     calculateMetrics();
     applyFilters();
+    setupSyncUI();
   }
 
   function cacheElements() {
@@ -203,7 +204,7 @@
   // ==========================================================================
   // LOCAL STORAGE PRODUCTS CONTROLLER
   // ==========================================================================
-  function loadProductsFromStorage() {
+  async function loadProductsFromStorage() {
     const saved = localStorage.getItem("kv-catalog-products");
     if (saved) {
       try {
@@ -213,7 +214,20 @@
         AppState.products = [];
       }
     } else {
-      AppState.products = [];
+      // Intentar auto-importar desde el archivo JSON de respaldo si LocalStorage está vacío
+      try {
+        const raw = await SyncManager.loadFromLocalJSON();
+        if (raw && raw.length > 0) {
+          AppState.products = raw.map(normalizeJsonProduct);
+          localStorage.setItem("kv-catalog-products", JSON.stringify(AppState.products));
+          console.log(`SyncManager: Auto-imported ${AppState.products.length} products from backup JSON.`);
+        } else {
+          AppState.products = [];
+        }
+      } catch (err) {
+        console.warn("Failed to load initial backup JSON:", err);
+        AppState.products = [];
+      }
     }
   }
 
@@ -779,7 +793,9 @@
         especial4: "", // Dimensions
         especial5: "", // Custom field 5
         especial6: "", // Custom field 6
-        stock: 1
+        stock: 1,
+        sync_status: "pending",
+        updatedAt: new Date().toISOString()
       };
 
       AppState.products.push(product);
@@ -820,7 +836,7 @@
     }
   }
 
-  DOM.closeDrawerBtn.addEventListener("click", closeProductDrawer);
+
 
   function setDrawerTab(tab) {
     AppState.activeDrawerTab = tab;
@@ -1078,6 +1094,8 @@
     p.especial5 = document.getElementById("form-custom5").value.trim();
     p.especial6 = document.getElementById("form-custom6").value.trim();
 
+    p.sync_status = "pending";
+    p.updatedAt = new Date().toISOString();
     saveProductsToStorage();
     showToast("¡Producto guardado exitosamente!", "success");
 
@@ -1175,6 +1193,950 @@
       `  font-weight="700" letter-spacing="2" fill="#0d0d0d">${escaped}</text>`,
       `</svg>`
     ].join('\n');
+  }
+
+  // ==========================================================================
+  // SYNC MANAGER FOR INVENTORY (Airtable / Local Storage / Backup JSON)
+  // ==========================================================================
+  const SyncManager = {
+    config: {
+      endpoint: "https://klef.newfacecards.com/shum-api/api.php",
+      baseId: "apppjeEy9lY65U4On",
+      table: "products",
+      jsonUrl: "./data/kv_products_2026_05_05_19_31_43.json",
+      saveServerUrl: "http://localhost:8765/save_inventory"
+    },
+
+    async shumRequest(action, params) {
+      try {
+        const response = await fetch(this.config.endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, ...params })
+        });
+        const result = await response.json();
+        if (!result.success) {
+          throw new Error(result.message || "API request failed");
+        }
+        return result.data;
+      } catch (error) {
+        console.error("SHUM API Error:", error);
+        throw error;
+      }
+    },
+
+    mapLocalToAirtable(p) {
+      return {
+        "Nombre": p.nombre || "",
+        "Código": String(p.codigo || ""),
+        "Clase de Código de barras": p.barcodeType || "code128",
+        "Marca": p.marca || "Generales",
+        "Código de categoría": p.categoriaCodigo === "01" ? 1 : (p.categoriaCodigo === "02" ? 2 : (p.categoriaCodigo === "03" ? 3 : 0)),
+        "unit code": p.unitCode || "Pieza",
+        "Venta unit code": p.unitCode || "Pieza",
+        "Comprar unit code": p.unitCode || "Pieza",
+        "Costo": Number(p.costo) || 0,
+        "Precio": Number(p.precio) || 0,
+        "Cantidad de alerta": Number(p.alertaCantidad) || 0,
+        "Tasa de impuestos": p.tasaImpuesto || "IVA",
+        "Método de impuestos": p.metodoImpuesto || "Exclusivo",
+        "Imagen": p.imagen || "no_image.png",
+        "Código de la Sub categoría": p.subCategoria || "",
+        "Producto de campo personalizado 1": p.descripcion || "",
+        "Producto Campo Personalizadoo 2": p.especificaciones || "",
+        "Producto Campo Personalizadoo 3": p.especial3 || "",
+        "Producto Campo Personalizadoo 4": p.especial4 || "",
+        "Producto Campo Personalizadoo 5": p.especial5 || "",
+        "Producto Campo Personalizadoo 6": p.especial6 || "",
+        "Cantidad": Number(p.stock) || 0
+      };
+    },
+
+    mapAirtableToLocal(rec) {
+      const f = rec.fields || {};
+      const id = rec.id;
+      const code = f["Código"] || "";
+      
+      let cat = "other";
+      const airtableCat = f["Código de categoría"];
+      if (airtableCat === 1 || airtableCat === "01" || airtableCat === "1") cat = "01";
+      else if (airtableCat === 2 || airtableCat === "02" || airtableCat === "2") cat = "02";
+      else if (airtableCat === 3 || airtableCat === "03" || airtableCat === "3") cat = "03";
+
+      return {
+        id: code || id,
+        nombre: f["Nombre"] || "",
+        codigo: code,
+        barcodeType: f["Clase de Código de barras"] || "code128",
+        marca: f["Marca"] || "Generales",
+        categoriaCodigo: cat,
+        unitCode: f["unit code"] || "Pieza",
+        costo: Number(f["Costo"]) || 0,
+        precio: Number(f["Precio"]) || 0,
+        alertaCantidad: Number(f["Cantidad de alerta"]) || 0,
+        tasaImpuesto: f["Tasa de impuestos"] || "IVA",
+        metodoImpuesto: f["Método de impuestos"] || "Exclusivo",
+        imagen: f["Imagen"] || "no_image.png",
+        subCategoria: f["Código de la Sub categoría"] || "",
+        descripcion: f["Producto de campo personalizado 1"] || "",
+        especificaciones: f["Producto Campo Personalizadoo 2"] || "",
+        especial3: f["Producto Campo Personalizadoo 3"] || "",
+        especial4: f["Producto Campo Personalizadoo 4"] || "",
+        especial5: f["Producto Campo Personalizadoo 5"] || "",
+        especial6: f["Producto Campo Personalizadoo 6"] || "",
+        stock: Number(f["Cantidad"]) || 0,
+        airtable_id: id,
+        sync_status: "synced",
+        updatedAt: rec.createdTime || new Date().toISOString()
+      };
+    },
+
+    async fetchAllFromAirtable() {
+      let allRecords = [];
+      let offset = null;
+      let pages = 0;
+      const maxPages = 20;
+
+      do {
+        const params = {
+          baseId: this.config.baseId,
+          table: this.config.table
+        };
+        if (offset) {
+          params.offset = offset;
+        }
+        const result = await this.shumRequest("list", params);
+        const records = result && result.records ? result.records : [];
+        allRecords = allRecords.concat(records);
+        offset = result && result.offset ? result.offset : null;
+        pages++;
+      } while (offset && pages < maxPages);
+
+      return allRecords;
+    },
+
+    async syncProduct(p) {
+      const mapped = this.mapLocalToAirtable(p);
+      let result;
+
+      // Auto-reconcile check: si no tiene airtable_id, buscar por SKU (Código)
+      if (!p.airtable_id) {
+        try {
+          const listRes = await this.shumRequest("list", {
+            baseId: this.config.baseId,
+            table: this.config.table,
+            filter: {
+              filterByFormula: `{Código} = '${p.codigo}'`
+            }
+          });
+          const records = listRes && listRes.records ? listRes.records : [];
+          if (records.length > 0 && records[0].id) {
+            p.airtable_id = records[0].id;
+            console.log("SyncManager: Auto-linked product via SKU:", p.codigo, "to Airtable ID:", p.airtable_id);
+          }
+        } catch (e) {
+          console.warn("SyncManager: Failed to reconcile by SKU", e);
+        }
+      }
+
+      if (p.airtable_id) {
+        result = await this.shumRequest("update", {
+          baseId: this.config.baseId,
+          table: this.config.table,
+          recordId: p.airtable_id,
+          data: mapped
+        });
+      } else {
+        result = await this.shumRequest("create", {
+          baseId: this.config.baseId,
+          table: this.config.table,
+          data: mapped
+        });
+        if (result && result.id) {
+          p.airtable_id = result.id;
+        }
+      }
+
+      p.sync_status = "synced";
+      p.updatedAt = new Date().toISOString();
+      return result;
+    },
+
+    async deleteFromAirtable(airtableId) {
+      return await this.shumRequest("delete", {
+        baseId: this.config.baseId,
+        table: this.config.table,
+        recordId: airtableId
+      });
+    },
+
+    async saveToLocalJSON(products) {
+      try {
+        const response = await fetch(this.config.saveServerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(products)
+        });
+        return response.ok;
+      } catch (e) {
+        console.warn("SyncManager: Save server not reachable", e);
+        return false;
+      }
+    },
+
+    async loadFromLocalJSON() {
+      try {
+        const response = await fetch(this.config.jsonUrl + "?t=" + Date.now());
+        if (!response.ok) return [];
+        return await response.json();
+      } catch (e) {
+        console.warn("SyncManager: Could not load JSON file", e);
+        return [];
+      }
+    }
+  };
+
+  function normalizeJsonProduct(p) {
+    if (!p) return null;
+    if (p.hasOwnProperty('barcodeType')) return p;
+
+    let cat = p["Código de categoría"] || p.categoriaCodigo || "other";
+    if (cat === 1 || cat === "1") cat = "01";
+    if (cat === 2 || cat === "2") cat = "02";
+    if (cat === 3 || cat === "3") cat = "03";
+
+    return {
+      id: String(p["Código"] || p.codigo || p.id),
+      nombre: p["Nombre"] || p.nombre || "",
+      codigo: String(p["Código"] || p.codigo || ""),
+      barcodeType: p["Clase de Código de barras"] || p.barcodeType || "code128",
+      marca: p["Marca"] || p.marca || "Generales",
+      categoriaCodigo: cat,
+      unitCode: p["unit code"] || p.unitCode || "Pieza",
+      costo: parseFloat(p["Costo"] || p.costo) || 0,
+      precio: parseFloat(p["Precio"] || p.precio) || 0,
+      alertaCantidad: parseFloat(p["Cantidad de alerta"] || p.alertaCantidad) || 0,
+      tasaImpuesto: p["Tasa de impuestos"] || p.tasaImpuesto || "IVA",
+      metodoImpuesto: p["Método de impuestos"] || p.metodoImpuesto || "Exclusivo",
+      imagen: p["Imagen"] || p.imagen || "no_image.png",
+      subCategoria: p["Código de la Sub categoría"] || p.subCategoria || "",
+      descripcion: p["Producto de campo personalizado 1"] || p.descripcion || "",
+      specifications: p["Producto Campo Personalizadoo 2"] || p.especificaciones || "",
+      especial3: p["Producto Campo Personalizadoo 3"] || p.especial3 || "",
+      especial4: p["Producto Campo Personalizadoo 4"] || p.especial4 || "",
+      especial5: p["Producto Campo Personalizadoo 5"] || p.especial5 || "",
+      especial6: p["Producto Campo Personalizadoo 6"] || p.especial6 || "",
+      stock: parseFloat(p["Cantidad"] || p.stock) || 0,
+      airtable_id: p.airtable_id || null,
+      sync_status: p.sync_status || "pending",
+      updatedAt: p.updatedAt || new Date().toISOString()
+    };
+  }
+
+  // ==========================================================================
+  // SYNC COMPARATIVE INTERFACE (LocalStorage vs backup JSON vs Airtable)
+  // ==========================================================================
+  let localSyncData = [];
+  let jsonSyncData = [];
+  let cloudSyncData = [];
+  let syncActiveFilter = 'all';
+
+  function setupSyncUI() {
+    const syncBtn = document.getElementById("sync-btn");
+    const syncCloseBtn = document.getElementById("sync-close-btn");
+    const syncModal = document.getElementById("sync-modal");
+    const bulkCloudBtn = document.getElementById("bulk-cloud-btn");
+    const bulkSyncBtn = document.getElementById("bulk-sync-btn");
+    const syncFilterTabs = document.getElementById("sync-filter-tabs");
+    const compareSheetOverlay = document.getElementById("compare-sheet-overlay");
+    const compareSheetCloseBtn = document.getElementById("compare-sheet-close-btn");
+    const compareSheetScrim = document.getElementById("compare-sheet-scrim");
+
+    if (!syncBtn) return;
+
+    syncBtn.addEventListener("click", openSyncModal);
+    syncCloseBtn.addEventListener("click", closeSyncModal);
+    bulkCloudBtn.addEventListener("click", handleBulkCloudToJSON);
+    bulkSyncBtn.addEventListener("click", handleBulkSyncToCloud);
+    
+    compareSheetCloseBtn.addEventListener("click", closeCompareSheet);
+    compareSheetScrim.addEventListener("click", closeCompareSheet);
+
+    // Tab selectors
+    syncFilterTabs.querySelectorAll("[data-sync-filter]").forEach(tab => {
+      tab.addEventListener("click", () => {
+        syncFilterTabs.querySelectorAll(".sync-tab").forEach(t => t.classList.remove("sync-tab--active"));
+        tab.classList.add("sync-tab--active");
+        syncActiveFilter = tab.dataset.syncFilter;
+        renderSyncTable();
+      });
+    });
+  }
+
+  function openSyncModal() {
+    const syncModal = document.getElementById("sync-modal");
+    syncModal.classList.add("sync-modal--active");
+    DOM.scrim.classList.add("drawer__scrim--active");
+    
+    // Iniciar carga de datos
+    loadAllSyncSources();
+  }
+
+  function closeSyncModal() {
+    const syncModal = document.getElementById("sync-modal");
+    syncModal.classList.remove("sync-modal--active");
+    DOM.scrim.classList.remove("drawer__scrim--active");
+    
+    // Recargar vista principal para reflejar cambios
+    calculateMetrics();
+    populateBrandFilter();
+    applyFilters();
+  }
+
+  async function loadAllSyncSources() {
+    const loader = document.getElementById("sync-loading");
+    const wrapper = document.getElementById("sync-table-wrapper");
+    
+    loader.style.display = "flex";
+    wrapper.style.display = "none";
+
+    try {
+      // 1. Local
+      localSyncData = AppState.products;
+
+      // 2. JSON Backup
+      const rawJson = await SyncManager.loadFromLocalJSON();
+      jsonSyncData = rawJson.map(normalizeJsonProduct);
+
+      // 3. Nube Airtable
+      const rawCloud = await SyncManager.fetchAllFromAirtable();
+      cloudSyncData = rawCloud.map(rec => SyncManager.mapAirtableToLocal(rec));
+
+      renderSyncTable();
+    } catch (err) {
+      console.error(err);
+      showToast("Error al conectar con la Nube / JSON local.", "danger");
+      
+      // Fallback a renderizar lo que tengamos
+      renderSyncTable();
+    } finally {
+      loader.style.display = "none";
+      wrapper.style.display = "block";
+    }
+  }
+
+  function buildMasterIndex() {
+    const map = new Map();
+    const addEntry = (code, source, record) => {
+      const clean = String(code).trim();
+      if (!clean) return;
+      if (!map.has(clean)) {
+        map.set(clean, { code: clean, local: null, json: null, airtable: null });
+      }
+      map.get(clean)[source] = record;
+    };
+
+    localSyncData.forEach(r => addEntry(r.codigo, 'local', r));
+    jsonSyncData.forEach(r => addEntry(r.codigo, 'json', r));
+    cloudSyncData.forEach(r => addEntry(r.codigo, 'airtable', r));
+
+    return Array.from(map.values());
+  }
+
+  function getSyncStatus(row) {
+    const hasLocal = !!row.local;
+    const hasJson = !!row.json;
+    const hasCloud = !!row.airtable;
+
+    if (hasLocal && hasJson && hasCloud) {
+      // Verificar si hay discrepancias de valores
+      if (hasDiscrepancy(row, 'nombre') || hasDiscrepancy(row, 'precio') || hasDiscrepancy(row, 'stock') || hasDiscrepancy(row, 'marca')) {
+        return { label: 'Conflicto', type: 'conflicts' };
+      }
+      return { label: 'Sincronizado', type: 'synced' };
+    }
+    if (hasLocal && hasJson && !hasCloud) return { label: 'Sin Nube', type: 'pending' };
+    if (hasLocal && !hasJson && hasCloud) return { label: 'Sin JSON', type: 'no-json' };
+    if (!hasLocal && hasJson && !hasCloud) return { label: 'Solo JSON', type: 'json-only' };
+    if (hasLocal && !hasJson && !hasCloud) return { label: 'Solo Local', type: 'local-only' };
+    if (!hasLocal && !hasJson && hasCloud) return { label: 'Solo Nube', type: 'cloud-only' };
+    return { label: 'Desconocido', type: 'unknown' };
+  }
+
+  function getFieldVal(r, fieldKey) {
+    if (!r) return null;
+    return r[fieldKey] !== undefined ? r[fieldKey] : null;
+  }
+
+  function hasDiscrepancy(row, fieldKey) {
+    const vals = [];
+    if (row.local) vals.push(getFieldVal(row.local, fieldKey));
+    if (row.json) vals.push(getFieldVal(row.json, fieldKey));
+    if (row.airtable) vals.push(getFieldVal(row.airtable, fieldKey));
+
+    const presentVals = vals.filter(v => v !== null && v !== undefined);
+    if (presentVals.length <= 1) return false;
+
+    const first = String(presentVals[0]).trim().toLowerCase();
+    return presentVals.some(v => String(v).trim().toLowerCase() !== first);
+  }
+
+  function renderSyncTable() {
+    const tbody = document.getElementById("sync-tbody");
+    const master = buildMasterIndex();
+    
+    // Calcular conteos globales
+    const total = master.length;
+    const synced = master.filter(r => getSyncStatus(r).type === 'synced').length;
+    const pending = master.filter(r => getSyncStatus(r).type === 'pending' || getSyncStatus(r).type === 'local-only' || getSyncStatus(r).type === 'no-json').length;
+    const conflicts = master.filter(r => getSyncStatus(r).type === 'conflicts').length;
+    const localOnly = master.filter(r => getSyncStatus(r).type === 'local-only').length;
+
+    // Actualizar badges
+    document.getElementById("sync-badge-all").textContent = total;
+    document.getElementById("sync-badge-synced").textContent = synced;
+    document.getElementById("sync-badge-pending").textContent = pending;
+    document.getElementById("sync-badge-conflicts").textContent = conflicts;
+    document.getElementById("sync-badge-local-only").textContent = localOnly;
+
+    // Actualizar Banners y Tarjetas
+    document.getElementById("sync-count-local").textContent = localSyncData.length;
+    document.getElementById("sync-count-json").textContent = jsonSyncData.length;
+    document.getElementById("sync-count-cloud").textContent = cloudSyncData.length;
+
+    const summaryCards = document.getElementById("sync-summary");
+    summaryCards.innerHTML = `
+      <div class="sync-card">
+        <div class="sync-card__value">${total}</div>
+        <div class="sync-card__label">Total únicos</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-card__value" style="color: var(--color-success);">${synced}</div>
+        <div class="sync-card__label">Sincronizados</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-card__value" style="color: var(--color-warning);">${pending}</div>
+        <div class="sync-card__label">Sin Nube</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-card__value" style="color: var(--color-danger);">${conflicts}</div>
+        <div class="sync-card__label">Conflictos</div>
+      </div>
+    `;
+
+    // Filtrado
+    let rows = master;
+    if (syncActiveFilter === 'synced') {
+      rows = master.filter(r => getSyncStatus(r).type === 'synced');
+    } else if (syncActiveFilter === 'pending') {
+      rows = master.filter(r => {
+        const type = getSyncStatus(r).type;
+        return type === 'pending' || type === 'local-only' || type === 'no-json';
+      });
+    } else if (syncActiveFilter === 'conflicts') {
+      rows = master.filter(r => getSyncStatus(r).type === 'conflicts');
+    } else if (syncActiveFilter === 'local-only') {
+      rows = master.filter(r => getSyncStatus(r).type === 'local-only');
+    }
+
+    if (rows.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 48px; color: var(--text-secondary);">
+            No hay registros para mostrar con el filtro activo.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    let html = "";
+    rows.forEach(row => {
+      const r = row.local || row.json || row.airtable;
+      const status = getSyncStatus(row);
+      const name = r.nombre || "Equipo sin nombre";
+      const sku = row.code;
+      const brand = r.marca || "Generales";
+      const price = r.precio ? `$${r.precio.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : "—";
+      const stock = r.stock !== undefined ? r.stock : "—";
+
+      const hasLocal = !!row.local;
+      const hasJson = !!row.json;
+      const hasCloud = !!row.airtable;
+
+      const conflictClass = status.type === 'conflicts' ? 'class="has-conflict"' : '';
+
+      html += `
+        <tr ${conflictClass} data-compare-sku="${sku}">
+          <td>
+            <div style="font-weight:600; color:var(--text-main);">${name}</div>
+            <div style="font-size:11px; font-family:monospace; color:var(--text-secondary); margin-top:2px;">SKU: ${sku}</div>
+          </td>
+          <td>${brand}</td>
+          <td class="center">${hasLocal ? '<span class="check-yes">✓</span>' : '<span class="check-no">✗</span>'}</td>
+          <td class="center">${hasJson ? '<span class="check-yes">✓</span>' : '<span class="check-no">✗</span>'}</td>
+          <td class="center">${hasCloud ? '<span class="check-yes">✓</span>' : '<span class="check-no">✗</span>'}</td>
+          <td>
+            <span class="sync-badge sync-badge--${status.type}">${status.label}</span>
+          </td>
+          <td class="right">${price}</td>
+          <td class="right">${stock}</td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+    createLucideIcons();
+
+    // Event delegation para abrir detalle de fila
+    tbody.querySelectorAll("tr[data-compare-sku]").forEach(tr => {
+      tr.addEventListener("click", () => {
+        const sku = tr.dataset.compareSku;
+        openCompareSheet(sku);
+      });
+    });
+  }
+
+  function openCompareSheet(sku) {
+    const master = buildMasterIndex();
+    const row = master.find(r => r.code === sku);
+    if (!row) return;
+
+    const overlay = document.getElementById("compare-sheet-overlay");
+    const body = document.getElementById("compare-sheet-body");
+    
+    const r = row.local || row.json || row.airtable;
+    const status = getSyncStatus(row);
+    const name = r.nombre || "Equipo sin nombre";
+
+    let fieldsHTML = "";
+    const fieldsToCompare = [
+      { key: "codigo", label: "SKU / Código" },
+      { key: "nombre", label: "Nombre" },
+      { key: "marca", label: "Marca" },
+      { key: "precio", label: "Precio de Venta", format: v => v !== null ? `$${v.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : "—" },
+      { key: "costo", label: "Costo Neto", format: v => v !== null ? `$${v.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : "—" },
+      { key: "stock", label: "Stock / Cantidad" },
+      { key: "alertaCantidad", label: "Alerta Mínima" },
+      { key: "unitCode", label: "Unidad de Medida" },
+      { key: "descripcion", label: "Descripción" },
+      { key: "especificaciones", label: "Especificaciones" },
+      { key: "especial3", label: "Ubicación / Notas" },
+      { key: "especial4", label: "Dimensiones" },
+      { key: "especial5", label: "Campo 5" },
+      { key: "especial6", label: "Campo 6" }
+    ];
+
+    fieldsToCompare.forEach(field => {
+      const isConflict = hasDiscrepancy(row, field.key);
+      const rowClass = isConflict ? 'class="detail-field-row field-conflict"' : 'class="detail-field-row"';
+      
+      const getVal = source => {
+        const data = row[source];
+        if (!data) return '<span class="val-empty">No existe</span>';
+        const val = getFieldVal(data, field.key);
+        if (val === null || val === "") return "—";
+        return field.format ? field.format(val) : val;
+      };
+
+      fieldsHTML += `
+        <tr ${rowClass}>
+          <td style="font-weight:600; color:var(--text-secondary);">
+            ${field.label}
+            ${isConflict ? '<span class="conflict-indicator" title="Discrepancia detectada"><i data-lucide="alert-triangle"></i></span>' : ""}
+          </td>
+          <td>${getVal('local')}</td>
+          <td>${getVal('json')}</td>
+          <td>${getVal('airtable')}</td>
+        </tr>
+      `;
+    });
+
+    let actionsHTML = "";
+    // 1. Subir a Airtable
+    if (row.local) {
+      actionsHTML += `
+        <button class="sheet-action-btn action-airtable" id="action-sync-cloud">
+          <i data-lucide="cloud-lightning"></i> ${row.airtable ? 'Re-subir a Nube' : 'Subir a Airtable'}
+        </button>
+      `;
+    }
+
+    // 2. Guardar a JSON Local
+    if (row.local) {
+      actionsHTML += `
+        <button class="sheet-action-btn action-json" id="action-sync-json">
+          <i data-lucide="file-check"></i> Respaldo JSON Local
+        </button>
+      `;
+    }
+
+    // 3. Sobrescribir Local con Nube
+    if (row.airtable) {
+      actionsHTML += `
+        <button class="sheet-action-btn highlight-warning" id="action-overwrite-from-cloud">
+          <i data-lucide="cloud-download"></i> Nube a Local
+        </button>
+      `;
+    }
+
+    // 4. Sobrescribir Local con JSON
+    if (row.json) {
+      actionsHTML += `
+        <button class="sheet-action-btn highlight-warning" id="action-overwrite-from-json">
+          <i data-lucide="download"></i> JSON a Local
+        </button>
+      `;
+    }
+
+    // 5. Eliminar producto de todos lados
+    actionsHTML += `
+      <button class="sheet-action-btn action-delete-product" id="action-delete-everywhere">
+        <i data-lucide="trash-2"></i> Eliminar Registro
+      </button>
+    `;
+
+    body.innerHTML = `
+      <div class="sheet-detail-header">
+        <div class="sheet-detail-name">${name}</div>
+        <div class="sheet-detail-uuid">SKU / ID: ${sku}</div>
+        <div style="margin-top: 10px;">
+          <span class="sync-badge sync-badge--${status.type}">${status.label}</span>
+        </div>
+      </div>
+
+      <div class="compare-sheet-table-wrapper">
+        <table class="compare-detail-table">
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Local</th>
+              <th>JSON</th>
+              <th>Nube</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${fieldsHTML}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sheet-actions-section">
+        <h4 class="sheet-actions-title">Acciones de Resolución</h4>
+        <div class="sheet-actions-grid">
+          ${actionsHTML}
+        </div>
+      </div>
+    `;
+
+    overlay.classList.add("active");
+    createLucideIcons();
+
+    // Bindings de botones de acción
+    document.getElementById("action-sync-cloud")?.addEventListener("click", async () => {
+      await handleSingleSyncToCloud(row.local);
+    });
+    document.getElementById("action-sync-json")?.addEventListener("click", async () => {
+      await handleSingleSyncToJSON(row.local);
+    });
+    document.getElementById("action-overwrite-from-cloud")?.addEventListener("click", () => {
+      handleOverwriteLocal(row.airtable);
+    });
+    document.getElementById("action-overwrite-from-json")?.addEventListener("click", () => {
+      handleOverwriteLocal(row.json);
+    });
+    document.getElementById("action-delete-everywhere")?.addEventListener("click", async () => {
+      await handleDeleteEverywhere(sku, row);
+    });
+  }
+
+  function closeCompareSheet() {
+    const overlay = document.getElementById("compare-sheet-overlay");
+    overlay.classList.remove("active");
+  }
+
+  // ==========================================================================
+  // OPERACIONES DE RESOLUCION INDIVIDUALES Y MASIVAS
+  // ==========================================================================
+  async function handleSingleSyncToCloud(p) {
+    if (!p) return;
+    const btn = document.getElementById("action-sync-cloud");
+    if (btn) btn.disabled = true;
+
+    try {
+      showToast("Sincronizando con Airtable...", "info");
+      await SyncManager.syncProduct(p);
+      localStorage.setItem("kv-catalog-products", JSON.stringify(AppState.products));
+      showToast("Producto sincronizado con Airtable 🎉", "success");
+      
+      closeCompareSheet();
+      await loadAllSyncSources();
+    } catch (e) {
+      showToast("Error al sincronizar con Airtable.", "danger");
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  async function handleSingleSyncToJSON(p) {
+    if (!p) return;
+    const btn = document.getElementById("action-sync-json");
+    if (btn) btn.disabled = true;
+
+    try {
+      showToast("Guardando a JSON...", "info");
+      
+      // Combinar local actual con json cargado
+      const newJsonList = [...jsonSyncData];
+      const idx = newJsonList.findIndex(x => x.codigo === p.codigo);
+      if (idx !== -1) {
+        newJsonList[idx] = p;
+      } else {
+        newJsonList.push(p);
+      }
+
+      // Convertir al formato plano original de Airtable/JSON para preservar compatibilidad
+      const mappedList = newJsonList.map(item => {
+        return {
+          "Nombre": item.nombre,
+          "Código": item.codigo,
+          "Clase de Código de barras": item.barcodeType,
+          "Marca": item.marca,
+          "Código de categoría": item.categoriaCodigo,
+          "unit code": item.unitCode,
+          "Venta unit code": item.unitCode,
+          "Comprar unit code": item.unitCode,
+          "Costo": item.costo,
+          "Precio": item.precio,
+          "Cantidad de alerta": item.alertaCantidad,
+          "Tasa de impuestos": item.tasaImpuesto || "IVA",
+          "Método de impuestos": item.metodoImpuesto || "Exclusivo",
+          "Imagen": item.imagen || "no_image.png",
+          "Código de la Sub categoría": item.subCategoria || "",
+          "Variantes de producto": "",
+          "Producto de campo personalizado 1": item.descripcion,
+          "Producto Campo Personalizadoo 2": item.specifications,
+          "Producto Campo Personalizadoo 3": item.especial3,
+          "Producto Campo Personalizadoo 4": item.especial4,
+          "Producto Campo Personalizadoo 5": item.especial5,
+          "Producto Campo Personalizadoo 6": item.especial6,
+          "Cantidad": item.stock
+        };
+      });
+
+      const saved = await SyncManager.saveToLocalJSON(mappedList);
+      if (saved) {
+        showToast("JSON respaldado con éxito en servidor", "success");
+      } else {
+        showToast("Servidor local no disponible. Descargando archivo...", "warning");
+        triggerJSONDownload(mappedList);
+      }
+
+      closeCompareSheet();
+      await loadAllSyncSources();
+    } catch (e) {
+      showToast("Error al respaldar a JSON.", "danger");
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function handleOverwriteLocal(sourceRecord) {
+    if (!sourceRecord) return;
+    if (confirm(`¿Quieres sobrescribir la copia local con esta versión? Perderás cualquier cambio no guardado.`)) {
+      const idx = AppState.products.findIndex(x => x.codigo === sourceRecord.codigo);
+      
+      const normalized = normalizeJsonProduct(sourceRecord);
+      if (idx !== -1) {
+        AppState.products[idx] = normalized;
+      } else {
+        AppState.products.push(normalized);
+      }
+      
+      saveProductsToStorage();
+      showToast("Caché Local actualizada", "success");
+      
+      closeCompareSheet();
+      loadAllSyncSources();
+    }
+  }
+
+  async function handleDeleteEverywhere(sku, row) {
+    if (confirm("¿Estás seguro de que deseas eliminar este producto de LocalStorage, JSON local y Airtable?")) {
+      try {
+        showToast("Eliminando producto...", "info");
+        
+        // 1. Eliminar local
+        AppState.products = AppState.products.filter(x => x.codigo !== sku);
+        saveProductsToStorage();
+
+        // 2. Eliminar Airtable
+        const airtableId = row.airtable?.airtable_id || row.local?.airtable_id;
+        if (airtableId) {
+          await SyncManager.deleteFromAirtable(airtableId);
+        }
+
+        // 3. Eliminar JSON
+        const newJsonList = jsonSyncData.filter(x => x.codigo !== sku);
+        const mappedList = newJsonList.map(item => {
+          return {
+            "Nombre": item.nombre,
+            "Código": item.codigo,
+            "Clase de Código de barras": item.barcodeType,
+            "Marca": item.marca,
+            "Código de categoría": item.categoriaCodigo,
+            "unit code": item.unitCode,
+            "Venta unit code": item.unitCode,
+            "Comprar unit code": item.unitCode,
+            "Costo": item.costo,
+            "Precio": item.precio,
+            "Cantidad de alerta": item.alertaCantidad,
+            "Tasa de impuestos": item.tasaImpuesto || "IVA",
+            "Método de impuestos": item.metodoImpuesto || "Exclusivo",
+            "Imagen": item.imagen || "no_image.png",
+            "Código de la Sub categoría": item.subCategoria || "",
+            "Variantes de producto": "",
+            "Producto de campo personalizado 1": item.descripcion,
+            "Producto Campo Personalizadoo 2": item.specifications,
+            "Producto Campo Personalizadoo 3": item.especial3,
+            "Producto Campo Personalizadoo 4": item.especial4,
+            "Producto Campo Personalizadoo 5": item.especial5,
+            "Producto Campo Personalizadoo 6": item.especial6,
+            "Cantidad": item.stock
+          };
+        });
+
+        await SyncManager.saveToLocalJSON(mappedList);
+
+        showToast("Producto eliminado de todas las fuentes", "success");
+        closeCompareSheet();
+        await loadAllSyncSources();
+      } catch (err) {
+        showToast("Ocurrió un error al eliminar de alguna fuente.", "danger");
+      }
+    }
+  }
+
+  function triggerJSONDownload(dataList) {
+    const jsonString = JSON.stringify(dataList, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "kv_products_2026_05_05_19_31_43.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Masivo: Sincronizar Todo a la Nube (Airtable)
+  async function handleBulkSyncToCloud() {
+    const unsynced = localSyncData.filter(p => p.sync_status !== 'synced' || !p.airtable_id);
+    if (unsynced.length === 0) {
+      showToast("Todos los productos locales están sincronizados con la Nube.", "info");
+      return;
+    }
+
+    const btn = document.getElementById("bulk-sync-btn");
+    btn.disabled = true;
+    btn.innerHTML = `<i data-lucide="loader" class="spinning"></i> Sincronizando...`;
+    createLucideIcons();
+
+    let successCount = 0;
+    try {
+      showToast(`Sincronizando ${unsynced.length} productos con Airtable...`, "info");
+      
+      const promises = unsynced.map(async p => {
+        try {
+          await SyncManager.syncProduct(p);
+          successCount++;
+        } catch (err) {
+          console.error(`Failed to sync product ${p.codigo}:`, err);
+        }
+      });
+
+      await Promise.all(promises);
+      
+      // Guardar localStorage final
+      localStorage.setItem("kv-catalog-products", JSON.stringify(AppState.products));
+      showToast(`¡Se sincronizaron ${successCount} productos con éxito!`, "success");
+      await loadAllSyncSources();
+    } catch (err) {
+      showToast("Ocurrió un error en la sincronización masiva.", "danger");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i data-lucide="refresh-cw"></i> Sincronizar Todo`;
+      createLucideIcons();
+    }
+  }
+
+  // Masivo: Importar Nube a JSON Local (Re-escribir Respaldo JSON desde Airtable)
+  async function handleBulkCloudToJSON() {
+    const btn = document.getElementById("bulk-cloud-btn");
+    btn.disabled = true;
+    btn.innerHTML = `<i data-lucide="loader" class="spinning"></i> Importando...`;
+    createLucideIcons();
+
+    try {
+      showToast("Descargando catálogo completo de Airtable...", "info");
+      const records = await SyncManager.fetchAllFromAirtable();
+      
+      if (!records || records.length === 0) {
+        showToast("No se encontraron registros en Airtable para importar.", "warning");
+        return;
+      }
+
+      // Convertir a formato plano de respaldo JSON
+      const flatList = records.map(rec => {
+        const f = rec.fields || {};
+        return {
+          "Nombre": f["Nombre"] || "",
+          "Código": f["Código"] || "",
+          "Clase de Código de barras": f["Clase de Código de barras"] || "code128",
+          "Marca": f["Marca"] || "Generales",
+          "Código de categoría": f["Código de categoría"] || "",
+          "unit code": f["unit code"] || "Pieza",
+          "Venta unit code": f["Venta unit code"] || "Pieza",
+          "Comprar unit code": f["Comprar unit code"] || "Pieza",
+          "Costo": Number(f["Costo"]) || 0,
+          "Precio": Number(f["Precio"]) || 0,
+          "Cantidad de alerta": Number(f["Cantidad de alerta"]) || 0,
+          "Tasa de impuestos": f["Tasa de impuestos"] || "IVA",
+          "Método de impuestos": f["Método de impuestos"] || "Exclusivo",
+          "Imagen": f["Imagen"] || "no_image.png",
+          "Código de la Sub categoría": f["Código de la Sub categoría"] || "",
+          "Variantes de producto": f["Variantes de producto"] || "",
+          "Producto de campo personalizado 1": f["Producto de campo personalizado 1"] || "",
+          "Producto Campo Personalizadoo 2": f["Producto Campo Personalizadoo 2"] || "",
+          "Producto Campo Personalizadoo 3": f["Producto Campo Personalizadoo 3"] || "",
+          "Producto Campo Personalizadoo 4": f["Producto Campo Personalizadoo 4"] || "",
+          "Producto Campo Personalizadoo 5": f["Producto Campo Personalizadoo 5"] || "",
+          "Producto Campo Personalizadoo 6": f["Producto Campo Personalizadoo 6"] || "",
+          "Cantidad": Number(f["Cantidad"]) || 0
+        };
+      });
+
+      const saved = await SyncManager.saveToLocalJSON(flatList);
+      
+      // Actualizar también LocalStorage para emparejar
+      AppState.products = flatList.map(normalizeJsonProduct);
+      localStorage.setItem("kv-catalog-products", JSON.stringify(AppState.products));
+
+      if (saved) {
+        showToast(`¡Éxito! Importados ${flatList.length} productos y guardados en kv_products...json.`, "success");
+      } else {
+        showToast("Servidor local no disponible. Descargando archivo JSON...", "warning");
+        triggerJSONDownload(flatList);
+      }
+
+      await loadAllSyncSources();
+    } catch (err) {
+      console.error(err);
+      showToast("Error al importar de la Nube a JSON.", "danger");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i data-lucide="cloud-download"></i> Nube a JSON`;
+      createLucideIcons();
+    }
   }
 
 })();
