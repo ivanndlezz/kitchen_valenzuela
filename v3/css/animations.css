@@ -1,0 +1,151 @@
+/* =============================================
+   ANIMATIONS — Love Shack v3
+   Keyframes + transition utilities
+   ============================================= */
+
+/* ---- Screen Transitions ---- */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(30px); }
+}
+
+/* ---- General Purpose ---- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ---- FAB ---- */
+@keyframes fabPulse {
+  0%   { box-shadow: var(--shadow-fab); }
+  50%  { box-shadow: 0 6px 30px rgba(10, 132, 255, 0.6); }
+  100% { box-shadow: var(--shadow-fab); }
+}
+
+@keyframes fabEnter {
+  from { opacity: 0; transform: scale(0) rotate(-90deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* ---- Toast ---- */
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+/* ---- Price Counter ---- */
+@keyframes priceUpdate {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ---- Stepper Progress Fill ---- */
+@keyframes progressFill {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* ---- Shimmer/Loading ---- */
+@keyframes shimmer {
+  0%   { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+/* ---- Status Badge Pulse ---- */
+@keyframes subtlePulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+/* ---- Stagger children ---- */
+.stagger-children > * {
+  
+  animation: fadeInUp 0.3s var(--ease-default) forwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.03s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.06s; }
+ .stagger-children > *:nth-child(3) { animation-delay: 0.09s; position: relative; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.12s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.18s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.21s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.24s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.27s; }
+.stagger-children > *:nth-child(10){ animation-delay: 0.30s; }
+
+/* ---- Transition Utilities ---- */
+.transition-all {
+  transition: all var(--duration-normal) var(--ease-default);
+}
+.transition-fast {
+  transition: all var(--duration-fast) var(--ease-default);
+}
+.transition-colors {
+  transition: color var(--duration-fast) var(--ease-default),
+              background-color var(--duration-fast) var(--ease-default),
+              border-color var(--duration-fast) var(--ease-default);
+}
+
+/* ---- Screen animation classes (applied by router) ---- */
+.screen-enter {
+  animation: slideInRight 0.3s var(--ease-default) forwards;
+}
+.screen-enter-back {
+  animation: slideInLeft 0.3s var(--ease-default) forwards;
+}
+.screen-exit {
+  animation: slideOutLeft 0.3s var(--ease-default) forwards;
+}
+.screen-exit-back {
+  animation: slideOutRight 0.3s var(--ease-default) forwards;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

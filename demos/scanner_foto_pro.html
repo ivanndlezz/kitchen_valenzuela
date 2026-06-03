@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Escáner Dual Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="shared/utilities/scanning/html5-qrcode.min.js" type="text/javascript"></script>
+    <script src="shared/utilities/scanning/lucide.min.js"></script>
+    <style>
+        @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .skeleton { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; background: #e2e8f0; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans pb-10">
+
+    <header class="bg-slate-900 text-white p-4 shadow-md text-center font-bold">
+        Escáner Dual Pro
+    </header>
+
+    <main class="p-4 max-w-md mx-auto w-full flex flex-col gap-6">
+        <!-- Tabs -->
+        <div class="flex bg-slate-200 rounded-2xl p-1 shadow-inner">
+            <button onclick="switchTab('system')" id="tab-system" class="flex-1 py-3 rounded-xl font-bold bg-white shadow-sm text-slate-900">System (Foto)</button>
+            <button onclick="switchTab('apple')" id="tab-apple" class="flex-1 py-3 rounded-xl font-bold text-slate-500">Apple (Video)</button>
+        </div>
+
+        <!-- System Content -->
+        <div id="content-system" class="space-y-4">
+            <div id="system-box" class="bg-white p-8 rounded-3xl border border-slate-200 text-center shadow-sm transition-all">
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+                <button id="triggerBtn" class="w-full bg-slate-900 text-white py-6 rounded-2xl font-bold text-xl active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="camera"></i> Tomar Foto
+                </button>
+            </div>
+        </div>
+
+        <!-- Apple Content -->
+        <div id="content-apple" class="hidden space-y-4">
+            <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl text-blue-900 text-sm space-y-2">
+                <p><strong>! Paso 1:</strong> Permiso de cámara.</p>
+                <p><strong>Paso 2:</strong> Iniciar cámara.</p>
+                <p><strong>Paso 3:</strong> Posiciona el código.</p>
+                <p><strong>Paso 4:</strong> Cierra el video.</p>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 aspect-square relative">
+                <div id="reader" class="w-full h-full"></div>
+            </div>
+            <button id="startBtn" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all">
+                Iniciar Cámara
+            </button>
+        </div>
+
+        <!-- Resultados -->
+        <div>
+            <h2 class="text-slate-800 font-bold mb-3 px-2">Resultados</h2>
+            <ul id="resultsList" class="space-y-3">
+                <li id="emptyState" class="text-slate-400 text-sm text-center py-6 italic">Sin escaneos aún.</li>
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        // =============================================================================
+// qr-scanner.js — Arquitectura Senior: SOLID · DRY · SRP · SoC
+// =============================================================================
+
+// --- Constants (sin magic strings) ------------------------------------------
+
+const TABS = Object.freeze({ SYSTEM: 'system', APPLE: 'apple' });
+
+const SELECTORS = Object.freeze({
+  TAB_SYSTEM:    '#tab-system',
+  TAB_APPLE:     '#tab-apple',
+  CONTENT_SYSTEM:'#content-system',
+  CONTENT_APPLE: '#content-apple',
+  TRIGGER_BTN:   '#triggerBtn',
+  CAMERA_INPUT:  '#cameraInput',
+  START_BTN:     '#startBtn',
+  RESULTS_LIST:  '#resultsList',
+  EMPTY_STATE:   '#emptyState',
+  QR_READER:     'reader',
+});
+
+const CSS = Object.freeze({
+  HIDDEN:        'hidden',
+  SKELETON:      'skeleton',
+  TAB_ACTIVE:    'flex-1 py-3 rounded-xl font-bold bg-white shadow-sm text-slate-900',
+  TAB_INACTIVE:  'flex-1 py-3 rounded-xl font-bold text-slate-500',
+  RESULT_ITEM:   'bg-white p-4 rounded-2xl border-l-4 border-emerald-500 shadow-md font-mono text-emerald-800 font-bold flex justify-between items-center transition-all animate-bounce',
+  ANIMATE_BOUNCE:'animate-bounce',
+});
+
+const MESSAGES = Object.freeze({
+  SCANNING:             'Leyendo Código...',
+  CAMERA_STARTING:      'Iniciando...',
+  CAMERA_SCANNING:      'Escaneando... (Cierra video al terminar)',
+  CAMERA_START:         'Iniciar Cámara',
+  NO_CODE_DETECTED:     'No se pudo detectar ningún código QR o de barras en la foto. Intenta con mejor iluminación, enfocando el código de cerca.',
+  BARCODE_DETECTOR_ERR: 'Error al intentar procesar la imagen con el detector de barras nativo.',
+  BROWSER_FALLBACK:     'No se detectó ningún código QR en la foto. Para leer códigos de barra industriales desde fotos, se recomienda usar Google Chrome, Microsoft Edge o Android, o probar el modo de Video de la otra pestaña.',
+  CAMERA_ERR_PREFIX:    'Error: ',
+});
+
+const BOUNCE_TIMEOUT_MS = 1000;
+const CANVAS_MAX_WIDTH  = 1280;
+
+const BARCODE_FORMATS = Object.freeze([
+  'qr_code','ean_13','code_128','ean_8',
+  'upc_a','code_39','code_93','codabar','itf',
+]);
+
+const CAMERA_CONFIG = Object.freeze({
+  fps: 10,
+  qrbox: 250,
+});
+
+// --- Utilities ---------------------------------------------------------------
+// SRP: una función, una responsabilidad.
+
+/** Selecciona un elemento del DOM de forma segura. */
+const $ = (selector) => document.querySelector(selector);
+
+/** Activa/desactiva la clase `hidden` según la condición. */
+const toggleHidden = (el, condition) => el.classList.toggle(CSS.HIDDEN, condition);
+
+/** Crea un ImageBitmap/Image a partir de un File y lo resuelve como Promise. */
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+/** Dibuja una Image en un canvas con ancho máximo y devuelve el canvas. */
+function drawImageToCanvas(img, maxWidth = CANVAS_MAX_WIDTH) {
+  const canvas = document.createElement('canvas');
+  const ctx    = canvas.getContext('2d');
+  let { width, height } = img;
+  if (width > maxWidth) {
+    height = Math.round((height * maxWidth) / width);
+    width  = maxWidth;
+  }
+  canvas.width  = width;
+  canvas.height = height;
+  ctx.drawImage(img, 0, 0, width, height);
+  return canvas;
+}
+
+// --- TabController (SRP: solo maneja tabs) -----------------------------------
+
+class TabController {
+  /**
+   * @param {Record<string, {tab: HTMLElement, content: HTMLElement}>} tabMap
+   */
+  constructor(tabMap) {
+    this._tabMap = tabMap;
+  }
+
+  switchTo(activeKey) {
+    Object.entries(this._tabMap).forEach(([key, { tab, content }]) => {
+      const isActive = key === activeKey;
+      toggleHidden(content, !isActive);
+      tab.className = isActive ? CSS.TAB_ACTIVE : CSS.TAB_INACTIVE;
+    });
+  }
+}
+
+// --- ResultsRenderer (SRP: solo renderiza resultados) -----------------------
+
+class ResultsRenderer {
+  /**
+   * @param {HTMLUListElement} listEl
+   */
+  constructor(listEl) {
+    this._listEl = listEl;
+  }
+
+  addResult(code) {
+    $(SELECTORS.EMPTY_STATE)?.remove();
+
+    const li = document.createElement('li');
+    li.className = CSS.RESULT_ITEM;
+    li.innerHTML = `<span>${code}</span> <i data-lucide="check-circle" class="text-emerald-500"></i>`;
+
+    this._listEl.prepend(li);
+    lucide.createIcons();
+
+    setTimeout(() => li.classList.remove(CSS.ANIMATE_BOUNCE), BOUNCE_TIMEOUT_MS);
+  }
+}
+
+// --- BarcodeReaderStrategy (Strategy Pattern: SRP + OCP) --------------------
+// Cada estrategia encapsula UNA forma de decodificar.
+
+class Html5QrcodeStrategy {
+  /**
+   * @param {Html5Qrcode} instance
+   */
+  constructor(instance) {
+    this._qr = instance;
+  }
+
+  /** @returns {Promise<string>} */
+  async decode(file) {
+    return await this._qr.scanFile(file, /* showImage= */ false);
+  }
+}
+
+class BarcodeDetectorStrategy {
+  isSupported() {
+    return 'BarcodeDetector' in window;
+  }
+
+  /** @returns {Promise<string>} */
+  async decode(file) {
+    const img      = await loadImage(file);
+    const canvas   = drawImageToCanvas(img);
+    URL.revokeObjectURL(img.src);
+
+    const detector = new BarcodeDetector({ formats: [...BARCODE_FORMATS] });
+    const barcodes = await detector.detect(canvas);
+
+    if (!barcodes.length) {
+      throw new Error(MESSAGES.NO_CODE_DETECTED);
+    }
+    return barcodes[0].rawValue;
+  }
+}
+
+// --- ImageScanService (SRP: orquesta estrategias de decodificación) ----------
+
+class ImageScanService {
+  /**
+   * @param {Html5QrcodeStrategy}    primaryStrategy
+   * @param {BarcodeDetectorStrategy} fallbackStrategy
+   */
+  constructor(primaryStrategy, fallbackStrategy) {
+    this._primary  = primaryStrategy;
+    this._fallback = fallbackStrategy;
+  }
+
+  /**
+   * Intenta decodificar con estrategia primaria; si falla, usa fallback.
+   * @param {File} file
+   * @returns {Promise<string>}
+   */
+  async scan(file) {
+    try {
+      return await this._primary.decode(file);
+    } catch (primaryErr) {
+      console.warn('Primary strategy failed, trying fallback:', primaryErr);
+
+      if (!this._fallback.isSupported()) {
+        throw new Error(MESSAGES.BROWSER_FALLBACK);
+      }
+
+      try {
+        return await this._fallback.decode(file);
+      } catch (fallbackErr) {
+        console.error('Fallback strategy failed:', fallbackErr);
+        throw new Error(
+          fallbackErr.message === MESSAGES.NO_CODE_DETECTED
+            ? MESSAGES.NO_CODE_DETECTED
+            : MESSAGES.BARCODE_DETECTOR_ERR
+        );
+      }
+    }
+  }
+}
+
+// --- ButtonStateManager (SRP: solo maneja estado visual de un botón) ---------
+
+class ButtonStateManager {
+  /**
+   * @param {HTMLButtonElement} btn
+   */
+  constructor(btn) {
+    this._btn         = btn;
+    this._originalHTML = btn.innerHTML;
+  }
+
+  setLoading(html) {
+    this._btn.disabled = true;
+    this._btn.innerHTML = html;
+    lucide.createIcons();
+  }
+
+  setText(text) {
+    this._btn.textContent = text;
+  }
+
+  reset() {
+    this._btn.disabled = false;
+    this._btn.innerHTML = this._originalHTML;
+    lucide.createIcons();
+  }
+}
+
+// --- PhotoScanController (SRP: coordina foto → scan → resultado) -------------
+
+class PhotoScanController {
+  /**
+   * @param {HTMLButtonElement}   triggerBtn
+   * @param {HTMLInputElement}    fileInput
+   * @param {HTMLElement}         feedbackBox
+   * @param {ImageScanService}    scanService
+   * @param {ResultsRenderer}     renderer
+   */
+  constructor(triggerBtn, fileInput, feedbackBox, scanService, renderer) {
+    this._btnManager  = new ButtonStateManager(triggerBtn);
+    this._fileInput   = fileInput;
+    this._feedbackBox = feedbackBox;
+    this._scanService = scanService;
+    this._renderer    = renderer;
+
+    triggerBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => this._onFileChange(e));
+  }
+
+  async _onFileChange(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this._setLoadingState();
+
+    try {
+      const code = await this._scanService.scan(file);
+      this._renderer.addResult(code);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      this._clearLoadingState();
+      event.target.value = '';
+    }
+  }
+
+  _setLoadingState() {
+    this._btnManager.setLoading(
+      `<i data-lucide="loader" class="animate-spin"></i> ${MESSAGES.SCANNING}`
+    );
+    this._feedbackBox.classList.add(CSS.SKELETON);
+  }
+
+  _clearLoadingState() {
+    this._btnManager.reset();
+    this._feedbackBox.classList.remove(CSS.SKELETON);
+  }
+}
+
+// --- VideoScanController (SRP: coordina cámara en vivo → resultado) ----------
+
+class VideoScanController {
+  /**
+   * @param {HTMLButtonElement} startBtn
+   * @param {Html5Qrcode}       qrInstance
+   * @param {ResultsRenderer}   renderer
+   */
+  constructor(startBtn, qrInstance, renderer) {
+    this._btnManager = new ButtonStateManager(startBtn);
+    this._qr         = qrInstance;
+    this._renderer   = renderer;
+
+    startBtn.addEventListener('click', () => this._onStart());
+  }
+
+  async _onStart() {
+    this._btnManager.setLoading(MESSAGES.CAMERA_STARTING);
+
+    try {
+      await this._qr.start(
+        { facingMode: 'environment' },
+        CAMERA_CONFIG,
+        (text) => this._onCodeDetected(text)
+      );
+      this._btnManager.setText(MESSAGES.CAMERA_SCANNING);
+    } catch (err) {
+      alert(`${MESSAGES.CAMERA_ERR_PREFIX}${err}`);
+      this._btnManager.reset();
+    }
+  }
+
+  _onCodeDetected(text) {
+    this._renderer.addResult(text);
+    this._qr.stop();
+    this._btnManager.reset();
+  }
+}
+
+// --- Composition Root (main) -------------------------------------------------
+// SoC: el único lugar que conoce el DOM y ensambla dependencias.
+
+function init() {
+  lucide.createIcons();
+
+  // Shared instance de Html5Qrcode (lazy, un solo reader element)
+  const qrInstance = new Html5Qrcode(SELECTORS.QR_READER);
+
+  // Tab controller
+  const tabController = new TabController({
+    [TABS.SYSTEM]: {
+      tab:     $(SELECTORS.TAB_SYSTEM),
+      content: $(SELECTORS.CONTENT_SYSTEM),
+    },
+    [TABS.APPLE]: {
+      tab:     $(SELECTORS.TAB_APPLE),
+      content: $(SELECTORS.CONTENT_APPLE),
+    },
+  });
+
+  // Exponer switchTab globalmente si el HTML lo llama inline
+  window.switchTab = (tab) => tabController.switchTo(tab);
+
+  // Renderer compartido
+  const renderer = new ResultsRenderer($(SELECTORS.RESULTS_LIST));
+
+  // Strategies
+  const primaryStrategy  = new Html5QrcodeStrategy(qrInstance);
+  const fallbackStrategy = new BarcodeDetectorStrategy();
+  const scanService      = new ImageScanService(primaryStrategy, fallbackStrategy);
+
+  // Controllers
+  new PhotoScanController(
+    $(SELECTORS.TRIGGER_BTN),
+    $(SELECTORS.CAMERA_INPUT),
+    $(SELECTORS.SELECTORS_SYSTEM_BOX ?? '#system-box'),   // <-- ajusta si cambia el selector
+    scanService,
+    renderer
+  );
+
+  new VideoScanController(
+    $(SELECTORS.START_BTN),
+    qrInstance,
+    renderer
+  );
+}
+
+document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
