@@ -1,6 +1,8 @@
 // config.js — Global configuration constants & helpers
 window.Config = window.Config || {};
 window.Config.IMAGE_BASE_URL = "https://kitchencleanvalenzuela.net/assets/uploads/";
+window.Config.CLIENTS_TABLE = "clients";
+
 
 /**
  * Resolve a product image filename to a full URL.

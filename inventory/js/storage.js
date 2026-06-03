@@ -67,10 +67,7 @@ function loadClientsFromStorage() {
       window.AppState.clients = [];
     }
   } else {
-    window.AppState.clients = [
-      { id: "C001", nombre: "Juan Pérez", empresa: "Restaurante El Sol", rfc: "PEPJ800101XXX", telefono: "5512345678", correo: "juan@elsol.com", direccion: "Av. Reforma 123, CDMX" },
-      { id: "C002", nombre: "María Gómez", empresa: "Pastelería Dulce", rfc: "GOMA900202YYY", telefono: "5587654321", correo: "maria@dulce.com", direccion: "Calle Juárez 456, Monterrey" }
-    ];
+    window.AppState.clients = [];
     saveClientsToStorage();
   }
 }

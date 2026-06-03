@@ -24,6 +24,13 @@ async function init() {
   setupClientsUI();
   setupSingleProductUI();
 
+  // Trigger background client sync on load
+  if (typeof syncAllClientsFromCloud === "function") {
+    syncAllClientsFromCloud().catch(err => {
+      console.error("Background client sync failed:", err);
+    });
+  }
+
   // Trigger initial hash route check now that render methods are registered
   if (window.handleHashChange) {
     window.handleHashChange();
@@ -259,6 +266,7 @@ function setupEventListeners() {
   window.DOM.scrim.addEventListener("click", () => {
     if (typeof closeProductDrawer === "function") closeProductDrawer();
     if (typeof closeScanner === "function") closeScanner();
+    if (typeof closeClientDrawer === "function") closeClientDrawer();
   });
 }
 

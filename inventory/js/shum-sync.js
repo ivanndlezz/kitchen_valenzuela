@@ -97,6 +97,148 @@ window.SyncManager = {
     };
   },
 
+  mapLocalToAirtableClient(client) {
+    return {
+      "client_id": client.id || "",
+      "contact_name": client.nombre || "",
+      "company": client.empresa || "",
+      "legal_name": client.legal_name || "",
+      "tax_id": client.rfc || "",
+      "phone": client.telefono || "",
+      "email": client.correo || "",
+      "address": client.direccion || "",
+      "city": client.ciudad || "",
+      "state": client.estado || "",
+      "category": client.categoria || "REFACCIONES",
+      "industry": client.industry || "",
+      "alt_contact": client.alt_contact || "",
+      "alt_phone": client.alt_phone || "",
+      "alt_email": client.alt_email || "",
+      "alt_city": client.alt_city || "",
+      "alt_state": client.alt_state || "",
+      "purchase_frequency": client.purchase_frequency || "",
+      "notes": client.notes || "",
+      "column_12": client.column_12 || ""
+    };
+  },
+
+  mapAirtableToLocalClient(record) {
+    const f = record.fields || {};
+    return {
+      id: (f["client_id"] || record.id || "").replace(/\n/g, ""),
+      nombre: (f["contact_name"] || "").replace(/\n/g, ""),
+      empresa: (f["company"] || "").replace(/\n/g, ""),
+      legal_name: (f["legal_name"] || "").replace(/\n/g, ""),
+      rfc: (f["tax_id"] || "").replace(/\n/g, ""),
+      telefono: (f["phone"] || "").replace(/\n/g, ""),
+      correo: (f["email"] || "").replace(/\n/g, ""),
+      direccion: (f["address"] || "").replace(/\n/g, ""),
+      ciudad: (f["city"] || "").replace(/\n/g, ""),
+      estado: (f["state"] || "").replace(/\n/g, ""),
+      categoria: (f["category"] || "").replace(/\n/g, ""),
+      industry: (f["industry"] || "").replace(/\n/g, ""),
+      alt_contact: (f["alt_contact"] || "").replace(/\n/g, ""),
+      alt_phone: (f["alt_phone"] || "").replace(/\n/g, ""),
+      alt_email: (f["alt_email"] || "").replace(/\n/g, ""),
+      alt_city: (f["alt_city"] || "").replace(/\n/g, ""),
+      alt_state: (f["alt_state"] || "").replace(/\n/g, ""),
+      purchase_frequency: (f["purchase_frequency"] || "").replace(/\n/g, ""),
+      notes: (f["notes"] || "").replace(/\n/g, ""),
+      column_12: (f["column_12"] || "").replace(/\n/g, ""),
+      airtable_id: record.id,
+      sync_status: "synced",
+      updatedAt: record.createdTime || new Date().toISOString()
+    };
+  },
+
+  async fetchAllClientsFromAirtable() {
+    let allRecords = [];
+    let offset = null;
+    let pages = 0;
+    const maxPages = 20;
+    const seenIds = new Set();
+
+    do {
+      const params = {
+        baseId: this.config.baseId,
+        table: window.Config.CLIENTS_TABLE || "clients"
+      };
+      if (offset) {
+        params.offset = offset;
+      }
+      const result = await this.shumRequest("list", params);
+      const records = result && result.records ? result.records : [];
+      const newRecords = records.filter(rec => {
+        if (seenIds.has(rec.id)) return false;
+        seenIds.add(rec.id);
+        return true;
+      });
+      allRecords = allRecords.concat(newRecords);
+      offset = result && result.offset ? result.offset : null;
+      pages++;
+      if (records.length > 0 && newRecords.length === 0) {
+        break;
+      }
+    } while (offset && pages < maxPages);
+
+    return allRecords;
+  },
+
+  async syncClient(client) {
+    const mapped = this.mapLocalToAirtableClient(client);
+    let result;
+
+    // Auto-reconcile check: search by client_id/id if airtable_id is missing
+    if (!client.airtable_id) {
+      try {
+        const listRes = await this.shumRequest("list", {
+          baseId: this.config.baseId,
+          table: window.Config.CLIENTS_TABLE || "clients",
+          filter: {
+            filterByFormula: `{client_id} = '${client.id}'`
+          }
+        });
+        const records = listRes && listRes.records ? listRes.records : [];
+        if (records.length > 0 && records[0].id) {
+          client.airtable_id = records[0].id;
+          console.log("SyncManager: Auto-linked client via ID:", client.id, "to Airtable ID:", client.airtable_id);
+        }
+      } catch (e) {
+        console.warn("SyncManager: Failed to reconcile client by ID", e);
+      }
+    }
+
+    if (client.airtable_id) {
+      result = await this.shumRequest("update", {
+        baseId: this.config.baseId,
+        table: window.Config.CLIENTS_TABLE || "clients",
+        recordId: client.airtable_id,
+        data: mapped
+      });
+    } else {
+      result = await this.shumRequest("create", {
+        baseId: this.config.baseId,
+        table: window.Config.CLIENTS_TABLE || "clients",
+        data: mapped
+      });
+      if (result && result.id) {
+        client.airtable_id = result.id;
+      }
+    }
+
+    client.sync_status = "synced";
+    client.updatedAt = new Date().toISOString();
+    return result;
+  },
+
+  async deleteClientFromAirtable(airtableId) {
+    return await this.shumRequest("delete", {
+      baseId: this.config.baseId,
+      table: window.Config.CLIENTS_TABLE || "clients",
+      recordId: airtableId
+    });
+  },
+
   async fetchAllFromAirtable() {
     let allRecords = [];
     let offset = null;

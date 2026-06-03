@@ -444,50 +444,17 @@
           <h2 class="section-title">Directorio de Clientes</h2>
           <p class="section-subtitle">Administra los datos de facturación y contacto para cotizaciones.</p>
         </div>
-        <button class="btn btn-primary" id="btn-add-client" style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
-          <i data-lucide="user-plus"></i> Nuevo Cliente
-        </button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button class="btn btn-secondary" id="btn-sync-clients" style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+            <i data-lucide="refresh-cw"></i> Sincronizar Nube
+          </button>
+          <button class="btn btn-primary" id="btn-add-client" style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+            <i data-lucide="user-plus"></i> Nuevo Cliente
+          </button>
+        </div>
       </div>
 
-      <!-- Formulario Agregar/Editar Cliente (colapsado) -->
-      <div id="client-form-container" class="client-form-container">
-        <h3 id="client-form-title" class="panel-title" style="margin-bottom: 16px;">Registrar Nuevo Cliente</h3>
-        <form id="client-form">
-          <input type="hidden" id="client-id" />
-          <div class="form-group__row">
-            <div class="form-group">
-              <label class="form-group__label">Nombre del Contacto</label>
-              <input type="text" id="client-nombre" class="form-group__input" required placeholder="Ej. Juan Pérez" />
-            </div>
-            <div class="form-group">
-              <label class="form-group__label">Empresa / Razón Social</label>
-              <input type="text" id="client-empresa" class="form-group__input" placeholder="Ej. Restaurante El Bulli" />
-            </div>
-          </div>
-          <div class="form-group__row">
-            <div class="form-group">
-              <label class="form-group__label">RFC / Tax ID</label>
-              <input type="text" id="client-rfc" class="form-group__input" placeholder="Ej. XAXX010101000" />
-            </div>
-            <div class="form-group">
-              <label class="form-group__label">Teléfono</label>
-              <input type="tel" id="client-telefono" class="form-group__input" placeholder="Ej. 5512345678" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-group__label">Correo Electrónico</label>
-            <input type="email" id="client-correo" class="form-group__input" placeholder="Ej. cliente@correo.com" />
-          </div>
-          <div class="form-group">
-            <label class="form-group__label">Dirección Fiscal / Entrega</label>
-            <textarea id="client-direccion" class="form-group__textarea" placeholder="Calle, Número, Colonia, CP, Ciudad..."></textarea>
-          </div>
-          <div style="display: flex; gap: 12px; margin-top: 16px;">
-            <button type="submit" class="drawer__primary-btn" style="width: auto; padding: 10px 20px;">Guardar Cliente</button>
-            <button type="button" id="btn-cancel-client" class="drawer__primary-btn drawer__primary-btn--danger" style="width: auto; padding: 10px 20px;">Cancelar</button>
-          </div>
-        </form>
-      </div>
+
 
       <!-- Lista de clientes -->
       <div id="clients-list-grid" class="clients-list-container">
@@ -596,6 +563,86 @@
       <div class="drawer__view" data-drawer-view="form" id="drawer-view-form">
         <!-- Dynamic edit form -->
       </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       CLIENT DRAWER
+       ========================================== -->
+  <aside class="drawer__sheet" id="client-form-container" role="dialog" aria-modal="true" aria-labelledby="client-form-title">
+    <div class="drawer__header">
+      <h2 class="drawer__title" id="client-form-title">Registrar Nuevo Cliente</h2>
+      <div class="drawer__header-actions">
+        <button class="drawer__close-btn" id="btn-cancel-client" aria-label="Cerrar cajón">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="drawer__body" style="padding: 24px; overflow-y: auto; height: calc(100% - 70px);">
+      <form id="client-form">
+        <input type="hidden" id="client-id" />
+        <div class="form-group__row">
+          <div class="form-group">
+            <label class="form-group__label">Nombre del Contacto</label>
+            <input type="text" id="client-nombre" class="form-group__input" required placeholder="Ej. Juan Pérez" />
+          </div>
+          <div class="form-group">
+            <label class="form-group__label">Empresa / Razón Social</label>
+            <input type="text" id="client-empresa" class="form-group__input" placeholder="Ej. Restaurante El Bulli" />
+          </div>
+        </div>
+        <div class="form-group__row">
+          <div class="form-group">
+            <label class="form-group__label">RFC / Tax ID</label>
+            <input type="text" id="client-rfc" class="form-group__input" placeholder="Ej. XAXX010101000" />
+          </div>
+          <div class="form-group">
+            <label class="form-group__label">Teléfono</label>
+            <input type="tel" id="client-telefono" class="form-group__input" placeholder="Ej. 5512345678" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Correo Electrónico</label>
+          <input type="email" id="client-correo" class="form-group__input" placeholder="Ej. cliente@correo.com" />
+        </div>
+        <div class="form-group__row">
+          <div class="form-group">
+            <label class="form-group__label">Ciudad</label>
+            <input type="text" id="client-ciudad" class="form-group__input" placeholder="Ej. Cabo San Lucas" />
+          </div>
+          <div class="form-group">
+            <label class="form-group__label">Estado</label>
+            <input type="text" id="client-estado" class="form-group__input" placeholder="Ej. Baja California Sur" />
+          </div>
+        </div>
+        <div class="form-group__row">
+          <div class="form-group">
+            <label class="form-group__label">Categoría</label>
+            <select id="client-categoria" class="form-group__select">
+              <option value="REFACCIONES">REFACCIONES</option>
+              <option value="EQUIPOS">EQUIPOS</option>
+              <option value="SERVICIOS">SERVICIOS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-group__label">Industria / Sector</label>
+            <input type="text" id="client-industry" class="form-group__input" placeholder="Ej. Restaurantero" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Dirección Fiscal / Entrega</label>
+          <textarea id="client-direccion" class="form-group__textarea" placeholder="Calle, Número, Colonia, CP, Ciudad..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Notas / Observaciones</label>
+          <textarea id="client-notas" class="form-group__textarea" placeholder="Notas adicionales del cliente..."></textarea>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button type="submit" class="drawer__primary-btn" style="width: auto; padding: 10px 20px;">Guardar Cliente</button>
+          <button type="button" id="btn-cancel-client-btn" class="drawer__primary-btn drawer__primary-btn--danger" style="width: auto; padding: 10px 20px;">Cancelar</button>
+        </div>
+      </form>
     </div>
   </aside>
 
@@ -1340,6 +1387,12 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      position: relative;
+    }
+    .client-card__sync-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
     }
     .client-card-name {
       font-size: 14.5px;
@@ -1390,7 +1443,7 @@
     /* Single Product view styles */
     .single-product-search-wrapper {
       max-width: 500px;
-      margin: 0 auto 24px;
+      margin: 24px auto ;
     }
     .single-product-empty {
       text-align: center;
