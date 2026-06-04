@@ -5,10 +5,24 @@
 
 function setupSingleProductUI() {
   const searchInput = document.getElementById("single-product-search");
+  const clearBtn = document.getElementById("single-product-clear-btn");
+
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       const sku = searchInput.value.trim();
       loadSingleProduct(sku);
+      if (clearBtn) {
+        clearBtn.style.display = sku ? "flex" : "none";
+      }
+    });
+  }
+
+  if (clearBtn && searchInput) {
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      loadSingleProduct("");
+      clearBtn.style.display = "none";
+      searchInput.focus();
     });
   }
 }
@@ -23,6 +37,11 @@ window.renderSingleProductView = function() {
 window.loadSingleProduct = function(sku) {
   const container = document.getElementById("single-product-content");
   if (!container) return;
+
+  const clearBtn = document.getElementById("single-product-clear-btn");
+  if (clearBtn) {
+    clearBtn.style.display = sku ? "flex" : "none";
+  }
 
   if (!sku) {
     container.innerHTML = `

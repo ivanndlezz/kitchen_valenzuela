@@ -5,10 +5,26 @@
 
 let html5QrcodeScanner = null;
 const QR_READER_ID = "reader";
+let activeScanTarget = null;
 
 function setupScannerLogic() {
   // Close modal triggers
   window.DOM.scannerCloseBtn.addEventListener("click", closeScanner);
+
+  // Handle click on barcode scan trigger buttons
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest(".scan-trigger");
+    if (trigger) {
+      e.preventDefault();
+      const targetId = trigger.getAttribute("data-target");
+      const targetInput = document.getElementById(targetId);
+      if (targetInput) {
+        activeScanTarget = targetInput;
+        targetInput.classList.add("ring-4", "ring-blue-400", "border-blue-500");
+        openScanner();
+      }
+    }
+  });
 
   // Tab Switches
   window.DOM.scannerTabsContainer.querySelectorAll(".scanner__tab").forEach(tab => {
@@ -57,6 +73,10 @@ function closeScanner() {
   window.DOM.scannerModal.classList.remove("scanner-modal--active");
   if (!window.DOM.detailDrawer.classList.contains("drawer__sheet--active")) {
     window.DOM.scrim.classList.remove("drawer__scrim--active");
+  }
+  if (activeScanTarget) {
+    activeScanTarget.classList.remove("ring-4", "ring-blue-400", "border-blue-500");
+    activeScanTarget = null;
   }
 }
 
@@ -181,9 +201,25 @@ async function stopVideoCapture() {
 
 // Main flow router for detected barcodes
 function registerOrOpenScannedCode(code) {
+  const target = activeScanTarget;
   closeScanner();
   
   const cleanCode = String(code).trim();
+  
+  // If targeted scan via scan-trigger utility
+  if (target) {
+    target.value = cleanCode;
+    target.classList.add("input-success");
+    setTimeout(() => {
+      target.classList.remove("input-success");
+    }, 1000);
+    
+    // Dispatch input and change events
+    target.dispatchEvent(new Event("input", { bubbles: true }));
+    target.dispatchEvent(new Event("change", { bubbles: true }));
+    return;
+  }
+
   const activeSection = document.querySelector(".main-nav-btn.active")?.getAttribute("data-section") || "inventory";
 
   if (activeSection === "product") {

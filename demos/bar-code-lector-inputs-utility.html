@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Formulario con Escáner Dinámico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .skeleton { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; background: #e2e8f0; }
+        
+        /* Transición suave para el input cuando recibe el dato */
+        .input-success { animation: flashSuccess 1s ease-out; }
+        @keyframes flashSuccess {
+            0% { background-color: #d1fae5; border-color: #10b981; }
+            100% { background-color: white; border-color: #e2e8f0; }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans pb-10">
+
+    <header class="bg-slate-900 text-white p-4 shadow-md text-center font-bold flex justify-center items-center gap-2 sticky top-0 z-50">
+        <i data-lucide="scan-line" class="w-5 h-5 text-blue-400"></i> Escáner de Formulario
+    </header>
+
+    <main class="p-4 max-w-md mx-auto w-full flex flex-col gap-6">
+        
+        <!-- SECCIÓN DE FORMULARIO DINÁMICO -->
+        <section class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+            <h2 class="text-slate-800 font-bold mb-4 flex items-center gap-2">
+                <i data-lucide="form-input" class="w-5 h-5 text-slate-400"></i> Campos de Captura
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- Input 1 -->
+                <div class="relative">
+                    <label for="input_1" class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Código de Producto</label>
+                    <input type="text" id="input_1" data-scanner="true" placeholder="Haz clic o usa el escáner" class="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono text-slate-700">
+                    <button class="scan-trigger absolute right-2 top-[26px] p-2 text-slate-400 hover:text-blue-600 transition-colors" data-target="input_1">
+                        <i data-lucide="barcode" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Input 2 -->
+                <div class="relative">
+                    <label for="input_2" class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Número de Serie</label>
+                    <input type="text" id="input_2" data-scanner="true" placeholder="Haz clic o usa el escáner" class="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono text-slate-700">
+                    <button class="scan-trigger absolute right-2 top-[26px] p-2 text-slate-400 hover:text-blue-600 transition-colors" data-target="input_2">
+                        <i data-lucide="barcode" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Input 3 -->
+                <div class="relative">
+                    <label for="input_3" class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Lote / Ubicación</label>
+                    <input type="text" id="input_3" data-scanner="true" placeholder="Haz clic o usa el escáner" class="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono text-slate-700">
+                    <button class="scan-trigger absolute right-2 top-[26px] p-2 text-slate-400 hover:text-blue-600 transition-colors" data-target="input_3">
+                        <i data-lucide="barcode" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Input 4 -->
+                <div class="relative">
+                    <label for="input_4" class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Identificador Extra</label>
+                    <input type="text" id="input_4" data-scanner="true" placeholder="Haz clic o usa el escáner" class="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono text-slate-700">
+                    <button class="scan-trigger absolute right-2 top-[26px] p-2 text-slate-400 hover:text-blue-600 transition-colors" data-target="input_4">
+                        <i data-lucide="barcode" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAL DEL ESCÁNER -->
+        <div id="scanner-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 transition-opacity">
+            <div class="bg-slate-50 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-pop">
+                <!-- Header Modal -->
+                <div class="bg-white p-4 border-b border-slate-200 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="target" class="w-5 h-5 text-blue-500"></i>
+                        <span id="target-name" class="font-bold text-slate-700 text-sm">Escaneando...</span>
+                    </div>
+                    <button id="close-modal-btn" class="p-2 text-slate-400 hover:text-red-500 transition-colors bg-slate-100 rounded-full">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Cuerpo Modal -->
+                <div class="p-5 overflow-y-auto">
+                    <!-- Tabs -->
+                    <div class="flex bg-slate-200 rounded-2xl p-1 shadow-inner mb-4">
+                        <button onclick="switchTab('system')" id="tab-system" class="flex-1 py-3 rounded-xl font-bold bg-white shadow-sm text-slate-900 transition-all">Foto</button>
+                        <button onclick="switchTab('apple')" id="tab-apple" class="flex-1 py-3 rounded-xl font-bold text-slate-500 transition-all">Video</button>
+                    </div>
+
+                    <!-- System Content (Foto) -->
+                    <div id="content-system" class="space-y-4">
+                        <div id="system-box" class="bg-white p-8 rounded-3xl border border-slate-200 text-center shadow-sm transition-all">
+                            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+                            <button id="triggerBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-6 rounded-2xl font-bold text-xl active:scale-95 transition-all flex items-center justify-center gap-2 shadow-lg shadow-slate-900/30">
+                                <i data-lucide="camera"></i> Tomar Foto del Código
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Apple Content (Video) -->
+                    <div id="content-apple" class="hidden space-y-4">
+                        <div class="rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 aspect-square relative">
+                            <div id="reader" class="w-full h-full bg-black"></div>
+                        </div>
+                        <button id="startBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-600/30 active:scale-95 transition-all">
+                            Iniciar Cámara de Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+// =============================================================================
+// Arquitectura: Escáner de Inyección Dinámica
+// =============================================================================
+
+const TABS = Object.freeze({ SYSTEM: 'system', APPLE: 'apple' });
+const SELECTORS = Object.freeze({
+  TAB_SYSTEM:    '#tab-system',
+  TAB_APPLE:     '#tab-apple',
+  CONTENT_SYSTEM:'#content-system',
+  CONTENT_APPLE: '#content-apple',
+  TRIGGER_BTN:   '#triggerBtn',
+  CAMERA_INPUT:  '#cameraInput',
+  START_BTN:     '#startBtn',
+  QR_READER:     'reader',
+  SCANNER_MODAL: '#scanner-modal',
+  CLOSE_MODAL:   '#close-modal-btn',
+  TARGET_NAME:   '#target-name'
+});
+
+const CSS = Object.freeze({ HIDDEN: 'hidden', SKELETON: 'skeleton', TAB_ACTIVE: 'flex-1 py-3 rounded-xl font-bold bg-white shadow-sm text-slate-900', TAB_INACTIVE: 'flex-1 py-3 rounded-xl font-bold text-slate-500' });
+const CANVAS_MAX_WIDTH  = 1280;
+
+const $ = (selector) => document.querySelector(selector);
+const toggleHidden = (el, condition) => el.classList.toggle(CSS.HIDDEN, condition);
+
+// --- Utilities ---
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function drawImageToCanvas(img, maxWidth = CANVAS_MAX_WIDTH) {
+  const canvas = document.createElement('canvas');
+  const ctx    = canvas.getContext('2d');
+  let { width, height } = img;
+  if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width  = maxWidth; }
+  canvas.width  = width; canvas.height = height;
+  ctx.drawImage(img, 0, 0, width, height);
+  return canvas;
+}
+
+// --- Target Manager (Maneja la lógica dinámica de los inputs) ---
+class TargetManager {
+  constructor() {
+    this.activeInput = null;
+    this.modal = $(SELECTORS.SCANNER_MODAL);
+    this.indicatorText = $(SELECTORS.TARGET_NAME);
+    this.closeBtn = $(SELECTORS.CLOSE_MODAL);
+
+    this._bindEvents();
+  }
+
+  _bindEvents() {
+    // Ya NO forzamos el escáner al hacer focus en el input para permitir escritura manual libre.
+
+    // Escuchar clics ÚNICAMENTE en los botones de ícono de código de barras
+    const triggers = document.querySelectorAll('.scan-trigger');
+    triggers.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = btn.getAttribute('data-target');
+            const targetInput = document.getElementById(targetId);
+            if(targetInput) this.setTarget(targetInput);
+        });
+    });
+
+    // Cerrar Modal manualmente
+    if(this.closeBtn) {
+        this.closeBtn.addEventListener('click', () => this.closeModal());
+    }
+  }
+
+  setTarget(inputEl) {
+    // Limpiar resaltado del anterior
+    if (this.activeInput) {
+        this.activeInput.classList.remove('ring-4', 'ring-blue-400', 'border-blue-500');
+    }
+
+    this.activeInput = inputEl;
+    
+    // Resaltar nuevo input
+    this.activeInput.classList.add('ring-4', 'ring-blue-400', 'border-blue-500');
+    
+    // Actualizar UI Modal
+    const label = document.querySelector(`label[for="${inputEl.id}"]`);
+    const fieldName = label ? label.textContent : inputEl.placeholder;
+    this.indicatorText.textContent = `Apuntando a: ${fieldName}`;
+
+    // Mostrar Modal
+    this.modal.classList.remove(CSS.HIDDEN);
+    this.modal.classList.add('flex');
+    
+    // Ocultar el teclado en dispositivos móviles inmediatamente
+    inputEl.blur(); 
+  }
+
+  closeModal() {
+    // Ocultar Modal
+    this.modal.classList.add(CSS.HIDDEN);
+    this.modal.classList.remove('flex');
+    
+    // Quitar resaltado
+    if (this.activeInput) {
+        this.activeInput.classList.remove('ring-4', 'ring-blue-400', 'border-blue-500');
+        this.activeInput = null;
+    }
+
+    // Emitir evento para detener video y ahorrar recursos
+    document.dispatchEvent(new CustomEvent('scanner-closed'));
+  }
+
+  fillTarget(code) {
+    if (!this.activeInput) {
+        alert("Por favor selecciona un campo de texto primero.");
+        return false;
+    }
+
+    // Guardar referencia temporal
+    const inputToFill = this.activeInput;
+
+    // Inyectar el valor
+    inputToFill.value = code;
+    
+    // Efecto visual de éxito
+    inputToFill.classList.remove('ring-4', 'ring-blue-400', 'border-blue-500');
+    inputToFill.classList.add('input-success');
+    setTimeout(() => {
+        inputToFill.classList.remove('input-success');
+    }, 1000);
+
+    // Disparar evento de input por si hay otros scripts escuchando cambios
+    inputToFill.dispatchEvent(new Event('input', { bubbles: true }));
+    inputToFill.dispatchEvent(new Event('change', { bubbles: true }));
+
+    // Cerrar el modal exitosamente
+    this.closeModal();
+
+    return true;
+  }
+}
+
+// --- TabController ---
+class TabController {
+  constructor(tabMap) { this._tabMap = tabMap; }
+  switchTo(activeKey) {
+    Object.entries(this._tabMap).forEach(([key, { tab, content }]) => {
+      const isActive = key === activeKey;
+      toggleHidden(content, !isActive);
+      tab.className = isActive ? CSS.TAB_ACTIVE : CSS.TAB_INACTIVE;
+    });
+  }
+}
+
+// --- BarcodeReaderStrategies ---
+class Html5QrcodeStrategy {
+  constructor(instance) { this._qr = instance; }
+  async decode(file) { return await this._qr.scanFile(file, false); }
+}
+
+class BarcodeDetectorStrategy {
+  isSupported() { return 'BarcodeDetector' in window; }
+  async decode(file) {
+    const img      = await loadImage(file);
+    const canvas   = drawImageToCanvas(img);
+    URL.revokeObjectURL(img.src);
+    const detector = new BarcodeDetector({ formats: ['qr_code','ean_13','code_128','ean_8','upc_a','code_39'] });
+    const barcodes = await detector.detect(canvas);
+    if (!barcodes.length) throw new Error("No se detectó código.");
+    return barcodes[0].rawValue;
+  }
+}
+
+class ImageScanService {
+  constructor(primary, fallback) { this._primary = primary; this._fallback = fallback; }
+  async scan(file) {
+    try { return await this._primary.decode(file); } 
+    catch (e) {
+      if (!this._fallback.isSupported()) throw new Error("Tu navegador no soporta detección por foto.");
+      try { return await this._fallback.decode(file); } 
+      catch (err) { throw new Error(err.message === "No se detectó código." ? err.message : "Error en detector nativo."); }
+    }
+  }
+}
+
+// --- ButtonStateManager ---
+class ButtonStateManager {
+  constructor(btn) { this._btn = btn; this._originalHTML = btn.innerHTML; }
+  setLoading(html) { this._btn.disabled = true; this._btn.innerHTML = html; lucide.createIcons(); }
+  setText(text) { this._btn.textContent = text; }
+  reset() { this._btn.disabled = false; this._btn.innerHTML = this._originalHTML; lucide.createIcons(); }
+}
+
+// --- Scan Controllers (Inyectando datos al TargetManager) ---
+class PhotoScanController {
+  constructor(triggerBtn, fileInput, feedbackBox, scanService, targetManager) {
+    this._btnManager    = new ButtonStateManager(triggerBtn);
+    this._fileInput     = fileInput;
+    this._feedbackBox   = feedbackBox;
+    this._scanService   = scanService;
+    this._targetManager = targetManager;
+
+    triggerBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => this._onFileChange(e));
+  }
+
+  async _onFileChange(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this._btnManager.setLoading(`<i data-lucide="loader" class="animate-spin"></i> Leyendo Código...`);
+    this._feedbackBox.classList.add(CSS.SKELETON);
+
+    try {
+      const code = await this._scanService.scan(file);
+      // Inyectar en el input activo
+      this._targetManager.fillTarget(code);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      this._btnManager.reset();
+      this._feedbackBox.classList.remove(CSS.SKELETON);
+      event.target.value = '';
+    }
+  }
+}
+
+class VideoScanController {
+  constructor(startBtn, qrInstance, targetManager) {
+    this._btnManager    = new ButtonStateManager(startBtn);
+    this._qr            = qrInstance;
+    this._targetManager = targetManager;
+    this._isScanning    = false;
+
+    startBtn.addEventListener('click', () => this._onToggle());
+    
+    // Escuchar cierre de modal para detener la cámara automáticamente
+    document.addEventListener('scanner-closed', () => {
+      if (this._isScanning) {
+          this._qr.stop();
+          this._isScanning = false;
+          this._btnManager.reset();
+      }
+    });
+  }
+
+  async _onToggle() {
+    if (this._isScanning) {
+        this._qr.stop();
+        this._isScanning = false;
+        this._btnManager.reset();
+        return;
+    }
+
+    this._btnManager.setLoading('Iniciando...');
+    try {
+      await this._qr.start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: 250 },
+        (text) => this._onCodeDetected(text)
+      );
+      this._isScanning = true;
+      this._btnManager.setText('Lector Activo... (Cierra video al terminar)');
+    } catch (err) {
+      alert(`Error: ${err}`);
+      this._btnManager.reset();
+    }
+  }
+
+  _onCodeDetected(text) {
+    // Intentar inyectar en el input activo
+    const success = this._targetManager.fillTarget(text);
+    
+    // Si se inyectó con éxito, detenemos el video automáticamente para seguir llenando el formulario
+    if(success) {
+        this._qr.stop();
+        this._isScanning = false;
+        this._btnManager.reset();
+    }
+  }
+}
+
+// --- Init ---
+function init() {
+  lucide.createIcons();
+
+  // Instanciar Gestor Dinámico
+  const targetManager = new TargetManager();
+
+  const qrInstance = new Html5Qrcode(SELECTORS.QR_READER);
+  
+  const tabController = new TabController({
+    [TABS.SYSTEM]: { tab: $(SELECTORS.TAB_SYSTEM), content: $(SELECTORS.CONTENT_SYSTEM) },
+    [TABS.APPLE]:  { tab: $(SELECTORS.TAB_APPLE), content: $(SELECTORS.CONTENT_APPLE) },
+  });
+  window.switchTab = (tab) => tabController.switchTo(tab);
+
+  const scanService = new ImageScanService(new Html5QrcodeStrategy(qrInstance), new BarcodeDetectorStrategy());
+
+  new PhotoScanController(
+    $(SELECTORS.TRIGGER_BTN),
+    $(SELECTORS.CAMERA_INPUT),
+    $('#system-box'),
+    scanService,
+    targetManager
+  );
+
+  new VideoScanController(
+    $(SELECTORS.START_BTN),
+    qrInstance,
+    targetManager
+  );
+}
+
+document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

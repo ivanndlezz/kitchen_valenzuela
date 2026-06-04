@@ -10,7 +10,14 @@ window.SyncManager = {
     baseId: "apppjeEy9lY65U4On",
     table: "products",
     jsonUrl: "./data/kv_products_2026_05_05_19_31_43.json",
-    saveServerUrl: "http://localhost:8765/save_inventory"
+    saveServerUrl: "http://localhost:8765/save_inventory",
+    priority: "airtable", // "airtable" > "local" > "json"
+    quotes: {
+      endpoint: "https://klef.newfacecards.com/shum-api/api.php",
+      baseId: "appSVqxolsBlPACLH",
+      table: "quotes",
+      jsonBackupTable: "quote_backups"
+    }
   },
 
   async shumRequest(action, params) {
@@ -350,6 +357,148 @@ window.SyncManager = {
       console.warn("SyncManager: Could not load JSON file", e);
       return [];
     }
+  },
+
+  mapLocalToAirtableQuote(quote) {
+    const toDate = (v) => v ? v.slice(0, 10) : null;
+    return {
+      "quote_id": quote.id,
+      "status": quote.status,
+      "client_id": quote.clientId || "",
+      "created_at": toDate(quote.createdAt),
+      "updated_at": toDate(quote.updatedAt),
+      "sent_at": toDate(quote.sentAt),
+      "reserved_at": toDate(quote.reservedAt),
+      "current_step": quote.currentStep || 1,
+      "items_json": JSON.stringify(quote.items || []),
+      "subtotal": Number(quote.subtotal) || 0,
+      "tax": Number(quote.tax) || 0,
+      "total": Number(quote.total) || 0
+    };
+  },
+
+  mapAirtableToLocalQuote(record) {
+    const f = record.fields || {};
+    return {
+      id: f["quote_id"] || record.id,
+      status: f["status"] || "draft",
+      clientId: f["client_id"] || "",
+      createdAt: f["created_at"] || new Date().toISOString(),
+      updatedAt: f["updated_at"] || new Date().toISOString(),
+      sentAt: f["sent_at"] || null,
+      reservedAt: f["reserved_at"] || null,
+      currentStep: Number(f["current_step"]) || 1,
+      items: f["items_json"] ? JSON.parse(f["items_json"]) : [],
+      subtotal: Number(f["subtotal"]) || 0,
+      tax: Number(f["tax"]) || 0,
+      total: Number(f["total"]) || 0,
+      airtable_id: record.id,
+      sync_status: "synced"
+    };
+  },
+
+  async fetchAllQuotesFromAirtable() {
+    let allRecords = [];
+    let offset = null;
+    let pages = 0;
+    const maxPages = 20;
+    const seenIds = new Set();
+
+    do {
+      const params = {
+        baseId: this.config.quotes.baseId,
+        table: this.config.quotes.table
+      };
+      if (offset) {
+        params.offset = offset;
+      }
+      const result = await this.shumRequest("list", params);
+      const records = result && result.records ? result.records : [];
+      const newRecords = records.filter(rec => {
+        if (seenIds.has(rec.id)) return false;
+        seenIds.add(rec.id);
+        return true;
+      });
+      allRecords = allRecords.concat(newRecords);
+      offset = result && result.offset ? result.offset : null;
+      pages++;
+      if (records.length > 0 && newRecords.length === 0) {
+        break;
+      }
+    } while (offset && pages < maxPages);
+
+    return allRecords;
+  },
+
+  async syncQuote(quote) {
+    const mapped = this.mapLocalToAirtableQuote(quote);
+    let result;
+
+    if (!quote.airtable_id) {
+      try {
+        const listRes = await this.shumRequest("list", {
+          baseId: this.config.quotes.baseId,
+          table: this.config.quotes.table,
+          filter: {
+            filterByFormula: `{quote_id} = '${quote.id}'`
+          }
+        });
+        const records = listRes && listRes.records ? listRes.records : [];
+        if (records.length > 0 && records[0].id) {
+          quote.airtable_id = records[0].id;
+          console.log("SyncManager: Auto-linked quote via ID:", quote.id, "to Airtable ID:", quote.airtable_id);
+        }
+      } catch (e) {
+        console.warn("SyncManager: Failed to reconcile quote by ID", e);
+      }
+    }
+
+    if (quote.airtable_id) {
+      try {
+        result = await this.shumRequest("update", {
+          baseId: this.config.quotes.baseId,
+          table: this.config.quotes.table,
+          recordId: quote.airtable_id,
+          data: mapped
+        });
+      } catch (err) {
+        if (err.message && err.message.includes("does not exist")) {
+          console.warn("SyncManager: Record ID no longer exists on Airtable. Recreating...");
+          quote.airtable_id = null;
+          result = await this.shumRequest("create", {
+            baseId: this.config.quotes.baseId,
+            table: this.config.quotes.table,
+            data: mapped
+          });
+          if (result && result.id) {
+            quote.airtable_id = result.id;
+          }
+        } else {
+          throw err;
+        }
+      }
+    } else {
+      result = await this.shumRequest("create", {
+        baseId: this.config.quotes.baseId,
+        table: this.config.quotes.table,
+        data: mapped
+      });
+      if (result && result.id) {
+        quote.airtable_id = result.id;
+      }
+    }
+
+    quote.sync_status = "synced";
+    quote.updatedAt = new Date().toISOString();
+    return result;
+  },
+
+  async deleteQuoteFromAirtable(airtableId) {
+    return await this.shumRequest("delete", {
+      baseId: this.config.quotes.baseId,
+      table: this.config.quotes.table,
+      recordId: airtableId
+    });
   }
 };
 

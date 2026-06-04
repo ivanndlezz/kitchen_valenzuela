@@ -207,9 +207,23 @@ function setupEventListeners() {
   });
 
   // Search Input Reactivity
+  const searchClearBtn = document.getElementById("search-clear-btn");
+  if (searchClearBtn) {
+    searchClearBtn.addEventListener("click", () => {
+      window.DOM.searchInput.value = "";
+      window.AppState.filters.text = "";
+      applyFilters();
+      searchClearBtn.style.display = "none";
+      window.DOM.searchInput.focus();
+    });
+  }
+
   window.DOM.searchInput.addEventListener("input", (e) => {
     window.AppState.filters.text = e.target.value;
     applyFilters();
+    if (searchClearBtn) {
+      searchClearBtn.style.display = e.target.value ? "flex" : "none";
+    }
   });
 
   // Category Selector Tabs

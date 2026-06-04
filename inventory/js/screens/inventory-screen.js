@@ -4,6 +4,14 @@
  */
 
 function calculateMetrics() {
+  // Guard: skip metric calculation while loading from cloud
+  if (window.AppState.isLoading) {
+    if (window.DOM.metricTotalProducts) window.DOM.metricTotalProducts.innerHTML = '<span class="skeleton-bone skeleton-metric"></span>';
+    if (window.DOM.metricTotalStock)    window.DOM.metricTotalStock.innerHTML    = '<span class="skeleton-bone skeleton-metric"></span>';
+    if (window.DOM.metricLowStock)      window.DOM.metricLowStock.innerHTML      = '<span class="skeleton-bone skeleton-metric"></span>';
+    if (window.DOM.metricTotalBrands)   window.DOM.metricTotalBrands.innerHTML   = '<span class="skeleton-bone skeleton-metric"></span>';
+    return;
+  }
   const totalProducts = window.AppState.products.length;
   const totalStock = window.AppState.products.reduce((sum, p) => sum + (parseFloat(p.stock) || 0), 0);
   const lowStock = window.AppState.products.filter(p => (parseFloat(p.stock) || 0) <= (parseFloat(p.alertaCantidad) || 0)).length;
@@ -130,6 +138,8 @@ function sortFilteredProducts() {
 }
 
 function renderProducts() {
+  // Guard: don't render empty state while loading
+  if (window.AppState.isLoading) return;
   if (window.AppState.filteredProducts.length === 0) {
     if (window.AppState.products.length === 0) {
       // Absolute empty state
@@ -273,4 +283,33 @@ window.renderInventoryView = function() {
   calculateMetrics();
   populateBrandFilter();
   applyFilters();
+};
+
+/**
+ * Render skeleton placeholder cards into the products container.
+ * Called from storage.js before an async Airtable fetch begins.
+ * @param {number} count - Number of skeleton cards to show (default 8)
+ */
+window.renderSkeletons = function(count) {
+  count = count || 8;
+  const container = document.getElementById('products-container');
+  if (!container) return;
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += `
+      <div class="skeleton-card">
+        <div class="skeleton-bone skeleton-card__image"></div>
+        <div class="skeleton-card__body">
+          <div class="skeleton-bone skeleton-card__badge"></div>
+          <div class="skeleton-bone skeleton-card__title"></div>
+          <div class="skeleton-bone skeleton-card__sku"></div>
+          <div class="skeleton-card__footer">
+            <div class="skeleton-bone skeleton-card__price"></div>
+            <div class="skeleton-bone skeleton-card__stock"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  container.innerHTML = html;
 };

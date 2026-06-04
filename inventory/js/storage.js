@@ -15,7 +15,9 @@ function deduplicateProducts(products) {
 
 async function loadProductsFromStorage() {
   const saved = localStorage.getItem("kv-catalog-products");
-  if (saved) {
+  const priorityAirtable = window.SyncManager && window.SyncManager.config && window.SyncManager.config.priority === "airtable";
+  if (saved && !priorityAirtable) {
+    // Existing cached data is used when no Airtable priority override
     try {
       window.AppState.products = JSON.parse(saved);
       const before = window.AppState.products.length;
@@ -29,25 +31,54 @@ async function loadProductsFromStorage() {
       window.AppState.products = [];
     }
   } else {
-    // Attempt auto-import from backup JSON if LocalStorage is empty
+    // LocalStorage is empty or priority forces Airtable load
+    window.AppState.isLoading = true;
+
+    // Show skeleton placeholders while fetching
+    if (typeof window.renderSkeletons === 'function') {
+      window.renderSkeletons(8);
+    }
+
+    // STEP 1: Try Airtable (SHUM API) first — has the complete catalog (~500 products)
+    let loadedFromCloud = false;
     try {
-      if (window.SyncManager && typeof window.SyncManager.loadFromLocalJSON === "function") {
-        const raw = await window.SyncManager.loadFromLocalJSON();
-        if (raw && raw.length > 0) {
-          window.AppState.products = raw.map(normalizeJsonProduct);
+      if (window.SyncManager && typeof window.SyncManager.fetchAllFromAirtable === "function") {
+        console.log("Storage: Attempting to load products from Airtable (priority source)...");
+        const cloudRecords = await window.SyncManager.fetchAllFromAirtable();
+        if (cloudRecords && cloudRecords.length > 0) {
+          window.AppState.products = cloudRecords.map(rec => window.SyncManager.mapAirtableToLocal(rec));
           window.AppState.products = deduplicateProducts(window.AppState.products);
           localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
-          console.log(`SyncManager: Auto-imported ${window.AppState.products.length} products from backup JSON.`);
+          console.log(`Storage: Loaded ${window.AppState.products.length} products from Airtable.`);
+          loadedFromCloud = true;
+        }
+      }
+    } catch (err) {
+      console.warn("Storage: Failed to load from Airtable, falling back to JSON:", err);
+    }
+
+    // STEP 2: Fallback to local JSON backup if Airtable failed or returned nothing
+    if (!loadedFromCloud) {
+      try {
+        if (window.SyncManager && typeof window.SyncManager.loadFromLocalJSON === "function") {
+          const raw = await window.SyncManager.loadFromLocalJSON();
+          if (raw && raw.length > 0) {
+            window.AppState.products = raw.map(normalizeJsonProduct);
+            window.AppState.products = deduplicateProducts(window.AppState.products);
+            localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
+            console.log(`Storage: Fallback — imported ${window.AppState.products.length} products from backup JSON.`);
+          } else {
+            window.AppState.products = [];
+          }
         } else {
           window.AppState.products = [];
         }
-      } else {
+      } catch (err) {
+        console.warn("Storage: Failed to load backup JSON:", err);
         window.AppState.products = [];
       }
-    } catch (err) {
-      console.warn("Failed to load initial backup JSON:", err);
-      window.AppState.products = [];
     }
+    window.AppState.isLoading = false;
   }
 }
 
