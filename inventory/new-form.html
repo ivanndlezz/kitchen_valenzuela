@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuevo Producto</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Geist', system-ui, sans-serif;
+  background: #f5f5f3;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px;
+  color: #111;
+}
+
+.form-wrap {
+  width: 100%;
+  max-width: 640px;
+}
+
+.top-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.top-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+  letter-spacing: -.01em;
+}
+
+/* ── Required toggle ──────────────────────────────── */
+.req-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border: 1px solid #e5e5e3;
+  border-radius: 99px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+}
+
+.req-toggle:hover { border-color: #ccc; }
+
+.req-toggle.active {
+  border-color: #111;
+  background: #111;
+}
+
+.req-toggle .dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f0f0ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+
+.req-toggle.active .dot {
+  background: #fff;
+}
+
+.req-toggle .dot svg {
+  width: 8px;
+  height: 8px;
+  stroke: #999;
+  stroke-width: 2.5;
+  fill: none;
+  transition: stroke .2s;
+}
+
+.req-toggle.active .dot svg {
+  stroke: #111;
+}
+
+.req-toggle span {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  letter-spacing: .01em;
+  transition: color .2s;
+  white-space: nowrap;
+}
+
+.req-toggle.active span { color: #fff; }
+
+/* ── Dim mode ─────────────────────────────────────── */
+body.dim-optional .field:not(.is-required) {
+  opacity: 0.28;
+  pointer-events: none;
+  transition: opacity .25s;
+}
+
+body.dim-optional .field.is-required {
+  opacity: 1;
+  transition: opacity .25s;
+}
+
+/* highlight required label star in dim mode */
+body.dim-optional .field.is-required .req {
+  color: #c00;
+}
+
+/* ── Step ─────────────────────────────────────────── */
+.step {
+  background: #fff;
+  border: 1px solid #e5e5e3;
+  border-radius: 14px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.step.active {
+  border-color: #d4d4d0;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+.step.done .step-num { background: #111; color: #fff; }
+.step.done .step-check { display: flex; }
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity .2s, background .15s;
+}
+
+.step-header:hover {
+  background: #fafafa;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f0f0ee;
+  color: #999;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s, color .2s;
+}
+
+.step.active .step-num {
+  background: #111;
+  color: #fff;
+}
+
+.step-title {
+  flex: 1;
+}
+
+.step-title strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  color: #111;
+}
+
+.step-title span {
+  font-size: 12px;
+  color: #999;
+  font-weight: 400;
+  margin-top: 1px;
+  display: block;
+}
+
+.step-arrow {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+}
+
+.step-arrow svg {
+  width: 12px;
+  height: 12px;
+  stroke: #bbb;
+  stroke-width: 2;
+  fill: none;
+}
+
+.step.open .step-arrow { transform: rotate(180deg); }
+
+.step-check {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #111;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-check svg { width: 10px; height: 10px; stroke: #fff; stroke-width: 2.5; fill: none; }
+
+/* ── Body ────────────────────────────────────────── */
+.step-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s cubic-bezier(.4,0,.2,1);
+}
+
+.step-body-inner {
+  padding: 0 20px 24px;
+  border-top: 1px solid #f0f0ee;
+}
+
+/* ── Fields ──────────────────────────────────────── */
+.field { margin-bottom: 14px; transition: opacity .25s; }
+.field:last-child { margin-bottom: 0; }
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 5px;
+  letter-spacing: .01em;
+}
+
+.field label .req { color: #c00; margin-left: 2px; }
+.field label .hint { color: #bbb; font-weight: 400; margin-left: 4px; font-size: 11px; }
+
+input[type=text], input[type=number], input[type=date], select, textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #e5e5e3;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #111;
+  background: #fafafa;
+  outline: none;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #111;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.06);
+}
+
+input::placeholder, textarea::placeholder { color: #ccc; }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+/* ── Type pills ──────────────────────────────────── */
+.pills { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.pill {
+  padding: 6px 14px;
+  border: 1px solid #e5e5e3;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all .15s;
+  background: #fafafa;
+}
+
+.pill:hover { border-color: #ccc; color: #111; }
+.pill.on { border-color: #111; background: #111; color: #fff; }
+.pill input { display: none; }
+
+/* ── Prefix input ────────────────────────────────── */
+.input-row { display: flex; }
+.prefix {
+  padding: 9px 10px;
+  border: 1px solid #e5e5e3;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  background: #f5f5f3;
+  font-size: 13px;
+  color: #999;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.input-row input { border-radius: 0 8px 8px 0; }
+.suffix {
+  padding: 9px 10px;
+  border: 1px solid #e5e5e3;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  background: #f5f5f3;
+  font-size: 13px;
+  color: #999;
+  display: flex;
+  align-items: center;
+}
+.input-row input.has-suffix { border-radius: 8px 0 0 8px; }
+
+/* ── Code input ──────────────────────────────────── */
+.code-wrap { position: relative; }
+.code-wrap input { font-family: 'Geist Mono', monospace; padding-right: 38px; }
+.btn-rand {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 36px;
+  background: none; border: none; border-left: 1px solid #e5e5e3;
+  border-radius: 0 8px 8px 0; cursor: pointer; color: #bbb;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .15s, background .15s;
+}
+.btn-rand:hover { color: #111; background: #f5f5f3; }
+.btn-rand svg { width: 13px; height: 13px; }
+
+/* ── Toggles ─────────────────────────────────────── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0ee;
+}
+.toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+.toggle-row:first-child { padding-top: 0; }
+
+.toggle-info strong { display: block; font-size: 13px; font-weight: 500; color: #111; }
+.toggle-info small { font-size: 11px; color: #bbb; }
+
+.switch { position: relative; width: 34px; height: 19px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.track {
+  position: absolute; inset: 0;
+  background: #e5e5e3; border-radius: 10px;
+  cursor: pointer; transition: background .2s;
+}
+.thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 13px; height: 13px;
+  background: #fff; border-radius: 50%;
+  transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.switch input:checked + .track { background: #111; }
+.switch input:checked + .track .thumb { transform: translateX(15px); }
+
+/* ── Warehouse ───────────────────────────────────── */
+.wh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.wh-card {
+  border: 1px solid #e5e5e3;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fafafa;
+}
+.wh-name {
+  font-size: 11px; font-weight: 500; color: #999;
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.wh-dot { width: 5px; height: 5px; border-radius: 50%; background: #111; }
+
+/* ── Divider ─────────────────────────────────────── */
+.divider {
+  font-size: 11px; font-weight: 500; color: #bbb;
+  text-transform: uppercase; letter-spacing: .08em;
+  margin: 18px 0 12px; display: flex; align-items: center; gap: 10px;
+}
+.divider::after { content: ''; flex: 1; height: 1px; background: #f0f0ee; }
+
+/* ── Promo collapse ──────────────────────────────── */
+.sub-body { overflow: hidden; max-height: 0; transition: max-height .25s ease; }
+.sub-body.open { max-height: 200px; }
+
+/* ── Upload zone ─────────────────────────────────── */
+.upload {
+  border: 1px dashed #d5d5d3;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: border-color .15s, background .15s;
+}
+.upload:hover { border-color: #111; background: #fafafa; }
+.upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.upload-icon { font-size: 20px; margin-bottom: 5px; }
+.upload p { font-size: 12px; color: #999; }
+.upload strong { color: #111; font-size: 12px; }
+
+/* ── SAT badge ───────────────────────────────────── */
+.sat-badge {
+  display: inline-block;
+  font-size: 10px; font-weight: 500;
+  background: #f0f0ee; color: #888;
+  padding: 2px 7px; border-radius: 4px;
+  letter-spacing: .04em;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ── Mark done button ────────────────────────────── */
+.btn-done {
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: -.01em;
+  transition: background .15s, transform .1s;
+}
+.btn-done:hover { background: #333; }
+.btn-done:active { transform: scale(.99); }
+
+/* ── Final submit ────────────────────────────────── */
+.btn-submit {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: -.01em;
+  transition: background .15s;
+  display: none;
+}
+.btn-submit:hover { background: #333; }
+.btn-submit.visible { display: block; }
+
+/* ── Summary chips ───────────────────────────────── */
+.summary {
+  display: none;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 10px 20px 12px;
+  border-top: 1px solid #f0f0ee;
+}
+.summary.has-chips { display: flex; }
+.chip {
+  font-size: 11px; color: #666;
+  background: #f5f5f3;
+  border-radius: 5px;
+  padding: 3px 8px;
+}
+
+/* ── Progress bar ────────────────────────────────── */
+.progress-bar {
+  height: 2px;
+  background: #f0f0ee;
+  border-radius: 1px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: #111;
+  border-radius: 1px;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+  width: 0%;
+}
+
+/* ── FORCE C128 ────────────────────────────────── */
+.field:has([name="barcode_symbology"]){
+  display: none;
+}
+
+/* ── Step Navigation Pills ────────────────────────── */
+.step-pills {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 8px 16px;
+  scroll-behavior: smooth;
+  position: sticky;
+  top: 0px;
+  z-index: 20;
+  background: #f5f5f3;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.step-pills::-webkit-scrollbar {
+  display: none;
+}
+/* Invisible spacers so first/last pills can be scrolled to center */
+.step-pills::before,
+.step-pills::after {
+  content: '';
+  flex: 0 0 calc(50% - 40px);
+}
+.step-pills .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 6px 12px;
+  flex-shrink: 0;
+}
+.step-pills .pill.done:not(.on) {
+  border-color: #d4d4d0;
+  background: #f0f0ee;
+  color: #111;
+}
+.step-pills .pill.done .pill-check-icon {
+  display: inline-flex !important;
+}
+
+/* ── Quick Form (mandatory-only) ─────────────────── */
+.quick-form {
+  display: none;
+  background: #fff;
+  border: 1px solid #e5e5e3;
+  border-radius: 14px;
+  padding: 24px 20px;
+  animation: qf-in .3s ease;
+}
+.quick-form.visible { display: block; }
+@keyframes qf-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.quick-form .qf-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quick-form .qf-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #f0f0ee;
+}
+.quick-form .qf-section {
+  margin-bottom: 18px;
+}
+.quick-form .qf-section:last-of-type {
+  margin-bottom: 0;
+}
+.quick-form .qf-section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 10px;
+}
+
+/* Hide main form + pills when quick form is active */
+body.quick-mode #pf,
+body.quick-mode .step-pills,
+body.quick-mode .progress-bar {
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<div class="form-wrap">
+  <div class="top-bar">
+    <div class="top-bar-row">
+      <h1>Nuevo producto</h1>
+      <button class="req-toggle" id="req-toggle">
+        <div class="dot">
+          <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <span>Solo obligatorios</span>
+      </button>
+    </div>
+  </div>
+  <div class="step-pills" id="step-pills"></div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <form id="pf" autocomplete="off">
+
+    <!-- ── 1. IDENTIDAD ─────────────────────────────── -->
+    <div class="step" id="s1">
+      <div class="step-header" data-step="1">
+        <div class="step-num">1</div>
+        <div class="step-title">
+          <strong>Identidad</strong>
+          <span>Nombre, tipo y código del producto</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b1">
+        <div class="step-body-inner">
+
+          <div class="field" style="margin-top:16px;">
+            <label>Tipo de producto</label>
+            <div class="pills" id="f-product-types"></div>
+          </div>
+
+          <div class="field is-required">
+            <label>Nombre <span class="req">*</span></label>
+            <input type="text" name="name" id="f-name" placeholder="Ej. Válvula de gas robertshaw 36C">
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>Nombre secundario</label>
+              <input type="text" name="second_name" placeholder="Alias o nombre corto">
+            </div>
+            <div class="field is-required">
+              <label>Código <span class="req">*</span></label>
+              <input type="text" name="code" id="f-code" placeholder="SKU / código de barras">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Simbología de barras</label>
+            <select name="barcode_symbology"></select>
+          </div>
+
+          <button type="button" class="btn-done" data-step="1">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum1"></div>
+    </div>
+
+    <!-- ── 2. CLASIFICACIÓN ──────────────────────────── -->
+    <div class="step" id="s2">
+      <div class="step-header" data-step="2">
+        <div class="step-num">2</div>
+        <div class="step-title">
+          <strong>Clasificación</strong>
+          <span>Categoría, marca y claves SAT</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b2">
+        <div class="step-body-inner">
+          <div class="grid-2" style="margin-top:16px;">
+            <div class="field is-required">
+              <label>Categoría <span class="req">*</span></label>
+              <select name="category" id="f-cat"></select>
+            </div>
+            <div class="field">
+              <label>Subcategoría</label>
+              <select name="subcategory" id="f-subcat" disabled></select>
+            </div>
+            <div class="field">
+              <label>Marca</label>
+              <select name="brand"></select>
+            </div>
+          </div>
+
+          <div class="divider">Claves SAT</div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>Clave Unidad <span class="sat-badge">SAT</span></label>
+              <input type="text" name="claveUnidad" placeholder="Ej. H87, KGM, E48">
+            </div>
+            <div class="field">
+              <label>Clave Prod./Serv. <span class="sat-badge">SAT</span></label>
+              <input type="text" name="claveProdServ" placeholder="Ej. 25201503">
+            </div>
+          </div>
+
+          <button type="button" class="btn-done" data-step="2">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum2"></div>
+    </div>
+
+    <!-- ── 3. PRECIOS & FISCALIDAD ───────────────────── -->
+    <div class="step" id="s3">
+      <div class="step-header" data-step="3">
+        <div class="step-num">3</div>
+        <div class="step-title">
+          <strong>Precios &amp; Fiscalidad</strong>
+          <span>Costo, precio, IVA y promociones</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b3">
+        <div class="step-body-inner">
+          <div class="grid-2" style="margin-top:16px;">
+            <div class="field is-required">
+              <label>Costo <span class="req">*</span></label>
+              <div class="input-row">
+                <span class="prefix">$</span>
+                <input type="number" name="cost" placeholder="0.00" step="0.01" min="0">
+              </div>
+            </div>
+            <div class="field is-required">
+              <label>Precio de venta <span class="req">*</span></label>
+              <div class="input-row">
+                <span class="prefix">$</span>
+                <input type="number" name="price" id="f-price" placeholder="0.00" step="0.01" min="0">
+              </div>
+            </div>
+            <div class="field">
+              <label>Impuesto</label>
+              <select name="tax_rate"></select>
+            </div>
+            <div class="field">
+              <label>Método</label>
+              <select name="tax_method"></select>
+            </div>
+          </div>
+
+          <div class="divider">Promoción</div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <strong>Precio de promoción</strong>
+              <small>Activa precio especial con vigencia</small>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="sw-promo">
+              <div class="track"><div class="thumb"></div></div>
+            </label>
+          </div>
+
+          <div class="sub-body" id="promo-body">
+            <div class="grid-3" style="margin-top:12px;">
+              <div class="field">
+                <label>Precio promo</label>
+                <div class="input-row"><span class="prefix">$</span>
+                  <input type="number" name="promo_price" placeholder="0.00" step="0.01">
+                </div>
+              </div>
+              <div class="field">
+                <label>Desde</label>
+                <input type="date" name="start_date">
+              </div>
+              <div class="field">
+                <label>Hasta</label>
+                <input type="date" name="end_date">
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-done" data-step="3">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum3"></div>
+    </div>
+
+    <!-- ── 4. INVENTARIO ─────────────────────────────── -->
+    <div class="step" id="s4">
+      <div class="step-header" data-step="4">
+        <div class="step-num">4</div>
+        <div class="step-title">
+          <strong>Inventario</strong>
+          <span>Unidades y existencias por almacén</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b4">
+        <div class="step-body-inner">
+          <div class="grid-3" style="margin-top:16px;">
+            <div class="field is-required">
+              <label>Unidad <span class="req">*</span></label>
+              <select name="unit"></select>
+            </div>
+            <div class="field">
+              <label>Unidad venta</label>
+              <select name="default_sale_unit" id="u-sale" disabled></select>
+            </div>
+            <div class="field">
+              <label>Unidad compra</label>
+              <select name="default_purchase_unit" id="u-purch" disabled></select>
+            </div>
+          </div>
+
+          <div class="wh-grid">
+            <div class="wh-card">
+              <div class="wh-name"><span class="wh-dot"></span>Kitchen Clean</div>
+              <div class="field"><label>Cantidad</label>
+                <input type="number" name="wh_qty_3" placeholder="0" min="0">
+                <input type="hidden" name="wh_3" value="3">
+              </div>
+              <div class="field"><label>Estante</label>
+                <input type="text" name="rack_3" placeholder="Ej. A-12">
+              </div>
+            </div>
+            <div class="wh-card">
+              <div class="wh-name"><span class="wh-dot" style="background:#999;"></span>Inoxidables</div>
+              <div class="field"><label>Cantidad</label>
+                <input type="number" name="wh_qty_4" placeholder="0" min="0">
+                <input type="hidden" name="wh_4" value="4">
+              </div>
+              <div class="field"><label>Estante</label>
+                <input type="text" name="rack_4" placeholder="Ej. B-07">
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;" class="field">
+            <label>Cantidad mínima de alerta</label>
+            <input type="number" name="alert_quantity" placeholder="0" min="0" style="width:140px;">
+          </div>
+
+          <button type="button" class="btn-done" data-step="4">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum4"></div>
+    </div>
+
+    <!-- ── 5. LOGÍSTICA ──────────────────────────────── -->
+    <div class="step" id="s5">
+      <div class="step-header" data-step="5">
+        <div class="step-num">5</div>
+        <div class="step-title">
+          <strong>Logística</strong>
+          <span>Peso, envío y proveedor</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b5">
+        <div class="step-body-inner">
+          <div class="grid-2" style="margin-top:16px;">
+            <div class="field">
+              <label>Peso</label>
+              <div class="input-row">
+                <input type="number" name="weight" placeholder="0.000" step="0.001" min="0" class="has-suffix">
+                <span class="suffix">kg</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Tipo de envío</label>
+              <select name="tipoEnvio"></select>
+            </div>
+            <div class="field" id="ship-cost" style="display:none;">
+              <label>Costo de envío</label>
+              <div class="input-row"><span class="prefix">$</span>
+                <input type="number" name="CostoEnvio" placeholder="0.00" step="0.01">
+              </div>
+            </div>
+          </div>
+
+          <div class="divider">Proveedor</div>
+
+          <div class="field">
+            <label>Proveedor</label>
+            <select name="supplier"></select>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label>N° parte proveedor</label>
+              <input type="text" name="supplier_part_no" placeholder="Ej. RB-36C-001">
+            </div>
+            <div class="field">
+              <label>Precio proveedor</label>
+              <div class="input-row"><span class="prefix">$</span>
+                <input type="number" name="supplier_price" placeholder="0.00" step="0.01">
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-done" data-step="5">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum5"></div>
+    </div>
+
+    <!-- ── 6. CONTENIDO ──────────────────────────────── -->
+    <div class="step" id="s6">
+      <div class="step-header" data-step="6">
+        <div class="step-num">6</div>
+        <div class="step-title">
+          <strong>Contenido</strong>
+          <span>Descripción para tienda y factura</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b6">
+        <div class="step-body-inner">
+          <div class="field" style="margin-top:16px;">
+            <label>Descripción — tienda</label>
+            <textarea name="product_details" placeholder="Lo que verá el cliente en la tienda en línea…"></textarea>
+          </div>
+          <div class="field">
+            <label>Descripción — factura / CFDI</label>
+            <textarea name="details" placeholder="Texto que aparecerá en la factura electrónica…" style="min-height:60px;"></textarea>
+          </div>
+          <div class="field">
+            <label>Historia del producto <span class="hint">interno</span></label>
+            <textarea name="history" placeholder="Notas internas, historial de cambios…" style="min-height:60px;"></textarea>
+          </div>
+          <button type="button" class="btn-done" data-step="6">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum6"></div>
+    </div>
+
+    <!-- ── 7. MEDIOS & VISIBILIDAD ───────────────────── -->
+    <div class="step" id="s7">
+      <div class="step-header" data-step="7">
+        <div class="step-num">7</div>
+        <div class="step-title">
+          <strong>Medios &amp; Visibilidad</strong>
+          <span>Imágenes y configuración de publicación</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b7">
+        <div class="step-body-inner">
+          <div class="grid-2" style="margin-top:16px;">
+            <div class="field">
+              <label>Imagen principal</label>
+              <div class="upload">
+                <input type="file" name="product_image" accept="image/*">
+                <div class="upload-icon">↑</div>
+                <strong>Subir imagen</strong>
+                <p>890 × 1000 px</p>
+              </div>
+            </div>
+            <div class="field">
+              <label>Galería</label>
+              <div class="upload">
+                <input type="file" name="userfile[]" accept="image/*" multiple>
+                <div class="upload-icon">↑</div>
+                <strong>Múltiples imágenes</strong>
+                <p>890 × 1000 px</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider">Publicación</div>
+
+          <div class="toggle-row">
+            <div class="toggle-info"><strong>Mostrar en página de inicio</strong><small>Aparece en sección destacados</small></div>
+            <label class="switch"><input type="checkbox" name="featured" value="1"><div class="track"><div class="thumb"></div></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><strong>Ocultar en POS</strong><small>No aparece en ventas de mostrador</small></div>
+            <label class="switch"><input type="checkbox" name="hide_pos" value="1"><div class="track"><div class="thumb"></div></div></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><strong>Ocultar en tienda</strong><small>Producto privado, no público</small></div>
+            <label class="switch"><input type="checkbox" name="hide" value="1"><div class="track"><div class="thumb"></div></div></label>
+          </div>
+
+          <button type="button" class="btn-done" data-step="7">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum7"></div>
+    </div>
+
+    <!-- ── 8. CAMPOS EXTRA ───────────────────────────── -->
+    <div class="step" id="s8">
+      <div class="step-header" data-step="8">
+        <div class="step-num">8</div>
+        <div class="step-title">
+          <strong>Campos personalizados</strong>
+          <span>Atributos adicionales opcionales</span>
+        </div>
+        <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
+        <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="step-body" id="b8">
+        <div class="step-body-inner">
+          <div class="grid-3" style="margin-top:16px;">
+            <div class="field"><label>Campo 1 <span class="hint">cf1</span></label><input type="text" name="cf1" placeholder="Valor"></div>
+            <div class="field"><label>Campo 2 <span class="hint">cf2</span></label><input type="text" name="cf2" placeholder="Valor"></div>
+            <div class="field"><label>Campo 3 <span class="hint">cf3</span></label><input type="text" name="cf3" placeholder="Valor"></div>
+            <div class="field"><label>Campo 4 <span class="hint">cf4</span></label><input type="text" name="cf4" placeholder="Valor"></div>
+            <div class="field"><label>Campo 5 <span class="hint">cf5</span></label><input type="text" name="cf5" placeholder="Valor"></div>
+            <div class="field"><label>Campo 6 <span class="hint">cf6</span></label><input type="text" name="cf6" placeholder="Valor"></div>
+          </div>
+          <button type="button" class="btn-done" data-step="8">Marcar como completo</button>
+        </div>
+      </div>
+      <div class="summary" id="sum8"></div>
+    </div>
+
+    <button type="submit" class="btn-submit" id="btn-submit" name="add_product">Guardar producto</button>
+
+  </form>
+
+  <!-- ── Quick Form: mandatory-only ──────────────── -->
+  <div class="quick-form" id="quick-form">
+    <div class="qf-title">Solo campos obligatorios</div>
+
+    <div class="qf-section">
+      <div class="qf-section-label">Identidad</div>
+      <div class="field is-required">
+        <label>Tipo de producto</label>
+        <div class="pills" id="qf-product-types"></div>
+      </div>
+      <div class="field is-required" style="margin-top:14px;">
+        <label>Nombre <span class="req">*</span></label>
+        <input type="text" name="qf_name" id="qf-name" placeholder="Ej. Válvula de gas robertshaw 36C">
+      </div>
+      <div class="field is-required" style="margin-top:14px;">
+        <label>Código <span class="req">*</span></label>
+        <input type="text" name="qf_code" id="qf-code" placeholder="SKU / código de barras">
+      </div>
+    </div>
+
+    <div class="qf-section">
+      <div class="qf-section-label">Clasificación</div>
+      <div class="field is-required">
+        <label>Categoría <span class="req">*</span></label>
+        <select name="qf_category" id="qf-cat"></select>
+      </div>
+    </div>
+
+    <div class="qf-section">
+      <div class="qf-section-label">Precios</div>
+      <div class="grid-2">
+        <div class="field is-required">
+          <label>Costo <span class="req">*</span></label>
+          <div class="input-row">
+            <span class="prefix">$</span>
+            <input type="number" name="qf_cost" id="qf-cost" placeholder="0.00" step="0.01" min="0">
+          </div>
+        </div>
+        <div class="field is-required">
+          <label>Precio de venta <span class="req">*</span></label>
+          <div class="input-row">
+            <span class="prefix">$</span>
+            <input type="number" name="qf_price" id="qf-price" placeholder="0.00" step="0.01" min="0">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qf-section">
+      <div class="qf-section-label">Inventario</div>
+      <div class="field is-required">
+        <label>Unidad <span class="req">*</span></label>
+        <select name="qf_unit" id="qf-unit"></select>
+      </div>
+    </div>
+
+    <button type="button" class="btn-submit visible" id="qf-submit" style="margin-top:18px;">Guardar producto</button>
+  </div>
+
+</div>
+
+<script>
+const CONFIG = {
+  productTypes: {
+    standard: "Estándar",
+    combo: "Combo",
+    //digital: "Digital",
+    service: "Servicio"
+  },
+  categories: {
+    38: { name: "Consumibles", subcategories: ["Detergentes", "Desinfectantes", "Químicos especiales", "Aceites"] },
+    29: { name: "Equipos", subcategories: ["Hornos", "Refrigeración", "Cocción", "Lavado industrial"] },
+    39: { name: "Refacciones", subcategories: ["Quemadores", "Válvulas", "Empaques", "Motores", "Termostatos"] },
+    42: { name: "Servicios", subcategories: ["Instalación", "Mantenimiento", "Reparación", "Capacitación"] },
+    41: { name: "Utensilios y accesorios", subcategories: ["Utensilios", "Acero inoxidable", "Moldes", "Herramientas"] },
+    43: { name: "Inoxidables", subcategories: [] }
+  },
+  barcodeSymbologies: {
+    code128: "Code128 — recomendado",
+    ean13: "EAN13",
+    ean8: "EAN8",
+    upca: "UPC-A",
+    code39: "Code39"
+  },
+  brands: [
+    "Generales", "robertshaw", "RATIONAL", "VULCAN", "TRUE", 
+    "UNOX", "Fast Clean", "HOBART", "DORMONT", "ASBER", 
+    "MANITOWOC", "HOSHIZAKI"
+  ],
+  taxRates: {
+    "": "Sin impuesto",
+    "5": "IVA 16%"
+  },
+  taxMethods: {
+    "1": "Exclusivo",
+    "0": "Inclusivo"
+  },
+  units: {
+    3: "Metro (Mt)",
+    4: "Pieza (Pz)",
+    5: "Centímetro (Cm)",
+    6: "Litro (Lt)",
+    7: "Galón (Gal)"
+  },
+  shippingTypes: {
+    "": "Seleccionar",
+    "1": "Gratis",
+    "2": "Con costo",
+    "3": "Acordado"
+  },
+  suppliers: {
+    "": "Sin proveedor"
+  }
+};
+
+const State = {
+  total: 8,
+  doneSet: new Set(),
+  dimActive: false
+};
+
+// ── DOM Helpers ───────────────────────────────────────
+function populateSelect(selectEl, data, hasEmptyOption = false, emptyOptionText = "") {
+  if (!selectEl) return;
+  selectEl.innerHTML = "";
+  
+  if (hasEmptyOption) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = emptyOptionText;
+    selectEl.appendChild(opt);
+  }
+  
+  if (Array.isArray(data)) {
+    data.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item;
+      opt.textContent = item;
+      selectEl.appendChild(opt);
+    });
+  } else if (typeof data === "object") {
+    Object.entries(data).forEach(([key, val]) => {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.textContent = typeof val === "object" ? val.name : val;
+      selectEl.appendChild(opt);
+    });
+  }
+}
+
+function populateProductTypes() {
+  const container = document.getElementById('f-product-types');
+  if (!container) return;
+  container.innerHTML = '';
+  
+  Object.entries(CONFIG.productTypes).forEach(([val, labelText], idx) => {
+    const label = document.createElement('label');
+    label.className = 'pill';
+    if (idx === 0) {
+      label.classList.add('on');
+    }
+    
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'type';
+    input.value = val;
+    if (idx === 0) {
+      input.checked = true;
+    }
+    
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(' ' + labelText));
+    container.appendChild(label);
+  });
+}
+
+// ── Accordion Navigation ──────────────────────────────
+function getBody(n) { return document.getElementById('b' + n); }
+function getStep(n) { return document.getElementById('s' + n); }
+
+function openStep(n) {
+  const b = getBody(n);
+  if (!b) return;
+  getStep(n).classList.add('open', 'active');
+  b.style.maxHeight = b.scrollHeight + 800 + 'px';
+  syncStepPills();
+}
+
+function closeStep(n) {
+  const b = getBody(n);
+  if (!b) return;
+  b.style.maxHeight = '0';
+  getStep(n).classList.remove('open', 'active');
+  syncStepPills();
+}
+
+function initStepPills() {
+  const steps = [
+    {num: 1, title: 'Identidad'},
+    {num: 2, title: 'Clasificación'},
+    {num: 3, title: 'Precios'},
+    {num: 4, title: 'Inventario'},
+    {num: 5, title: 'Logística'},
+    {num: 6, title: 'Contenido'},
+    {num: 7, title: 'Medios'},
+    {num: 8, title: 'Campos'}
+  ];
+  
+  const container = document.getElementById('step-pills');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  steps.forEach((s) => {
+    const pill = document.createElement('button');
+    pill.type = 'button';
+    pill.className = 'pill';
+    pill.innerHTML = `
+      <span class="pill-check-icon" style="display:none; align-items:center; justify-content:center; width:12px; height:12px; margin-right:4px;">
+        <svg viewBox="0 0 12 10" style="width:10px; height:8px; stroke:currentColor; stroke-width:2.5; fill:none;"><polyline points="1,5 4,8 11,1"/></svg>
+      </span>
+      <span class="pill-text">${s.title}</span>
+    `;
+    
+    pill.onclick = () => {
+      // Close all and open the selected step
+      for (let i = 1; i <= State.total; i++) {
+        closeStep(i);
+      }
+      setTimeout(() => {
+        openStep(s.num);
+        const step = getStep(s.num);
+        if (step) step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 50);
+    };
+    container.appendChild(pill);
+  });
+
+  syncStepPills();
+
+  // Set initial scroll past the ::before ghost spacer (no animation on load)
+  // Double rAF ensures layout is fully computed before reading offsetLeft
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const firstPill = container.querySelector('.pill');
+      if (firstPill) {
+        container.style.scrollBehavior = 'auto';
+        container.scrollLeft = firstPill.offsetLeft - 16;
+        container.style.scrollBehavior = '';
+      }
+    });
+  });
+}
+
+function centerActivePill() {
+  const container = document.getElementById('step-pills');
+  if (!container) return;
+  const activePill = container.querySelector('.pill.on');
+  if (!activePill) return;
+  const scrollLeft = activePill.offsetLeft - (container.offsetWidth / 2) + (activePill.offsetWidth / 2);
+  container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+}
+
+function syncStepPills() {
+  const container = document.getElementById('step-pills');
+  if (!container) return;
+  const pills = container.querySelectorAll('.pill');
+  if (!pills.length) return;
+  
+  let activeNum = null;
+  for (let i = 1; i <= State.total; i++) {
+    const s = getStep(i);
+    if (s && s.classList.contains('active')) {
+      activeNum = i;
+      break;
+    }
+  }
+  
+  pills.forEach((pill, idx) => {
+    const stepNum = idx + 1;
+    
+    // Sync active state (.on)
+    if (stepNum === activeNum) {
+      pill.classList.add('on');
+    } else {
+      pill.classList.remove('on');
+    }
+    
+    // Sync done state (.done)
+    if (State.doneSet.has(stepNum)) {
+      pill.classList.add('done');
+    } else {
+      pill.classList.remove('done');
+    }
+  });
+
+  centerActivePill();
+}
+
+function toggleStep(n) {
+  const b = getBody(n);
+  if (!b) return;
+  const isOpen = b.style.maxHeight !== '0px' && b.style.maxHeight !== '';
+  if (isOpen) {
+    closeStep(n);
+  } else {
+    // Close every other open step first
+    for (let i = 1; i <= State.total; i++) {
+      if (i !== n) closeStep(i);
+    }
+    openStep(n);
+    setTimeout(() => {
+      const step = getStep(n);
+      if (step) step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
+  }
+}
+
+// ── Progress & Summaries ──────────────────────────────
+function updateProgress() {
+  const pct = (State.doneSet.size / State.total) * 100;
+  const fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+function showSummary(n) {
+  const sum = document.getElementById('sum' + n);
+  if (!sum) return;
+  const body = getBody(n);
+  if (!body) return;
+  const inputs = body.querySelectorAll('input:not([type=hidden]):not([type=radio]):not([type=checkbox]):not([type=file]), select, textarea');
+  const radios = body.querySelectorAll('input[type=radio]:checked');
+  let chips = [];
+
+  radios.forEach(r => {
+    const t = r.closest('label')?.textContent?.trim();
+    if (t) chips.push(t);
+  });
+  inputs.forEach(inp => {
+    const v = inp.value?.trim();
+    if (!v) return;
+    const lbl = inp.closest('.field')?.querySelector('label')?.textContent
+      ?.replace(/[*]/g,'').trim().split(/\s+/).slice(0,2).join(' ');
+    if (lbl) chips.push(lbl + ': ' + (v.length > 16 ? v.slice(0,16) + '…' : v));
+  });
+
+  if (chips.length) {
+    sum.innerHTML = chips.slice(0, 5).map(c => `<span class="chip">${c}</span>`).join('');
+    sum.classList.add('has-chips');
+  }
+}
+
+function markDone(n) {
+  State.doneSet.add(n);
+  const s = getStep(n);
+  if (s) s.classList.add('done');
+  showSummary(n);
+  updateProgress();
+
+  // Auto-open next if not already done
+  if (n < State.total && !State.doneSet.has(n + 1)) {
+    closeStep(n);
+    setTimeout(() => {
+      // Close all before opening next (accordion)
+      for (let i = 1; i <= State.total; i++) closeStep(i);
+      openStep(n + 1);
+      const nextStep = getStep(n + 1);
+      if (nextStep) nextStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
+  } else {
+    closeStep(n);
+  }
+
+  if (State.doneSet.size === State.total) {
+    const btn = document.getElementById('btn-submit');
+    if (btn) {
+      btn.classList.add('visible');
+      setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 120);
+    }
+  }
+}
+
+// ── Event Handlers ────────────────────────────────────
+function handleCategoryChange(val) {
+  const subcatSelect = document.getElementById('f-subcat');
+  if (!subcatSelect) return;
+  
+  subcatSelect.innerHTML = '<option value="">Sin subcategoría</option>';
+  
+  const categoryConfig = CONFIG.categories[val];
+  if (categoryConfig && categoryConfig.subcategories && categoryConfig.subcategories.length > 0) {
+    categoryConfig.subcategories.forEach(sub => {
+      const opt = document.createElement('option');
+      opt.value = sub.toLowerCase().replace(/\s/g, '_');
+      opt.textContent = sub;
+      subcatSelect.appendChild(opt);
+    });
+    subcatSelect.disabled = false;
+  } else {
+    subcatSelect.disabled = true;
+  }
+}
+
+// ── Unit dependents ───────────────────────────────────
+function handleUnitChange(sel) {
+  ['u-sale', 'u-purch'].forEach(id => {
+    const d = document.getElementById(id);
+    if (!d) return;
+    d.innerHTML = '<option value="">Igual a unidad principal</option>';
+    Array.from(sel.options).forEach(o => {
+      if (!o.value) return;
+      const n = document.createElement('option');
+      n.value = o.value; 
+      n.textContent = o.textContent;
+      d.appendChild(n);
+    });
+    d.disabled = false;
+  });
+}
+
+function handlePromoChange(checked, element) {
+  const promoBody = document.getElementById('promo-body');
+  if (promoBody) promoBody.classList.toggle('open', checked);
+  const b = element.closest('.step-body');
+  if (b) b.style.maxHeight = parseInt(b.style.maxHeight) + 300 + 'px';
+}
+
+function handleShippingChange(val, element) {
+  const el = document.getElementById('ship-cost');
+  if (el) el.style.display = val === '2' ? 'block' : 'none';
+  const b = element.closest('.step-body');
+  if (b) b.style.maxHeight = parseInt(b.style.maxHeight) + 200 + 'px';
+}
+
+function toggleReqMode() {
+  State.dimActive = !State.dimActive;
+  const toggleBtn = document.getElementById('req-toggle');
+  if (toggleBtn) toggleBtn.classList.toggle('active', State.dimActive);
+
+  if (State.dimActive) {
+    // Entering quick mode — sync values from main form to quick form
+    syncToQuickForm();
+    document.body.classList.add('quick-mode');
+    document.getElementById('quick-form').classList.add('visible');
+  } else {
+    // Leaving quick mode — sync values back to main form
+    syncFromQuickForm();
+    document.body.classList.remove('quick-mode');
+    document.getElementById('quick-form').classList.remove('visible');
+  }
+}
+
+// Field mapping: quick-form id → main-form selector
+const QF_MAP = [
+  ['qf-name',  '#f-name'],
+  ['qf-code',  '#f-code'],
+  ['qf-cat',   '#f-cat'],
+  ['qf-cost',  'input[name="cost"]'],
+  ['qf-price', '#f-price'],
+  ['qf-unit',  'select[name="unit"]']
+];
+
+function syncToQuickForm() {
+  QF_MAP.forEach(([qfId, mainSel]) => {
+    const qf = document.getElementById(qfId);
+    const main = document.querySelector(mainSel);
+    if (qf && main) qf.value = main.value;
+  });
+  // Sync product type
+  const mainType = document.querySelector('#f-product-types input[type=radio]:checked');
+  if (mainType) {
+    const qfRadio = document.querySelector(`#qf-product-types input[value="${mainType.value}"]`);
+    if (qfRadio) {
+      qfRadio.checked = true;
+      document.querySelectorAll('#qf-product-types .pill').forEach(p => p.classList.remove('on'));
+      qfRadio.closest('.pill')?.classList.add('on');
+    }
+  }
+}
+
+function syncFromQuickForm() {
+  QF_MAP.forEach(([qfId, mainSel]) => {
+    const qf = document.getElementById(qfId);
+    const main = document.querySelector(mainSel);
+    if (qf && main) main.value = qf.value;
+  });
+  // Sync product type back
+  const qfType = document.querySelector('#qf-product-types input[type=radio]:checked');
+  if (qfType) {
+    const mainRadio = document.querySelector(`#f-product-types input[value="${qfType.value}"]`);
+    if (mainRadio) {
+      mainRadio.checked = true;
+      document.querySelectorAll('#f-product-types .pill').forEach(p => p.classList.remove('on'));
+      mainRadio.closest('.pill')?.classList.add('on');
+    }
+  }
+  // Trigger category change handler in main form
+  const catVal = document.getElementById('qf-cat')?.value;
+  if (catVal) handleCategoryChange(catVal);
+}
+
+// ── Initialization ────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Populate all CONFIG-driven fields
+  populateProductTypes();
+  populateSelect(document.getElementById('f-cat'), CONFIG.categories, true, 'Seleccionar');
+  populateSelect(document.querySelector('select[name="barcode_symbology"]'), CONFIG.barcodeSymbologies);
+  populateSelect(document.querySelector('select[name="brand"]'), CONFIG.brands, true, 'Sin marca');
+  populateSelect(document.querySelector('select[name="tax_rate"]'), CONFIG.taxRates);
+  populateSelect(document.querySelector('select[name="tax_method"]'), CONFIG.taxMethods);
+  populateSelect(document.querySelector('select[name="unit"]'), CONFIG.units, true, 'Seleccionar');
+  populateSelect(document.querySelector('select[name="tipoEnvio"]'), CONFIG.shippingTypes);
+  populateSelect(document.querySelector('select[name="supplier"]'), CONFIG.suppliers);
+
+  // Bind step accordion toggles
+  document.querySelectorAll('.step-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const stepNum = parseInt(header.getAttribute('data-step'), 10);
+      toggleStep(stepNum);
+    });
+  });
+
+  // Bind markDone buttons
+  document.querySelectorAll('.btn-done').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const stepNum = parseInt(btn.getAttribute('data-step'), 10);
+      markDone(stepNum);
+    });
+  });
+
+  // Bind required fields toggle
+  const reqToggle = document.getElementById('req-toggle');
+  if (reqToggle) reqToggle.addEventListener('click', toggleReqMode);
+
+  // Bind dynamic inputs
+  const catSelectEl = document.getElementById('f-cat');
+  if (catSelectEl) {
+    catSelectEl.addEventListener('change', (e) => handleCategoryChange(e.target.value));
+  }
+
+  const unitSelectEl = document.querySelector('select[name="unit"]');
+  if (unitSelectEl) {
+    unitSelectEl.addEventListener('change', (e) => handleUnitChange(e.target));
+  }
+
+  const promoCheckbox = document.getElementById('sw-promo');
+  if (promoCheckbox) {
+    promoCheckbox.addEventListener('change', (e) => handlePromoChange(e.target.checked, e.target));
+  }
+
+  const shippingSelect = document.querySelector('select[name="tipoEnvio"]');
+  if (shippingSelect) {
+    shippingSelect.addEventListener('change', (e) => handleShippingChange(e.target.value, e.target));
+  }
+
+  // Type pills selector binding using event delegation
+  const typeContainer = document.getElementById('f-product-types');
+  if (typeContainer) {
+    typeContainer.addEventListener('click', (e) => {
+      const pill = e.target.closest('.pill');
+      if (pill) {
+        typeContainer.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
+        pill.classList.add('on');
+        const radio = pill.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+      }
+    });
+  }
+
+  // Open step 1 by default
+  openStep(1);
+  initStepPills();
+
+  // ── Quick-form initialization ─────────────────────
+  // Populate quick-form selects
+  populateSelect(document.getElementById('qf-cat'), CONFIG.categories, true, 'Seleccionar');
+  populateSelect(document.getElementById('qf-unit'), CONFIG.units, true, 'Seleccionar');
+
+  // Populate quick-form product type pills
+  const qfTypesContainer = document.getElementById('qf-product-types');
+  if (qfTypesContainer) {
+    qfTypesContainer.innerHTML = '';
+    Object.entries(CONFIG.productTypes).forEach(([val, labelText], idx) => {
+      const label = document.createElement('label');
+      label.className = 'pill';
+      if (idx === 0) label.classList.add('on');
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'qf_type';
+      input.value = val;
+      if (idx === 0) input.checked = true;
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(' ' + labelText));
+      qfTypesContainer.appendChild(label);
+    });
+    // Bind pill click delegation for quick-form product types
+    qfTypesContainer.addEventListener('click', (e) => {
+      const pill = e.target.closest('.pill');
+      if (pill) {
+        qfTypesContainer.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
+        pill.classList.add('on');
+        const radio = pill.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+      }
+    });
+  }
+
+  // Bind quick-form submit to main form submit
+  const qfSubmit = document.getElementById('qf-submit');
+  if (qfSubmit) {
+    qfSubmit.addEventListener('click', () => {
+      syncFromQuickForm();
+      document.getElementById('pf')?.requestSubmit();
+    });
+  }
+});
+</script>
+</body>
+</html>
