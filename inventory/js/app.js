@@ -281,6 +281,7 @@ function setupEventListeners() {
     if (typeof closeProductDrawer === "function") closeProductDrawer();
     if (typeof closeScanner === "function") closeScanner();
     if (typeof closeClientDrawer === "function") closeClientDrawer();
+    if (typeof closeProductFormSheet === "function") closeProductFormSheet();
   });
 }
 

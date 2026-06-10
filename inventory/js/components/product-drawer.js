@@ -8,7 +8,10 @@ function openProductDrawer(p) {
   
   // Setup tabs listeners
   window.DOM.drawerTabProduct.onclick = () => setDrawerTab("product");
-  window.DOM.drawerTabForm.onclick = () => setDrawerTab("form");
+  window.DOM.drawerTabForm.onclick = () => {
+    closeProductDrawer();
+    openProductFormSheet();
+  };
 
   // Render both views
   renderDrawerViewProduct(p);
@@ -305,4 +308,35 @@ function saveProductForm(id) {
 
   // Switch back to detail product view
   openProductDrawer(p);
+}
+
+// ── New Form Side Sheet Helpers ───────────────────────
+
+function openProductFormSheet() {
+  const sheet = document.getElementById("product-form-sheet");
+  if (sheet) {
+    sheet.classList.add("drawer__sheet--active");
+    window.DOM.scrim.classList.add("drawer__scrim--active");
+    
+    // Hide Island navigation when drawer opens
+    if (window.Island && typeof window.Island.hide === "function") {
+      window.Island.hide();
+    }
+  }
+}
+
+function closeProductFormSheet() {
+  const sheet = document.getElementById("product-form-sheet");
+  if (sheet) {
+    sheet.classList.remove("drawer__sheet--active");
+    if (!window.DOM.detailDrawer.classList.contains("drawer__sheet--active") &&
+        (!window.DOM.scannerModal || !window.DOM.scannerModal.classList.contains("scanner-modal--active"))) {
+      window.DOM.scrim.classList.remove("drawer__scrim--active");
+    }
+    
+    // Show Island navigation when drawer closes
+    if (window.Island && typeof window.Island.show === "function") {
+      window.Island.show();
+    }
+  }
 }
