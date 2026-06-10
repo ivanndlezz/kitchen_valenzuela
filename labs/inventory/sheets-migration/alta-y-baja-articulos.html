@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Inventario: Entradas y Salidas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos de modo activos */
+        .mode-add-active { background-color: #10b981 !important; color: white !important; border-color: #10b981 !important; }
+        .mode-sub-active { background-color: #ef4444 !important; color: white !important; border-color: #ef4444 !important; }
+        .mode-inactive { background-color: #f8fafc !important; color: #64748b !important; border-color: #e2e8f0 !important; }
+
+        .pop-animation { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Asegurar que el video llene el contenedor sin desbordar */
+        #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; position: absolute; top:0; left:0; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans pb-28 transition-colors duration-300" id="body-theme">
+
+    <!-- Header Fijo -->
+    <header class="text-white p-4 shadow-md text-center font-bold flex justify-center items-center gap-2 transition-colors duration-300 bg-slate-850 z-40 relative" id="header-theme">
+        <i data-lucide="boxes" class="w-6 h-6"></i> Gestión de Inventario
+    </header>
+
+    <main class="p-4 max-w-md mx-auto w-full flex flex-col gap-6 relative z-20">
+
+        <!-- 1. SELECTOR DE MODO (z-30 obligatorio para evitar bloqueos del video) -->
+        <section class="relative z-30">
+            <p class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider text-center">Paso 1: Selecciona la operación</p>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="btn-mode-add" onclick="window.setOperationMode('add')" class="py-4 rounded-2xl font-bold border-2 transition-all flex flex-col items-center gap-1 mode-add-active shadow-md active:scale-95 cursor-pointer">
+                    <i data-lucide="package-plus" class="w-6 h-6"></i>
+                    Añadir (Entrada)
+                </button>
+                <button id="btn-mode-sub" onclick="window.setOperationMode('sub')" class="py-4 rounded-2xl font-bold border-2 transition-all flex flex-col items-center gap-1 mode-inactive shadow-sm active:scale-95 cursor-pointer">
+                    <i data-lucide="package-minus" class="w-6 h-6"></i>
+                    Descontar (Salida)
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. ÁREA DEL ESCÁNER -->
+        <section class="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 relative z-10">
+            <p class="text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider text-center">Paso 2: Escanear</p>
+            
+            <!-- Hint para pruebas -->
+            <div class="bg-slate-100 text-slate-500 text-[10px] p-2 rounded-lg text-center mb-3">
+                Códigos de prueba: <b class="text-slate-700">P001</b> (Café), <b class="text-slate-700">P002</b> (Leche), <b class="text-slate-700">P003</b> (Jabón)
+            </div>
+
+            <!-- Tabs de cámara -->
+            <div class="flex bg-slate-100 rounded-xl p-1 mb-3">
+                <button onclick="switchTab('system')" id="tab-system" class="flex-1 py-2 rounded-lg font-bold bg-white shadow-sm text-slate-900 text-sm">Cámara / Foto</button>
+                <button onclick="switchTab('apple')" id="tab-apple" class="flex-1 py-2 rounded-lg font-bold text-slate-500 text-sm">Escáner de Video</button>
+            </div>
+
+            <!-- Tab: Foto -->
+            <div id="content-system">
+                <div class="bg-slate-50 p-6 rounded-2xl border-2 border-dashed border-slate-300 text-center">
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+                    <button id="triggerBtn" class="w-full bg-slate-850 hover:bg-slate-700 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all">
+                        <i data-lucide="camera"></i> Tomar Foto
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab: Video -->
+            <div id="content-apple" class="hidden">
+                <div class="rounded-2xl overflow-hidden bg-black aspect-square relative shadow-inner border border-slate-300">
+                    <div id="reader" class="w-full h-full absolute inset-0"></div>
+                </div>
+                <button id="startBtn" class="w-full bg-slate-850 hover:bg-slate-700 text-white py-4 rounded-xl font-bold mt-3 active:scale-95 transition-all flex justify-center items-center gap-2">
+                    <i data-lucide="play" class="w-4 h-4 inline"></i> Iniciar Video
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. LISTA DE TRABAJO (STAGING) -->
+        <section class="relative z-10">
+            <div class="flex justify-between items-end mb-2 px-1">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Paso 3: Lista a procesar</p>
+                <span id="session-count" class="text-xs font-bold bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">0 items</span>
+            </div>
+            
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden min-h-[150px]">
+                <ul id="staged-list" class="divide-y divide-slate-100">
+                    <li id="empty-cart" class="p-8 text-center text-slate-400 text-sm flex flex-col items-center gap-2">
+                        <i data-lucide="shopping-cart" class="w-8 h-8 opacity-20"></i>
+                        Aún no has escaneado productos
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PANEL FLOTANTE DE CONFIRMACIÓN (z-40 para estar por encima de todo) -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] transform translate-y-full transition-transform duration-300 z-40" id="confirm-panel">
+        <div class="max-w-md mx-auto flex gap-3">
+            <button id="btn-cancel" class="p-4 rounded-2xl bg-slate-100 text-slate-600 font-bold active:scale-95 transition-all">
+                <i data-lucide="trash-2"></i>
+            </button>
+            <button id="btn-confirm" class="flex-1 py-4 rounded-2xl font-bold text-white shadow-lg active:scale-95 transition-all flex justify-center items-center gap-2">
+                <span id="confirm-text">Confirmar</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+// =============================================================================
+// Arquitectura WMS Corrección de Interceptación de Gestos y Capas
+// =============================================================================
+
+const DB_KEY = 'wms_master_inventory';
+function initDB() {
+    if (!localStorage.getItem(DB_KEY)) {
+        localStorage.setItem(DB_KEY, JSON.stringify([
+            { id: "P001", nombre: "Café en Grano 1kg", stock: 10 },
+            { id: "P002", nombre: "Leche Deslactosada", stock: 5 },
+            { id: "P003", nombre: "Jabón Líquido 2L", stock: 20 }
+        ]));
+    }
+}
+initDB();
+
+// --- Utilidades de Audio y Vibración ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playBeep(success = true) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    
+    if (success) {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    } else {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    }
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.2);
+    if(navigator.vibrate) navigator.vibrate(success ? 50 : [50,50,50]);
+}
+
+// --- Manejador de Sesión ---
+class SessionManager {
+    constructor() {
+        this.mode = 'add'; // 'add' | 'sub'
+        this.stagedItems = new Map(); // Map<productId, {product: obj, qty: number}>
+        
+        // Elementos UI
+        this.btnAdd = document.getElementById('btn-mode-add');
+        this.btnSub = document.getElementById('btn-mode-sub');
+        this.bodyTheme = document.getElementById('body-theme');
+        this.headerTheme = document.getElementById('header-theme');
+        this.listEl = document.getElementById('staged-list');
+        this.emptyCartEl = document.getElementById('empty-cart');
+        this.countEl = document.getElementById('session-count');
+        this.confirmPanel = document.getElementById('confirm-panel');
+        this.btnConfirm = document.getElementById('btn-confirm');
+        this.btnCancel = document.getElementById('btn-cancel');
+        this.confirmText = document.getElementById('confirm-text');
+
+        this.btnCancel.addEventListener('click', () => this.clearSession());
+        this.btnConfirm.addEventListener('click', () => this.commitChanges());
+        
+        this._updateUITheme();
+    }
+
+    setMode(newMode) {
+        if (this.mode === newMode) return;
+
+        // Si hay elementos agregados al cambiar de modo, pedir confirmación
+        if (this.stagedItems.size > 0) {
+            if (!confirm("Tienes elementos sin confirmar. Si cambias de modo se perderán. ¿Continuar?")) {
+                return;
+            }
+            this.clearSession();
+        }
+
+        this.mode = newMode;
+        this._updateUITheme();
+    }
+
+    _updateUITheme() {
+        if (this.mode === 'add') {
+            this.btnAdd.className = "py-4 rounded-2xl font-bold border-2 transition-all flex flex-col items-center gap-1 mode-add-active shadow-md active:scale-95 cursor-pointer";
+            this.btnSub.className = "py-4 rounded-2xl font-bold border-2 transition-all flex flex-col items-center gap-1 mode-inactive shadow-sm active:scale-95 cursor-pointer";
+            this.bodyTheme.className = "bg-emerald-50 min-h-screen font-sans pb-28 transition-colors duration-300";
+            this.headerTheme.className = "bg-emerald-600 text-white p-4 shadow-md text-center font-bold flex justify-center items-center gap-2 transition-colors duration-300 z-40 relative";
+            this.btnConfirm.className = "flex-1 py-4 rounded-2xl font-bold text-white shadow-lg active:scale-95 transition-all flex justify-center items-center gap-2 bg-emerald-600 hover:bg-emerald-700";
+        } else {
+            this.btnAdd.className = "py-4 rounded-2xl font-bold border-2 transition-all flex flex-col items-center gap-1 mode-inactive shadow-sm active:scale-95 cursor-pointer";
+            this.btnSub.className = "py-4 rounded-2xl font-bold border-2 transition-all flex flex-col items-center gap-1 mode-sub-active shadow-md active:scale-95 cursor-pointer";
+            this.bodyTheme.className = "bg-red-50 min-h-screen font-sans pb-28 transition-colors duration-300";
+            this.headerTheme.className = "bg-red-600 text-white p-4 shadow-md text-center font-bold flex justify-center items-center gap-2 transition-colors duration-300 z-40 relative";
+            this.btnConfirm.className = "flex-1 py-4 rounded-2xl font-bold text-white shadow-lg active:scale-95 transition-all flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700";
+        }
+        this._renderList();
+    }
+
+    processScan(code) {
+        const cleanCode = code.trim();
+        const db = JSON.parse(localStorage.getItem(DB_KEY));
+        const product = db.find(p => p.id === cleanCode);
+
+        if (!product) {
+            playBeep(false);
+            alert(`Producto no encontrado en la base de datos: ${cleanCode}`);
+            return false;
+        }
+
+        playBeep(true);
+        
+        if (this.stagedItems.has(cleanCode)) {
+            this.stagedItems.get(cleanCode).qty += 1;
+        } else {
+            this.stagedItems.set(cleanCode, { product, qty: 1 });
+        }
+
+        this._renderList();
+        return true;
+    }
+
+    _renderList() {
+        Array.from(this.listEl.children).forEach(child => {
+            if(child.id !== 'empty-cart') child.remove();
+        });
+
+        let totalQty = 0;
+
+        if (this.stagedItems.size === 0) {
+            this.emptyCartEl.style.display = 'flex';
+            this.confirmPanel.classList.add('translate-y-full');
+        } else {
+            this.emptyCartEl.style.display = 'none';
+            this.confirmPanel.classList.remove('translate-y-full');
+            
+            const colorClass = this.mode === 'add' ? 'text-emerald-600 bg-emerald-100' : 'text-red-600 bg-red-100';
+            const sign = this.mode === 'add' ? '+' : '-';
+
+            this.stagedItems.forEach((data, id) => {
+                totalQty += data.qty;
+                const li = document.createElement('li');
+                li.className = "p-4 flex justify-between items-center pop-animation bg-white border-b border-slate-50";
+                li.innerHTML = `
+                    <div class="min-w-0">
+                        <p class="font-bold text-slate-800 truncate">${data.product.nombre}</p>
+                        <p class="text-xs font-mono text-slate-400">Stock actual: ${data.product.stock} | ID: ${id}</p>
+                    </div>
+                    <div class="flex items-center gap-3 ml-2 shrink-0">
+                        <span class="font-black text-xl ${colorClass.split(' ')[0]}">${sign}${data.qty}</span>
+                    </div>
+                `;
+                this.listEl.appendChild(li);
+            });
+        }
+
+        this.countEl.textContent = `${totalQty} items`;
+        
+        const actionStr = this.mode === 'add' ? 'Añadir' : 'Descontar';
+        this.confirmText.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 inline"></i> Confirmar ${actionStr} ${totalQty} items`;
+        lucide.createIcons();
+    }
+
+    commitChanges() {
+        const db = JSON.parse(localStorage.getItem(DB_KEY));
+        let changesApplied = 0;
+
+        this.stagedItems.forEach((data, id) => {
+            const productIndex = db.findIndex(p => p.id === id);
+            if(productIndex !== -1) {
+                if (this.mode === 'add') {
+                    db[productIndex].stock += data.qty;
+                } else {
+                    db[productIndex].stock -= data.qty;
+                    if (db[productIndex].stock < 0) db[productIndex].stock = 0;
+                }
+                changesApplied++;
+            }
+        });
+
+        localStorage.setItem(DB_KEY, JSON.stringify(db));
+        alert(`¡Éxito! Base de datos actualizada con ${changesApplied} productos modificados.`);
+        this.clearSession();
+    }
+
+    clearSession() {
+        this.stagedItems.clear();
+        this._renderList();
+    }
+}
+
+// --- Integración Global ---
+const sessionManager = new SessionManager();
+
+// Exponer el cambio de modo globalmente para asegurar que los botones respondan libremente
+window.setOperationMode = (mode) => {
+    sessionManager.setMode(mode);
+};
+
+let html5QrCode;
+
+function switchTab(tab) {
+    document.getElementById('content-system').classList.toggle('hidden', tab !== 'system');
+    document.getElementById('content-apple').classList.toggle('hidden', tab !== 'apple');
+    document.getElementById('tab-system').className = tab === 'system' ? "flex-1 py-2 rounded-lg font-bold bg-white shadow-sm text-slate-900 text-sm" : "flex-1 py-2 rounded-lg font-bold text-slate-500 text-sm";
+    document.getElementById('tab-apple').className = tab === 'apple' ? "flex-1 py-2 rounded-lg font-bold bg-white shadow-sm text-slate-900 text-sm" : "flex-1 py-2 rounded-lg font-bold text-slate-500 text-sm";
+    
+    if(tab === 'system' && html5QrCode && html5QrCode.isScanning) {
+        html5QrCode.stop();
+        document.getElementById('startBtn').innerHTML = "<i data-lucide='play' class='w-4 h-4 inline'></i> Iniciar Video";
+        lucide.createIcons();
+    }
+}
+
+// Escáner Foto (Nativo)
+const cameraInput = document.getElementById('cameraInput');
+document.getElementById('triggerBtn').addEventListener('click', () => cameraInput.click());
+
+cameraInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+        await new Promise(r => img.onload = r);
+        
+        if (!('BarcodeDetector' in window)) {
+            const qrFallback = new Html5Qrcode("reader");
+            const code = await qrFallback.scanFile(file, false);
+            sessionManager.processScan(code);
+            return;
+        }
+
+        const detector = new BarcodeDetector({ formats: ['qr_code', 'ean_13', 'code_128', 'ean_8', 'upc_a'] });
+        const barcodes = await detector.detect(img);
+        
+        if (barcodes.length > 0) {
+            sessionManager.processScan(barcodes[0].rawValue);
+        } else {
+            alert("No se detectó código en la foto.");
+        }
+    } catch (err) {
+        alert("Error al analizar foto: " + err);
+    } finally {
+        e.target.value = '';
+    }
+});
+
+// Escáner de Video (Single Shot)
+const startBtn = document.getElementById('startBtn');
+startBtn.addEventListener('click', async () => {
+    if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+
+    if (html5QrCode.isScanning) {
+        await html5QrCode.stop();
+        startBtn.innerHTML = "<i data-lucide='play' class='w-4 h-4 inline'></i> Iniciar Video";
+        lucide.createIcons();
+        return;
+    }
+
+    startBtn.innerHTML = "<i data-lucide='loader' class='w-4 h-4 inline animate-spin'></i> Iniciando...";
+    lucide.createIcons();
+
+    try {
+        await html5QrCode.start(
+            { facingMode: 'environment' },
+            { fps: 10, qrbox: { width: 250, height: 150 } },
+            (text) => {
+                const success = sessionManager.processScan(text);
+                
+                const readerEl = document.getElementById('reader');
+                readerEl.style.boxShadow = success ? 'inset 0 0 0 5px #10b981' : 'inset 0 0 0 5px #ef4444';
+                setTimeout(() => readerEl.style.boxShadow = 'none', 300);
+
+                // Detener cámara automáticamente tras éxito
+                html5QrCode.stop().then(() => {
+                    startBtn.innerHTML = "<i data-lucide='play' class='w-4 h-4 inline'></i> Iniciar Video";
+                    lucide.createIcons();
+                }).catch(err => console.error("Error al detener cámara:", err));
+            }
+        );
+        startBtn.innerHTML = "<i data-lucide='square' class='w-4 h-4 inline'></i> Detener Video";
+        lucide.createIcons();
+    } catch (err) {
+        alert("Error de cámara: " + err);
+        startBtn.innerHTML = "<i data-lucide='play' class='w-4 h-4 inline'></i> Iniciar Video";
+        lucide.createIcons();
+    }
+});
+
+// Iniciar Iconos
+lucide.createIcons();
+    </script>
+</body>
+</html>

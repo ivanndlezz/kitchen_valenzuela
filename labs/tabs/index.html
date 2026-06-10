@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      :root {
+        --bg-surface: #ffffff;
+        --bg-surface-raised: #eef1f6;
+        --border-color: #e2e6ec;
+        --text-main: #1c1e22;
+        --text-secondary: #5f6672;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+        --transition-fast: all 0.15s ease;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 20px;
+      }
+
+      .view-switch {
+        display: inline-flex;
+        background-color: var(--bg-surface-raised);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 3px;
+        gap: 5px;
+        width: fit-content;
+      }
+
+      .view-switch__btn {
+        background-color: transparent;
+        border: none;
+        color: var(--text-secondary);
+        padding: 5px 7px;
+        border-radius: 5px;
+        min-width: 7ch;
+        cursor: pointer;
+        transition: var(--transition-fast);
+        font-size: 14px;
+      }
+
+      .view-switch__btn[data-selected="true"] {
+        background-color: var(--bg-surface);
+        color: var(--text-main);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .view-switch__btn:hover:not([data-selected="true"]) {
+        color: var(--text-main);
+      }
+
+      .view-switch__toggle {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      .view-switch__toggle-inner {
+        display: inline-flex;
+        background-color: var(--bg-surface-raised);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 3px;
+        gap: 5px;
+      }
+
+      .view-switch__toggle .view-switch__btn {
+        background-color: transparent;
+        border: none;
+        color: var(--text-secondary);
+        padding: 5px 7px;
+        border-radius: 5px;
+        min-width: 7ch;
+        cursor: pointer;
+        transition: var(--transition-fast);
+        font-size: 14px;
+      }
+
+      .view-switch__toggle .view-switch__btn[data-selected="true"] {
+        background-color: var(--bg-surface);
+        color: var(--text-main);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .view-switch.view-switch--single {
+        background: transparent;
+        border: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Product Switch -->
+    <div class="view-switch" id="viewSwitch">
+      <button class="view-switch__btn" data-view="product" data-selected="true">
+        Product
+      </button>
+      <button class="view-switch__btn" data-view="edit" data-selected="false">
+        Edit
+      </button>
+    </div>
+
+    <!-- Settings Switch -->
+
+    <!-- Display Switch -->
+    <div class="view-switch" id="displaySwitch">
+      <button class="view-switch__btn" data-view="light" data-selected="true">
+        Light
+      </button>
+      <button class="view-switch__btn" data-view="dark" data-selected="false">
+        Dark
+      </button>
+    </div>
+
+    <!-- Primary switch -->
+    <div class="view-switch" id="settingsSwitch">
+      <button class="view-switch__btn" data-view="general" data-selected="true">
+        General
+      </button>
+      <button
+        class="view-switch__btn"
+        data-view="advanced"
+        data-selected="false"
+      >
+        Advanced
+      </button>
+    </div>
+
+    <!-- Linked switch (synced to primary) -->
+    <div class="view-switch" id="settingsSwitch_bottom" for="settingsSwitch">
+      <button class="view-switch__btn" data-view="general" data-selected="true">
+        General
+      </button>
+      <button
+        class="view-switch__btn"
+        data-view="advanced"
+        data-selected="false"
+      >
+        Advanced
+      </button>
+    </div>
+
+    <!-- Single-button switch variant (synced to primary) -->
+    <div
+      class="view-switch view-switch--single"
+      id="settingsSwitch_single"
+      for="settingsSwitch"
+    >
+      <button
+        class="view-switch__toggle"
+        type="button"
+        aria-label="Toggle settings view"
+      >
+        <span class="view-switch__toggle-inner">
+          <span
+            class="view-switch__btn"
+            data-view="general"
+            data-selected="true"
+          >
+            Two
+          </span>
+          <span
+            class="view-switch__btn"
+            data-view="advanced"
+            data-selected="false"
+          >
+            One
+          </span>
+        </span>
+      </button>
+    </div>
+    <script>
+      // ============================================
+      // CONFIG
+      // ============================================
+      const SWITCHES_CONFIG = {
+        switches: {
+          product: {
+            selector: "#viewSwitch",
+            actions: { change: "onProductViewChange" },
+          },
+          settings: {
+            selector: "#settingsSwitch",
+            actions: { change: "onSettingsViewChange" },
+          },
+          settings_bottom: {
+            selector: "#settingsSwitch_bottom",
+            actions: { change: "onSettingsViewChange" },
+          },
+          settings_single: {
+            selector: "#settingsSwitch_single",
+            actions: { change: "onSettingsViewChange" },
+          },
+          display: {
+            selector: "#displaySwitch",
+            actions: { change: "onDisplayViewChange" },
+          },
+        },
+      };
+
+      const CONFIG = {
+        selectors: { button: ".view-switch__btn" },
+        attributes: { view: "data-view", selected: "data-selected" },
+        events: { change: "viewswitch:change" },
+      };
+
+      // ============================================
+      // ViewSwitch: Single switch instance
+      // ============================================
+      class ViewSwitch {
+        constructor(id, container, config = CONFIG) {
+          this.id = id;
+          this.container = container; // Already resolved element, not a selector
+          this.config = config;
+          this.currentView = this.readCurrentView();
+        }
+
+        readCurrentView() {
+          const selected = this.container.querySelector(
+            `[${this.config.attributes.selected}="true"]`,
+          );
+          return selected?.getAttribute(this.config.attributes.view) || null;
+        }
+
+        selectView(viewName) {
+          this.getAllButtons().forEach((btn) => {
+            const isMatch =
+              btn.getAttribute(this.config.attributes.view) === viewName;
+            btn.setAttribute(
+              this.config.attributes.selected,
+              isMatch ? "true" : "false",
+            );
+          });
+
+          this.currentView = viewName;
+          this.notifyChange(viewName);
+        }
+
+        getAllButtons() {
+          return Array.from(
+            this.container.querySelectorAll(this.config.selectors.button),
+          );
+        }
+
+        notifyChange(viewName) {
+          this.container.dispatchEvent(
+            new CustomEvent(this.config.events.change, {
+              detail: { switchId: this.id, view: viewName },
+            }),
+          );
+        }
+
+        getCurrent() {
+          return this.currentView;
+        }
+      }
+
+      // ============================================
+      // SwitchRegistry: Manage all switches
+      // ============================================
+      class SwitchRegistry {
+        constructor(config) {
+          this.registry = new Map(); // domId → ViewSwitch
+          this.actions = new Map(); // actionName → handler
+          this.config = config;
+        }
+
+        // Registry key = DOM id — so "for" attribute lookups work naturally
+        initializeAll() {
+          Object.values(this.config.switches).forEach((switchConfig) => {
+            const container = document.querySelector(switchConfig.selector);
+
+            if (!container) {
+              console.warn(
+                `Skipping — not found in DOM: ${switchConfig.selector}`,
+              );
+              return;
+            }
+
+            const domId = container.id;
+            const instance = new ViewSwitch(domId, container, CONFIG);
+
+            this.registry.set(domId, instance);
+            this.attachDelegation(instance);
+          });
+
+          return this;
+        }
+
+        attachDelegation(instance) {
+          instance.container.addEventListener("click", (event) => {
+            const button = event.target.closest(CONFIG.selectors.button);
+            if (!button) return;
+
+            const viewTarget = button.matches(CONFIG.selectors.button)
+              ? button
+              : button.closest(CONFIG.selectors.button);
+            const viewName = viewTarget?.getAttribute(CONFIG.attributes.view);
+            if (viewName) instance.selectView(viewName);
+          });
+        }
+
+        registerAction(actionName, handler) {
+          this.actions.set(actionName, handler);
+        }
+
+        getSwitch(domId) {
+          return this.registry.get(domId);
+        }
+
+        onSwitchChange(domId, callback) {
+          const instance = this.registry.get(domId);
+          if (!instance) {
+            console.warn(`[Registry] Switch not found: ${domId}`);
+            return;
+          }
+          instance.container.addEventListener(CONFIG.events.change, (e) => {
+            callback(e.detail.view);
+          });
+        }
+
+        executeAction(actionName, domId, viewName) {
+          const handler = this.actions.get(actionName);
+          if (handler) handler(domId, viewName);
+          else console.warn(`[Registry] Action not found: ${actionName}`);
+        }
+      }
+
+      // ============================================
+      // SwitchSync: Bidirectional sync via "for"
+      // ============================================
+      class SwitchSync {
+        constructor(registry) {
+          this.registry = registry;
+          this.syncGroups = new Map(); // primaryId → Set of linkedIds
+          this.syncing = false; // Infinite loop guard
+        }
+
+        // Auto-link: reads for="primaryId" from DOM
+        // <div class="view-switch" id="settingsSwitch_bottom" for="settingsSwitch">
+        linkByAttribute(attributeName = "for") {
+          document
+            .querySelectorAll(`.view-switch[${attributeName}]`)
+            .forEach((el) => {
+              const primaryId = el.getAttribute(attributeName);
+              const linkedId = el.id;
+              this.linkSwitches(primaryId, linkedId);
+            });
+
+          return this;
+        }
+
+        // Manual link
+        linkSwitches(primaryId, linkedId) {
+          const primary = this.registry.getSwitch(primaryId);
+          const linked = this.registry.getSwitch(linkedId);
+
+          if (!primary) {
+            console.warn(`[SwitchSync] Primary not found: ${primaryId}`);
+            return;
+          }
+          if (!linked) {
+            console.warn(`[SwitchSync] Linked not found: ${linkedId}`);
+            return;
+          }
+
+          if (!this.syncGroups.has(primaryId))
+            this.syncGroups.set(primaryId, new Set());
+          this.syncGroups.get(primaryId).add(linkedId);
+
+          // Both directions trigger propagate
+          this.registry.onSwitchChange(primaryId, (viewName) =>
+            this.propagate(primaryId, viewName),
+          );
+          this.registry.onSwitchChange(linkedId, (viewName) =>
+            this.propagate(primaryId, viewName),
+          );
+        }
+
+        propagate(primaryId, viewName) {
+          if (this.syncing) return;
+          this.syncing = true;
+
+          const allIds = [primaryId, ...this.syncGroups.get(primaryId)];
+
+          allIds.forEach((id) => {
+            const instance = this.registry.getSwitch(id);
+            if (instance && instance.getCurrent() !== viewName) {
+              instance.selectView(viewName);
+            }
+          });
+
+          this.syncing = false;
+        }
+
+        getLinked(primaryId) {
+          return [...(this.syncGroups.get(primaryId) || [])];
+        }
+      }
+
+      // ============================================
+      // ACTIONS
+      // ============================================
+      const actionHandlers = {
+        onProductViewChange: (id, view) => console.log(`📦 Product → ${view}`),
+        onSettingsViewChange: (id, view) =>
+          console.log(`⚙️ Settings → ${view}`),
+        onDisplayViewChange: (id, view) => console.log(`🎨 Display → ${view}`),
+      };
+
+      // ============================================
+      // INIT — Sequential, readable
+      // ============================================
+
+      // 1. Registry
+      const switchRegistry = new SwitchRegistry(SWITCHES_CONFIG);
+
+      // 2. Actions
+      Object.entries(actionHandlers).forEach(([name, handler]) => {
+        switchRegistry.registerAction(name, handler);
+      });
+
+      // 3. Mount switches (DOM id = registry key)
+      switchRegistry.initializeAll();
+
+      // 4. Link synced switches via "for" attribute
+      const switchSync = new SwitchSync(switchRegistry);
+      switchSync.linkByAttribute("for");
+
+      // 5. Bind actions to change events
+      Object.values(SWITCHES_CONFIG.switches).forEach((switchConfig) => {
+        const container = document.querySelector(switchConfig.selector);
+        if (!container) return;
+
+        switchRegistry.onSwitchChange(container.id, (viewName) => {
+          switchRegistry.executeAction(
+            switchConfig.actions.change,
+            container.id,
+            viewName,
+          );
+        });
+      });
+
+      // ============================================
+      // PUBLIC API
+      // ============================================
+      window.Switches = {
+        get: (domId) => switchRegistry.getSwitch(domId),
+        on: (domId, callback) => switchRegistry.onSwitchChange(domId, callback),
+        link: (primaryId, linkedId) =>
+          switchSync.linkSwitches(primaryId, linkedId),
+      };
+
+      // Switches.get('settingsSwitch').getCurrent()
+      // Switches.on('settingsSwitch', (view) => { ... })
+      // Switches.link('settingsSwitch', 'anotherSwitch')
+    </script>
+  </body>
+</html>

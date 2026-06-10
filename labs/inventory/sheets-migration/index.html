@@ -14,15 +14,15 @@
     />
     <meta name="theme-color" content="#09090b" />
 
-    <title>Kitchen Valenzuela — Inventario Persistente</title>
+    <title>Kitchen Valenzuela — Inventory Sheets Lab</title>
     <meta
       name="description"
       content="Inventario autogestionado de equipos industriales. Escanea códigos de barras para registrar productos automáticamente."
     />
 
     <!-- Local Icons & Scanner -->
-    <script src="../shared/utilities/scanning/lucide.min.js"></script>
-    <script src="../shared/utilities/scanning/html5-qrcode.min.js"></script>
+    <script src="../../../shared/utilities/scanning/lucide.min.js"></script>
+    <script src="../../../shared/utilities/scanning/html5-qrcode.min.js"></script>
 
     <link rel="stylesheet" href="inventory.css" />
     <link rel="stylesheet" href="css/sheets.css" />
@@ -979,12 +979,11 @@
     <!-- ==========================================
        DETAIL DRAWER
        ========================================== -->
-    <aside
-      class="drawer__sheet"
+    <div
+      class="sheet-source-mount"
       id="detail-drawer"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="drawer-prod-title"
+      hidden
+      data-active-id=""
     >
       <div class="drawer__header">
         <h2 class="drawer__title" id="drawer-prod-title">Ficha Técnica</h2>
@@ -1013,17 +1012,15 @@
           <!-- Dynamic edit form -->
         </div>
       </div>
-    </aside>
+    </div>
 
     <!-- ==========================================
        PRODUCT FORM SIDE SHEET (new multi-step form)
        ========================================== -->
-    <aside
-      class="drawer__sheet pf-sheet"
+    <div
+      class="sheet-source-mount pf-sheet"
       id="product-form-sheet"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="pf-sheet-title"
+      hidden
     >
       <div class="drawer__header">
         <h2 class="drawer__title" id="pf-sheet-title">Nuevo Producto</h2>
@@ -1550,17 +1547,15 @@
           </div>
         </div>
       </div>
-    </aside>
+    </div>
 
     <!-- ==========================================
        CLIENT DRAWER
        ========================================== -->
-    <aside
-      class="drawer__sheet"
+    <div
+      class="sheet-source-mount"
       id="client-form-container"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="client-form-title"
+      hidden
     >
       <div class="drawer__header">
         <h2 class="drawer__title" id="client-form-title">
@@ -1707,7 +1702,7 @@
           </div>
         </form>
       </div>
-    </aside>
+    </div>
 
     <!-- ==========================================
        SYNC COMPARISON MODAL
@@ -3228,6 +3223,7 @@
     <!-- Config (must load first) -->
     <script src="js/config.js"></script>
     <!-- Core state & storage -->
+    <script src="js/lab-storage.js"></script>
     <script src="js/state.js"></script>
     <script src="js/storage.js"></script>
     <!-- Components -->
@@ -3238,6 +3234,9 @@
     <script src="js/components/product-drawer.js"></script>
     <!-- Sheets -->
     <script src="js/sheets/compare-sheet.js"></script>
+    <script src="js/sheets/client-sheet.js"></script>
+    <script src="js/sheets/product-detail-sheet.js"></script>
+    <script src="js/sheets/product-form-sheet.js"></script>
     <!-- Screens -->
     <script src="js/screens/inventory-screen.js"></script>
     <script src="js/screens/clients-screen.js"></script>
@@ -3249,17 +3248,17 @@
     <script src="js/app.js"></script>
 
     <!-- Product Form ES Modules -->
-    <script type="module" src="../shared/components/product-form/main.js"></script>
-    <script type="module" src="../shared/components/product-form/config.js"></script>
-    <script type="module" src="../shared/components/product-form/dom.js"></script>
-    <script type="module" src="../shared/components/product-form/accordion.js"></script>
-    <script type="module" src="../shared/components/product-form/bottomBar.js"></script>
-    <script type="module" src="../shared/components/product-form/formHandlers.js"></script>
-    <script type="module" src="../shared/components/product-form/quickForm.js"></script>
-    <script type="module" src="../shared/components/product-form/review.js"></script>
-    <script type="module" src="../shared/components/product-form/state.js"></script>
-    <script type="module" src="../shared/components/product-form/stepPills.js"></script>
-    <script type="module" src="../shared/components/product-form/summary.js"></script>
+    <script type="module" src="../../../shared/components/product-form/main.js"></script>
+    <script type="module" src="../../../shared/components/product-form/config.js"></script>
+    <script type="module" src="../../../shared/components/product-form/dom.js"></script>
+    <script type="module" src="../../../shared/components/product-form/accordion.js"></script>
+    <script type="module" src="../../../shared/components/product-form/bottomBar.js"></script>
+    <script type="module" src="../../../shared/components/product-form/formHandlers.js"></script>
+    <script type="module" src="../../../shared/components/product-form/quickForm.js"></script>
+    <script type="module" src="../../../shared/components/product-form/review.js"></script>
+    <script type="module" src="../../../shared/components/product-form/state.js"></script>
+    <script type="module" src="../../../shared/components/product-form/stepPills.js"></script>
+    <script type="module" src="../../../shared/components/product-form/summary.js"></script>
 
     <script>
       // Agrupamos todo el código dentro del evento de carga
