@@ -6,19 +6,13 @@
 function openProductDrawer(p) {
   window.DOM.detailDrawer.dataset.activeId = p.id;
   
-  // Setup tabs listeners
-  window.DOM.drawerTabProduct.onclick = () => setDrawerTab("product");
-  window.DOM.drawerTabForm.onclick = () => {
-    closeProductDrawer();
-    openProductFormSheet();
-  };
+  // Tab navigation removed; no tab listeners needed
 
   // Render both views
   renderDrawerViewProduct(p);
   renderDrawerViewForm(p);
 
-  // Default to product tab
-  setDrawerTab("product");
+  // Default view is product; tabs removed
 
   window.DOM.detailDrawer.classList.add("drawer__sheet--active");
   window.DOM.scrim.classList.add("drawer__scrim--active");
@@ -26,6 +20,11 @@ function openProductDrawer(p) {
   // Hide the Island navigation when drawer opens
   if (window.Island && typeof window.Island.hide === "function") {
     window.Island.hide();
+  }
+
+  // Update URL hash for the opened product
+  if (typeof window.setProductSheetHash === "function") {
+    window.setProductSheetHash("product", p);
   }
 }
 
@@ -38,6 +37,14 @@ function closeProductDrawer() {
   // Show the Island navigation when drawer closes
   if (window.Island && typeof window.Island.show === "function") {
     window.Island.show();
+  }
+
+  // Clean the URL when the detail drawer closes
+  if (window.history && typeof window.history.replaceState === "function") {
+    const path = `${window.location.pathname}${window.location.search}`;
+    if (window.location.hash.startsWith("#/draft") || window.location.hash.startsWith("#/product")) {
+      window.history.replaceState({}, document.title, path);
+    }
   }
 }
 
@@ -144,10 +151,12 @@ function renderDrawerViewProduct(p) {
     </div>
 `;
 
-   // Render delete button in header (only on product tab)
    const headerActions = window.DOM.detailDrawer.querySelector('.drawer__header-actions');
    if (headerActions) {
      headerActions.innerHTML = `
+       <button class="drawer__edit-btn" id="btn-edit-product" title="Editar producto">
+         <i data-lucide="edit"></i>
+       </button>
        <button class="drawer__delete-btn" id="btn-delete-product" title="Eliminar de Inventario">
          <i data-lucide="trash-2"></i>
        </button>
@@ -157,6 +166,23 @@ function renderDrawerViewProduct(p) {
      `;
      document.getElementById("btn-delete-product").addEventListener("click", () => {
        deleteProduct(p.id);
+     });
+     document.getElementById("btn-edit-product").addEventListener("click", () => {
+       window.__openingProductSheetRoute = true;
+       try {
+         window.__currentProductId = p.id;
+         const form = document.getElementById("pf");
+         if (form) form.dataset.draftId = p.id;
+         openProductFormSheet();
+         if (typeof window.populateProductFormFromProduct === "function") {
+           window.populateProductFormFromProduct(p);
+         }
+         if (typeof window.setProductSheetHash === "function") {
+           window.setProductSheetHash("product", p);
+         }
+       } finally {
+         window.__openingProductSheetRoute = false;
+       }
      });
      document.getElementById("close-drawer-btn").addEventListener("click", closeProductDrawer);
    }
@@ -315,6 +341,20 @@ function saveProductForm(id) {
 function openProductFormSheet() {
   const sheet = document.getElementById("product-form-sheet");
   if (sheet) {
+    if (window.setProductSheetHash && !window.__openingProductSheetRoute) {
+      const form = document.getElementById("pf");
+      const draftId = form?.dataset.draftId;
+      const currentId = window.__currentProductId;
+      const product = draftId && window.AppState?.products
+        ? window.AppState.products.find(p => p.id === draftId)
+        : currentId && window.AppState?.products
+          ? window.AppState.products.find(p => p.id === currentId)
+        : null;
+      if (product) {
+        window.setProductSheetHash("product", product);
+      }
+    }
+
     sheet.classList.add("drawer__sheet--active");
     window.DOM.scrim.classList.add("drawer__scrim--active");
     
@@ -322,6 +362,79 @@ function openProductFormSheet() {
     if (window.Island && typeof window.Island.hide === "function") {
       window.Island.hide();
     }
+    // Set dynamic title
+    const titleEl = document.getElementById('pf-sheet-title');
+    if (titleEl) {
+      if (window.__currentProductId) {
+        const prod = window.AppState.products.find(p => p.id === window.__currentProductId);
+        titleEl.textContent = prod ? `Editar ${prod.nombre}` : 'Editar Producto';
+      } else {
+        titleEl.textContent = 'Nuevo Producto';
+      }
+    }
+    // Back button handler
+    const backBtn = document.getElementById('pf-sheet-back');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        closeProductFormSheet();
+        if (window.__currentProductId) {
+          const prod = window.AppState.products.find(p => p.id === window.__currentProductId);
+          if (prod) openProductDrawer(prod);
+        }
+      });
+    }
+  }
+}
+
+function populateProductFormFromProduct(p) {
+  const form = document.getElementById("pf");
+  if (!form || !p) return;
+
+  const setValue = (selector, value) => {
+    const el = form.querySelector(selector);
+    if (!el || value === undefined || value === null) return;
+    const nextValue = String(value);
+    if (el.tagName === "SELECT" && nextValue) {
+      const matchingOption = Array.from(el.options).find(option => {
+        return option.value === nextValue || option.textContent.trim() === nextValue;
+      });
+      if (!matchingOption) return;
+      el.value = matchingOption.value;
+    } else {
+      el.value = nextValue;
+    }
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+
+  const setChecked = (selector, checked) => {
+    const el = form.querySelector(selector);
+    if (!el) return;
+    el.checked = Boolean(checked);
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  };
+
+  setValue('input[name="name"]', p.nombre || "");
+  setValue('input[name="code"]', p.codigo || "");
+  setValue('select[name="barcode_symbology"]', p.barcodeType || "code128");
+  setValue('select[name="brand"]', p.marca || "Generales");
+  setValue('select[name="category"]', p.categoriaCodigo || "");
+  setValue('input[name="cost"]', p.costo || "");
+  setValue('input[name="price"]', p.precio || "");
+  setValue('select[name="tax_rate"]', p.tasaImpuesto === "IVA" ? "5" : "");
+  setValue('select[name="tax_method"]', p.metodoImpuesto === "Inclusivo" ? "0" : "1");
+  setValue('select[name="unit"]', p.unitCode || "");
+  setValue('input[name="wh_qty_3"]', p.stock || "");
+  setValue('input[name="alert_quantity"]', p.alertaCantidad || "");
+  setValue('textarea[name="product_details"]', p.descripcion || "");
+  setValue('textarea[name="details"]', p.especificaciones || "");
+  setValue('textarea[name="history"]', p.especial3 || "");
+  setValue('input[name="cf1"]', p.especial4 || "");
+  setValue('input[name="cf2"]', p.especial5 || "");
+  setValue('input[name="cf3"]', p.especial6 || "");
+
+  if (p.tipoProducto && window.CSS && CSS.escape) {
+    setChecked(`input[name="type"][value="${CSS.escape(p.tipoProducto)}"]`, true);
   }
 }
 
@@ -337,6 +450,13 @@ function closeProductFormSheet() {
     // Show Island navigation when drawer closes
     if (window.Island && typeof window.Island.show === "function") {
       window.Island.show();
+    }
+  }
+
+  if (window.history && typeof window.history.replaceState === "function") {
+    const path = `${window.location.pathname}${window.location.search}`;
+    if (window.location.hash.startsWith("#/draft") || window.location.hash.startsWith("#/product")) {
+      window.history.replaceState({}, document.title, path);
     }
   }
 }

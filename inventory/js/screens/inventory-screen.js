@@ -83,6 +83,8 @@ function applyFilters() {
   const stock = window.AppState.filters.stockFilter;
 
   window.AppState.filteredProducts = window.AppState.products.filter(p => {
+    // Exclude drafts from main product list
+    if (p.status === 'draft' || p.sync_status === 'draft') return false;
     // Search text matches SKU, name, brand, description
     const matchText = !query || 
       String(p.codigo).toLowerCase().includes(query) ||
@@ -137,7 +139,41 @@ function sortFilteredProducts() {
   });
 }
 
+function renderDraftProducts() {
+  const draftContainer = document.getElementById('draft-products-container');
+  if (!draftContainer) return;
+  const drafts = window.AppState.products.filter(p => p.status === 'draft' || p.sync_status === 'draft');
+  if (drafts.length === 0) {
+    draftContainer.innerHTML = '';
+    return;
+  }
+  let html = '';
+  drafts.forEach(p => {
+    const imgUrl = window.Config.resolveImageUrl(p.imagen);
+    const encodedId = typeof encodeId === 'function' ? encodeId(p.id) : p.id;
+    const gradient = 'var(--cat-otros-bg)';
+    const icon = 'box';
+    html += `
+      <div class="product-card" data-open-id="${encodedId}">
+        <div class="product-card__image-container">
+          <div class="product-card__image-fallback" style="background: ${gradient}">
+            ${imgUrl ? `<img src="${imgUrl}" alt="${p.nombre}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()" />` : `<i data-lucide="${icon}"></i>`}
+          </div>
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <span class="product-card__brand">${p.marca}</span>
+          <h2 class="product-card__name">${p.nombre}</h2>
+          <span class="product-card__sku">SKU: ${p.codigo}</span>
+        </div>
+      </div>`;
+  });
+  draftContainer.innerHTML = html;
+  createLucideIcons();
+}
+
 function renderProducts() {
+  if (typeof renderDraftProducts === 'function') renderDraftProducts();
+
   // Guard: don't render empty state while loading
   if (window.AppState.isLoading) return;
   if (window.AppState.filteredProducts.length === 0) {
@@ -280,10 +316,13 @@ function renderProducts() {
 }
 
 window.renderInventoryView = function() {
+  // Render draft products above main container
+  if (typeof renderDraftProducts === 'function') renderDraftProducts();
   calculateMetrics();
   populateBrandFilter();
   applyFilters();
 };
+
 
 /**
  * Render skeleton placeholder cards into the products container.

@@ -35,6 +35,7 @@ async function init() {
   if (window.handleHashChange) {
     window.handleHashChange();
   }
+  handleProductSheetRoute();
 }
 
 function trackReload() {
@@ -105,6 +106,7 @@ function cacheElements() {
   window.DOM.themeBtn = document.getElementById("theme-toggle-btn");
   window.DOM.scanBtn = document.getElementById("scan-btn");
   window.DOM.productsContainer = document.getElementById("products-container");
+  window.DOM.draftProductsContainer = document.getElementById("draft-products-container");
   window.DOM.searchInput = document.getElementById("search-input");
   window.DOM.categoryTabsContainer = document.getElementById("category-tabs");
   window.DOM.brandSelect = document.getElementById("brand-filter");
@@ -196,15 +198,88 @@ function setupEventListeners() {
   window.DOM.scanBtn.addEventListener("click", openScanner);
 
   // Product card click delegation (removes hardcoded inline onclick)
-  window.DOM.productsContainer.addEventListener("click", (e) => {
+  const handleProductCardClick = (e) => {
     const card = e.target.closest("[data-open-id]");
     if (card) {
       const encodedId = card.getAttribute("data-open-id");
       const decodedId = typeof decodeId === "function" ? decodeId(encodedId) : encodedId;
       const p = window.AppState.products.find(x => x.id === decodedId);
-      if (p && typeof openProductDrawer === "function") openProductDrawer(p);
+      if (!p) return;
+
+      const isDraft = p.status === "draft" || p.sync_status === "draft";
+      if (isDraft && typeof window.openProductFormSheet === "function") {
+        window.__openingProductSheetRoute = true;
+        try {
+        window.__currentProductId = p.id;
+        const form = document.getElementById("pf");
+        if (form) form.dataset.draftId = p.id;
+        window.openProductFormSheet();
+        if (typeof window.populateProductFormFromProduct === "function") {
+          window.populateProductFormFromProduct(p);
+        }
+        if (typeof window.setProductSheetHash === "function") {
+          window.setProductSheetHash("product", p);
+        }
+        } finally {
+          window.__openingProductSheetRoute = false;
+        }
+      } else if (typeof openProductDrawer === "function") {
+        openProductDrawer(p);
+      }
     }
-  });
+  };
+  window.DOM.productsContainer.addEventListener("click", handleProductCardClick);
+  window.DOM.draftProductsContainer?.addEventListener("click", handleProductCardClick);
+
+  // FAB Add Product - create draft and open form
+  const fabAddProduct = document.getElementById('fab-add-product');
+  if (fabAddProduct) {
+    fabAddProduct.addEventListener('click', () => {
+      const draft = {
+        id: 'draft-' + Date.now(),
+        nombre: '',
+        codigo: '',
+        barcodeType: 'code128',
+        marca: '',
+        categoriaCodigo: 'other',
+        unitCode: '',
+        costo: 0,
+        precio: 0,
+        alertaCantidad: 0,
+        tasaImpuesto: 'IVA',
+        metodoImpuesto: 'Exclusivo',
+        imagen: '',
+        descripcion: '',
+        especificaciones: '',
+        especial3: '',
+        especial4: '',
+        especial5: '',
+        especial6: '',
+        stock: 0,
+        airtable_id: null,
+        status: 'draft',
+        sync_status: 'draft',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      window.AppState.products.push(draft);
+      if (typeof window.saveProductsToStorage === 'function') {
+        window.saveProductsToStorage();
+      } else {
+        localStorage.setItem('kv-catalog-products', JSON.stringify(window.AppState.products));
+      }
+      const form = document.getElementById('pf');
+      if (form) form.dataset.draftId = draft.id;
+      // Reset current product context for a fresh draft
+      window.__currentProductId = null;
+      if (typeof window.openProductFormSheet === 'function') {
+        window.openProductFormSheet();
+        if (typeof window.setProductSheetHash === 'function') {
+          window.setProductSheetHash("product", draft);
+        }
+      }
+    });
+  }
 
   // Search Input Reactivity
   const searchClearBtn = document.getElementById("search-clear-btn");
@@ -283,6 +358,8 @@ function setupEventListeners() {
     if (typeof closeClientDrawer === "function") closeClientDrawer();
     if (typeof closeProductFormSheet === "function") closeProductFormSheet();
   });
+
+  window.addEventListener("hashchange", handleProductSheetRoute);
 }
 
 // QUOTATION ROUTING - Hash-based URL persistence (v3 pattern)
@@ -294,3 +371,111 @@ function updateQuotationHash(quoteId, step) {
 
 // Expose navigate helper
 window.navigateToQuotation = updateQuotationHash;
+
+function parseSheetHashRoute() {
+  const hash = window.location.hash || "";
+  const queryIndex = hash.indexOf("?");
+  const path = queryIndex === -1 ? hash : hash.slice(0, queryIndex);
+  const params = new URLSearchParams(queryIndex === -1 ? "" : hash.slice(queryIndex + 1));
+
+  if (path !== "#/draft" && path !== "#/product") return null;
+
+  const id = params.get("id");
+  if (!id) return null;
+
+  return {
+    type: path === "#/draft" ? "draft" : "product",
+    id: decodeURIComponent(id)
+  };
+}
+
+function findProductForSheetRoute(route) {
+  if (!route || !window.AppState || !Array.isArray(window.AppState.products)) return null;
+
+  const routeId = String(route.id || "").trim();
+  const draftId = routeId.startsWith("draft-") ? routeId : `draft-${routeId}`;
+
+  return window.AppState.products.find(p => {
+    if (!p) return false;
+    const ids = [
+      p.id,
+      p.airtable_id,
+      p.codigo,
+      p.recordId,
+      p["recordID"],
+      p["recordId"]
+    ].filter(Boolean).map(String);
+
+    if (route.type === "draft") {
+      const isDraft = p.status === "draft" || p.sync_status === "draft";
+      return isDraft && (ids.includes(routeId) || ids.includes(draftId));
+    }
+
+    return ids.includes(routeId);
+  }) || null;
+}
+
+function handleProductSheetRoute() {
+  if (window.__openingProductSheetRoute) return;
+
+  const route = parseSheetHashRoute();
+  if (!route) return;
+
+  const product = findProductForSheetRoute(route);
+  if (!product) {
+    if (typeof window.showToast === "function") {
+      window.showToast("No se encontró el producto solicitado.", "warning");
+    }
+    return;
+  }
+
+  window.__openingProductSheetRoute = true;
+  try {
+    const isDraft = product.status === "draft" || product.sync_status === "draft";
+    if (isDraft) {
+      if (typeof closeProductDrawer === "function") closeProductDrawer();
+      window.__currentProductId = product.id;
+      const form = document.getElementById("pf");
+      if (form) form.dataset.draftId = product.id;
+      if (typeof window.openProductFormSheet === "function") {
+        window.openProductFormSheet();
+        if (typeof window.populateProductFormFromProduct === "function") {
+          window.populateProductFormFromProduct(product);
+        }
+        if (typeof window.setProductSheetHash === "function") {
+          window.setProductSheetHash("product", product);
+        }
+      }
+    } else {
+      if (typeof closeProductFormSheet === "function") closeProductFormSheet();
+      if (typeof openProductDrawer === "function") {
+        openProductDrawer(product);
+      }
+      if (typeof window.setProductSheetHash === "function") {
+        window.setProductSheetHash("product", product);
+      }
+    }
+  } finally {
+    window.__openingProductSheetRoute = false;
+  }
+}
+
+window.handleProductSheetRoute = handleProductSheetRoute;
+
+function setProductSheetHash(type, product) {
+  if (!product) return;
+
+  const id = type === "product"
+    ? (product.airtable_id || product.id || product.codigo)
+    : product.id;
+
+  if (!id) return;
+
+  const nextHash = `#/${type}?id=${encodeURIComponent(id)}`;
+  const nextUrl = `${window.location.pathname}${window.location.search}${nextHash}`;
+  if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextUrl) {
+    window.history.replaceState({}, document.title, nextUrl);
+  }
+}
+
+window.setProductSheetHash = setProductSheetHash;

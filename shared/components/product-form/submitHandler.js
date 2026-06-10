@@ -26,10 +26,14 @@ export function initSubmitHandler() {
     try {
       // Gather mapped data
       const data = gatherFormData();
+      const draftId = form.dataset.draftId;
+      const existingDraft = draftId && window.AppState?.products
+        ? window.AppState.products.find(p => p.id === draftId)
+        : null;
 
       // Dual Save Step 1: Immediate local persistence
       const newLocalProduct = {
-        id: data["Código"] || ("manual-" + Date.now()),
+        id: existingDraft?.id || data["Código"] || ("manual-" + Date.now()),
         nombre: data["Nombre"] || "Producto sin nombre",
         codigo: data["Código"] || "",
         barcodeType: data["Clase de Código de barras"] || "code128",
@@ -49,15 +53,20 @@ export function initSubmitHandler() {
         especial5: data["Producto Campo Personalizadoo 5"] || "",
         especial6: data["Producto Campo Personalizadoo 6"] || "",
         stock: Number(data["Cantidad"]) || 0,
-        airtable_id: null,
-        sync_status: "pending",
+        airtable_id: existingDraft?.airtable_id || null,
+        status: "draft",
+        sync_status: "draft",
+        createdAt: existingDraft?.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
 
       if (!window.AppState) window.AppState = {};
       if (!window.AppState.products) window.AppState.products = [];
 
-      const existingIdx = window.AppState.products.findIndex(p => p.codigo === newLocalProduct.codigo);
+      const existingIdx = window.AppState.products.findIndex(p => {
+        if (draftId) return p.id === draftId;
+        return newLocalProduct.codigo && p.codigo === newLocalProduct.codigo;
+      });
       if (existingIdx !== -1) {
         window.AppState.products[existingIdx] = newLocalProduct;
       } else {
@@ -72,7 +81,7 @@ export function initSubmitHandler() {
 
       // Show success toast for local save
       if (typeof window.showToast === "function") {
-        window.showToast("Producto guardado localmente (sin internet) 💾", "info");
+        window.showToast("Borrador guardado localmente", "info");
       }
 
       // Dual Save Step 2: Upload to Airtable
@@ -95,16 +104,18 @@ export function initSubmitHandler() {
 
       // Update sync status on success
       const createdRecord = result.data?.records?.[0];
-      if (createdRecord && createdRecord.id) {
-        const p = window.AppState.products.find(x => x.codigo === newLocalProduct.codigo);
-        if (p) {
+      const p = window.AppState.products.find(x => x.id === newLocalProduct.id || (newLocalProduct.codigo && x.codigo === newLocalProduct.codigo));
+      if (p) {
+        if (createdRecord && createdRecord.id) {
           p.airtable_id = createdRecord.id;
-          p.sync_status = "synced";
-          if (typeof window.saveProductsToStorage === "function") {
-            window.saveProductsToStorage();
-          } else {
-            localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
-          }
+        }
+        p.status = "published";
+        p.sync_status = "synced";
+        p.updatedAt = new Date().toISOString();
+        if (typeof window.saveProductsToStorage === "function") {
+          window.saveProductsToStorage();
+        } else {
+          localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
         }
       }
 
@@ -117,6 +128,7 @@ export function initSubmitHandler() {
 
       // Reset form inputs
       form.reset();
+      delete form.dataset.draftId;
       
       // Reset steps and UI
       const { clearAllDone } = await import("./state.js");

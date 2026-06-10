@@ -270,6 +270,14 @@
         <!-- ==========================================
             PRODUCT GRID
             ========================================== -->
+        <section
+          id="draft-products-container"
+          class="catalog__grid catalog__grid--drafts"
+          aria-live="polite"
+        >
+          <!-- Draft products injected here, outside main to survive main reload renders -->
+        </section>
+
         <main id="products-container" class="catalog__grid" aria-live="polite">
           <!-- Products injected here -->
         </main>
@@ -990,18 +998,7 @@
         </div>
       </div>
 
-      <div class="drawer__tabs" role="tablist">
-        <button
-          class="drawer__tab drawer__tab--active"
-          data-drawer-tab="product"
-          role="tab"
-        >
-          Producto
-        </button>
-        <button class="drawer__tab" data-drawer-tab="form" role="tab">
-          Editar
-        </button>
-      </div>
+      <!-- Tabs replaced by static header; edit action moved to header buttons -->
 
       <div class="drawer__body" id="drawer-body">
         <div
@@ -1030,6 +1027,9 @@
       <div class="drawer__header">
         <h2 class="drawer__title" id="pf-sheet-title">Nuevo Producto</h2>
         <div class="drawer__header-actions">
+          <button class="drawer__back-btn" id="pf-sheet-back" aria-label="Volver al detalle">
+            <i data-lucide="chevron-left"></i>
+          </button>
           <button
             class="drawer__close-btn"
             id="pf-sheet-close"
@@ -3163,6 +3163,10 @@
             sectionId = "quotes";
           } else if (hash === "#/clients") {
             sectionId = "clients";
+          } else if (hash.startsWith("#/draft")) {
+            sectionId = "inventory";
+          } else if (hash.startsWith("#/product?")) {
+            sectionId = "inventory";
           } else if (hash === "#/product" || hash === "#/products") {
             sectionId = "product";
           } else if (hash === "#/inventory" || hash === "#/dashboard") {
@@ -3277,19 +3281,5 @@
       JSON.parse(localStorage.getItem("kv-burst-log"));
     </script>
 
-    <!-- FAB Handler: Add Product Manually -->
-    <script>
-      (function () {
-        const fabAddProduct = document.getElementById("fab-add-product");
-
-        if (fabAddProduct) {
-          fabAddProduct.addEventListener("click", () => {
-            if (typeof window.openProductFormSheet === "function") {
-              window.openProductFormSheet();
-            }
-          });
-        }
-      })();
-    </script>
   </body>
 </html>

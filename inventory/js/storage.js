@@ -6,29 +6,44 @@
 function deduplicateProducts(products) {
   const seen = new Set();
   return products.filter(p => {
-    const code = p.codigo || p["Código"] || "";
-    if (seen.has(code)) return false;
-    seen.add(code);
+    const code = String(p.codigo || p["Código"] || "").trim();
+    const isDraft = p.status === "draft" || p.sync_status === "draft";
+    const key = isDraft || !code
+      ? `id:${p.id || p.createdAt || p.updatedAt || Math.random()}`
+      : `code:${code}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
 }
 
+function parseStoredProducts(saved) {
+  if (!saved) return [];
+  try {
+    const products = JSON.parse(saved);
+    return Array.isArray(products) ? products : [];
+  } catch (err) {
+    console.error("Failed to parse local catalog database:", err);
+    return [];
+  }
+}
+
+function getStoredDraftProducts(saved) {
+  return parseStoredProducts(saved).filter(p => p && (p.status === "draft" || p.sync_status === "draft"));
+}
+
 async function loadProductsFromStorage() {
   const saved = localStorage.getItem("kv-catalog-products");
+  const storedDrafts = getStoredDraftProducts(saved);
   const priorityAirtable = window.SyncManager && window.SyncManager.config && window.SyncManager.config.priority === "airtable";
   if (saved && !priorityAirtable) {
     // Existing cached data is used when no Airtable priority override
-    try {
-      window.AppState.products = JSON.parse(saved);
-      const before = window.AppState.products.length;
-      window.AppState.products = deduplicateProducts(window.AppState.products);
-      if (before !== window.AppState.products.length) {
-        console.log(`Deduplicated products: ${before} → ${window.AppState.products.length}`);
-        localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
-      }
-    } catch (err) {
-      console.error("Failed to parse local catalog database:", err);
-      window.AppState.products = [];
+    window.AppState.products = parseStoredProducts(saved);
+    const before = window.AppState.products.length;
+    window.AppState.products = deduplicateProducts(window.AppState.products);
+    if (before !== window.AppState.products.length) {
+      console.log(`Deduplicated products: ${before} → ${window.AppState.products.length}`);
+      localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
     }
   } else {
     // LocalStorage is empty or priority forces Airtable load
@@ -46,7 +61,8 @@ async function loadProductsFromStorage() {
         console.log("Storage: Attempting to load products from Airtable (priority source)...");
         const cloudRecords = await window.SyncManager.fetchAllFromAirtable();
         if (cloudRecords && cloudRecords.length > 0) {
-          window.AppState.products = cloudRecords.map(rec => window.SyncManager.mapAirtableToLocal(rec));
+          const cloudProducts = cloudRecords.map(rec => window.SyncManager.mapAirtableToLocal(rec));
+          window.AppState.products = [...storedDrafts, ...cloudProducts];
           window.AppState.products = deduplicateProducts(window.AppState.products);
           localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
           console.log(`Storage: Loaded ${window.AppState.products.length} products from Airtable.`);
@@ -63,19 +79,20 @@ async function loadProductsFromStorage() {
         if (window.SyncManager && typeof window.SyncManager.loadFromLocalJSON === "function") {
           const raw = await window.SyncManager.loadFromLocalJSON();
           if (raw && raw.length > 0) {
-            window.AppState.products = raw.map(normalizeJsonProduct);
+            const jsonProducts = raw.map(normalizeJsonProduct);
+            window.AppState.products = [...storedDrafts, ...jsonProducts];
             window.AppState.products = deduplicateProducts(window.AppState.products);
             localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
             console.log(`Storage: Fallback — imported ${window.AppState.products.length} products from backup JSON.`);
           } else {
-            window.AppState.products = [];
+            window.AppState.products = storedDrafts;
           }
         } else {
-          window.AppState.products = [];
+          window.AppState.products = storedDrafts;
         }
       } catch (err) {
         console.warn("Storage: Failed to load backup JSON:", err);
-        window.AppState.products = [];
+        window.AppState.products = storedDrafts;
       }
     }
     window.AppState.isLoading = false;
