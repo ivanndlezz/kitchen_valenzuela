@@ -145,6 +145,18 @@ export const STEPS = [
 
 export const TOTAL_STEPS = STEPS.length;
 
+window.ProductFormConfig = Object.assign(window.ProductFormConfig || {}, {
+  PRODUCT_TYPES,
+  CATEGORIES,
+  BARCODE_SYMBOLOGIES,
+  BRANDS,
+  TAX_RATES,
+  TAX_METHODS,
+  UNITS,
+  SHIPPING_TYPES,
+  SUPPLIERS,
+});
+
 /** Quick-form ↔ main-form field mapping (DRY: one definition used by both sync directions). */
 export const QF_FIELD_MAP = [
   { qfId: "qf-name",  mainSelector: "#f-name" },

@@ -368,15 +368,12 @@ function openProductFormSheet() {
     size: "xl",
     mode: window.__currentProductId ? "edit" : "create",
     hideIsland: true,
-    meta: {
-      eyebrow: "Producto",
-      activeId: window.__currentProductId || document.getElementById("pf")?.dataset.draftId || "",
-      mode: window.__currentProductId ? "edit" : "create"
-    },
+    meta: window.ProductFormSheet.getMeta(),
     slots: {
       topControls: window.ProductFormSheet.renderTopControls,
       stickyNav: window.ProductFormSheet.getStepPills,
-      main: window.ProductFormSheet.getBody
+      main: window.ProductFormSheet.getBody,
+      fixedControls: window.ProductFormSheet.getBottomBar
     },
     onOpen(root) {
       window.ProductFormSheet.hydrate(root);

@@ -78,9 +78,18 @@
 
   function renderTopControls() {
     return `
-      <button class="drawer__edit-btn" type="button" data-product-action="edit" title="Editar producto">
-        <i data-lucide="edit"></i>
-      </button>
+      <div class="view-switch view-switch--single sheet-mode-switch" data-sheet-mode-switch="product-detail">
+        <button class="view-switch__toggle" type="button" aria-label="Cambiar a editar producto">
+          <span class="view-switch__toggle-inner">
+            <span class="view-switch__btn" data-view="general" data-selected="true">
+              Resumen
+            </span>
+            <span class="view-switch__btn" data-view="advanced" data-selected="false" data-product-action="edit">
+              Editar
+            </span>
+          </span>
+        </button>
+      </div>
       <button class="drawer__delete-btn" type="button" data-product-action="delete" title="Eliminar de Inventario">
         <i data-lucide="trash-2"></i>
       </button>

@@ -43,6 +43,12 @@
   padding: var(--safe-top) 0 var(--safe-bottom) 0;
 }
 
+.app-sheet > * {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 .app-sheet-root[data-sheet-state="open"] .app-sheet {
   transform: translateX(0);
 }
@@ -102,12 +108,30 @@
 }
 
 .app-sheet__eyebrow {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   margin-bottom: 3px;
   font-size: 11px;
   font-weight: 700;
   color: var(--text-tertiary);
   text-transform: uppercase;
+}
+
+.app-sheet__eyebrow[data-status="draft"]::after {
+  content: attr(data-status);
+  display: inline-flex;
+  align-items: center;
+  min-height: 16px;
+  padding: 2px 7px;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: var(--radius-full);
+  background: rgba(17, 17, 17, 0.06);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .app-sheet__eyebrow:empty {
@@ -120,6 +144,9 @@
   font-size: 16px;
   font-weight: 700;
   line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .app-sheet__controls {
@@ -150,6 +177,55 @@
 .app-sheet__close svg {
   width: 18px;
   height: 18px;
+}
+
+.sheet-mode-switch.view-switch {
+  display: inline-flex;
+  width: fit-content;
+}
+
+.sheet-mode-switch.view-switch--single {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.sheet-mode-switch .view-switch__toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.sheet-mode-switch .view-switch__toggle-inner {
+  display: inline-flex;
+  gap: 5px;
+  padding: 3px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: #f4f5f3;
+}
+
+.sheet-mode-switch .view-switch__btn {
+  min-width: 7ch;
+  padding: 5px 7px;
+  border-radius: 5px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.15;
+  text-align: center;
+  transition: var(--transition-fast);
+}
+
+.sheet-mode-switch .view-switch__btn[data-selected="true"] {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.sheet-mode-switch .view-switch__btn[data-selected="false"]:hover {
+  color: var(--text-main);
 }
 
 .app-sheet__sticky-nav,
@@ -204,16 +280,19 @@
   background: #f5f5f3;
 }
 
-.app-sheet-root[data-sheet-id="product-form"] .pf-sheet__body {
-  height: 100%;
-  padding: 0 20px 100px 20px;
+.app-sheet-root[data-sheet-id="product-form"] .app-sheet__fixed-controls {
+  padding: 0;
+  border-top: 0;
+  background: transparent;
 }
 
-.app-sheet-root[data-sheet-id="product-form"] .bottom-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.app-sheet-root[data-sheet-id="product-form"] .pf-sheet__body {
+  height: 100%;
+  padding: 0 20px 24px 20px;
+}
+
+.app-sheet-root[data-sheet-id="product-form"] .pf-bottom-bar {
+  position: relative;
   height: 80px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
@@ -254,12 +333,10 @@
   }
 
   .app-sheet-root[data-sheet-id="product-form"][data-sheet-state="open"] .pf-bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 9999;
-    width: -webkit-fill-available;
-    padding: 0.5rem 0;
-    background-color: aliceblue;
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 0 16px;
+    background: rgba(255, 255, 255, 0.95);
   }
 }

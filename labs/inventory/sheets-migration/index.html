@@ -25,9 +25,9 @@
     <script src="../../../shared/utilities/scanning/html5-qrcode.min.js"></script>
 
     <link rel="stylesheet" href="inventory.css" />
-    <link rel="stylesheet" href="css/sheets.css" />
+    <link rel="stylesheet" href="css/sheets.css?v=draft-status-1" />
     <link rel="stylesheet" href="css/skeleton.css" />
-    <link rel="stylesheet" href="css/product-form.css" />
+    <link rel="stylesheet" href="css/product-form.css?v=taxonomy-sheet-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -305,6 +305,27 @@
          SECCIÓN: COTIZADOR (3-Step Stepper + Listado)
          ========================================== -->
       <div id="section-quotes" class="app-section">
+        <div
+          class="commercial-flow-tabs"
+          role="tablist"
+          aria-label="Flujo comercial"
+        >
+          <button
+            class="commercial-flow-tab is-active"
+            type="button"
+            data-commercial-flow="quotes"
+          >
+            Cotizaciones
+          </button>
+          <button
+            class="commercial-flow-tab"
+            type="button"
+            data-commercial-flow="clients"
+          >
+            Clientes
+          </button>
+        </div>
+
         <!-- ======= VISTA 1: LISTADO DE COTIZACIONES ======= -->
         <div id="quote-list-view">
           <div
@@ -325,7 +346,7 @@
                 industriales.
               </p>
             </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
+            <div style="display: flex; gap: 8px; align-items: center">
               <button
                 class="btn btn-secondary"
                 id="btn-sync-quotes"
@@ -433,17 +454,53 @@
           </div>
 
           <!-- Stepper Progress Bar -->
-          <div class="stepper-progress-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px;">
+          <div
+            class="stepper-progress-bar"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 16px;
+              padding: 12px 20px;
+            "
+          >
             <!-- Left: Back Button -->
-            <a href="#/quotation" class="header-back" style="display: flex; align-items: center; gap: 4px; color: var(--color-accent); font-weight: 500; text-decoration: none; font-size: 14px; flex-shrink: 0;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;">
+            <a
+              href="#/quotation"
+              class="header-back"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: var(--color-accent);
+                font-weight: 500;
+                text-decoration: none;
+                font-size: 14px;
+                flex-shrink: 0;
+              "
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                style="width: 16px; height: 16px"
+              >
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
               Regresar
             </a>
 
             <!-- Center: Progress Bar -->
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+            <div
+              style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 0;
+              "
+            >
               <div class="stepper-bar">
                 <div class="stepper-step">
                   <div class="stepper-dot active" data-step-dot="1">1</div>
@@ -457,18 +514,61 @@
                   <div class="stepper-dot" data-step-dot="3">3</div>
                 </div>
               </div>
-              <div class="stepper-labels" style="width: 100%; max-width: 240px; margin-top: 6px; padding: 0;">
-                <span class="stepper-label active" data-step-label="1">Precios</span>
+              <div
+                class="stepper-labels"
+                style="
+                  width: 100%;
+                  max-width: 240px;
+                  margin-top: 6px;
+                  padding: 0;
+                "
+              >
+                <span class="stepper-label active" data-step-label="1"
+                  >Precios</span
+                >
                 <span class="stepper-label" data-step-label="2">Cliente</span>
                 <span class="stepper-label" data-step-label="3">Resumen</span>
               </div>
             </div>
 
             <!-- Right: Save Button -->
-            <div style="display: flex; align-items: center; background: var(--bg-surface-raised); border: 1px solid var(--border-color); border-radius: 20px; height: 32px; overflow: hidden; flex-shrink: 0;">
-              <button id="btn-save-quote-stepper" style="background: transparent; border: none; color: var(--color-accent); font-size: 13px; font-weight: 500; height: 100%; padding: 0 12px; display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                background: var(--bg-surface-raised);
+                border: 1px solid var(--border-color);
+                border-radius: 20px;
+                height: 32px;
+                overflow: hidden;
+                flex-shrink: 0;
+              "
+            >
+              <button
+                id="btn-save-quote-stepper"
+                style="
+                  background: transparent;
+                  border: none;
+                  color: var(--color-accent);
+                  font-size: 13px;
+                  font-weight: 500;
+                  height: 100%;
+                  padding: 0 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  cursor: pointer;
+                "
+              >
                 Guardar
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </button>
@@ -598,13 +698,32 @@
                 <div class="form-group" style="margin-bottom: 20px">
                   <label class="form-group__label">Cliente Existente</label>
                   <div class="custom-select-wrapper" id="quoteClientSelect">
-                    <input type="hidden" id="quote-client-select" value="">
+                    <input type="hidden" id="quote-client-select" value="" />
                     <div class="custom-select-trigger" id="quoteClientTrigger">
-                      <input type="text" class="custom-select-input" id="quoteClientInput" placeholder="Seleccionar Cliente" value="-- Cliente General / Público --" autocomplete="off" autocapitalize="none">
-                      <svg class="custom-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      <input
+                        type="text"
+                        class="custom-select-input"
+                        id="quoteClientInput"
+                        placeholder="Seleccionar Cliente"
+                        value="-- Cliente General / Público --"
+                        autocomplete="off"
+                        autocapitalize="none"
+                      />
+                      <svg
+                        class="custom-select-chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
                     </div>
                     <div class="custom-select-dropdown">
-                      <div class="custom-select-options" id="quoteClientOptions">
+                      <div
+                        class="custom-select-options"
+                        id="quoteClientOptions"
+                      >
                         <!-- Options dynamically loaded -->
                       </div>
                     </div>
@@ -887,6 +1006,55 @@
           </div>
         </div>
       </div>
+
+      <!-- ==========================================
+         SECCIÓN: CATÁLOGOS
+         ========================================== -->
+      <div id="section-taxonomy" class="app-section">
+        <div class="section-header taxonomy-screen__header">
+          <div>
+            <h2 class="section-title">Catálogos</h2>
+            <p class="section-subtitle">
+              Gestiona categorías, subcategorías y marcas usadas en el alta de
+              productos.
+            </p>
+          </div>
+          <div class="taxonomy-screen__actions">
+            <button class="btn btn-primary" id="taxonomy-add-category">
+              <i data-lucide="plus"></i> Categoría
+            </button>
+            <button class="btn btn-secondary" id="taxonomy-add-brand">
+              <i data-lucide="plus"></i> Marca
+            </button>
+          </div>
+        </div>
+
+        <div class="taxonomy-screen">
+          <div
+            class="taxonomy-screen__tabs"
+            role="tablist"
+            aria-label="Catálogos"
+          >
+            <button
+              class="taxonomy-screen__tab is-active"
+              type="button"
+              data-taxonomy-tab="categories"
+            >
+              Categorías
+            </button>
+            <button
+              class="taxonomy-screen__tab"
+              type="button"
+              data-taxonomy-tab="brands"
+            >
+              Marcas
+            </button>
+          </div>
+          <div class="taxonomy-screen__body" id="taxonomy-screen-body">
+            <div class="quote-empty-state">Cargando catálogos...</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ==========================================
@@ -979,12 +1147,7 @@
     <!-- ==========================================
        DETAIL DRAWER
        ========================================== -->
-    <div
-      class="sheet-source-mount"
-      id="detail-drawer"
-      hidden
-      data-active-id=""
-    >
+    <div class="sheet-source-mount" id="detail-drawer" hidden data-active-id="">
       <div class="drawer__header">
         <h2 class="drawer__title" id="drawer-prod-title">Ficha Técnica</h2>
         <div class="drawer__header-actions">
@@ -1017,15 +1180,15 @@
     <!-- ==========================================
        PRODUCT FORM SIDE SHEET (new multi-step form)
        ========================================== -->
-    <div
-      class="sheet-source-mount pf-sheet"
-      id="product-form-sheet"
-      hidden
-    >
+    <div class="sheet-source-mount pf-sheet" id="product-form-sheet" hidden>
       <div class="drawer__header">
         <h2 class="drawer__title" id="pf-sheet-title">Nuevo Producto</h2>
         <div class="drawer__header-actions">
-          <button class="drawer__back-btn" id="pf-sheet-back" aria-label="Volver al detalle">
+          <button
+            class="drawer__back-btn"
+            id="pf-sheet-back"
+            aria-label="Volver al detalle"
+          >
             <i data-lucide="chevron-left"></i>
           </button>
           <button
@@ -1046,7 +1209,15 @@
             <div class="top-bar-row">
               <button class="req-toggle" id="req-toggle">
                 <div class="dot">
-                  <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="currentColor" stroke="none"/></svg>
+                  <svg viewBox="0 0 10 10">
+                    <circle
+                      cx="5"
+                      cy="5"
+                      r="2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
                 </div>
                 <span>Solo obligatorios</span>
               </button>
@@ -1058,7 +1229,6 @@
           </div>
 
           <form id="pf" autocomplete="off">
-
             <!-- ── 1. IDENTIDAD ─────────────────────────────── -->
             <div class="step" id="s1">
               <div class="step-header" data-step="1">
@@ -1067,34 +1237,62 @@
                   <strong>Producto</strong>
                   <span>Nombre, tipo y código del producto</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b1">
                 <div class="step-body-inner">
-                  <div class="field" style="margin-top:16px;">
+                  <div class="field" style="margin-top: 16px">
                     <label>Tipo de producto</label>
                     <div class="pills" id="f-product-types"></div>
                   </div>
                   <div class="field is-required">
                     <label>Nombre <span class="req">*</span></label>
-                    <input type="text" name="name" id="f-name" placeholder="Ej. Válvula de gas robertshaw 36C">
+                    <input
+                      type="text"
+                      name="name"
+                      id="f-name"
+                      placeholder="Ej. Válvula de gas robertshaw 36C"
+                    />
                   </div>
                   <div class="grid-2">
                     <div class="field">
                       <label>Nombre secundario</label>
-                      <input type="text" name="second_name" placeholder="Alias o nombre corto">
+                      <input
+                        type="text"
+                        name="second_name"
+                        placeholder="Alias o nombre corto"
+                      />
                     </div>
                     <div class="field is-required">
                       <label>Código <span class="req">*</span></label>
-                      <input type="text" name="code" id="f-code" placeholder="SKU / código de barras">
+                      <input
+                        type="text"
+                        name="code"
+                        id="f-code"
+                        placeholder="SKU / código de barras"
+                      />
                     </div>
                   </div>
                   <div class="field">
                     <label>Simbología de barras</label>
                     <select name="barcode_symbology"></select>
                   </div>
-                  <button type="button" class="btn-done" data-step="1">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="1">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum1"></div>
@@ -1108,37 +1306,106 @@
                   <strong>Clasificación</strong>
                   <span>Categoría, marca y claves SAT</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b2">
                 <div class="step-body-inner">
-                  <div class="grid-2" style="margin-top:16px;">
+                  <div class="grid-2" style="margin-top: 16px">
                     <div class="field is-required">
                       <label>Categoría <span class="req">*</span></label>
-                      <select name="category" id="f-cat"></select>
+                      <div class="input-row input-row--action">
+                        <select
+                          name="category"
+                          id="f-cat"
+                          class="has-suffix"
+                        ></select>
+                        <button
+                          class="icon-input-action suffix"
+                          type="button"
+                          data-taxonomy-add="category"
+                          aria-label="Agregar categoría"
+                          title="Agregar categoría"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                     <div class="field">
                       <label>Subcategoría</label>
-                      <select name="subcategory" id="f-subcat" disabled></select>
+                      <div class="input-row input-row--action">
+                        <select
+                          name="subcategory"
+                          id="f-subcat"
+                          class="has-suffix"
+                          disabled
+                        ></select>
+                        <button
+                          class="icon-input-action suffix"
+                          type="button"
+                          data-taxonomy-add="subcategory"
+                          aria-label="Agregar subcategoría"
+                          title="Agregar subcategoría"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                     <div class="field">
                       <label>Marca</label>
-                      <select name="brand"></select>
+                      <div class="input-row input-row--action">
+                        <select name="brand" class="has-suffix"></select>
+                        <button
+                          class="icon-input-action suffix"
+                          type="button"
+                          data-taxonomy-add="brand"
+                          aria-label="Agregar marca"
+                          title="Agregar marca"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div class="divider">Claves SAT</div>
                   <div class="grid-2">
                     <div class="field">
-                      <label>Clave Unidad <span class="sat-badge">SAT</span></label>
-                      <input type="text" name="claveUnidad" placeholder="Ej. H87, KGM, E48">
+                      <label
+                        >Clave Unidad <span class="sat-badge">SAT</span></label
+                      >
+                      <input
+                        type="text"
+                        name="claveUnidad"
+                        placeholder="Ej. H87, KGM, E48"
+                      />
                     </div>
                     <div class="field">
-                      <label>Clave Prod./Serv. <span class="sat-badge">SAT</span></label>
-                      <input type="text" name="claveProdServ" placeholder="Ej. 25201503">
+                      <label
+                        >Clave Prod./Serv.
+                        <span class="sat-badge">SAT</span></label
+                      >
+                      <input
+                        type="text"
+                        name="claveProdServ"
+                        placeholder="Ej. 25201503"
+                      />
                     </div>
                   </div>
-                  <button type="button" class="btn-done" data-step="2">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="2">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum2"></div>
@@ -1152,24 +1419,49 @@
                   <strong>Precios &amp; Fiscalidad</strong>
                   <span>Costo, precio, IVA y promociones</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b3">
                 <div class="step-body-inner">
-                  <div class="grid-2" style="margin-top:16px;">
+                  <div class="grid-2" style="margin-top: 16px">
                     <div class="field is-required">
                       <label>Costo <span class="req">*</span></label>
                       <div class="input-row">
                         <span class="prefix">$</span>
-                        <input type="number" name="cost" placeholder="0.00" step="0.01" min="0">
+                        <input
+                          type="number"
+                          name="cost"
+                          placeholder="0.00"
+                          step="0.01"
+                          min="0"
+                        />
                       </div>
                     </div>
                     <div class="field is-required">
                       <label>Precio de venta <span class="req">*</span></label>
                       <div class="input-row">
                         <span class="prefix">$</span>
-                        <input type="number" name="price" id="f-price" placeholder="0.00" step="0.01" min="0">
+                        <input
+                          type="number"
+                          name="price"
+                          id="f-price"
+                          placeholder="0.00"
+                          step="0.01"
+                          min="0"
+                        />
                       </div>
                     </div>
                     <div class="field">
@@ -1188,29 +1480,37 @@
                       <small>Activa precio especial con vigencia</small>
                     </div>
                     <label class="switch">
-                      <input type="checkbox" id="sw-promo">
+                      <input type="checkbox" id="sw-promo" />
                       <div class="track"><div class="thumb"></div></div>
                     </label>
                   </div>
                   <div class="sub-body" id="promo-body">
-                    <div class="grid-3" style="margin-top:12px;">
+                    <div class="grid-3" style="margin-top: 12px">
                       <div class="field">
                         <label>Precio promo</label>
-                        <div class="input-row"><span class="prefix">$</span>
-                          <input type="number" name="promo_price" placeholder="0.00" step="0.01">
+                        <div class="input-row">
+                          <span class="prefix">$</span>
+                          <input
+                            type="number"
+                            name="promo_price"
+                            placeholder="0.00"
+                            step="0.01"
+                          />
                         </div>
                       </div>
                       <div class="field">
                         <label>Desde</label>
-                        <input type="date" name="start_date">
+                        <input type="date" name="start_date" />
                       </div>
                       <div class="field">
                         <label>Hasta</label>
-                        <input type="date" name="end_date">
+                        <input type="date" name="end_date" />
                       </div>
                     </div>
                   </div>
-                  <button type="button" class="btn-done" data-step="3">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="3">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum3"></div>
@@ -1224,52 +1524,107 @@
                   <strong>Inventario</strong>
                   <span>Unidades y existencias por almacén</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b4">
                 <div class="step-body-inner">
-                  <div class="grid-3" style="margin-top:16px;">
+                  <div class="grid-3" style="margin-top: 16px">
                     <div class="field is-required">
                       <label>Unidad <span class="req">*</span></label>
                       <select name="unit"></select>
                     </div>
                     <div class="field">
                       <label>Unidad venta</label>
-                      <select name="default_sale_unit" id="u-sale" disabled></select>
+                      <select
+                        name="default_sale_unit"
+                        id="u-sale"
+                        disabled
+                      ></select>
                     </div>
                     <div class="field">
                       <label>Unidad compra</label>
-                      <select name="default_purchase_unit" id="u-purch" disabled></select>
+                      <select
+                        name="default_purchase_unit"
+                        id="u-purch"
+                        disabled
+                      ></select>
                     </div>
                   </div>
                   <div class="wh-grid">
                     <div class="wh-card">
-                      <div class="wh-name"><span class="wh-dot"></span>Kitchen Clean</div>
-                      <div class="field"><label>Cantidad</label>
-                        <input type="number" name="wh_qty_3" placeholder="0" min="0">
-                        <input type="hidden" name="wh_3" value="3">
+                      <div class="wh-name">
+                        <span class="wh-dot"></span>Kitchen Clean
                       </div>
-                      <div class="field"><label>Estante</label>
-                        <input type="text" name="rack_3" placeholder="Ej. A-12">
+                      <div class="field">
+                        <label>Cantidad</label>
+                        <input
+                          type="number"
+                          name="wh_qty_3"
+                          placeholder="0"
+                          min="0"
+                        />
+                        <input type="hidden" name="wh_3" value="3" />
+                      </div>
+                      <div class="field">
+                        <label>Estante</label>
+                        <input
+                          type="text"
+                          name="rack_3"
+                          placeholder="Ej. A-12"
+                        />
                       </div>
                     </div>
                     <div class="wh-card">
-                      <div class="wh-name"><span class="wh-dot" style="background:#999;"></span>Inoxidables</div>
-                      <div class="field"><label>Cantidad</label>
-                        <input type="number" name="wh_qty_4" placeholder="0" min="0">
-                        <input type="hidden" name="wh_4" value="4">
+                      <div class="wh-name">
+                        <span class="wh-dot" style="background: #999"></span
+                        >Inoxidables
                       </div>
-                      <div class="field"><label>Estante</label>
-                        <input type="text" name="rack_4" placeholder="Ej. B-07">
+                      <div class="field">
+                        <label>Cantidad</label>
+                        <input
+                          type="number"
+                          name="wh_qty_4"
+                          placeholder="0"
+                          min="0"
+                        />
+                        <input type="hidden" name="wh_4" value="4" />
+                      </div>
+                      <div class="field">
+                        <label>Estante</label>
+                        <input
+                          type="text"
+                          name="rack_4"
+                          placeholder="Ej. B-07"
+                        />
                       </div>
                     </div>
                   </div>
-                  <div style="margin-top:14px;" class="field">
+                  <div style="margin-top: 14px" class="field">
                     <label>Cantidad mínima de alerta</label>
-                    <input type="number" name="alert_quantity" placeholder="0" min="0" style="width:140px;">
+                    <input
+                      type="number"
+                      name="alert_quantity"
+                      placeholder="0"
+                      min="0"
+                      style="width: 140px"
+                    />
                   </div>
-                  <button type="button" class="btn-done" data-step="4">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="4">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum4"></div>
@@ -1283,16 +1638,35 @@
                   <strong>Logística</strong>
                   <span>Peso, envío y proveedor</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b5">
                 <div class="step-body-inner">
-                  <div class="grid-2" style="margin-top:16px;">
+                  <div class="grid-2" style="margin-top: 16px">
                     <div class="field">
                       <label>Peso</label>
                       <div class="input-row">
-                        <input type="number" name="weight" placeholder="0.000" step="0.001" min="0" class="has-suffix">
+                        <input
+                          type="number"
+                          name="weight"
+                          placeholder="0.000"
+                          step="0.001"
+                          min="0"
+                          class="has-suffix"
+                        />
                         <span class="suffix">kg</span>
                       </div>
                     </div>
@@ -1300,10 +1674,16 @@
                       <label>Tipo de envío</label>
                       <select name="tipoEnvio"></select>
                     </div>
-                    <div class="field" id="ship-cost" style="display:none;">
+                    <div class="field" id="ship-cost" style="display: none">
                       <label>Costo de envío</label>
-                      <div class="input-row"><span class="prefix">$</span>
-                        <input type="number" name="CostoEnvio" placeholder="0.00" step="0.01">
+                      <div class="input-row">
+                        <span class="prefix">$</span>
+                        <input
+                          type="number"
+                          name="CostoEnvio"
+                          placeholder="0.00"
+                          step="0.01"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1315,16 +1695,28 @@
                   <div class="grid-2">
                     <div class="field">
                       <label>N° parte proveedor</label>
-                      <input type="text" name="supplier_part_no" placeholder="Ej. RB-36C-001">
+                      <input
+                        type="text"
+                        name="supplier_part_no"
+                        placeholder="Ej. RB-36C-001"
+                      />
                     </div>
                     <div class="field">
                       <label>Precio proveedor</label>
-                      <div class="input-row"><span class="prefix">$</span>
-                        <input type="number" name="supplier_price" placeholder="0.00" step="0.01">
+                      <div class="input-row">
+                        <span class="prefix">$</span>
+                        <input
+                          type="number"
+                          name="supplier_price"
+                          placeholder="0.00"
+                          step="0.01"
+                        />
                       </div>
                     </div>
                   </div>
-                  <button type="button" class="btn-done" data-step="5">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="5">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum5"></div>
@@ -1338,24 +1730,52 @@
                   <strong>Contenido</strong>
                   <span>Descripción para tienda y factura</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b6">
                 <div class="step-body-inner">
-                  <div class="field" style="margin-top:16px;">
+                  <div class="field" style="margin-top: 16px">
                     <label>Descripción — tienda</label>
-                    <textarea name="product_details" placeholder="Lo que verá el cliente en la tienda en línea…"></textarea>
+                    <textarea
+                      name="product_details"
+                      placeholder="Lo que verá el cliente en la tienda en línea…"
+                    ></textarea>
                   </div>
                   <div class="field">
                     <label>Descripción — factura / CFDI</label>
-                    <textarea name="details" placeholder="Texto que aparecerá en la factura electrónica…" style="min-height:60px;"></textarea>
+                    <textarea
+                      name="details"
+                      placeholder="Texto que aparecerá en la factura electrónica…"
+                      style="min-height: 60px"
+                    ></textarea>
                   </div>
                   <div class="field">
-                    <label>Historia del producto <span class="hint">interno</span></label>
-                    <textarea name="history" placeholder="Notas internas, historial de cambios…" style="min-height:60px;"></textarea>
+                    <label
+                      >Historia del producto
+                      <span class="hint">interno</span></label
+                    >
+                    <textarea
+                      name="history"
+                      placeholder="Notas internas, historial de cambios…"
+                      style="min-height: 60px"
+                    ></textarea>
                   </div>
-                  <button type="button" class="btn-done" data-step="6">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="6">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum6"></div>
@@ -1369,16 +1789,32 @@
                   <strong>Medios &amp; Visibilidad</strong>
                   <span>Imágenes y configuración de publicación</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b7">
                 <div class="step-body-inner">
-                  <div class="grid-2" style="margin-top:16px;">
+                  <div class="grid-2" style="margin-top: 16px">
                     <div class="field">
                       <label>Imagen principal</label>
                       <div class="upload">
-                        <input type="file" name="product_image" accept="image/*">
+                        <input
+                          type="file"
+                          name="product_image"
+                          accept="image/*"
+                        />
                         <div class="upload-icon">↑</div>
                         <strong>Subir imagen</strong>
                         <p>890 × 1000 px</p>
@@ -1387,7 +1823,12 @@
                     <div class="field">
                       <label>Galería</label>
                       <div class="upload">
-                        <input type="file" name="userfile[]" accept="image/*" multiple>
+                        <input
+                          type="file"
+                          name="userfile[]"
+                          accept="image/*"
+                          multiple
+                        />
                         <div class="upload-icon">↑</div>
                         <strong>Múltiples imágenes</strong>
                         <p>890 × 1000 px</p>
@@ -1396,18 +1837,38 @@
                   </div>
                   <div class="divider">Publicación</div>
                   <div class="toggle-row">
-                    <div class="toggle-info"><strong>Mostrar en página de inicio</strong><small>Aparece en sección destacados</small></div>
-                    <label class="switch"><input type="checkbox" name="featured" value="1"><div class="track"><div class="thumb"></div></div></label>
+                    <div class="toggle-info">
+                      <strong>Mostrar en página de inicio</strong
+                      ><small>Aparece en sección destacados</small>
+                    </div>
+                    <label class="switch"
+                      ><input type="checkbox" name="featured" value="1" />
+                      <div class="track"><div class="thumb"></div></div
+                    ></label>
                   </div>
                   <div class="toggle-row">
-                    <div class="toggle-info"><strong>Ocultar en POS</strong><small>No aparece en ventas de mostrador</small></div>
-                    <label class="switch"><input type="checkbox" name="hide_pos" value="1"><div class="track"><div class="thumb"></div></div></label>
+                    <div class="toggle-info">
+                      <strong>Ocultar en POS</strong
+                      ><small>No aparece en ventas de mostrador</small>
+                    </div>
+                    <label class="switch"
+                      ><input type="checkbox" name="hide_pos" value="1" />
+                      <div class="track"><div class="thumb"></div></div
+                    ></label>
                   </div>
                   <div class="toggle-row">
-                    <div class="toggle-info"><strong>Ocultar en tienda</strong><small>Producto privado, no público</small></div>
-                    <label class="switch"><input type="checkbox" name="hide" value="1"><div class="track"><div class="thumb"></div></div></label>
+                    <div class="toggle-info">
+                      <strong>Ocultar en tienda</strong
+                      ><small>Producto privado, no público</small>
+                    </div>
+                    <label class="switch"
+                      ><input type="checkbox" name="hide" value="1" />
+                      <div class="track"><div class="thumb"></div></div
+                    ></label>
                   </div>
-                  <button type="button" class="btn-done" data-step="7">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="7">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum7"></div>
@@ -1421,30 +1882,73 @@
                   <strong>Campos personalizados</strong>
                   <span>Atributos adicionales opcionales</span>
                 </div>
-                <div class="step-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div>
-                <div class="step-arrow"><svg viewBox="0 0 12 7"><path d="M1 1l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="step-check">
+                  <svg viewBox="0 0 12 10">
+                    <polyline points="1,5 4,8 11,1" />
+                  </svg>
+                </div>
+                <div class="step-arrow">
+                  <svg viewBox="0 0 12 7">
+                    <path
+                      d="M1 1l5 5 5-5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
               <div class="step-body" id="b8">
                 <div class="step-body-inner">
-                  <div class="grid-3" style="margin-top:16px;">
-                    <div class="field"><label>Campo 1 <span class="hint">cf1</span></label><input type="text" name="cf1" placeholder="Valor"></div>
-                    <div class="field"><label>Campo 2 <span class="hint">cf2</span></label><input type="text" name="cf2" placeholder="Valor"></div>
-                    <div class="field"><label>Campo 3 <span class="hint">cf3</span></label><input type="text" name="cf3" placeholder="Valor"></div>
-                    <div class="field"><label>Campo 4 <span class="hint">cf4</span></label><input type="text" name="cf4" placeholder="Valor"></div>
-                    <div class="field"><label>Campo 5 <span class="hint">cf5</span></label><input type="text" name="cf5" placeholder="Valor"></div>
-                    <div class="field"><label>Campo 6 <span class="hint">cf6</span></label><input type="text" name="cf6" placeholder="Valor"></div>
+                  <div class="grid-3" style="margin-top: 16px">
+                    <div class="field">
+                      <label>Campo 1 <span class="hint">cf1</span></label
+                      ><input type="text" name="cf1" placeholder="Valor" />
+                    </div>
+                    <div class="field">
+                      <label>Campo 2 <span class="hint">cf2</span></label
+                      ><input type="text" name="cf2" placeholder="Valor" />
+                    </div>
+                    <div class="field">
+                      <label>Campo 3 <span class="hint">cf3</span></label
+                      ><input type="text" name="cf3" placeholder="Valor" />
+                    </div>
+                    <div class="field">
+                      <label>Campo 4 <span class="hint">cf4</span></label
+                      ><input type="text" name="cf4" placeholder="Valor" />
+                    </div>
+                    <div class="field">
+                      <label>Campo 5 <span class="hint">cf5</span></label
+                      ><input type="text" name="cf5" placeholder="Valor" />
+                    </div>
+                    <div class="field">
+                      <label>Campo 6 <span class="hint">cf6</span></label
+                      ><input type="text" name="cf6" placeholder="Valor" />
+                    </div>
                   </div>
-                  <button type="button" class="btn-done" data-step="8">Marcar como completo</button>
+                  <button type="button" class="btn-done" data-step="8">
+                    Marcar como completo
+                  </button>
                 </div>
               </div>
               <div class="summary" id="sum8"></div>
             </div>
 
             <!-- ── RESUMEN / REVISIÓN ── -->
-            <div class="step review-step" id="s9" style="display: none;">
+            <div class="step review-step" id="s9" style="display: none">
               <div class="step-header" data-step="9">
                 <div class="step-num">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </div>
                 <div class="step-title">
                   <strong>Resumen del producto</strong>
@@ -1458,7 +1962,14 @@
               </div>
             </div>
 
-            <button type="submit" class="btn-submit" id="btn-submit" name="add_product">Guardar producto</button>
+            <button
+              type="submit"
+              class="btn-submit"
+              id="btn-submit"
+              name="add_product"
+            >
+              Guardar producto
+            </button>
           </form>
 
           <!-- ── Quick Form: mandatory-only ──────────────── -->
@@ -1470,13 +1981,23 @@
                 <label>Tipo de producto</label>
                 <div class="pills" id="qf-product-types"></div>
               </div>
-              <div class="field is-required" style="margin-top:14px;">
+              <div class="field is-required" style="margin-top: 14px">
                 <label>Nombre <span class="req">*</span></label>
-                <input type="text" name="qf_name" id="qf-name" placeholder="Ej. Válvula de gas robertshaw 36C">
+                <input
+                  type="text"
+                  name="qf_name"
+                  id="qf-name"
+                  placeholder="Ej. Válvula de gas robertshaw 36C"
+                />
               </div>
-              <div class="field is-required" style="margin-top:14px;">
+              <div class="field is-required" style="margin-top: 14px">
                 <label>Código <span class="req">*</span></label>
-                <input type="text" name="qf_code" id="qf-code" placeholder="SKU / código de barras">
+                <input
+                  type="text"
+                  name="qf_code"
+                  id="qf-code"
+                  placeholder="SKU / código de barras"
+                />
               </div>
             </div>
             <div class="qf-section">
@@ -1493,14 +2014,28 @@
                   <label>Costo <span class="req">*</span></label>
                   <div class="input-row">
                     <span class="prefix">$</span>
-                    <input type="number" name="qf_cost" id="qf-cost" placeholder="0.00" step="0.01" min="0">
+                    <input
+                      type="number"
+                      name="qf_cost"
+                      id="qf-cost"
+                      placeholder="0.00"
+                      step="0.01"
+                      min="0"
+                    />
                   </div>
                 </div>
                 <div class="field is-required">
                   <label>Precio de venta <span class="req">*</span></label>
                   <div class="input-row">
                     <span class="prefix">$</span>
-                    <input type="number" name="qf_price" id="qf-price" placeholder="0.00" step="0.01" min="0">
+                    <input
+                      type="number"
+                      name="qf_price"
+                      id="qf-price"
+                      placeholder="0.00"
+                      step="0.01"
+                      min="0"
+                    />
                   </div>
                 </div>
               </div>
@@ -1518,27 +2053,80 @@
         <!-- Bottom Bar (inside sheet) -->
         <div class="pf-bottom-bar" id="bottom-bar">
           <div class="bottom-bar-inner">
-            <button type="button" class="bb-btn bb-back" id="bb-back" aria-label="Volver">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <button
+              type="button"
+              class="bb-btn bb-back"
+              id="bb-back"
+              aria-label="Volver"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
             </button>
             <div class="bb-center">
-              <button type="button" class="bb-btn bb-continue" id="bb-continue">Continuar</button>
-              <button type="button" class="bb-btn bb-upload" id="bb-upload">Cargar producto</button>
+              <button type="button" class="bb-btn bb-continue" id="bb-continue">
+                Continuar
+              </button>
+              <button type="button" class="bb-btn bb-upload" id="bb-upload">
+                Cargar producto
+              </button>
             </div>
             <div class="bb-more-wrap">
-              <button type="button" class="bb-btn bb-more" id="bb-more" aria-label="Más acciones">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+              <button
+                type="button"
+                class="bb-btn bb-more"
+                id="bb-more"
+                aria-label="Más acciones"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
               </button>
               <div class="bb-menu" id="bb-menu">
                 <button type="button" class="bb-menu-item" id="bb-menu-clear">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="margin-right: 8px"
+                  >
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  </svg>
                   Limpiar formulario
                 </button>
                 <div class="bb-menu-divider"></div>
                 <div class="bb-menu-item bb-menu-toggle-wrap">
-                  <span style="flex:1;">Revisar antes de cargar</span>
+                  <span style="flex: 1">Revisar antes de cargar</span>
                   <label class="switch switch-sm">
-                    <input type="checkbox" id="bb-toggle-review" checked>
+                    <input type="checkbox" id="bb-toggle-review" checked />
                     <div class="track"><div class="thumb"></div></div>
                   </label>
                 </div>
@@ -1552,11 +2140,7 @@
     <!-- ==========================================
        CLIENT DRAWER
        ========================================== -->
-    <div
-      class="sheet-source-mount"
-      id="client-form-container"
-      hidden
-    >
+    <div class="sheet-source-mount" id="client-form-container" hidden>
       <div class="drawer__header">
         <h2 class="drawer__title" id="client-form-title">
           Registrar Nuevo Cliente
@@ -1884,11 +2468,23 @@
       >
         <header class="app-sheet__top">
           <div class="app-sheet__title-box">
-            <span class="app-sheet__eyebrow" data-bind-text="meta.eyebrow"></span>
-            <h2 class="app-sheet__title" id="sheet-title" data-bind-text="title"></h2>
+            <span
+              class="app-sheet__eyebrow"
+              data-bind-text="meta.eyebrow"
+              data-bind-attr-data-status="meta.status"
+            ></span>
+            <h2
+              class="app-sheet__title"
+              id="sheet-title"
+              data-bind-text="title"
+            ></h2>
           </div>
 
-          <div class="app-sheet__controls" data-sheet-slot="topControls" hidden></div>
+          <div
+            class="app-sheet__controls"
+            data-sheet-slot="topControls"
+            hidden
+          ></div>
 
           <button
             class="app-sheet__close"
@@ -1901,10 +2497,22 @@
           </button>
         </header>
 
-        <nav class="app-sheet__sticky-nav" data-sheet-slot="stickyNav" hidden></nav>
+        <nav
+          class="app-sheet__sticky-nav"
+          data-sheet-slot="stickyNav"
+          hidden
+        ></nav>
         <main class="app-sheet__main" data-sheet-slot="main" hidden></main>
-        <footer class="app-sheet__sticky-bottom" data-sheet-slot="stickyBottom" hidden></footer>
-        <div class="app-sheet__fixed-controls" data-sheet-slot="fixedControls" hidden></div>
+        <footer
+          class="app-sheet__sticky-bottom"
+          data-sheet-slot="stickyBottom"
+          hidden
+        ></footer>
+        <div
+          class="app-sheet__fixed-controls"
+          data-sheet-slot="fixedControls"
+          hidden
+        ></div>
       </aside>
     </div>
 
@@ -1931,17 +2539,17 @@
         </button>
         <button
           class="nav-btn main-nav-btn"
-          data-section="clients"
-          aria-label="Clientes"
-        >
-          <svg class="icon"><use href="#icon-user"></use></svg>
-        </button>
-        <button
-          class="nav-btn main-nav-btn"
           data-section="product"
           aria-label="Ficha de Producto"
         >
           <svg class="icon"><use href="#icon-barcode"></use></svg>
+        </button>
+        <button
+          class="nav-btn main-nav-btn"
+          data-section="catalogos"
+          aria-label="Catalogos"
+        >
+          <svg class="icon"><use href="#icon-tags"></use></svg>
         </button>
 
         <button
@@ -1976,6 +2584,14 @@
           >
             <i data-lucide="scan-barcode"></i>
             Escanear
+          </button>
+          <button
+            class="menu-item main-nav-btn"
+            data-section="taxonomy"
+            aria-label="Catálogos"
+          >
+            <i data-lucide="tags"></i>
+            Catálogos
           </button>
           <button
             class="menu-item toggle-theme"
@@ -3045,12 +3661,36 @@
           d="M3 5v14M6 5v14M10 5v14M14 5v14M17 5v14M21 5v14M3 5h18M3 19h18"
         />
       </symbol>
+      <symbol
+        id="icon-tags"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        data-lucide="tags"
+        aria-hidden="true"
+        class="lucide lucide-tags"
+      >
+        <path
+          d="M13.172 2a2 2 0 0 1 1.414.586l6.71 6.71a2.4 2.4 0 0 1 0 3.408l-4.592 4.592a2.4 2.4 0 0 1-3.408 0l-6.71-6.71A2 2 0 0 1 6 9.172V3a1 1 0 0 1 1-1z"
+        ></path>
+        <path
+          d="M2 7v6.172a2 2 0 0 0 .586 1.414l6.71 6.71a2.4 2.4 0 0 0 3.191.193"
+        ></path>
+        <circle cx="10.5" cy="6.5" r=".5" fill="currentColor"></circle>
+      </symbol>
       <symbol id="icon-reload" viewBox="0 0 24 24">
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-        />
+          d="M13.172 2a2 2 0 0 1 1.414.586l6.71 6.71a2.4 2.4 0 0 1 0 3.408l-4.592 4.592a2.4 2.4 0 0 1-3.408 0l-6.71-6.71A2 2 0 0 1 6 9.172V3a1 1 0 0 1 1-1z"
+        ></path>
+        <path
+          d="M2 7v6.172a2 2 0 0 0 .586 1.414l6.71 6.71a2.4 2.4 0 0 0 3.191.193"
+        ></path>
+        <circle cx="10.5" cy="6.5" r=".5" fill="currentColor"></circle>
       </symbol>
     </svg>
 
@@ -3143,10 +3783,10 @@
             );
           });
           navButtons.forEach((btn) => {
-            btn.classList.toggle(
-              "active",
-              btn.getAttribute("data-section") === sectionId,
-            );
+            const btnSection = btn.getAttribute("data-section");
+            const normalizedBtnSection =
+              btnSection === "catalogos" ? "taxonomy" : btnSection;
+            btn.classList.toggle("active", normalizedBtnSection === sectionId);
           });
 
           // Trigger corresponding render functions exposed by inventory.js
@@ -3157,9 +3797,15 @@
             fabAddProduct?.setAttribute("hidden", "");
           }
           if (window.renderQuotesView && sectionId === "quotes") {
-            window.renderQuotesView();
-          } else if (window.renderClientsView && sectionId === "clients") {
-            window.renderClientsView();
+            const flow =
+              window.location.hash === "#/clients" ? "clients" : "quotes";
+            if (window.showCommercialFlow) {
+              window.showCommercialFlow(flow);
+            } else {
+              window.renderQuotesView();
+            }
+          } else if (window.renderTaxonomyView && sectionId === "taxonomy") {
+            window.renderTaxonomyView();
           } else if (
             window.renderSingleProductView &&
             sectionId === "product"
@@ -3180,7 +3826,9 @@
           } else if (hash.startsWith("#/quotation/")) {
             sectionId = "quotes";
           } else if (hash === "#/clients") {
-            sectionId = "clients";
+            sectionId = "quotes";
+          } else if (hash === "#/catalogs" || hash === "#/taxonomy") {
+            sectionId = "taxonomy";
           } else if (hash.startsWith("#/draft")) {
             sectionId = "inventory";
           } else if (hash.startsWith("#/product?")) {
@@ -3202,8 +3850,8 @@
               window.location.hash = "#/inventory";
             } else if (sectionId === "quotes") {
               window.location.hash = "#/quotation";
-            } else if (sectionId === "clients") {
-              window.location.hash = "#/clients";
+            } else if (sectionId === "taxonomy" || sectionId === "catalogos") {
+              window.location.hash = "#/catalogs";
             } else if (sectionId === "product") {
               window.location.hash = "#/product";
             }
@@ -3229,36 +3877,71 @@
     <!-- Components -->
     <script src="js/components/toast.js"></script>
     <script src="js/components/barcode.js"></script>
-    <script src="js/components/sheet-manager.js"></script>
+    <script src="js/components/sheet-manager.js?v=draft-status-1"></script>
     <script src="js/components/scanner.js"></script>
-    <script src="js/components/product-drawer.js"></script>
+    <script src="js/components/product-drawer.js?v=draft-status-1"></script>
     <!-- Sheets -->
     <script src="js/sheets/compare-sheet.js"></script>
     <script src="js/sheets/client-sheet.js"></script>
     <script src="js/sheets/product-detail-sheet.js"></script>
-    <script src="js/sheets/product-form-sheet.js"></script>
+    <script src="js/sheets/product-form-sheet.js?v=taxonomy-sheet-1"></script>
     <!-- Screens -->
-    <script src="js/screens/inventory-screen.js"></script>
+    <script src="js/screens/inventory-screen.js?v=draft-autosave-1"></script>
     <script src="js/screens/clients-screen.js"></script>
     <script src="js/screens/quotation-screen.js"></script>
+    <script src="js/screens/commercial-screen.js?v=commercial-flow-1"></script>
     <script src="js/screens/product-screen.js"></script>
+    <script src="js/screens/taxonomy-screen.js?v=taxonomy-screen-1"></script>
     <!-- Sync Engine (after state & storage) -->
     <script src="js/shum-sync.js"></script>
     <!-- Main Orchestrator -->
     <script src="js/app.js"></script>
 
     <!-- Product Form ES Modules -->
-    <script type="module" src="../../../shared/components/product-form/main.js"></script>
-    <script type="module" src="../../../shared/components/product-form/config.js"></script>
-    <script type="module" src="../../../shared/components/product-form/dom.js"></script>
-    <script type="module" src="../../../shared/components/product-form/accordion.js"></script>
-    <script type="module" src="../../../shared/components/product-form/bottomBar.js"></script>
-    <script type="module" src="../../../shared/components/product-form/formHandlers.js"></script>
-    <script type="module" src="../../../shared/components/product-form/quickForm.js"></script>
-    <script type="module" src="../../../shared/components/product-form/review.js"></script>
-    <script type="module" src="../../../shared/components/product-form/state.js"></script>
-    <script type="module" src="../../../shared/components/product-form/stepPills.js"></script>
-    <script type="module" src="../../../shared/components/product-form/summary.js"></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/main.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/config.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/dom.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/accordion.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/bottomBar.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/formHandlers.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/quickForm.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/review.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/state.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/stepPills.js"
+    ></script>
+    <script
+      type="module"
+      src="../../../shared/components/product-form/summary.js"
+    ></script>
 
     <script>
       // Agrupamos todo el código dentro del evento de carga
@@ -3305,6 +3988,5 @@
 
       JSON.parse(localStorage.getItem("kv-burst-log"));
     </script>
-
   </body>
 </html>

@@ -550,7 +550,9 @@ svg {
 .catalog__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  --space: 20px;
+  gap: var(--space);
+  margin-bottom: var(--space);
   transition: var(--transition-main);
 }
 

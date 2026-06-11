@@ -51,6 +51,23 @@
     });
   }
 
+  function bindAttributes(root, config) {
+    root.querySelectorAll("*").forEach((el) => {
+      Array.from(el.attributes).forEach((attribute) => {
+        if (!attribute.name.startsWith("data-bind-attr-")) return;
+
+        const boundName = attribute.name.replace("data-bind-attr-", "");
+        const value = getPathValue(config, attribute.value);
+        if (value == null || value === "") {
+          el.removeAttribute(boundName);
+          return;
+        }
+
+        el.setAttribute(boundName, String(value));
+      });
+    });
+  }
+
   function getPathValue(source, path) {
     return path.split(".").reduce((value, key) => {
       if (value == null) return undefined;
@@ -92,6 +109,7 @@
 
   function hydrate(root, config) {
     bindText(root, config);
+    bindAttributes(root, config);
 
     root.querySelectorAll(SLOT_SELECTOR).forEach((slot) => {
       const slotName = slot.dataset.sheetSlot;
@@ -147,6 +165,7 @@
     root.dataset.mode = "";
     root.dataset.dirty = "false";
     root._sheetData = null;
+    bindAttributes(root, EMPTY_CONFIG);
 
     root.querySelectorAll(SLOT_SELECTOR).forEach((slot) => {
       slot.replaceChildren();
