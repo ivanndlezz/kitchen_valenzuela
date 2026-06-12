@@ -1,6 +1,6 @@
 /**
  * taxonomy-screen.js
- * Catalog screen for product categories, subcategories, and brands.
+ * Catalog screen for product categories, subcategories, brands, and sellers.
  */
 
 (function () {
@@ -79,18 +79,55 @@
     `;
   }
 
-  function renderBrands(data) {
-    const brands = data.brands || [];
-    if (!brands.length) {
-      return `<div class="quote-empty-state">No hay marcas registradas.</div>`;
+  function renderTextList(items, emptyText, type) {
+    if (!items.length) {
+      return `<div class="quote-empty-state">${escapeHtml(emptyText)}</div>`;
     }
 
     return `
       <div class="taxonomy-list">
-        ${brands.map((brand) => `
+        ${items.map((item) => `
           <div class="taxonomy-list__row">
-            <span>${escapeHtml(brand)}</span>
-            <button type="button" class="taxonomy-card__action" data-open-taxonomy="brand">
+            <span>${escapeHtml(item)}</span>
+            <button type="button" class="taxonomy-card__action" data-open-taxonomy="${escapeHtml(type)}">
+              Editar
+            </button>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderBrands(data) {
+    return renderTextList(data.brands || [], "No hay marcas registradas.", "brand");
+  }
+
+  function renderSellers(data) {
+    const sellers = (data.sellers || []).map((seller) => {
+      if (typeof seller === "string") {
+        return { name: seller, tel: "", email: "" };
+      }
+      return {
+        name: seller?.name || seller?.nombre || seller?.label || "",
+        tel: seller?.tel || seller?.telefono || seller?.phone || "",
+        email: seller?.email || seller?.correo || seller?.mail || "",
+      };
+    });
+
+    if (!sellers.length) {
+      return `<div class="quote-empty-state">No hay vendedores registrados.</div>`;
+    }
+
+    return `
+      <div class="taxonomy-list">
+        ${sellers.map((seller) => `
+          <div class="taxonomy-list__row taxonomy-list__row--seller">
+            <div class="taxonomy-list__seller">
+              <strong>${escapeHtml(seller.name || "Sin nombre")}</strong>
+              <span>${escapeHtml(seller.tel || "Sin tel")}</span>
+              <span>${escapeHtml(seller.email || "Sin email")}</span>
+            </div>
+            <button type="button" class="taxonomy-card__action" data-open-taxonomy="seller">
               Editar
             </button>
           </div>
@@ -108,9 +145,13 @@
       return;
     }
 
-    body.innerHTML = activeTab === "categories"
-      ? renderCategories(cachedTaxonomy)
-      : renderBrands(cachedTaxonomy);
+    if (activeTab === "categories") {
+      body.innerHTML = renderCategories(cachedTaxonomy);
+    } else if (activeTab === "sellers") {
+      body.innerHTML = renderSellers(cachedTaxonomy);
+    } else {
+      body.innerHTML = renderBrands(cachedTaxonomy);
+    }
 
     if (typeof createLucideIcons === "function") createLucideIcons();
   }
@@ -137,6 +178,12 @@ function bindTaxonomyScreen() {
     if (addBrand && addBrand.dataset.bound !== "true") {
       addBrand.addEventListener("click", () => openManager("brand"));
       addBrand.dataset.bound = "true";
+    }
+
+    const addSeller = document.getElementById("taxonomy-add-seller");
+    if (addSeller && addSeller.dataset.bound !== "true") {
+      addSeller.addEventListener("click", () => openManager("seller"));
+      addSeller.dataset.bound = "true";
     }
 
     const body = getBody();

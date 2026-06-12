@@ -16,6 +16,10 @@
     meta: {},
     slots: {},
     hideIsland: false,
+    onBeforeOpen: null,
+    onOpen: null,
+    onBeforeClose: null,
+    onClose: null,
   };
 
   let activeConfig = null;
@@ -44,6 +48,23 @@
       const path = el.dataset.bindText;
       const value = getPathValue(config, path);
       el.textContent = value == null ? "" : String(value);
+    });
+  }
+
+  function bindAttributes(root, config) {
+    root.querySelectorAll("*").forEach((el) => {
+      Array.from(el.attributes).forEach((attribute) => {
+        if (!attribute.name.startsWith("data-bind-attr-")) return;
+
+        const boundName = attribute.name.replace("data-bind-attr-", "");
+        const value = getPathValue(config, attribute.value);
+        if (value == null || value === "") {
+          el.removeAttribute(boundName);
+          return;
+        }
+
+        el.setAttribute(boundName, String(value));
+      });
     });
   }
 
@@ -88,6 +109,7 @@
 
   function hydrate(root, config) {
     bindText(root, config);
+    bindAttributes(root, config);
 
     root.querySelectorAll(SLOT_SELECTOR).forEach((slot) => {
       const slotName = slot.dataset.sheetSlot;
@@ -105,10 +127,15 @@
     const root = getRoot();
     if (!root) return null;
 
+    if (activeConfig) {
+      close(activeConfig.id, { preserveFocus: true });
+    }
+
     activeConfig = { ...EMPTY_CONFIG, ...config };
     previousFocus = document.activeElement;
     root._sheetData = activeConfig.data || null;
 
+    activeConfig.onBeforeOpen?.(root, activeConfig);
     setDataset(root, activeConfig);
     hydrate(root, activeConfig);
 
@@ -116,16 +143,21 @@
       window.Island.hide();
     }
 
+    activeConfig.onOpen?.(root, activeConfig);
+
     const closeButton = root.querySelector("[data-sheet-close-button]");
     closeButton?.focus({ preventScroll: true });
 
     return root;
   }
 
-  function close(sheetId) {
+  function close(sheetId, options = {}) {
     const root = getRoot();
     if (!root) return;
     if (sheetId && root.dataset.sheetId !== sheetId) return;
+
+    const closingConfig = activeConfig;
+    closingConfig?.onBeforeClose?.(root, closingConfig);
 
     root.dataset.sheetState = "closed";
     root.dataset.sheetId = "";
@@ -133,6 +165,7 @@
     root.dataset.mode = "";
     root.dataset.dirty = "false";
     root._sheetData = null;
+    bindAttributes(root, EMPTY_CONFIG);
 
     root.querySelectorAll(SLOT_SELECTOR).forEach((slot) => {
       slot.replaceChildren();
@@ -143,9 +176,10 @@
       window.Island.show();
     }
 
+    closingConfig?.onClose?.(root, closingConfig);
     activeConfig = null;
 
-    if (previousFocus && typeof previousFocus.focus === "function") {
+    if (!options.preserveFocus && previousFocus && typeof previousFocus.focus === "function") {
       previousFocus.focus({ preventScroll: true });
     }
     previousFocus = null;
@@ -173,6 +207,20 @@
     init,
     open,
     close,
+    getSlot(name) {
+      const root = getRoot();
+      return root ? getSlot(root, name) : null;
+    },
+    setDirty(isDirty) {
+      const root = getRoot();
+      if (root) root.dataset.dirty = String(Boolean(isDirty));
+    },
+    updateMeta(meta = {}) {
+      const root = getRoot();
+      if (!root) return;
+      if (meta.activeId !== undefined) root.dataset.activeId = meta.activeId || "";
+      if (meta.mode !== undefined) root.dataset.mode = meta.mode || "";
+    },
     get active() {
       return activeConfig;
     },

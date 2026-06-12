@@ -151,19 +151,23 @@ function renderDraftProducts() {
   drafts.forEach(p => {
     const imgUrl = window.Config.resolveImageUrl(p.imagen);
     const encodedId = typeof encodeId === 'function' ? encodeId(p.id) : p.id;
+    const draftSuffix = String(p.id || "").replace(/^draft-/, "");
+    const displayName = String(p.nombre || "").trim() || `Borrador | ${draftSuffix || "sin id"}`;
+    const displayCode = String(p.codigo || "").trim() || String(p.id || "draft");
+    const displayBrand = String(p.marca || "").trim() || "Draft";
     const gradient = 'var(--cat-otros-bg)';
     const icon = 'box';
     html += `
       <div class="product-card" data-open-id="${encodedId}">
         <div class="product-card__image-container">
           <div class="product-card__image-fallback" style="background: ${gradient}">
-            ${imgUrl ? `<img src="${imgUrl}" alt="${p.nombre}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()" />` : `<i data-lucide="${icon}"></i>`}
+            ${imgUrl ? `<img src="${imgUrl}" alt="${displayName}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()" />` : `<i data-lucide="${icon}"></i>`}
           </div>
         </div>
         <div style="flex: 1; min-width: 0;">
-          <span class="product-card__brand">${p.marca}</span>
-          <h2 class="product-card__name">${p.nombre}</h2>
-          <span class="product-card__sku">SKU: ${p.codigo}</span>
+          <span class="product-card__brand">${displayBrand}</span>
+          <h2 class="product-card__name">${displayName}</h2>
+          <span class="product-card__sku">Draft ID: ${displayCode}</span>
         </div>
       </div>`;
   });

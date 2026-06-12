@@ -140,15 +140,81 @@
     return normalized;
   }
 
-  function normalizeBrandList(rawBrands) {
-    const defaults = getFormConfig().BRANDS || [];
-    const values = Array.isArray(rawBrands)
-      ? rawBrands
-      : rawBrands && typeof rawBrands === "object" && !isEmptyConfigObject(rawBrands)
-        ? Object.values(rawBrands)
+  function normalizeTextList(rawValues, defaults = []) {
+    const values = Array.isArray(rawValues)
+      ? rawValues
+      : rawValues && typeof rawValues === "object" && !isEmptyConfigObject(rawValues)
+        ? Object.values(rawValues)
         : defaults;
 
     return Array.from(new Set(values.map(value => String(value || "").trim()).filter(Boolean)));
+  }
+
+  function normalizeBrandList(rawBrands) {
+    return normalizeTextList(rawBrands, getFormConfig().BRANDS || []);
+  }
+
+  function normalizeSellerList(rawSellers) {
+    const values = Array.isArray(rawSellers)
+      ? rawSellers
+      : rawSellers && typeof rawSellers === "object" && !isEmptyConfigObject(rawSellers)
+        ? Object.values(rawSellers)
+        : [];
+
+    return values
+      .map((item, index) => {
+        if (typeof item === "string") {
+          const name = String(item || "").trim();
+          if (!name) return null;
+          return {
+            id: `seller-${slugifyTaxonomyValue(name) || "item"}-${index + 1}`,
+            name,
+            tel: "",
+            email: "",
+          };
+        }
+
+        if (!item || typeof item !== "object") return null;
+
+        const name = String(item.name || item.nombre || item.label || "").trim();
+        const tel = String(item.tel || item.telefono || item.phone || "").trim();
+        const email = String(item.email || item.correo || item.mail || "").trim();
+        const id = String(item.id || item.key || item.value || "").trim() || `seller-${slugifyTaxonomyValue(name || email || tel || `item-${index + 1}`) || `item-${index + 1}`}`;
+        if (!name && !tel && !email) return null;
+
+        return { id, name, tel, email };
+      })
+      .filter(Boolean);
+  }
+
+  function getListForType(state) {
+    return state.type === "seller" ? state.sellers : state.brands;
+  }
+
+  function setListForType(state, list) {
+    if (state.type === "seller") {
+      state.sellers = list;
+    } else {
+      state.brands = list;
+    }
+  }
+
+  function getSellerLabel(item) {
+    if (!item) return "";
+    return String(item.name || item.nombre || item.label || "").trim();
+  }
+
+  function getSellerMeta(item) {
+    if (!item || typeof item !== "object") return { tel: "", email: "" };
+    return {
+      tel: String(item.tel || item.telefono || item.phone || "").trim(),
+      email: String(item.email || item.correo || item.mail || "").trim(),
+    };
+  }
+
+  function createSellerId(name, tel, email) {
+    const base = slugifyTaxonomyValue(name || email || tel || "seller");
+    return `seller-${base || "item"}-${Date.now().toString(36)}`;
   }
 
   async function loadTaxonomyConfig() {
@@ -173,10 +239,11 @@
         parseJsonField(fields.Subcategorias, {})
       );
       const brands = normalizeBrandList(parseJsonField(fields.Marcas, []));
+      const sellers = normalizeSellerList(parseJsonField(fields.vendedores, []));
 
       applyTaxonomyToFormConfig({ categories, brands });
       updateTaxonomySelects();
-      return { record, categories, brands };
+      return { record, categories, brands, sellers };
     })();
 
     try {
@@ -288,6 +355,11 @@
         singular: "marca",
         placeholder: "Nueva marca",
       },
+      seller: {
+        title: "Vendedores",
+        singular: "vendedor",
+        placeholder: "Nuevo vendedor",
+      },
     };
     return meta[type] || meta.brand;
   }
@@ -301,7 +373,7 @@
       .replace(/'/g, "&#039;");
   }
 
-  function getTaxonomyItems(type, categories, brands, categoryKey) {
+  function getTaxonomyItems(type, categories, brands, categoryKey, sellers = []) {
     if (type === "category") {
       return Object.entries(categories || {}).map(([key, value]) => ({
         key,
@@ -312,6 +384,14 @@
       return (categories?.[categoryKey]?.subcategories || []).map((label) => ({
         key: slugifyTaxonomyValue(label),
         label,
+      }));
+    }
+    if (type === "seller") {
+      return (sellers || []).map((item) => ({
+        key: item.id,
+        label: getSellerLabel(item),
+        tel: getSellerMeta(item).tel,
+        email: getSellerMeta(item).email,
       }));
     }
     return (brands || []).map((label) => ({ key: label, label }));
@@ -337,11 +417,7 @@
         </header>
         <div class="taxonomy-manager__body">
           <form class="taxonomy-manager__form" data-taxonomy-create-form>
-            <label class="taxonomy-manager__label" for="taxonomy-manager-input">Agregar</label>
-            <div class="taxonomy-manager__input-row">
-              <input id="taxonomy-manager-input" type="text" autocomplete="off" />
-              <button type="submit">Guardar</button>
-            </div>
+            <div data-taxonomy-create-fields></div>
           </form>
           <div class="taxonomy-manager__context" data-taxonomy-context></div>
           <div class="taxonomy-manager__list" data-taxonomy-list></div>
@@ -365,22 +441,70 @@
   function renderTaxonomySheet(state) {
     const root = ensureTaxonomySheet();
     const meta = getTaxonomyMeta(state.type);
-    const items = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey);
+    const items = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers);
     const title = root.querySelector("#taxonomy-manager-title");
-    const label = root.querySelector(".taxonomy-manager__label");
-    const input = root.querySelector("#taxonomy-manager-input");
+    const createFields = root.querySelector("[data-taxonomy-create-fields]");
     const context = root.querySelector("[data-taxonomy-context]");
     const list = root.querySelector("[data-taxonomy-list]");
 
     title.textContent = `Gestionar ${meta.title}`;
-    label.textContent = `Agregar ${meta.singular}`;
-    input.placeholder = meta.placeholder;
     context.textContent = state.type === "subcategory"
       ? `Categoría: ${state.categories[state.categoryKey]?.name || ""}`
       : "";
 
+    if (createFields) {
+      if (state.type === "seller") {
+        createFields.innerHTML = `
+          <div class="taxonomy-manager__seller-form">
+            <div class="taxonomy-manager__seller-grid">
+              <label class="taxonomy-manager__label">
+                Nombre
+                <input id="taxonomy-manager-input" data-seller-name type="text" autocomplete="off" placeholder="Nuevo vendedor" />
+              </label>
+              <label class="taxonomy-manager__label">
+                Tel
+                <input data-seller-tel type="tel" autocomplete="off" placeholder="6242250029" />
+              </label>
+              <label class="taxonomy-manager__label taxonomy-manager__seller-email">
+                Email
+                <input data-seller-email type="email" autocomplete="off" placeholder="ventas@kitchencleanvalenzuela.com" />
+              </label>
+            </div>
+            <div class="taxonomy-manager__input-row taxonomy-manager__input-row--seller">
+              <span></span>
+              <button type="submit" data-taxonomy-create-submit>Guardar</button>
+            </div>
+          </div>
+        `;
+      } else {
+        createFields.innerHTML = `
+          <label class="taxonomy-manager__label" for="taxonomy-manager-input">Agregar ${meta.singular}</label>
+          <div class="taxonomy-manager__input-row">
+            <input id="taxonomy-manager-input" type="text" autocomplete="off" placeholder="${escapeHtml(meta.placeholder)}" />
+            <button type="submit" data-taxonomy-create-submit>Guardar</button>
+          </div>
+        `;
+      }
+    }
+
     list.innerHTML = items.length
-      ? items.map((item) => `
+      ? items.map((item) => state.type === "seller"
+        ? `
+        <div class="taxonomy-manager__item taxonomy-manager__item--seller" data-taxonomy-key="${escapeHtml(item.key)}">
+          <div class="taxonomy-manager__item-main">
+            <span class="taxonomy-manager__item-name">${escapeHtml(item.label || "Sin nombre")}</span>
+            <div class="taxonomy-manager__item-meta">
+              <span>${escapeHtml(item.tel || "Sin tel")}</span>
+              <span>${escapeHtml(item.email || "Sin email")}</span>
+            </div>
+          </div>
+          <div class="taxonomy-manager__item-actions">
+            <button type="button" data-taxonomy-edit="${escapeHtml(item.key)}">Editar</button>
+            <button type="button" data-taxonomy-delete="${escapeHtml(item.key)}">Eliminar</button>
+          </div>
+        </div>
+      `
+        : `
         <div class="taxonomy-manager__item" data-taxonomy-key="${escapeHtml(item.key)}">
           <span class="taxonomy-manager__item-name">${escapeHtml(item.label)}</span>
           <div class="taxonomy-manager__item-actions">
@@ -409,6 +533,7 @@
       categoryKey,
       categories: cloneJson(loaded.categories),
       brands: [...loaded.brands],
+      sellers: cloneJson(loaded.sellers || []),
     };
 
     renderTaxonomySheet(state);
@@ -432,6 +557,7 @@
       syncSubcategorySelect(document.getElementById("f-cat")?.value || "", slugifyTaxonomyValue(label));
       return;
     }
+    if (type === "seller") return;
     const select = document.querySelector('#pf select[name="brand"]');
     if (!select) return;
     select.value = label;
@@ -439,7 +565,7 @@
   }
 
   async function persistTaxonomyState(state, selectedKey, selectedLabel, message) {
-    await saveTaxonomyConfig(state.categories, state.brands);
+    await saveTaxonomyConfig(state.categories, state.brands, state.sellers);
     taxonomyConfigPromise = null;
     applyTaxonomyToFormConfig({ categories: state.categories, brands: state.brands });
     updateTaxonomySelects();
@@ -455,12 +581,76 @@
     event.preventDefault();
     const root = document.getElementById("taxonomy-manager");
     const state = root?.__taxonomyState;
+    const meta = getTaxonomyMeta(state?.type);
     const input = root?.querySelector("#taxonomy-manager-input");
+    const submitButton = root?.querySelector("[data-taxonomy-create-submit]");
+    const sellerNameInput = root?.querySelector("[data-seller-name]");
+    const sellerTelInput = root?.querySelector("[data-seller-tel]");
+    const sellerEmailInput = root?.querySelector("[data-seller-email]");
     const value = input?.value.trim();
-    if (!state || !value) return;
+    if (!state) return;
+    if (state.type === "seller") {
+      const name = sellerNameInput?.value.trim() || "";
+      const tel = sellerTelInput?.value.trim() || "";
+      const email = sellerEmailInput?.value.trim() || "";
+      if (!name) return;
+      if (!tel && !email) {
+        window.showToast?.("Agrega al menos un teléfono o email para el vendedor.", "warning");
+        return;
+      }
+      try {
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.dataset.loading = "true";
+          submitButton.textContent = "Guardando...";
+        }
+        if (sellerNameInput) sellerNameInput.disabled = true;
+        if (sellerTelInput) sellerTelInput.disabled = true;
+        if (sellerEmailInput) sellerEmailInput.disabled = true;
 
-    const meta = getTaxonomyMeta(state.type);
+        const current = getListForType(state) || [];
+        const item = {
+          id: createSellerId(name, tel, email),
+          name,
+          tel,
+          email,
+        };
+        setListForType(state, [...current, item]);
+        await persistTaxonomyState(state, item.id, name, `Se agregó el ${meta.singular}.`);
+        sellerNameInput.value = "";
+        sellerTelInput.value = "";
+        sellerEmailInput.value = "";
+        sellerNameInput.focus();
+      } catch (error) {
+        console.error("ProductFormSheet: taxonomy create failed", error);
+        window.showToast?.(`No se pudo guardar el ${meta.singular}.`, "danger");
+      } finally {
+        const currentRoot = document.getElementById("taxonomy-manager");
+        const currentNameInput = currentRoot?.querySelector("[data-seller-name]");
+        const currentTelInput = currentRoot?.querySelector("[data-seller-tel]");
+        const currentEmailInput = currentRoot?.querySelector("[data-seller-email]");
+        const currentSubmit = currentRoot?.querySelector("[data-taxonomy-create-submit]");
+        if (currentSubmit) {
+          currentSubmit.disabled = false;
+          currentSubmit.dataset.loading = "false";
+          currentSubmit.textContent = "Guardar";
+        }
+        if (currentNameInput) currentNameInput.disabled = false;
+        if (currentTelInput) currentTelInput.disabled = false;
+        if (currentEmailInput) currentEmailInput.disabled = false;
+      }
+      return;
+    }
+    if (!value) return;
+
     try {
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.dataset.loading = "true";
+        submitButton.textContent = "Guardando...";
+      }
+      if (input) input.disabled = true;
+
       if (state.type === "category") {
         const key = getNextCategoryKey(state.categories);
         state.categories[key] = { name: value, subcategories: [] };
@@ -470,14 +660,31 @@
         state.categories[state.categoryKey].subcategories = Array.from(new Set([...current, value]));
         await persistTaxonomyState(state, slugifyTaxonomyValue(value), value, `Se agregó la ${meta.singular}.`);
       } else {
-        state.brands = Array.from(new Set([...state.brands, value]));
-        await persistTaxonomyState(state, value, value, `Se agregó la ${meta.singular}.`);
+        const current = getListForType(state) || [];
+        const item = {
+          id: createSellerId(value, "", ""),
+          name: value,
+          tel: "",
+          email: "",
+        };
+        setListForType(state, [...current, item]);
+        await persistTaxonomyState(state, item.id, value, `Se agregó la ${meta.singular}.`);
       }
       input.value = "";
       input.focus();
     } catch (error) {
       console.error("ProductFormSheet: taxonomy create failed", error);
       window.showToast?.(`No se pudo guardar la ${meta.singular}.`, "danger");
+    } finally {
+      const currentRoot = document.getElementById("taxonomy-manager");
+      const currentInput = currentRoot?.querySelector("#taxonomy-manager-input");
+      const currentSubmit = currentRoot?.querySelector("[data-taxonomy-create-submit]");
+      if (currentSubmit) {
+        currentSubmit.disabled = false;
+        currentSubmit.dataset.loading = "false";
+        currentSubmit.textContent = "Guardar";
+      }
+      if (currentInput) currentInput.disabled = false;
     }
   }
 
@@ -496,17 +703,28 @@
       state.categories[state.categoryKey].subcategories = Array.from(new Set(current));
       await persistTaxonomyState(state, slugifyTaxonomyValue(value), value, `Se actualizó la ${meta.singular}.`);
     } else {
-      const index = state.brands.findIndex(item => item === key);
+      const current = getListForType(state) || [];
+      const index = current.findIndex(item => item.id === key);
       if (index === -1) return;
-      state.brands[index] = value;
-      state.brands = Array.from(new Set(state.brands));
-      await persistTaxonomyState(state, value, value, `Se actualizó la ${meta.singular}.`);
+      current[index] = {
+        ...current[index],
+        name: value,
+      };
+      setListForType(state, [...current]);
+      await persistTaxonomyState(state, current[index].id, value, `Se actualizó la ${meta.singular}.`);
     }
-    root.querySelector("#taxonomy-manager-input")?.focus();
+    root.querySelector(state.type === "seller" ? "[data-seller-name]" : "#taxonomy-manager-input")?.focus();
   }
 
   async function handleTaxonomyDelete(root, state, key) {
     const meta = getTaxonomyMeta(state.type);
+    const deleteButton = Array.from(root.querySelectorAll("[data-taxonomy-delete]"))
+      .find(button => button.dataset.taxonomyDelete === key);
+    if (deleteButton) {
+      deleteButton.disabled = true;
+      deleteButton.dataset.loading = "true";
+      deleteButton.textContent = "Eliminando...";
+    }
 
     if (state.type === "category") {
       delete state.categories[key];
@@ -514,7 +732,7 @@
       const current = state.categories[state.categoryKey].subcategories || [];
       state.categories[state.categoryKey].subcategories = current.filter(item => slugifyTaxonomyValue(item) !== key);
     } else {
-      state.brands = state.brands.filter(item => item !== key);
+      setListForType(state, (getListForType(state) || []).filter(item => item.id !== key));
     }
 
     try {
@@ -523,16 +741,49 @@
     } catch (error) {
       console.error("ProductFormSheet: taxonomy delete failed", error);
       window.showToast?.(`No se pudo eliminar la ${meta.singular}.`, "danger");
+    } finally {
+      const currentButton = Array.from(root.querySelectorAll("[data-taxonomy-delete]"))
+        .find(button => button.dataset.taxonomyDelete === key);
+      if (currentButton) {
+        currentButton.disabled = false;
+        currentButton.dataset.loading = "false";
+        currentButton.textContent = "Eliminar";
+      }
     }
   }
 
   function renderTaxonomyEditRow(root, key) {
     const state = root.__taxonomyState;
-    const item = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey)
+    const item = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers)
       .find(candidate => candidate.key === key);
     const row = Array.from(root.querySelectorAll("[data-taxonomy-key]"))
       .find(candidate => candidate.dataset.taxonomyKey === key);
     if (!item || !row) return;
+
+    if (state.type === "seller") {
+      row.innerHTML = `
+        <div class="taxonomy-manager__seller-edit">
+          <label class="taxonomy-manager__label">
+            Nombre
+            <input class="taxonomy-manager__edit-input" data-seller-edit-name type="text" value="${escapeHtml(item.label)}" />
+          </label>
+          <label class="taxonomy-manager__label">
+            Tel
+            <input class="taxonomy-manager__edit-input" data-seller-edit-tel type="tel" value="${escapeHtml(item.tel || "")}" />
+          </label>
+          <label class="taxonomy-manager__label">
+            Email
+            <input class="taxonomy-manager__edit-input" data-seller-edit-email type="email" value="${escapeHtml(item.email || "")}" />
+          </label>
+        </div>
+        <div class="taxonomy-manager__item-actions">
+          <button type="button" data-taxonomy-save-edit="${escapeHtml(item.key)}">Guardar</button>
+          <button type="button" data-taxonomy-cancel-edit>Cancelar</button>
+        </div>
+      `;
+      row.querySelector("[data-seller-edit-name]")?.focus();
+      return;
+    }
 
     row.innerHTML = `
       <input class="taxonomy-manager__edit-input" type="text" value="${escapeHtml(item.label)}" />
@@ -569,12 +820,63 @@
     const saveButton = event.target.closest("[data-taxonomy-save-edit]");
     if (saveButton) {
       const row = saveButton.closest("[data-taxonomy-key]");
-      const value = row?.querySelector(".taxonomy-manager__edit-input")?.value.trim();
+      const cancelButton = row?.querySelector("[data-taxonomy-cancel-edit]");
+      const inputs = row?.querySelectorAll("input");
+
+      const restoreButtonsAndInputs = () => {
+        if (saveButton) {
+          saveButton.disabled = false;
+          saveButton.dataset.loading = "false";
+          saveButton.textContent = "Guardar";
+        }
+        if (cancelButton) cancelButton.disabled = false;
+        if (inputs) inputs.forEach(input => input.disabled = false);
+      };
+
       try {
-        await handleTaxonomyRename(root, state, saveButton.dataset.taxonomySaveEdit, value);
+        if (saveButton) {
+          saveButton.disabled = true;
+          saveButton.dataset.loading = "true";
+          saveButton.textContent = "Guardando...";
+        }
+        if (cancelButton) cancelButton.disabled = true;
+        if (inputs) inputs.forEach(input => input.disabled = true);
+
+        if (state.type === "seller") {
+          const name = row?.querySelector("[data-seller-edit-name]")?.value.trim();
+          const tel = row?.querySelector("[data-seller-edit-tel]")?.value.trim();
+          const email = row?.querySelector("[data-seller-edit-email]")?.value.trim();
+          const sellerItem = state.sellers.find(item => item.id === saveButton.dataset.taxonomySaveEdit);
+          if (!sellerItem) {
+            restoreButtonsAndInputs();
+            return;
+          }
+          if (!name) {
+            window.showToast?.("El vendedor necesita un nombre.", "warning");
+            restoreButtonsAndInputs();
+            return;
+          }
+          if (!tel && !email) {
+            window.showToast?.("Agrega al menos un teléfono o email para el vendedor.", "warning");
+            restoreButtonsAndInputs();
+            return;
+          }
+          sellerItem.name = name;
+          sellerItem.tel = tel || "";
+          sellerItem.email = email || "";
+          await persistTaxonomyState(state, sellerItem.id, name, `Se actualizó la ${getTaxonomyMeta(state.type).singular}.`);
+        } else {
+          const value = row?.querySelector(".taxonomy-manager__edit-input")?.value.trim();
+          if (!value) {
+            restoreButtonsAndInputs();
+            return;
+          }
+          await handleTaxonomyRename(root, state, saveButton.dataset.taxonomySaveEdit, value);
+        }
       } catch (error) {
         console.error("ProductFormSheet: taxonomy rename failed", error);
         window.showToast?.("No se pudo actualizar.", "danger");
+        restoreButtonsAndInputs();
       }
       return;
     }
@@ -585,7 +887,7 @@
     }
   }
 
-  async function saveTaxonomyConfig(categories, brands) {
+  async function saveTaxonomyConfig(categories, brands, sellers = []) {
     const loaded = await loadTaxonomyConfig();
     const recordId = loaded.record.id || taxonomyConfigRecord?.id;
     if (!recordId) throw new Error("El registro configs no tiene id");
@@ -600,6 +902,7 @@
           Object.fromEntries(Object.entries(categories).map(([key, value]) => [key, value.subcategories || []]))
         ),
         Marcas: JSON.stringify(brands),
+        vendedores: JSON.stringify(sellers),
       },
     });
   }

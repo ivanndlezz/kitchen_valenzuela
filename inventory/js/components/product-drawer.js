@@ -5,40 +5,46 @@
 
 function openProductDrawer(p) {
   window.DOM.detailDrawer.dataset.activeId = p.id;
-  
-  // Tab navigation removed; no tab listeners needed
-
-  // Render both views
-  renderDrawerViewProduct(p);
-  renderDrawerViewForm(p);
-
-  // Default view is product; tabs removed
-
-  window.DOM.detailDrawer.classList.add("drawer__sheet--active");
-  window.DOM.scrim.classList.add("drawer__scrim--active");
-  
-  // Hide the Island navigation when drawer opens
-  if (window.Island && typeof window.Island.hide === "function") {
-    window.Island.hide();
-  }
 
   // Update URL hash for the opened product
   if (typeof window.setProductSheetHash === "function") {
     window.setProductSheetHash("product", p);
   }
+
+  if (!window.SheetManager || !window.ProductDetailSheet) return;
+
+  window.SheetManager.open({
+    id: "product-detail",
+    title: "Ficha Técnica",
+    variant: "side",
+    size: "md",
+    mode: "view",
+    hideIsland: true,
+    meta: {
+      eyebrow: p.codigo || "Producto",
+      activeId: p.id,
+      mode: "view"
+    },
+    data: { product: p },
+    slots: {
+      topControls: window.ProductDetailSheet.renderTopControls,
+      main: () => window.ProductDetailSheet.render(p)
+    },
+    onOpen(root) {
+      window.ProductDetailSheet.hydrate(root, p);
+    },
+    onClose() {
+      cleanProductSheetHash();
+    }
+  });
 }
 
 function closeProductDrawer() {
-  window.DOM.detailDrawer.classList.remove("drawer__sheet--active");
-  if (!window.DOM.scannerModal.classList.contains("scanner-modal--active")) {
-    window.DOM.scrim.classList.remove("drawer__scrim--active");
-  }
-  
-  // Show the Island navigation when drawer closes
-  if (window.Island && typeof window.Island.show === "function") {
-    window.Island.show();
-  }
+  window.SheetManager?.close("product-detail");
+  cleanProductSheetHash();
+}
 
+function cleanProductSheetHash() {
   // Clean the URL when the detail drawer closes
   if (window.history && typeof window.history.replaceState === "function") {
     const path = `${window.location.pathname}${window.location.search}`;
@@ -339,51 +345,46 @@ function saveProductForm(id) {
 // ── New Form Side Sheet Helpers ───────────────────────
 
 function openProductFormSheet() {
-  const sheet = document.getElementById("product-form-sheet");
-  if (sheet) {
-    if (window.setProductSheetHash && !window.__openingProductSheetRoute) {
-      const form = document.getElementById("pf");
-      const draftId = form?.dataset.draftId;
-      const currentId = window.__currentProductId;
-      const product = draftId && window.AppState?.products
-        ? window.AppState.products.find(p => p.id === draftId)
-        : currentId && window.AppState?.products
-          ? window.AppState.products.find(p => p.id === currentId)
-        : null;
-      if (product) {
-        window.setProductSheetHash("product", product);
-      }
-    }
+  if (!window.SheetManager || !window.ProductFormSheet) return;
 
-    sheet.classList.add("drawer__sheet--active");
-    window.DOM.scrim.classList.add("drawer__scrim--active");
-    
-    // Hide Island navigation when drawer opens
-    if (window.Island && typeof window.Island.hide === "function") {
-      window.Island.hide();
-    }
-    // Set dynamic title
-    const titleEl = document.getElementById('pf-sheet-title');
-    if (titleEl) {
-      if (window.__currentProductId) {
-        const prod = window.AppState.products.find(p => p.id === window.__currentProductId);
-        titleEl.textContent = prod ? `Editar ${prod.nombre}` : 'Editar Producto';
-      } else {
-        titleEl.textContent = 'Nuevo Producto';
-      }
-    }
-    // Back button handler
-    const backBtn = document.getElementById('pf-sheet-back');
-    if (backBtn) {
-      backBtn.addEventListener('click', () => {
-        closeProductFormSheet();
-        if (window.__currentProductId) {
-          const prod = window.AppState.products.find(p => p.id === window.__currentProductId);
-          if (prod) openProductDrawer(prod);
-        }
-      });
+  if (window.setProductSheetHash && !window.__openingProductSheetRoute) {
+    const form = document.getElementById("pf");
+    const draftId = form?.dataset.draftId;
+    const currentId = window.__currentProductId;
+    const product = draftId && window.AppState?.products
+      ? window.AppState.products.find(p => p.id === draftId)
+      : currentId && window.AppState?.products
+        ? window.AppState.products.find(p => p.id === currentId)
+      : null;
+    if (product) {
+      window.setProductSheetHash("product", product);
     }
   }
+
+  window.SheetManager.open({
+    id: "product-form",
+    title: window.ProductFormSheet.getTitle(),
+    variant: "side",
+    size: "xl",
+    mode: window.__currentProductId ? "edit" : "create",
+    hideIsland: true,
+    meta: window.ProductFormSheet.getMeta(),
+    slots: {
+      topControls: window.ProductFormSheet.renderTopControls,
+      stickyNav: window.ProductFormSheet.getStepPills,
+      main: window.ProductFormSheet.getBody,
+      fixedControls: window.ProductFormSheet.getBottomBar
+    },
+    onOpen(root) {
+      window.ProductFormSheet.hydrate(root);
+    },
+    onBeforeClose() {
+      window.ProductFormSheet.detach();
+    },
+    onClose() {
+      cleanProductSheetHash();
+    }
+  });
 }
 
 function populateProductFormFromProduct(p) {
@@ -439,24 +440,6 @@ function populateProductFormFromProduct(p) {
 }
 
 function closeProductFormSheet() {
-  const sheet = document.getElementById("product-form-sheet");
-  if (sheet) {
-    sheet.classList.remove("drawer__sheet--active");
-    if (!window.DOM.detailDrawer.classList.contains("drawer__sheet--active") &&
-        (!window.DOM.scannerModal || !window.DOM.scannerModal.classList.contains("scanner-modal--active"))) {
-      window.DOM.scrim.classList.remove("drawer__scrim--active");
-    }
-    
-    // Show Island navigation when drawer closes
-    if (window.Island && typeof window.Island.show === "function") {
-      window.Island.show();
-    }
-  }
-
-  if (window.history && typeof window.history.replaceState === "function") {
-    const path = `${window.location.pathname}${window.location.search}`;
-    if (window.location.hash.startsWith("#/draft") || window.location.hash.startsWith("#/product")) {
-      window.history.replaceState({}, document.title, path);
-    }
-  }
+  window.SheetManager?.close("product-form");
+  cleanProductSheetHash();
 }

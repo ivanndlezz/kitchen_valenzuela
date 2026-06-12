@@ -38,6 +38,92 @@ function updateClientPanelStatus(status) {
   }
 }
 
+function escapeQuoteHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function normalizeQuoteSearchText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function isQuoteStepperReadonly() {
+  const stepperView = document.getElementById("quote-stepper-view");
+  return stepperView && stepperView.getAttribute("data-readonly") === "true";
+}
+
+function setQuoteClientSelectOpen(isOpen) {
+  const quoteClientSelect = document.getElementById("quoteClientSelect");
+  const quoteClientTrigger = document.getElementById("quoteClientTrigger");
+  if (!quoteClientSelect) return;
+
+  quoteClientSelect.classList.toggle("open", isOpen);
+  quoteClientSelect.classList.toggle("is-open", isOpen);
+  quoteClientSelect.dataset.disabled = String(isQuoteStepperReadonly());
+  if (isOpen) {
+    quoteClientSelect.dataset.previousValue = window.AppState?.quoteClientId || "";
+  } else {
+    delete quoteClientSelect.dataset.previousValue;
+  }
+  quoteClientTrigger?.setAttribute("aria-expanded", String(isOpen));
+}
+
+function filterQuoteClientOptions(query = "") {
+  const optionsContainer = document.getElementById("quoteClientOptions");
+  if (!optionsContainer) return;
+
+  const normalizedQuery = normalizeQuoteSearchText(query.trim());
+  let visibleCount = 0;
+
+  optionsContainer.querySelectorAll(".custom-select-option").forEach(opt => {
+    const searchText = normalizeQuoteSearchText(opt.dataset.search || opt.textContent || "");
+    const shouldShow = !normalizedQuery || searchText.includes(normalizedQuery);
+    opt.hidden = !shouldShow;
+    opt.style.display = shouldShow ? "flex" : "none";
+    if (shouldShow) visibleCount += 1;
+  });
+
+  let emptyState = optionsContainer.querySelector("[data-quote-client-empty]");
+  if (!emptyState) {
+    emptyState = document.createElement("div");
+    emptyState.className = "custom-select-empty";
+    emptyState.dataset.quoteClientEmpty = "true";
+    emptyState.textContent = "No se encontraron clientes.";
+    optionsContainer.appendChild(emptyState);
+  }
+  emptyState.hidden = visibleCount > 0;
+}
+
+function openQuoteClientSelect() {
+  const quoteClientInput = document.getElementById("quoteClientInput");
+  if (isQuoteStepperReadonly()) return;
+
+  setQuoteClientSelectOpen(true);
+  if (quoteClientInput) {
+    quoteClientInput.value = "";
+    quoteClientInput.placeholder = "Buscar por nombre, empresa o RFC...";
+    quoteClientInput.focus();
+  }
+  filterQuoteClientOptions("");
+}
+
+function closeQuoteClientSelect() {
+  const quoteClientInput = document.getElementById("quoteClientInput");
+  setQuoteClientSelectOpen(false);
+  if (quoteClientInput) {
+    quoteClientInput.value = getClientLabel(window.AppState.quoteClientId);
+    quoteClientInput.placeholder = "Buscar cliente...";
+  }
+  filterQuoteClientOptions("");
+}
+
 function setupQuotesUI() {
   document.getElementById("btn-new-quote")?.addEventListener("click", () => {
     window.location.hash = "#/quotation/new";
@@ -89,36 +175,39 @@ function setupQuotesUI() {
 
   quoteClientTrigger?.addEventListener("click", (e) => {
     e.stopPropagation();
-    const stepperView = document.getElementById("quote-stepper-view");
-    if (stepperView && stepperView.getAttribute("data-readonly") === "true") return;
-    quoteClientSelect?.classList.add("open");
-    quoteClientInput?.focus();
+    openQuoteClientSelect();
   });
 
   quoteClientInput?.addEventListener("focus", () => {
-    const stepperView = document.getElementById("quote-stepper-view");
-    if (stepperView && stepperView.getAttribute("data-readonly") === "true") return;
-    quoteClientSelect?.classList.add("open");
-    quoteClientInput.value = "";
-    quoteClientInput.dispatchEvent(new Event("input"));
+    openQuoteClientSelect();
   });
 
   quoteClientInput?.addEventListener("input", (e) => {
-    const val = e.target.value.toLowerCase();
-    quoteClientOptions?.querySelectorAll(".custom-select-option").forEach(opt => {
-      opt.style.display = opt.textContent.toLowerCase().includes(val) ? "flex" : "none";
-    });
+    if (isQuoteStepperReadonly()) return;
+    setQuoteClientSelectOpen(true);
+    filterQuoteClientOptions(e.target.value);
+  });
+
+  quoteClientInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeQuoteClientSelect();
+      quoteClientInput.blur();
+      return;
+    }
+
+    if (e.key === "Enter" && quoteClientSelect?.classList.contains("open")) {
+      const firstVisibleOption = Array.from(quoteClientOptions?.querySelectorAll(".custom-select-option") || [])
+        .find(opt => !opt.hidden);
+      if (firstVisibleOption) {
+        e.preventDefault();
+        firstVisibleOption.click();
+      }
+    }
   });
 
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#quoteClientSelect") && quoteClientSelect?.classList.contains("open")) {
-      quoteClientSelect.classList.remove("open");
-      if (quoteClientInput) {
-        quoteClientInput.value = getClientLabel(window.AppState.quoteClientId);
-      }
-      quoteClientOptions?.querySelectorAll(".custom-select-option").forEach(opt => {
-        opt.style.display = "flex";
-      });
+      closeQuoteClientSelect();
     }
   });
 
@@ -213,13 +302,7 @@ function setupQuotesUI() {
   });
 
   document.getElementById("btn-save-quote-stepper")?.addEventListener("click", () => {
-    if (window.AppState.quoteItems.length === 0) {
-      showToast("Agrega al menos un producto antes de guardar.", "warning");
-      return;
-    }
-    saveDraftQuotation();
-    showToast("Cotización guardada como borrador.", "success");
-    window.location.hash = "#/quotation";
+    showListView();
   });
 }
 
@@ -615,12 +698,30 @@ function populateQuoteClients() {
 
   if (optionsContainer) {
     const clientsOptionsHtml = [
-      { id: "", label: "-- Cliente General / Público --" },
-      ...window.AppState.clients.map(c => ({ id: c.id, label: `${c.nombre} (${c.empresa || 'Empresa'})` }))
+      { id: "", label: "-- Cliente General / Público --", search: "cliente general publico publico mostrador" },
+      ...window.AppState.clients.map(c => ({
+        id: c.id,
+        label: `${c.nombre || ""} (${c.empresa || "Empresa"})`,
+        search: [
+          c.id,
+          c.nombre,
+          c.empresa,
+          c.rfc,
+          c.telefono,
+          c.correo,
+          c.direccion
+        ].filter(Boolean).join(" ")
+      }))
     ].map(item => `
-      <div class="custom-select-option ${item.id === currentVal ? "selected" : ""}" data-value="${item.id}" style="display: flex;">
-        ${item.label}
-      </div>
+      <button
+        class="custom-select-option ${item.id === currentVal ? "selected" : ""}"
+        type="button"
+        data-value="${escapeQuoteHtml(item.id)}"
+        data-search="${escapeQuoteHtml(item.search)}"
+        style="display: flex;"
+      >
+        ${escapeQuoteHtml(item.label)}
+      </button>
     `).join("");
     optionsContainer.innerHTML = clientsOptionsHtml;
     
@@ -636,13 +737,14 @@ function populateQuoteClients() {
           o.style.display = "flex";
         });
         opt.classList.add("selected");
-        document.getElementById("quoteClientSelect")?.classList.remove("open");
+        closeQuoteClientSelect();
         
         renderClientPreview();
         updateClientPanelStatus(val ? "client-selected" : "no-client");
         saveDraftQuotation();
       });
     });
+    filterQuoteClientOptions("");
   }
 }
 
@@ -881,12 +983,8 @@ function renderOverview() {
   if (ovTot) ovTot.textContent = fmt(quote.total);
 
   const exportActions = document.getElementById("overview-export-actions");
-  const existingQuote = window.AppState.currentQuoteId
-    ? window.AppState.quotations.find(q => q.id === window.AppState.currentQuoteId)
-    : null;
   if (exportActions) {
-    const isConfirmed = existingQuote && existingQuote.status !== 'draft';
-    exportActions.setAttribute("data-visible", isConfirmed ? "true" : "false");
+    exportActions.setAttribute("data-visible", quote.items.length > 0 ? "true" : "false");
   }
 
   document.getElementById("quote-btn-whatsapp")?.addEventListener("click", exportQuoteToWhatsApp);

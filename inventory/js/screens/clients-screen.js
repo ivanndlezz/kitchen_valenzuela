@@ -12,10 +12,9 @@ function setupClientsUI() {
   const btnAdd = document.getElementById("btn-add-client");
   if (btnAdd) {
     btnAdd.addEventListener("click", () => {
-      openClientDrawer();
-      document.getElementById("client-form-title").textContent = "Registrar Nuevo Cliente";
       if (form) form.reset();
       document.getElementById("client-id").value = "";
+      openClientDrawer();
     });
   }
 
@@ -50,19 +49,34 @@ function setupClientsUI() {
 }
 
 function openClientDrawer() {
-  const container = document.getElementById("client-form-container");
-  const scrim = document.getElementById("app-scrim");
-  if (container) container.classList.add("drawer__sheet--active");
-  if (scrim) scrim.classList.add("drawer__scrim--active");
+  if (!window.SheetManager || !window.ClientSheet) return;
+
+  const activeId = document.getElementById("client-id")?.value || "";
+  window.SheetManager.open({
+    id: "client-form",
+    title: window.ClientSheet.getTitle(),
+    variant: "side",
+    size: "md",
+    mode: window.ClientSheet.getMode(),
+    meta: {
+      eyebrow: "Cliente",
+      activeId,
+      mode: window.ClientSheet.getMode()
+    },
+    slots: {
+      main: window.ClientSheet.getMain
+    },
+    onBeforeClose() {
+      window.ClientSheet.detach();
+    },
+    onClose() {
+      window.ClientSheet.reset();
+    }
+  });
 }
 
 function closeClientDrawer() {
-  const container = document.getElementById("client-form-container");
-  const scrim = document.getElementById("app-scrim");
-  if (container) container.classList.remove("drawer__sheet--active");
-  if (scrim) scrim.classList.remove("drawer__scrim--active");
-  const form = document.getElementById("client-form");
-  if (form) form.reset();
+  window.SheetManager?.close("client-form");
 }
 window.closeClientDrawer = closeClientDrawer;
 
@@ -176,8 +190,6 @@ function renderClientsList() {
 }
 
 function editClient(client) {
-  document.getElementById("client-form-title").textContent = "Editar Cliente";
-  
   document.getElementById("client-id").value = client.id;
   document.getElementById("client-nombre").value = client.nombre;
   document.getElementById("client-empresa").value = client.empresa || "";
