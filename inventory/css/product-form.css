@@ -867,6 +867,7 @@ body.dim-optional .field.is-required .req {
   max-height: 220px;
   overflow: auto;
   padding: 4px;
+  padding-bottom: 40px;
   border: 1px solid #dededb;
   border-radius: 8px;
   background: #fff;
@@ -1717,7 +1718,7 @@ background: #f1f1ee;
 }
 
 @media (max-width: 768px) {
-  .step-pills {
+  .step-pills2 {
     position: absolute !important;
     bottom: 60px;
     left: 0;

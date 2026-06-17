@@ -110,27 +110,24 @@ export const STEPS = [
     reviewFields: [
       { label: "Peso",          selector: 'input[name="weight"]' },
       { label: "Dimensiones",   selector: null, key: "dimensions" },
-      { label: "Tipo de envío", selector: 'select[name="tipoEnvio"]' },
-      { label: "Costo de envío", selector: 'input[name="shipping_cost"]', prefix: "$" },
+      { label: "Tipo de traslado", selector: 'select[name="tipoEnvio"]' },
+      { label: "Costo de traslado", selector: 'input[name="CostoEnvio"]', prefix: "$" },
     ],
   },
   {
     num: 6,
     title: "Contenido",
     reviewFields: [
-      { label: "Resumen",     selector: 'textarea[name="excerpt"]' },
-      { label: "Descripción", selector: 'textarea[name="description"]' },
+      { label: "Descripción CFDI", selector: 'textarea[name="details"]' },
+      { label: "Notas internas", selector: 'textarea[name="history"]' },
     ],
   },
   {
     num: 7,
-    title: "Medios y Visibilidad",
+    title: "Medios",
     reviewFields: [
       { label: "Imagen principal", selector: null, key: "mainImage" },
       { label: "Galería",          selector: null, key: "gallery" },
-      { label: "Mostrar en inicio", selector: 'input[name="featured"]', type: "checkbox" },
-      { label: "Ocultar en POS",    selector: 'input[name="hide_pos"]', type: "checkbox" },
-      { label: "Ocultar en tienda", selector: 'input[name="hide"]',     type: "checkbox" },
     ],
   },
   {

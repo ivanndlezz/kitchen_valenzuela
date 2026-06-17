@@ -61,6 +61,10 @@ window.SyncManager = {
       "Producto Campo Personalizadoo 4": p.especial4 || "",
       "Producto Campo Personalizadoo 5": p.especial5 || "",
       "Producto Campo Personalizadoo 6": p.especial6 || "",
+      "envio_web": Number(p.envioWeb) || 0,
+      "Mostrar en página de inicio": Boolean(p.featured),
+      "Ocultar en POS": Boolean(p.hidePos),
+      "Ocultar en tienda": Boolean(p.hideStore),
       "Cantidad": Number(p.stock) || 0
     };
   },
@@ -97,6 +101,10 @@ window.SyncManager = {
       especial4: f["Producto Campo Personalizadoo 4"] || "",
       especial5: f["Producto Campo Personalizadoo 5"] || "",
       especial6: f["Producto Campo Personalizadoo 6"] || "",
+      envioWeb: Number(f["envio_web"]) || 0,
+      featured: Boolean(f["Mostrar en página de inicio"]),
+      hidePos: Boolean(f["Ocultar en POS"]),
+      hideStore: Boolean(f["Ocultar en tienda"]),
       stock: Number(f["Cantidad"]) || 0,
       airtable_id: id,
       sync_status: "synced",

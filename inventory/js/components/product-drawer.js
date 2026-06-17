@@ -427,12 +427,14 @@ function populateProductFormFromProduct(p) {
   setValue('select[name="unit"]', p.unitCode || "");
   setValue('input[name="wh_qty_3"]', p.stock || "");
   setValue('input[name="alert_quantity"]', p.alertaCantidad || "");
-  setValue('textarea[name="product_details"]', p.descripcion || "");
   setValue('textarea[name="details"]', p.especificaciones || "");
   setValue('textarea[name="history"]', p.especial3 || "");
   setValue('input[name="cf1"]', p.especial4 || "");
   setValue('input[name="cf2"]', p.especial5 || "");
   setValue('input[name="cf3"]', p.especial6 || "");
+  setValue('select[name="supplier"]', p.supplier || "");
+  setValue('input[name="supplier_part_no"]', p.supplier_part_no || "");
+  setValue('input[name="supplier_price"]', p.supplier_price || "");
 
   if (p.tipoProducto && window.CSS && CSS.escape) {
     setChecked(`input[name="type"][value="${CSS.escape(p.tipoProducto)}"]`, true);

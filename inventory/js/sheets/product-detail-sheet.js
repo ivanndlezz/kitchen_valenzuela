@@ -57,7 +57,7 @@
 
   function renderSpecs(product) {
     const fields = [
-      ["Descripcion", product.descripcion],
+      ["Descripcion tienda", product.descripcion],
       ["Especificaciones", product.especificaciones],
       ["Ubicacion / Notas", product.especial3],
       ["Dimensiones / Datos", product.especial4],
@@ -76,16 +76,21 @@
       .join("");
   }
 
-  function renderTopControls() {
+  function renderTopControls(data, config = {}) {
+    const selectedView = config.mode === "web" ? "web" : "general";
+
     return `
       <div class="view-switch view-switch--single sheet-mode-switch" data-sheet-mode-switch="product-detail">
         <button class="view-switch__toggle" type="button" aria-label="Cambiar a editar producto">
           <span class="view-switch__toggle-inner">
-            <span class="view-switch__btn" data-view="general" data-selected="true">
+            <span class="view-switch__btn" data-view="general" data-selected="${selectedView === "general"}" data-product-action="view">
               Resumen
             </span>
             <span class="view-switch__btn" data-view="advanced" data-selected="false" data-product-action="edit">
               Editar
+            </span>
+            <span class="view-switch__btn" data-view="web" data-selected="${selectedView === "web"}" data-product-action="web">
+              Web
             </span>
           </span>
         </button>
@@ -94,6 +99,127 @@
         <i data-lucide="trash-2"></i>
       </button>
     `;
+  }
+
+  function renderWeb(product) {
+    const ecommerceShipping = product.envioWeb == null ? "" : product.envioWeb;
+
+    return `
+      <form class="drawer__web-form" data-product-web-form>
+        <div class="field" style="margin-top: 4px;">
+          <label>Descripción — tienda</label>
+          <textarea name="web_description" placeholder="Lo que verá el cliente en la tienda en línea...">${product.descripcion || ""}</textarea>
+        </div>
+
+        <div class="field">
+          <label>Envío en tienda</label>
+          <div class="input-row">
+            <span class="prefix">$</span>
+            <input type="number" name="envio_web" value="${ecommerceShipping}" placeholder="0.00" step="0.01" min="0">
+          </div>
+        </div>
+
+        <div class="divider">Publicación</div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <strong>Mostrar en página de inicio</strong>
+            <small>Aparece en sección destacados</small>
+          </div>
+          <label class="switch"><input type="checkbox" name="featured" value="1" ${product.featured ? "checked" : ""}><div class="track"><div class="thumb"></div></div></label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <strong>Ocultar en POS</strong>
+            <small>No aparece en ventas de mostrador</small>
+          </div>
+          <label class="switch"><input type="checkbox" name="hide_pos" value="1" ${product.hidePos ? "checked" : ""}><div class="track"><div class="thumb"></div></div></label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <strong>Ocultar en tienda</strong>
+            <small>Producto privado, no visible al público</small>
+          </div>
+          <label class="switch"><input type="checkbox" name="hide" value="1" ${product.hideStore ? "checked" : ""}><div class="track"><div class="thumb"></div></div></label>
+        </div>
+
+        <div style="margin-top: 24px; display: flex; gap: 12px;">
+          <button type="submit" class="drawer__primary-btn">
+            <i data-lucide="save"></i> Guardar Web
+          </button>
+        </div>
+      </form>
+    `;
+  }
+
+  function openWeb(product) {
+    window.SheetManager?.open({
+      id: "product-detail",
+      title: "Ficha Técnica",
+      variant: "side",
+      size: "md",
+      mode: "web",
+      hideIsland: true,
+      meta: {
+        eyebrow: product.codigo || "Producto",
+        activeId: product.id,
+        mode: "web"
+      },
+      data: { product },
+      slots: {
+        topControls: renderTopControls,
+        main: () => renderWeb(product)
+      },
+      onOpen(root) {
+        hydrate(root, product);
+      },
+      onClose() {
+        window.cleanProductSheetHash?.();
+      }
+    });
+  }
+
+  async function saveWebConfig(product, form) {
+    const nextValues = {
+      descripcion: form.querySelector('textarea[name="web_description"]')?.value.trim() || "",
+      envioWeb: Number(form.querySelector('input[name="envio_web"]')?.value) || 0,
+      featured: Boolean(form.querySelector('input[name="featured"]')?.checked),
+      hidePos: Boolean(form.querySelector('input[name="hide_pos"]')?.checked),
+      hideStore: Boolean(form.querySelector('input[name="hide"]')?.checked),
+    };
+
+    Object.assign(product, nextValues, {
+      sync_status: "pending",
+      updatedAt: new Date().toISOString(),
+    });
+
+    if (typeof window.saveProductsToStorage === "function") {
+      window.saveProductsToStorage();
+    }
+
+    if (product.airtable_id && window.SyncManager?.shumRequest) {
+      await window.SyncManager.shumRequest("update", {
+        baseId: window.SyncManager.config.baseId,
+        table: window.SyncManager.config.table,
+        recordId: product.airtable_id,
+        data: {
+          "Producto de campo personalizado 1": product.descripcion,
+          "envio_web": product.envioWeb,
+          "Mostrar en página de inicio": product.featured,
+          "Ocultar en POS": product.hidePos,
+          "Ocultar en tienda": product.hideStore,
+        },
+      });
+      product.sync_status = "synced";
+      if (typeof window.saveProductsToStorage === "function") {
+        window.saveProductsToStorage();
+      }
+    }
+
+    window.showToast?.("Configuración web guardada.", "success");
+    openWeb(product);
   }
 
   function render(product) {
@@ -150,6 +276,14 @@
   }
 
   function hydrate(root, product) {
+    root.querySelector('[data-product-action="view"]')?.addEventListener("click", () => {
+      window.openProductDrawer?.(product);
+    });
+
+    root.querySelector('[data-product-action="web"]')?.addEventListener("click", () => {
+      openWeb(product);
+    });
+
     root.querySelector('[data-product-action="delete"]')?.addEventListener("click", () => {
       window.deleteProduct?.(product.id);
     });
@@ -167,10 +301,25 @@
         window.__openingProductSheetRoute = false;
       }
     });
+
+    root.querySelector("[data-product-web-form]")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submitButton = event.currentTarget.querySelector('button[type="submit"]');
+      try {
+        if (submitButton) submitButton.disabled = true;
+        await saveWebConfig(product, event.currentTarget);
+      } catch (error) {
+        console.error("ProductDetailSheet: web save failed", error);
+        window.showToast?.("No se pudo guardar la configuración web.", "danger");
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
+    });
   }
 
   window.ProductDetailSheet = {
     render,
+    renderWeb,
     renderTopControls,
     hydrate,
   };

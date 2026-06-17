@@ -156,6 +156,8 @@ function normalizeJsonProduct(p) {
   if (cat === 2 || cat === "2") cat = "02";
   if (cat === 3 || cat === "3") cat = "03";
 
+  const readBool = (value) => value === true || value === 1 || value === "1" || value === "true";
+
   return {
     id: String(p["Código"] || p.codigo || p.id),
     nombre: p["Nombre"] || p.nombre || "",
@@ -181,6 +183,10 @@ function normalizeJsonProduct(p) {
     especial4: p["Producto Campo Personalizadoo 4"] || p.especial4 || "",
     especial5: p["Producto Campo Personalizadoo 5"] || p.especial5 || "",
     especial6: p["Producto Campo Personalizadoo 6"] || p.especial6 || "",
+    envioWeb: parseFloat(p["envio_web"] || p.envioWeb) || 0,
+    featured: readBool(p["Mostrar en página de inicio"] ?? p.featured),
+    hidePos: readBool(p["Ocultar en POS"] ?? p.hidePos),
+    hideStore: readBool(p["Ocultar en tienda"] ?? p.hideStore),
     stock: parseFloat(p["Cantidad"] || p.stock) || 0,
     airtable_id: p.airtable_id || null,
     sync_status: p.sync_status || "pending",

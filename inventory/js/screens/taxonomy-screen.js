@@ -136,6 +136,40 @@
     `;
   }
 
+  function renderSuppliers(data) {
+    const suppliers = (data.suppliers || []).map((supplier) => {
+      if (typeof supplier === "string") {
+        return { name: supplier, tel: "", email: "" };
+      }
+      return {
+        name: supplier?.name || supplier?.nombre || supplier?.label || "",
+        tel: supplier?.tel || supplier?.telefono || supplier?.phone || "",
+        email: supplier?.email || supplier?.correo || supplier?.mail || "",
+      };
+    });
+
+    if (!suppliers.length) {
+      return `<div class="quote-empty-state">No hay proveedores registrados.</div>`;
+    }
+
+    return `
+      <div class="taxonomy-list">
+        ${suppliers.map((supplier) => `
+          <div class="taxonomy-list__row taxonomy-list__row--seller">
+            <div class="taxonomy-list__seller">
+              <strong>${escapeHtml(supplier.name || "Sin nombre")}</strong>
+              <span>${escapeHtml(supplier.tel || "Sin tel")}</span>
+              <span>${escapeHtml(supplier.email || "Sin email")}</span>
+            </div>
+            <button type="button" class="taxonomy-card__action" data-open-taxonomy="supplier">
+              Editar
+            </button>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
   function renderTaxonomyBody() {
     const body = getBody();
     if (!body) return;
@@ -149,6 +183,8 @@
       body.innerHTML = renderCategories(cachedTaxonomy);
     } else if (activeTab === "sellers") {
       body.innerHTML = renderSellers(cachedTaxonomy);
+    } else if (activeTab === "suppliers") {
+      body.innerHTML = renderSuppliers(cachedTaxonomy);
     } else {
       body.innerHTML = renderBrands(cachedTaxonomy);
     }
@@ -184,6 +220,12 @@ function bindTaxonomyScreen() {
     if (addSeller && addSeller.dataset.bound !== "true") {
       addSeller.addEventListener("click", () => openManager("seller"));
       addSeller.dataset.bound = "true";
+    }
+
+    const addSupplier = document.getElementById("taxonomy-add-supplier");
+    if (addSupplier && addSupplier.dataset.bound !== "true") {
+      addSupplier.addEventListener("click", () => openManager("supplier"));
+      addSupplier.dataset.bound = "true";
     }
 
     const body = getBody();

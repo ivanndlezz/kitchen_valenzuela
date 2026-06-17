@@ -1021,8 +1021,8 @@
           <div>
             <h2 class="section-title">Catálogos</h2>
             <p class="section-subtitle">
-              Gestiona categorías, subcategorías, marcas y vendedores usados
-              en los flujos comerciales.
+              Gestiona categorías, subcategorías, marcas y vendedores usados en
+              los flujos comerciales.
             </p>
           </div>
           <div class="taxonomy-screen__actions">
@@ -1034,6 +1034,9 @@
             </button>
             <button class="btn btn-secondary" id="taxonomy-add-seller">
               <i data-lucide="plus"></i> Vendedor
+            </button>
+            <button class="btn btn-secondary" id="taxonomy-add-supplier">
+              <i data-lucide="plus"></i> Proveedor
             </button>
           </div>
         </div>
@@ -1064,6 +1067,13 @@
               data-taxonomy-tab="sellers"
             >
               Vendedores
+            </button>
+            <button
+              class="taxonomy-screen__tab"
+              type="button"
+              data-taxonomy-tab="suppliers"
+            >
+              Proveedores
             </button>
           </div>
           <div class="taxonomy-screen__body" id="taxonomy-screen-body">
@@ -1651,8 +1661,8 @@
               <div class="step-header" data-step="5">
                 <div class="step-num">5</div>
                 <div class="step-title">
-                  <strong>Logística</strong>
-                  <span>Peso, envío y proveedor</span>
+                  <strong>Traslado y proveedor</strong>
+                  <span>Peso, traslado y proveedor</span>
                 </div>
                 <div class="step-check">
                   <svg viewBox="0 0 12 10">
@@ -1687,11 +1697,11 @@
                       </div>
                     </div>
                     <div class="field">
-                      <label>Tipo de envío</label>
+                      <label>Tipo de traslado</label>
                       <select name="tipoEnvio"></select>
                     </div>
                     <div class="field" id="ship-cost" style="display: none">
-                      <label>Costo de envío</label>
+                      <label>Costo de traslado</label>
                       <div class="input-row">
                         <span class="prefix">$</span>
                         <input
@@ -1706,7 +1716,18 @@
                   <div class="divider">Proveedor</div>
                   <div class="field">
                     <label>Proveedor</label>
-                    <select name="supplier"></select>
+                    <div class="input-row input-row--action">
+                      <select name="supplier" class="has-suffix"></select>
+                      <button
+                        class="icon-input-action suffix"
+                        type="button"
+                        data-taxonomy-add="supplier"
+                        aria-label="Agregar proveedor"
+                        title="Agregar proveedor"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                   <div class="grid-2">
                     <div class="field">
@@ -1744,7 +1765,7 @@
                 <div class="step-num">6</div>
                 <div class="step-title">
                   <strong>Contenido</strong>
-                  <span>Descripción para tienda y factura</span>
+                  <span>Texto fiscal y notas internas</span>
                 </div>
                 <div class="step-check">
                   <svg viewBox="0 0 12 10">
@@ -1764,13 +1785,6 @@
               <div class="step-body" id="b6">
                 <div class="step-body-inner">
                   <div class="field" style="margin-top: 16px">
-                    <label>Descripción — tienda</label>
-                    <textarea
-                      name="product_details"
-                      placeholder="Lo que verá el cliente en la tienda en línea…"
-                    ></textarea>
-                  </div>
-                  <div class="field">
                     <label>Descripción — factura / CFDI</label>
                     <textarea
                       name="details"
@@ -1797,13 +1811,13 @@
               <div class="summary" id="sum6"></div>
             </div>
 
-            <!-- ── 7. MEDIOS & VISIBILIDAD ───────────────────── -->
+            <!-- ── 7. MEDIOS ───────────────────── -->
             <div class="step" id="s7">
               <div class="step-header" data-step="7">
                 <div class="step-num">7</div>
                 <div class="step-title">
-                  <strong>Medios &amp; Visibilidad</strong>
-                  <span>Imágenes y configuración de publicación</span>
+                  <strong>Medios</strong>
+                  <span>Imágenes del producto</span>
                 </div>
                 <div class="step-check">
                   <svg viewBox="0 0 12 10">
@@ -1850,37 +1864,6 @@
                         <p>890 × 1000 px</p>
                       </div>
                     </div>
-                  </div>
-                  <div class="divider">Publicación</div>
-                  <div class="toggle-row">
-                    <div class="toggle-info">
-                      <strong>Mostrar en página de inicio</strong
-                      ><small>Aparece en sección destacados</small>
-                    </div>
-                    <label class="switch"
-                      ><input type="checkbox" name="featured" value="1" />
-                      <div class="track"><div class="thumb"></div></div
-                    ></label>
-                  </div>
-                  <div class="toggle-row">
-                    <div class="toggle-info">
-                      <strong>Ocultar en POS</strong
-                      ><small>No aparece en ventas de mostrador</small>
-                    </div>
-                    <label class="switch"
-                      ><input type="checkbox" name="hide_pos" value="1" />
-                      <div class="track"><div class="thumb"></div></div
-                    ></label>
-                  </div>
-                  <div class="toggle-row">
-                    <div class="toggle-info">
-                      <strong>Ocultar en tienda</strong
-                      ><small>Producto privado, no público</small>
-                    </div>
-                    <label class="switch"
-                      ><input type="checkbox" name="hide" value="1" />
-                      <div class="track"><div class="thumb"></div></div
-                    ></label>
                   </div>
                   <button type="button" class="btn-done" data-step="7">
                     Marcar como completo

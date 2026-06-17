@@ -220,8 +220,7 @@ function gatherFormData() {
   const imgInput = document.querySelector('input[name="product_image"]');
   const imgFilename = imgInput?.files?.[0]?.name || "no_image.png";
 
-  // Shipping mapping
-  const shippingVal = getNum('select[name="tipoEnvio"]');
+  const transferCost = getNum('input[name="CostoEnvio"]');
 
   return {
     "Nombre": getVal('input[name="name"]') || getVal('#qf-name'),
@@ -250,16 +249,12 @@ function gatherFormData() {
     "Cantidad": stockSum,
     "Cantidad de alerta": getNum('input[name="alert_quantity"]'),
     
-    "envio_recepcion": shippingVal ? shippingVal : null,
+    "traslado": transferCost || null,
     
-    "Producto de campo personalizado 1": getVal('textarea[name="product_details"]'),
     "Producto Campo Personalizadoo 2": getVal('textarea[name="details"]'),
     "Producto Campo Personalizadoo 3": getVal('textarea[name="history"]'),
     
     "Imagen": imgFilename,
-    "Mostrar en página de inicio": getBool('input[name="featured"]'),
-    "Ocultar en POS": getBool('input[name="hide_pos"]'),
-    "Ocultar en tienda": getBool('input[name="hide"]'),
     
     "Tipo de producto": getProductType(),
     "Clave Unidad": getVal('input[name="claveUnidad"]'),

@@ -151,7 +151,21 @@
   }
 
   function normalizeBrandList(rawBrands) {
-    return normalizeTextList(rawBrands, getFormConfig().BRANDS || []);
+    const brands = Array.isArray(rawBrands)
+      ? rawBrands
+      : rawBrands && typeof rawBrands === "object" && !isEmptyConfigObject(rawBrands)
+        ? Object.values(rawBrands)
+        : getFormConfig().BRANDS || [];
+
+    const normalized = brands.map((item) => {
+      if (typeof item === "string") return item.trim();
+      if (item && typeof item === "object") {
+        return String(item.name || item.nombre || item.label || "").trim();
+      }
+      return String(item || "").trim();
+    }).filter(Boolean);
+
+    return Array.from(new Set(normalized));
   }
 
   function normalizeSellerList(rawSellers) {
@@ -187,17 +201,40 @@
       .filter(Boolean);
   }
 
-  function getListForType(state) {
-    return state.type === "seller" ? state.sellers : state.brands;
+  function normalizeSupplierList(rawSuppliers) {
+    const values = Array.isArray(rawSuppliers)
+      ? rawSuppliers
+      : rawSuppliers && typeof rawSuppliers === "object" && !isEmptyConfigObject(rawSuppliers)
+        ? Object.values(rawSuppliers)
+        : [];
+
+    return values
+      .map((item, index) => {
+        if (typeof item === "string") {
+          const name = String(item || "").trim();
+          if (!name) return null;
+          return {
+            id: `supplier-${slugifyTaxonomyValue(name) || "item"}-${index + 1}`,
+            name,
+            tel: "",
+            email: "",
+          };
+        }
+
+        if (!item || typeof item !== "object") return null;
+
+        const name = String(item.name || item.nombre || item.label || "").trim();
+        const tel = String(item.tel || item.telefono || item.phone || "").trim();
+        const email = String(item.email || item.correo || item.mail || "").trim();
+        const id = String(item.id || item.key || item.value || "").trim() || `supplier-${slugifyTaxonomyValue(name || email || tel || `item-${index + 1}`) || `item-${index + 1}`}`;
+        if (!name && !tel && !email) return null;
+
+        return { id, name, tel, email };
+      })
+      .filter(Boolean);
   }
 
-  function setListForType(state, list) {
-    if (state.type === "seller") {
-      state.sellers = list;
-    } else {
-      state.brands = list;
-    }
-  }
+
 
   function getSellerLabel(item) {
     if (!item) return "";
@@ -240,10 +277,11 @@
       );
       const brands = normalizeBrandList(parseJsonField(fields.Marcas, []));
       const sellers = normalizeSellerList(parseJsonField(fields.vendedores, []));
+      const suppliers = normalizeSupplierList(parseJsonField(fields.proveedores, []));
 
-      applyTaxonomyToFormConfig({ categories, brands });
+      applyTaxonomyToFormConfig({ categories, brands, suppliers });
       updateTaxonomySelects();
-      return { record, categories, brands, sellers };
+      return { record, categories, brands, sellers, suppliers };
     })();
 
     try {
@@ -254,7 +292,7 @@
     }
   }
 
-  function applyTaxonomyToFormConfig({ categories, brands }) {
+  function applyTaxonomyToFormConfig({ categories, brands, suppliers }) {
     const config = getFormConfig();
     if (config.CATEGORIES && categories) {
       Object.keys(config.CATEGORIES).forEach(key => delete config.CATEGORIES[key]);
@@ -262,6 +300,15 @@
     }
     if (Array.isArray(config.BRANDS) && brands) {
       config.BRANDS.splice(0, config.BRANDS.length, ...brands);
+    }
+    if (suppliers) {
+      if (!config.SUPPLIERS) config.SUPPLIERS = {};
+      Object.keys(config.SUPPLIERS).forEach(key => {
+        if (key !== "") delete config.SUPPLIERS[key];
+      });
+      suppliers.forEach(supplier => {
+        config.SUPPLIERS[supplier.id] = supplier.name;
+      });
     }
   }
 
@@ -324,6 +371,7 @@
     syncNativeSelect(document.getElementById("f-cat"), config.CATEGORIES || {}, "Seleccionar");
     syncNativeSelect(document.getElementById("qf-cat"), config.CATEGORIES || {}, "Seleccionar");
     syncNativeSelect(document.querySelector('#pf select[name="brand"]'), config.BRANDS || [], "Sin marca");
+    syncNativeSelect(document.querySelector('#pf select[name="supplier"]'), config.SUPPLIERS || {}, "Sin proveedor");
     syncSubcategorySelect(document.getElementById("f-cat")?.value || "");
   }
 
@@ -360,6 +408,11 @@
         singular: "vendedor",
         placeholder: "Nuevo vendedor",
       },
+      supplier: {
+        title: "Proveedores",
+        singular: "proveedor",
+        placeholder: "Nuevo proveedor",
+      },
     };
     return meta[type] || meta.brand;
   }
@@ -373,7 +426,7 @@
       .replace(/'/g, "&#039;");
   }
 
-  function getTaxonomyItems(type, categories, brands, categoryKey, sellers = []) {
+  function getTaxonomyItems(type, categories, brands, categoryKey, sellers = [], suppliers = []) {
     if (type === "category") {
       return Object.entries(categories || {}).map(([key, value]) => ({
         key,
@@ -388,6 +441,14 @@
     }
     if (type === "seller") {
       return (sellers || []).map((item) => ({
+        key: item.id,
+        label: getSellerLabel(item),
+        tel: getSellerMeta(item).tel,
+        email: getSellerMeta(item).email,
+      }));
+    }
+    if (type === "supplier") {
+      return (suppliers || []).map((item) => ({
         key: item.id,
         label: getSellerLabel(item),
         tel: getSellerMeta(item).tel,
@@ -441,7 +502,7 @@
   function renderTaxonomySheet(state) {
     const root = ensureTaxonomySheet();
     const meta = getTaxonomyMeta(state.type);
-    const items = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers);
+    const items = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers, state.suppliers);
     const title = root.querySelector("#taxonomy-manager-title");
     const createFields = root.querySelector("[data-taxonomy-create-fields]");
     const context = root.querySelector("[data-taxonomy-context]");
@@ -453,13 +514,15 @@
       : "";
 
     if (createFields) {
-      if (state.type === "seller") {
+      if (state.type === "seller" || state.type === "supplier") {
+        const itemPlaceholder = state.type === "seller" ? "Nuevo vendedor" : "Nuevo proveedor";
+        const emailPlaceholder = state.type === "seller" ? "ventas@kitchencleanvalenzuela.com" : "proveedor@empresa.com";
         createFields.innerHTML = `
           <div class="taxonomy-manager__seller-form">
             <div class="taxonomy-manager__seller-grid">
               <label class="taxonomy-manager__label">
                 Nombre
-                <input id="taxonomy-manager-input" data-seller-name type="text" autocomplete="off" placeholder="Nuevo vendedor" />
+                <input id="taxonomy-manager-input" data-seller-name type="text" autocomplete="off" placeholder="${itemPlaceholder}" />
               </label>
               <label class="taxonomy-manager__label">
                 Tel
@@ -467,7 +530,7 @@
               </label>
               <label class="taxonomy-manager__label taxonomy-manager__seller-email">
                 Email
-                <input data-seller-email type="email" autocomplete="off" placeholder="ventas@kitchencleanvalenzuela.com" />
+                <input data-seller-email type="email" autocomplete="off" placeholder="${emailPlaceholder}" />
               </label>
             </div>
             <div class="taxonomy-manager__input-row taxonomy-manager__input-row--seller">
@@ -488,7 +551,7 @@
     }
 
     list.innerHTML = items.length
-      ? items.map((item) => state.type === "seller"
+      ? items.map((item) => (state.type === "seller" || state.type === "supplier")
         ? `
         <div class="taxonomy-manager__item taxonomy-manager__item--seller" data-taxonomy-key="${escapeHtml(item.key)}">
           <div class="taxonomy-manager__item-main">
@@ -534,6 +597,7 @@
       categories: cloneJson(loaded.categories),
       brands: [...loaded.brands],
       sellers: cloneJson(loaded.sellers || []),
+      suppliers: cloneJson(loaded.suppliers || []),
     };
 
     renderTaxonomySheet(state);
@@ -558,6 +622,13 @@
       return;
     }
     if (type === "seller") return;
+    if (type === "supplier") {
+      const select = document.querySelector('#pf select[name="supplier"]');
+      if (!select) return;
+      select.value = key;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
+    }
     const select = document.querySelector('#pf select[name="brand"]');
     if (!select) return;
     select.value = label;
@@ -565,9 +636,9 @@
   }
 
   async function persistTaxonomyState(state, selectedKey, selectedLabel, message) {
-    await saveTaxonomyConfig(state.categories, state.brands, state.sellers);
+    await saveTaxonomyConfig(state.categories, state.brands, state.sellers, state.suppliers);
     taxonomyConfigPromise = null;
-    applyTaxonomyToFormConfig({ categories: state.categories, brands: state.brands });
+    applyTaxonomyToFormConfig({ categories: state.categories, brands: state.brands, suppliers: state.suppliers });
     updateTaxonomySelects();
     if (selectedKey || selectedLabel) selectTaxonomyValue(state.type, selectedKey, selectedLabel);
     renderTaxonomySheet(state);
@@ -589,13 +660,13 @@
     const sellerEmailInput = root?.querySelector("[data-seller-email]");
     const value = input?.value.trim();
     if (!state) return;
-    if (state.type === "seller") {
+    if (state.type === "seller" || state.type === "supplier") {
       const name = sellerNameInput?.value.trim() || "";
       const tel = sellerTelInput?.value.trim() || "";
       const email = sellerEmailInput?.value.trim() || "";
       if (!name) return;
       if (!tel && !email) {
-        window.showToast?.("Agrega al menos un teléfono o email para el vendedor.", "warning");
+        window.showToast?.(`Agrega al menos un teléfono o email para el ${meta.singular}.`, "warning");
         return;
       }
       try {
@@ -608,14 +679,19 @@
         if (sellerTelInput) sellerTelInput.disabled = true;
         if (sellerEmailInput) sellerEmailInput.disabled = true;
 
-        const current = getListForType(state) || [];
+        const isSeller = state.type === "seller";
+        const current = isSeller ? (state.sellers || []) : (state.suppliers || []);
         const item = {
-          id: createSellerId(name, tel, email),
+          id: isSeller ? createSellerId(name, tel, email) : createSellerId(name, tel, email).replace(/^seller-/, "supplier-"),
           name,
           tel,
           email,
         };
-        setListForType(state, [...current, item]);
+        if (isSeller) {
+          state.sellers = [...current, item];
+        } else {
+          state.suppliers = [...current, item];
+        }
         await persistTaxonomyState(state, item.id, name, `Se agregó el ${meta.singular}.`);
         sellerNameInput.value = "";
         sellerTelInput.value = "";
@@ -655,20 +731,20 @@
         const key = getNextCategoryKey(state.categories);
         state.categories[key] = { name: value, subcategories: [] };
         await persistTaxonomyState(state, key, value, `Se agregó la ${meta.singular}.`);
+        closeTaxonomySheet();
+        return;
       } else if (state.type === "subcategory") {
         const current = state.categories[state.categoryKey].subcategories || [];
         state.categories[state.categoryKey].subcategories = Array.from(new Set([...current, value]));
         await persistTaxonomyState(state, slugifyTaxonomyValue(value), value, `Se agregó la ${meta.singular}.`);
-      } else {
-        const current = getListForType(state) || [];
-        const item = {
-          id: createSellerId(value, "", ""),
-          name: value,
-          tel: "",
-          email: "",
-        };
-        setListForType(state, [...current, item]);
-        await persistTaxonomyState(state, item.id, value, `Se agregó la ${meta.singular}.`);
+        closeTaxonomySheet();
+        return;
+      } else if (state.type === "brand") {
+        const current = state.brands || [];
+        state.brands = Array.from(new Set([...current, value]));
+        await persistTaxonomyState(state, value, value, `Se agregó la ${meta.singular}.`);
+        closeTaxonomySheet();
+        return;
       }
       input.value = "";
       input.focus();
@@ -702,18 +778,35 @@
       current[index] = value;
       state.categories[state.categoryKey].subcategories = Array.from(new Set(current));
       await persistTaxonomyState(state, slugifyTaxonomyValue(value), value, `Se actualizó la ${meta.singular}.`);
-    } else {
-      const current = getListForType(state) || [];
+    } else if (state.type === "brand") {
+      const current = state.brands || [];
+      const index = current.indexOf(key);
+      if (index === -1) return;
+      current[index] = value;
+      state.brands = Array.from(new Set(current));
+      await persistTaxonomyState(state, value, value, `Se actualizó la ${meta.singular}.`);
+    } else if (state.type === "supplier") {
+      const current = state.suppliers || [];
       const index = current.findIndex(item => item.id === key);
       if (index === -1) return;
       current[index] = {
         ...current[index],
         name: value,
       };
-      setListForType(state, [...current]);
+      state.suppliers = [...current];
+      await persistTaxonomyState(state, current[index].id, value, `Se actualizó la ${meta.singular}.`);
+    } else {
+      const current = state.sellers || [];
+      const index = current.findIndex(item => item.id === key);
+      if (index === -1) return;
+      current[index] = {
+        ...current[index],
+        name: value,
+      };
+      state.sellers = [...current];
       await persistTaxonomyState(state, current[index].id, value, `Se actualizó la ${meta.singular}.`);
     }
-    root.querySelector(state.type === "seller" ? "[data-seller-name]" : "#taxonomy-manager-input")?.focus();
+    root.querySelector((state.type === "seller" || state.type === "supplier") ? "[data-seller-name]" : "#taxonomy-manager-input")?.focus();
   }
 
   async function handleTaxonomyDelete(root, state, key) {
@@ -731,8 +824,12 @@
     } else if (state.type === "subcategory") {
       const current = state.categories[state.categoryKey].subcategories || [];
       state.categories[state.categoryKey].subcategories = current.filter(item => slugifyTaxonomyValue(item) !== key);
+    } else if (state.type === "brand") {
+      state.brands = (state.brands || []).filter(item => item !== key);
+    } else if (state.type === "supplier") {
+      state.suppliers = (state.suppliers || []).filter(item => item.id !== key);
     } else {
-      setListForType(state, (getListForType(state) || []).filter(item => item.id !== key));
+      state.sellers = (state.sellers || []).filter(item => item.id !== key);
     }
 
     try {
@@ -754,13 +851,13 @@
 
   function renderTaxonomyEditRow(root, key) {
     const state = root.__taxonomyState;
-    const item = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers)
+    const item = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers, state.suppliers)
       .find(candidate => candidate.key === key);
     const row = Array.from(root.querySelectorAll("[data-taxonomy-key]"))
       .find(candidate => candidate.dataset.taxonomyKey === key);
     if (!item || !row) return;
 
-    if (state.type === "seller") {
+    if (state.type === "seller" || state.type === "supplier") {
       row.innerHTML = `
         <div class="taxonomy-manager__seller-edit">
           <label class="taxonomy-manager__label">
@@ -842,22 +939,24 @@
         if (cancelButton) cancelButton.disabled = true;
         if (inputs) inputs.forEach(input => input.disabled = true);
 
-        if (state.type === "seller") {
+        if (state.type === "seller" || state.type === "supplier") {
           const name = row?.querySelector("[data-seller-edit-name]")?.value.trim();
           const tel = row?.querySelector("[data-seller-edit-tel]")?.value.trim();
           const email = row?.querySelector("[data-seller-edit-email]")?.value.trim();
-          const sellerItem = state.sellers.find(item => item.id === saveButton.dataset.taxonomySaveEdit);
+          const isSeller = state.type === "seller";
+          const currentList = isSeller ? (state.sellers || []) : (state.suppliers || []);
+          const sellerItem = currentList.find(item => item.id === saveButton.dataset.taxonomySaveEdit);
           if (!sellerItem) {
             restoreButtonsAndInputs();
             return;
           }
           if (!name) {
-            window.showToast?.("El vendedor necesita un nombre.", "warning");
+            window.showToast?.(`El ${getTaxonomyMeta(state.type).singular} necesita un nombre.`, "warning");
             restoreButtonsAndInputs();
             return;
           }
           if (!tel && !email) {
-            window.showToast?.("Agrega al menos un teléfono o email para el vendedor.", "warning");
+            window.showToast?.(`Agrega al menos un teléfono o email para el ${getTaxonomyMeta(state.type).singular}.`, "warning");
             restoreButtonsAndInputs();
             return;
           }
@@ -887,7 +986,7 @@
     }
   }
 
-  async function saveTaxonomyConfig(categories, brands, sellers = []) {
+  async function saveTaxonomyConfig(categories, brands, sellers = [], suppliers = []) {
     const loaded = await loadTaxonomyConfig();
     const recordId = loaded.record.id || taxonomyConfigRecord?.id;
     if (!recordId) throw new Error("El registro configs no tiene id");
@@ -903,6 +1002,7 @@
         ),
         Marcas: JSON.stringify(brands),
         vendedores: JSON.stringify(sellers),
+        proveedores: JSON.stringify(suppliers),
       },
     });
   }
@@ -924,7 +1024,6 @@
       tasaImpuesto: getValue(form, 'select[name="tax_rate"]') === "5" ? "IVA" : "",
       metodoImpuesto: getValue(form, 'select[name="tax_method"]') === "0" ? "Inclusivo" : "Exclusivo",
       imagen: imageInput?.files?.[0]?.name || "",
-      descripcion: getValue(form, 'textarea[name="product_details"]'),
       especificaciones: getValue(form, 'textarea[name="details"]'),
       especial3: getValue(form, 'textarea[name="history"]'),
       especial4: getValue(form, 'input[name="cf1"]'),
@@ -932,6 +1031,9 @@
       especial6: getValue(form, 'input[name="cf3"]'),
       stock: getNumber(form, 'input[name="wh_qty_3"]') + getNumber(form, 'input[name="wh_qty_4"]'),
       tipoProducto: selectedType?.value || "standard",
+      supplier: getValue(form, 'select[name="supplier"]'),
+      supplier_part_no: getValue(form, 'input[name="supplier_part_no"]'),
+      supplier_price: getNumber(form, 'input[name="supplier_price"]'),
     };
   }
 
