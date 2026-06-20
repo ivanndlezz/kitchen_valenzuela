@@ -17,6 +17,7 @@ function createNewQuotation() {
   const quoteId = generateQuoteFolio();
   window.AppState.currentQuoteId = null;
   window.AppState.quoteItems = [];
+  window.AppState.quoteOpenCaptureOnLoad = true;
   window.AppState.quoteStep = 1;
   window.AppState.quoteClientId = "";
   window.AppState.quoteConditions = getDefaultQuoteConditions();
@@ -680,6 +681,7 @@ window.initStepperFromHash = function(quoteId, step) {
     
     console.log("[QuotationDebug] initStepperFromHash: calling initStepContent");
     initStepContent(step);
+    openInitialQuoteCaptureIfNeeded(step);
   } else {
     console.warn(`[QuotationDebug] initStepperFromHash: quote with ID ${quoteId} not found!`);
     showToast("Cotización no encontrada.", "warning");
@@ -710,6 +712,7 @@ function initStepper(existingQuote, targetStep) {
   } else {
     window.AppState.currentQuoteId = null;
     window.AppState.quoteItems = [];
+    window.AppState.quoteOpenCaptureOnLoad = true;
     window.AppState.quoteClientId = "";
     window.AppState.quoteSellerId = "";
     window.AppState.quoteValidityDate = "";
@@ -726,6 +729,7 @@ function initStepper(existingQuote, targetStep) {
   renderClientPreview();
   createLucideIcons();
   initStepContent(window.AppState.quoteStep);
+  openInitialQuoteCaptureIfNeeded(window.AppState.quoteStep);
 }
 
 function isCurrentQuoteConfirmed() {
@@ -1666,6 +1670,25 @@ function getQuoteAddCaptureRow() {
   return document.getElementById("quote-add-capture-row");
 }
 
+function openInitialQuoteCaptureIfNeeded(step = window.AppState.quoteStep) {
+  if (!window.AppState.quoteOpenCaptureOnLoad) return;
+  if (Number(step) !== 1) return;
+  if (window.AppState.quoteItems.length > 0) {
+    window.AppState.quoteOpenCaptureOnLoad = false;
+    return;
+  }
+  if (isQuoteStepperReadonly()) {
+    window.AppState.quoteOpenCaptureOnLoad = false;
+    return;
+  }
+
+  window.AppState.quoteOpenCaptureOnLoad = false;
+  setTimeout(() => {
+    if (window.AppState.quoteStep !== 1 || window.AppState.quoteItems.length > 0) return;
+    showQuoteAddCaptureRow();
+  }, 0);
+}
+
 function showQuoteAddCaptureRow() {
   if (isQuoteStepperReadonly()) return;
   quoteInlineReplaceIndex = null;
@@ -1728,6 +1751,7 @@ function showQuoteAddCaptureRow() {
 }
 
 function removeQuoteAddCaptureRow() {
+  window.AppState.quoteOpenCaptureOnLoad = false;
   const row = getQuoteAddCaptureRow();
   row?.remove();
 
