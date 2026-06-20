@@ -29,6 +29,8 @@ window.AppState = {
   currentQuoteId: null,
   quoteStep: 1,
   quoteClientId: null,
+  quoteHasShipping: false,
+  quoteShippingCost: 0,
   qlFilter: 'all'
 };
 

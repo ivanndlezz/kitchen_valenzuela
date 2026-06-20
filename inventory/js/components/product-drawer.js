@@ -428,6 +428,9 @@ function populateProductFormFromProduct(p) {
   setValue('input[name="quote_utility_value"]', p.quoteUtilityValue || "");
   setValue('#qf-quote-utility-value', p.quoteUtilityValue || "");
   setValue('input[name="CostoEnvio"]', p.CostoEnvio || p.costoEnvio || p.costoTraslado || "");
+  document.querySelectorAll('input[name="CostoEnvio"]').forEach(input => {
+    input.value = p.CostoEnvio || p.costoEnvio || p.costoTraslado || "";
+  });
   setValue('select[name="currency"]', p.currency || "MXN");
   setValue('input[name="exchange_rate"]', p.exchangeRate || 1);
   setValue('select[name="qf_currency"]', p.quoteCurrency || p.currency || "MXN");

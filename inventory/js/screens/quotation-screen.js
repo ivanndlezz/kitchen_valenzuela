@@ -13,6 +13,12 @@ function getDefaultQuoteConditions() {
   return "Vigencia de cotización: 15 días.\nTiempo de entrega sujeto a disponibilidad.";
 }
 
+function getLegacyQuoteLineShippingTotal(items = []) {
+  return (Array.isArray(items) ? items : []).reduce((sum, item) => {
+    return sum + (Number(item?.clientShippingCost) || 0);
+  }, 0);
+}
+
 function createNewQuotation() {
   const quoteId = generateQuoteFolio();
   window.AppState.currentQuoteId = null;
@@ -23,6 +29,8 @@ function createNewQuotation() {
   window.AppState.quoteConditions = getDefaultQuoteConditions();
   window.AppState.quoteDiscountType = "percent";
   window.AppState.quoteDiscountValue = 0;
+  window.AppState.quoteHasShipping = false;
+  window.AppState.quoteShippingCost = 0;
   
   const sellerId = window.AppState.activeUserId || "";
   const validityDate = getDefaultValidityDate();
@@ -40,6 +48,8 @@ function createNewQuotation() {
     conditions: window.AppState.quoteConditions,
     discountType: window.AppState.quoteDiscountType,
     discountValue: window.AppState.quoteDiscountValue,
+    shippingCost: 0,
+    hasShipping: false,
     items: [],
     subtotal: 0,
     tax: 0,
@@ -344,6 +354,21 @@ function setupQuotesUI() {
 
   document.getElementById("q-discount-val")?.addEventListener("input", (event) => {
     window.AppState.quoteDiscountValue = parseFloat(event.target.value) || 0;
+    recalculateQuote();
+    saveDraftQuotation();
+  });
+
+  document.getElementById("q-add-shipping")?.addEventListener("click", () => {
+    window.AppState.quoteHasShipping = true;
+    syncQuoteShippingControl({ focus: true });
+    recalculateQuote();
+    saveDraftQuotation();
+  });
+
+  document.getElementById("q-shipping-val")?.addEventListener("input", (event) => {
+    window.AppState.quoteHasShipping = true;
+    window.AppState.quoteShippingCost = parseFloat(event.target.value) || 0;
+    syncQuoteShippingControl();
     recalculateQuote();
     saveDraftQuotation();
   });
@@ -668,6 +693,8 @@ window.initStepperFromHash = function(quoteId, step) {
     window.AppState.quoteConditions = quote.conditions || getDefaultQuoteConditions();
     window.AppState.quoteDiscountType = quote.discountType || "percent";
     window.AppState.quoteDiscountValue = Number(quote.discountValue) || 0;
+    window.AppState.quoteShippingCost = Number(quote.shippingCost ?? quote.shippingTotal) || getLegacyQuoteLineShippingTotal(quote.items);
+    window.AppState.quoteHasShipping = Boolean(quote.hasShipping || window.AppState.quoteShippingCost > 0);
     window.AppState.quoteStep = step;
     
     showStepperView();
@@ -709,6 +736,8 @@ function initStepper(existingQuote, targetStep) {
     window.AppState.quoteConditions = existingQuote.conditions || getDefaultQuoteConditions();
     window.AppState.quoteDiscountType = existingQuote.discountType || "percent";
     window.AppState.quoteDiscountValue = Number(existingQuote.discountValue) || 0;
+    window.AppState.quoteShippingCost = Number(existingQuote.shippingCost ?? existingQuote.shippingTotal) || getLegacyQuoteLineShippingTotal(existingQuote.items);
+    window.AppState.quoteHasShipping = Boolean(existingQuote.hasShipping || window.AppState.quoteShippingCost > 0);
   } else {
     window.AppState.currentQuoteId = null;
     window.AppState.quoteItems = [];
@@ -719,6 +748,8 @@ function initStepper(existingQuote, targetStep) {
     window.AppState.quoteConditions = getDefaultQuoteConditions();
     window.AppState.quoteDiscountType = "percent";
     window.AppState.quoteDiscountValue = 0;
+    window.AppState.quoteHasShipping = false;
+    window.AppState.quoteShippingCost = 0;
   }
   window.AppState.quoteStep = targetStep || 1;
   showStepperView();
@@ -1954,7 +1985,7 @@ function getQuoteLineCost(item) {
 
 function getQuoteLineSubtotal(item) {
   const line = normalizeQuoteLine(item);
-  return ((line.unitPrice * line.quantity) + line.clientShippingCost) * getQuoteLineExchangeRate(line);
+  return (line.unitPrice * line.quantity) * getQuoteLineExchangeRate(line);
 }
 
 function getQuoteLineMargin(item) {
@@ -2180,13 +2211,6 @@ function renderQuoteTable() {
                 <input type="number" min="0" step="0.01" value="${item.utilityValue.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="utilityValue" aria-label="Utilidad aplicada" />
               </div>
             </div>
-            <label class="quote-popover-field">
-              <span>Envío al cliente</span>
-              <div class="quote-popover-money">
-                <span>$</span>
-                <input type="number" min="0" step="0.01" value="${item.clientShippingCost.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="clientShippingCost" />
-              </div>
-            </label>
             <label class="quote-popover-field quote-popover-field--wide">
               <span>Leyenda de entrega</span>
               <input type="text" value="${escapeQuoteHtml(item.deliveryNote)}" class="quote-line-input quote-line-input--text" data-idx="${idx}" data-field="deliveryNote" placeholder="Ej. En stock, entrega inmediata" />
@@ -2380,17 +2404,16 @@ function syncQuoteLineDisplays(idx) {
 
 function recalculateQuote() {
   let conceptsSubtotal = 0;
-  let shippingTotal = 0;
   let totalCost = 0;
 
   window.AppState.quoteItems.forEach(item => {
     const line = normalizeQuoteLine(item);
     const rate = getQuoteLineExchangeRate(line);
     conceptsSubtotal += line.unitPrice * line.quantity * rate;
-    shippingTotal += line.clientShippingCost * rate;
     totalCost += getQuoteLineCost(line) * line.quantity;
   });
 
+  const shippingTotal = Number(window.AppState.quoteShippingCost) || 0;
   updateQuoteTotals(conceptsSubtotal, shippingTotal, totalCost);
 }
 
@@ -2428,6 +2451,26 @@ function updateQuoteTotals(conceptsSubtotal = 0, shippingTotal = 0, totalCost = 
   }
 }
 
+function syncQuoteShippingControl(options = {}) {
+  const addBtn = document.getElementById("q-add-shipping");
+  const control = document.getElementById("q-shipping-control");
+  const input = document.getElementById("q-shipping-val");
+  const hasShipping = Boolean(window.AppState.quoteHasShipping || Number(window.AppState.quoteShippingCost) > 0);
+  const value = Number(window.AppState.quoteShippingCost) || 0;
+
+  if (addBtn) addBtn.hidden = hasShipping;
+  if (control) control.hidden = !hasShipping;
+  if (input && document.activeElement !== input) {
+    input.value = value > 0 ? value.toFixed(2) : "";
+  }
+  if (options.focus && input) {
+    window.setTimeout(() => {
+      input.focus();
+      input.select();
+    }, 0);
+  }
+}
+
 function syncQuoteFooterInputs() {
   const conditionsEl = document.getElementById("quote-conditions-text");
   const discountTypeEl = document.getElementById("q-discount-type");
@@ -2442,6 +2485,7 @@ function syncQuoteFooterInputs() {
   if (discountValEl && document.activeElement !== discountValEl) {
     discountValEl.value = Number(window.AppState.quoteDiscountValue) || 0;
   }
+  syncQuoteShippingControl();
 }
 
 function renderOverview() {

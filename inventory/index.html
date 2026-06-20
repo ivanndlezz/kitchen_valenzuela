@@ -695,9 +695,30 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
                       </div>
                     </div>
 
-                    <div class="quote-total-row">
+                    <div class="quote-total-row quote-total-row--shipping">
                       <span>Envío Consolidado</span>
-                      <strong id="q-shipping">$0.00 MXN</strong>
+                      <button
+                        id="q-add-shipping"
+                        class="quote-add-shipping"
+                        type="button"
+                      >
+                        Agregar envío
+                      </button>
+                      <div
+                        class="quote-shipping-input"
+                        id="q-shipping-control"
+                        hidden
+                      >
+                        <span>$</span>
+                        <input
+                          id="q-shipping-val"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value="0"
+                          aria-label="Costo de envío consolidado"
+                        />
+                      </div>
                     </div>
 
                     <div class="quote-total-row">
@@ -1734,6 +1755,20 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
                           class="has-suffix"
                         />
                         <span class="suffix">%</span>
+                      </div>
+                    </div>
+                    <div class="field" id="quote-ship-cost">
+                      <label>Costo de traslado</label>
+                      <div class="input-row">
+                        <span class="prefix">$</span>
+                        <input
+                          type="number"
+                          name="CostoEnvio"
+                          placeholder="0.00"
+                          step="0.01"
+                          min="0"
+                          data-transfer-cost-main
+                        />
                       </div>
                     </div>
                     <div class="field is-required">
@@ -4421,6 +4456,48 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
         font-size: 11px;
         outline: none;
       }
+      .quote-total-row--shipping {
+        min-height: 28px;
+      }
+      .quote-add-shipping {
+        background: transparent;
+        border: 0;
+        color: var(--color-accent);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 4px 0;
+      }
+      .quote-add-shipping:hover,
+      .quote-add-shipping:focus-visible {
+        text-decoration: underline;
+      }
+      .quote-shipping-input {
+        align-items: center;
+        color: var(--text-main);
+        display: inline-flex;
+        font-weight: 700;
+        gap: 4px;
+      }
+      .quote-shipping-input[hidden] {
+        display: none;
+      }
+      .quote-shipping-input input {
+        background: transparent;
+        border: 0;
+        border-radius: 6px;
+        color: inherit;
+        font: inherit;
+        outline: none;
+        padding: 3px 5px;
+        text-align: right;
+        width: 82px;
+      }
+      .quote-shipping-input input:hover,
+      .quote-shipping-input input:focus {
+        background: var(--bg-surface);
+        box-shadow: 0 0 0 1px var(--border-color);
+      }
       .quote-discount-input {
         align-items: center;
         color: var(--color-danger);
@@ -4551,7 +4628,7 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
         border-radius: 22px;
         box-shadow: 0 18px 45px rgba(15, 23, 42, 0.1);
         color: var(--quote-ink);
-        overflow: hidden;
+        overflow: visible;
         padding: 0;
       }
 

@@ -87,6 +87,57 @@
     });
   }
 
+  function getProductFormNumberValue(selector) {
+    const input = document.querySelector(selector);
+    if (!input || input.value === "") return 0;
+    return Number(input.value) || 0;
+  }
+
+  function setProductFormInputValue(input, value) {
+    if (!input) return;
+    const next = Number(value) || 0;
+    input.value = next > 0 ? next.toFixed(2) : "";
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function syncTransferCostInputs(source) {
+    const inputs = Array.from(document.querySelectorAll('#pf input[name="CostoEnvio"]'));
+    inputs.forEach((input) => {
+      if (input !== source) input.value = source.value;
+    });
+  }
+
+  function calculateSuggestedSalePrice() {
+    const cost = getProductFormNumberValue('#pf input[name="cost"]');
+    const transfer = getProductFormNumberValue('#pf input[name="CostoEnvio"]');
+    const utility = getProductFormNumberValue('#pf input[name="quote_utility_value"]');
+    const base = cost + transfer;
+    return base + (base * (utility / 100));
+  }
+
+  function syncSuggestedSalePrice() {
+    const priceInput = document.querySelector('#pf input[name="price"]');
+    if (!priceInput) return;
+    setProductFormInputValue(priceInput, calculateSuggestedSalePrice());
+  }
+
+  function bindPriceSuggestionControls() {
+    if (document.body.dataset.productPriceSuggestionBound === "true") return;
+    document.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.closest("#pf")) return;
+      if (target.name === "CostoEnvio") {
+        syncTransferCostInputs(target);
+        syncSuggestedSalePrice();
+      }
+      if (target.name === "cost" || target.name === "quote_utility_value") {
+        syncSuggestedSalePrice();
+      }
+    });
+    document.body.dataset.productPriceSuggestionBound = "true";
+  }
+
   function getSelectedText(form, selector) {
     const el = form?.querySelector(selector);
     if (!el || el.selectedIndex < 0) return "";
@@ -1117,6 +1168,7 @@
     }
     renderWarehouseFields();
     bindCurrencyControls();
+    bindPriceSuggestionControls();
     enhanceSearchableSelects(form);
     loadTaxonomyConfig().catch((error) => {
       console.warn("ProductFormSheet: taxonomy config unavailable", error);
