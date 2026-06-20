@@ -15,7 +15,7 @@ window.AppState = {
     sort: "name-asc",
     view: "grid",
   },
-  theme: "dark",
+  theme: "light",
   activeScannerTab: "photo",
   activeDrawerTab: "product",
   activeWarehouseId: "all",

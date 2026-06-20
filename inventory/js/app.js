@@ -147,7 +147,7 @@ function cacheElements() {
 // THEME ENGINE
 // ==========================================================================
 function setupTheme() {
-  const savedTheme = localStorage.getItem("kv-catalog-theme") || "dark";
+  const savedTheme = localStorage.getItem("kv-catalog-theme") || "light";
   setTheme(savedTheme);
 
   const toggleThemeEvent = () => {
@@ -165,11 +165,15 @@ function setTheme(theme) {
 
   if (isDark) {
     document.documentElement.classList.add("theme-dark");
+    document.documentElement.classList.remove("theme-light");
     document.body.classList.add("theme-dark");
+    document.body.classList.remove("theme-light");
     if (window.DOM.themeBtn) window.DOM.themeBtn.innerHTML = '<i data-lucide="sun"></i>';
   } else {
     document.documentElement.classList.remove("theme-dark");
+    document.documentElement.classList.add("theme-light");
     document.body.classList.remove("theme-dark");
+    document.body.classList.add("theme-light");
     if (window.DOM.themeBtn) window.DOM.themeBtn.innerHTML = '<i data-lucide="moon"></i>';
   }
 
