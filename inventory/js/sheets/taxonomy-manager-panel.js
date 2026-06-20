@@ -624,6 +624,10 @@ class TaxonomyManagerPanel extends AppSideSheet {
           state.suppliers = [...current, item];
         }
         await this.persistTaxonomyState(state, item.id, name, `Se agregó el ${meta.singular}.`);
+        if (state.type === "supplier") {
+          this.close();
+          return;
+        }
         sellerNameInput.value = "";
         sellerTelInput.value = "";
         sellerEmailInput.value = "";

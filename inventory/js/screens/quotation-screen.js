@@ -1837,24 +1837,87 @@ function bindQuoteCaptureRow(row, options = {}) {
   });
 }
 
+function getFirstQuoteNumber(...values) {
+  for (const value of values) {
+    if (value === null || value === undefined || value === "") continue;
+    const number = Number(value);
+    if (Number.isFinite(number)) return number;
+  }
+  return 0;
+}
+
+function getProductQuoteSalePrice(product = {}) {
+  return getFirstQuoteNumber(
+    product.precio,
+    product.Precio,
+    product.price,
+    product.salePrice,
+    product.sale_price,
+    product.precioVenta,
+    product.precio_venta
+  );
+}
+
+function getProductQuoteBaseCost(product = {}) {
+  return getFirstQuoteNumber(
+    product.costo,
+    product.Costo,
+    product.cost,
+    product.baseCost,
+    product.base_cost
+  );
+}
+
+function getProductQuoteTransferCost(product = {}) {
+  return getFirstQuoteNumber(
+    product.CostoEnvio,
+    product.costoEnvio,
+    product.costoTraslado,
+    product.costo_traslado,
+    product.transferCost,
+    product.transfer_cost,
+    product.shippingCost,
+    product.shipping_cost,
+    product.traslado
+  );
+}
+
+function getProductQuoteUtilityType(product = {}) {
+  return String(product.quoteUtilityType || product.quote_utility_type || "percent") === "amount" ? "amount" : "percent";
+}
+
+function getProductQuoteUtilityValue(product = {}) {
+  return getFirstQuoteNumber(
+    product.quoteUtilityValue,
+    product.quote_utility_value,
+    product.utilityValue,
+    product.utility_value,
+    product.utilidadEsperada,
+    product.utilidad_esperada
+  );
+}
+
 function createQuoteLine(product) {
-  const baseCost = Number(product.costo) || 0;
-  const transferCost = Number(product.CostoEnvio ?? product.costoEnvio ?? product.costoTraslado ?? 0) || 0;
+  const baseCost = getProductQuoteBaseCost(product);
+  const transferCost = getProductQuoteTransferCost(product);
   const currency = String(product.quoteCurrency || product.currency || "MXN").toUpperCase() === "USD" ? "USD" : "MXN";
   const exchangeRate = Number(product.quoteExchangeRate || product.exchangeRate) || 1;
-  return {
+  const utilityType = getProductQuoteUtilityType(product);
+  const utilityValue = getProductQuoteUtilityValue(product);
+  const line = {
     product,
     quantity: 1,
-    unitPrice: Number(product.precio) || 0,
+    unitPrice: getProductQuoteSalePrice(product),
     baseCost,
     transferCost,
     currency,
     exchangeRate,
     clientShippingCost: 0,
     deliveryNote: product.deliveryNote || "",
-    utilityType: "percent",
-    utilityValue: 0
+    utilityType,
+    utilityValue
   };
+  return utilityValue > 0 ? line : updateQuoteLineUtilityFromPrice(line);
 }
 
 function normalizeQuoteLine(item) {
@@ -1862,15 +1925,15 @@ function normalizeQuoteLine(item) {
   const normalized = {
     product,
     quantity: Number(item.quantity) || 1,
-    unitPrice: Number(item.unitPrice ?? product.precio) || 0,
-    baseCost: Number(item.baseCost ?? product.costo) || 0,
-    transferCost: Number(item.transferCost ?? product.CostoEnvio ?? product.costoEnvio ?? product.costoTraslado) || 0,
+    unitPrice: getFirstQuoteNumber(item.unitPrice, getProductQuoteSalePrice(product)),
+    baseCost: getFirstQuoteNumber(item.baseCost, getProductQuoteBaseCost(product)),
+    transferCost: getFirstQuoteNumber(item.transferCost, getProductQuoteTransferCost(product)),
     currency: String(item.currency || product.quoteCurrency || product.currency || "MXN").toUpperCase() === "USD" ? "USD" : "MXN",
     exchangeRate: Number(item.exchangeRate || product.quoteExchangeRate || product.exchangeRate) || 1,
     clientShippingCost: Number(item.clientShippingCost) || 0,
     deliveryNote: item.deliveryNote || "",
-    utilityType: item.utilityType || "percent",
-    utilityValue: Number(item.utilityValue) || 0
+    utilityType: item.utilityType || getProductQuoteUtilityType(product),
+    utilityValue: getFirstQuoteNumber(item.utilityValue, getProductQuoteUtilityValue(product))
   };
   return normalized;
 }
@@ -1937,9 +2000,7 @@ function replaceQuoteLineProduct(idx, product) {
   next.utilityType = previous.utilityType;
   next.utilityValue = previous.utilityValue;
 
-  window.AppState.quoteItems[idx] = next.utilityValue > 0
-    ? updateQuoteLinePriceFromUtility(next)
-    : updateQuoteLineUtilityFromPrice(next);
+  window.AppState.quoteItems[idx] = next.utilityValue > 0 ? next : updateQuoteLineUtilityFromPrice(next);
 
   quoteInlineReplaceIndex = null;
   closeQuoteProductsOverlay();
@@ -1982,6 +2043,7 @@ function addToQuote(product) {
   showToast(`Agregado: ${product.nombre}`, "success");
   renderQuoteTable();
   saveDraftQuotation();
+  closeQuoteProductsOverlay();
 }
 
 function renderQuoteTable() {
@@ -2183,7 +2245,7 @@ function renderQuoteTable() {
       const val = isText ? input.value : parseFloat(input.value) || 0;
       if (field === "quantity" && val < 1) return;
       window.AppState.quoteItems[idx][field] = val;
-      if (field === "utilityValue" || field === "utilityType" || field === "baseCost" || field === "transferCost") {
+      if (field === "utilityValue" || field === "utilityType") {
         window.AppState.quoteItems[idx] = updateQuoteLinePriceFromUtility(window.AppState.quoteItems[idx]);
       } else if (field === "unitPrice") {
         window.AppState.quoteItems[idx] = updateQuoteLineUtilityFromPrice(window.AppState.quoteItems[idx]);
@@ -2208,7 +2270,7 @@ function renderQuoteTable() {
         return;
       }
       window.AppState.quoteItems[idx][field] = val;
-      if (field === "utilityValue" || field === "utilityType" || field === "baseCost" || field === "transferCost") {
+      if (field === "utilityValue" || field === "utilityType") {
         window.AppState.quoteItems[idx] = updateQuoteLinePriceFromUtility(window.AppState.quoteItems[idx]);
       } else if (field === "unitPrice") {
         window.AppState.quoteItems[idx] = updateQuoteLineUtilityFromPrice(window.AppState.quoteItems[idx]);

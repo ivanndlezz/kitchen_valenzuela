@@ -567,6 +567,7 @@
 
     if (Array.isArray(data)) {
       data.forEach((item) => {
+        if (emptyText && String(item) === "") return;
         const option = document.createElement("option");
         option.value = item;
         option.textContent = item;
@@ -574,6 +575,7 @@
       });
     } else {
       Object.entries(data || {}).forEach(([key, value]) => {
+        if (emptyText && key === "") return;
         const option = document.createElement("option");
         option.value = key;
         option.textContent = typeof value === "object" ? value.name : value;
@@ -741,10 +743,13 @@
       unitCode: getSelectedText(form, 'select[name="unit"]') || getValue(document, "#qf-unit"),
       costo: getNumber(form, 'input[name="cost"]') || getNumber(document, "#qf-cost"),
       precio: getNumber(form, 'input[name="price"]') || getNumber(document, "#qf-price"),
+      CostoEnvio: getNumber(form, 'input[name="CostoEnvio"]'),
       currency: normalizeCurrency(getValue(form, 'select[name="currency"]') || "MXN"),
       exchangeRate: getExchangeRate(form, 'input[name="exchange_rate"]'),
       quoteCurrency: normalizeCurrency(getValue(document, "#qf-currency") || getValue(form, 'select[name="currency"]') || "MXN"),
       quoteExchangeRate: getExchangeRate(document, "#qf-exchange-rate", getExchangeRate(form, 'input[name="exchange_rate"]')),
+      quoteUtilityType: "percent",
+      quoteUtilityValue: getNumber(form, 'input[name="quote_utility_value"]') || getNumber(document, "#qf-quote-utility-value"),
       alertaCantidad: getNumber(form, 'input[name="alert_quantity"]'),
       tasaImpuesto: getValue(form, 'select[name="tax_rate"]') === "5" ? "IVA" : "",
       metodoImpuesto: getValue(form, 'select[name="tax_method"]') === "0" ? "Inclusivo" : "Exclusivo",

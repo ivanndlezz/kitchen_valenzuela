@@ -425,6 +425,9 @@ function populateProductFormFromProduct(p) {
   setImportedSelectValue('select[name="subcategory"]', p.subCategoria, "subcategories", "Subcategoría importada");
   setValue('input[name="cost"]', p.costo || "");
   setValue('input[name="price"]', p.precio || "");
+  setValue('input[name="quote_utility_value"]', p.quoteUtilityValue || "");
+  setValue('#qf-quote-utility-value', p.quoteUtilityValue || "");
+  setValue('input[name="CostoEnvio"]', p.CostoEnvio || p.costoEnvio || p.costoTraslado || "");
   setValue('select[name="currency"]', p.currency || "MXN");
   setValue('input[name="exchange_rate"]', p.exchangeRate || 1);
   setValue('select[name="qf_currency"]', p.quoteCurrency || p.currency || "MXN");

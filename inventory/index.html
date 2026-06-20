@@ -713,7 +713,17 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
                     </div>
 
                     <div class="quote-global-margin">
-                      <span>Rentabilidad Global</span>
+                      <span class="quote-global-margin__label">
+                        Rentabilidad Global
+                        <button
+                          class="quote-info-tooltip"
+                          type="button"
+                          aria-label="Cómo se calcula la rentabilidad global"
+                          data-tooltip="Se calcula como: ((Subtotal de conceptos menos descuento) - costo interno total) / (Subtotal de conceptos menos descuento) × 100. El costo interno total incluye costo base y traslado de cada partida."
+                        >
+                          i
+                        </button>
+                      </span>
                       <strong id="q-global-margin">0.0%</strong>
                     </div>
                   </div>
@@ -1711,6 +1721,21 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
                         />
                       </div>
                     </div>
+                    <div class="field">
+                      <label>Utilidad esperada cotización</label>
+                      <div class="input-row">
+                        <input
+                          type="number"
+                          name="quote_utility_value"
+                          id="f-quote-utility-value"
+                          placeholder="0.00"
+                          step="0.01"
+                          min="0"
+                          class="has-suffix"
+                        />
+                        <span class="suffix">%</span>
+                      </div>
+                    </div>
                     <div class="field is-required">
                       <label
                         >Divisa inventario <span class="req">*</span></label
@@ -2318,6 +2343,21 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
                       step="0.01"
                       min="0"
                     />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Utilidad esperada</label>
+                  <div class="input-row">
+                    <input
+                      type="number"
+                      name="qf_quote_utility_value"
+                      id="qf-quote-utility-value"
+                      placeholder="0.00"
+                      step="0.01"
+                      min="0"
+                      class="has-suffix"
+                    />
+                    <span class="suffix">%</span>
                   </div>
                 </div>
                 <div class="field is-required">
@@ -4431,6 +4471,60 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
         margin-top: 6px;
         padding: 12px;
       }
+      .quote-global-margin__label {
+        align-items: center;
+        display: inline-flex;
+        gap: 6px;
+        min-width: 0;
+      }
+      .quote-info-tooltip {
+        align-items: center;
+        background: color-mix(in srgb, currentColor 10%, transparent);
+        border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+        border-radius: 999px;
+        color: currentColor;
+        cursor: help;
+        display: inline-flex;
+        flex: 0 0 auto;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 900;
+        height: 16px;
+        justify-content: center;
+        line-height: 1;
+        padding: 0;
+        position: relative;
+        width: 16px;
+      }
+      .quote-info-tooltip::after {
+        background: var(--text-main);
+        border-radius: 8px;
+        bottom: calc(100% + 8px);
+        box-shadow: var(--shadow-md);
+        color: var(--text-inverted);
+        content: attr(data-tooltip);
+        font-size: 11px;
+        font-weight: 600;
+        left: 50%;
+        line-height: 1.35;
+        max-width: min(280px, calc(100vw - 48px));
+        opacity: 0;
+        padding: 9px 10px;
+        pointer-events: none;
+        position: absolute;
+        text-align: left;
+        transform: translate(-50%, 4px);
+        transition:
+          opacity 0.14s ease,
+          transform 0.14s ease;
+        width: max-content;
+        z-index: 40;
+      }
+      .quote-info-tooltip:hover::after,
+      .quote-info-tooltip:focus-visible::after {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
       .quote-global-margin strong {
         font-weight: 800;
       }
@@ -5533,6 +5627,23 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
       .app-sheet:has(footer[hidden]) .quote-products-list {
         max-height: none;
         margin-top: 16px;
+      }
+
+      .quotes-layout input[type="number"]::-webkit-outer-spin-button,
+      .quotes-layout input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        margin: 0; /* Removes default margin in Chrome/Safari */
+      }
+
+      .quotes-layout input[type="number"] {
+        -moz-appearance: textfield !important; /* Firefox */
+        appearance: textfield !important; /* Standard future-proof property */
+      }
+
+      .quote-header-details .custom-select-trigger {
+        border-radius: 100px;
+        padding-left: 3px;
       }
     </style>
 
