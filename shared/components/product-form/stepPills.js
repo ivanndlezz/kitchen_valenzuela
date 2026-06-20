@@ -88,6 +88,8 @@ export function syncPills() {
 function updateProgressBar() {
   const fill = document.getElementById("progress-fill");
   if (!fill) return;
-  const pct = (getDoneSteps().size / TOTAL_STEPS) * 100;
+  const requiredTotal = Math.max(TOTAL_STEPS - 1, 1);
+  const requiredDone = Array.from(getDoneSteps()).filter((step) => step < TOTAL_STEPS).length;
+  const pct = (requiredDone / requiredTotal) * 100;
   fill.style.width = pct + "%";
 }

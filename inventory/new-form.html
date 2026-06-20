@@ -1369,6 +1369,23 @@ body.in-review .review-step {
               <label>Tipo de traslado</label>
               <select name="tipoEnvio"></select>
             </div>
+            <div class="field" style="grid-column:1 / -1;">
+              <label>Dimensiones</label>
+              <div class="grid-3">
+                <div class="input-row">
+                  <input type="number" name="length" placeholder="Largo" step="0.01" min="0" class="has-suffix">
+                  <span class="suffix">cm</span>
+                </div>
+                <div class="input-row">
+                  <input type="number" name="width" placeholder="Ancho" step="0.01" min="0" class="has-suffix">
+                  <span class="suffix">cm</span>
+                </div>
+                <div class="input-row">
+                  <input type="number" name="height" placeholder="Alto" step="0.01" min="0" class="has-suffix">
+                  <span class="suffix">cm</span>
+                </div>
+              </div>
+            </div>
             <div class="field" id="ship-cost" style="display:none;">
               <label>Costo de traslado</label>
               <div class="input-row"><span class="prefix">$</span>
@@ -1482,15 +1499,27 @@ body.in-review .review-step {
       </div>
       <div class="step-body" id="b8">
         <div class="step-body-inner">
-          <div class="grid-3" style="margin-top:16px;">
-            <div class="field"><label>Campo 1 <span class="hint">cf1</span></label><input type="text" name="cf1" placeholder="Valor"></div>
-            <div class="field"><label>Campo 2 <span class="hint">cf2</span></label><input type="text" name="cf2" placeholder="Valor"></div>
-            <div class="field"><label>Campo 3 <span class="hint">cf3</span></label><input type="text" name="cf3" placeholder="Valor"></div>
-            <div class="field"><label>Campo 4 <span class="hint">cf4</span></label><input type="text" name="cf4" placeholder="Valor"></div>
-            <div class="field"><label>Campo 5 <span class="hint">cf5</span></label><input type="text" name="cf5" placeholder="Valor"></div>
-            <div class="field"><label>Campo 6 <span class="hint">cf6</span></label><input type="text" name="cf6" placeholder="Valor"></div>
+          <div class="custom-fields" data-custom-fields-root>
+            <div class="custom-fields__bar">
+              <div class="custom-fields__popover-wrap">
+                <button type="button" class="custom-fields__add" data-custom-field-add aria-expanded="false">
+                  <i data-lucide="plus"></i>
+                  Agregar campo
+                </button>
+                <div class="custom-fields__editor" data-custom-field-editor hidden></div>
+              </div>
+              <span class="custom-fields__count" data-custom-fields-count>6 slots disponibles</span>
+            </div>
+            <div class="custom-fields__list" data-custom-fields-list></div>
+            <div class="custom-fields__hidden" hidden>
+              <input type="hidden" name="cf1_name"><input type="hidden" name="cf1_data">
+              <input type="hidden" name="cf2_name"><input type="hidden" name="cf2_data">
+              <input type="hidden" name="cf3_name"><input type="hidden" name="cf3_data">
+              <input type="hidden" name="cf4_name"><input type="hidden" name="cf4_data">
+              <input type="hidden" name="cf5_name"><input type="hidden" name="cf5_data">
+              <input type="hidden" name="cf6_name"><input type="hidden" name="cf6_data">
+            </div>
           </div>
-          <button type="button" class="btn-done" data-step="8">Marcar como completo</button>
         </div>
       </div>
       <div class="summary" id="sum8"></div>

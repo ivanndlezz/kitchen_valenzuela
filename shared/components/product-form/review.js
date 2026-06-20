@@ -21,6 +21,7 @@ import { toggleQuickMode } from "./quickForm.js";
 export function enterReviewMode() {
   setInReview(true);
   document.body.classList.add("in-review");
+  window.setCurrentProductSheetTab?.("review");
   _buildReview();
 
   const s9 = document.getElementById("s9");
@@ -33,6 +34,7 @@ export function enterReviewMode() {
 export function exitReviewMode() {
   setInReview(false);
   document.body.classList.remove("in-review");
+  window.setCurrentProductSheetTab?.("edit");
 
   const s9 = document.getElementById("s9");
   if (s9) s9.style.display = "none";
@@ -59,6 +61,10 @@ export function editSection(sectionNum) {
 
 // Make available to review HTML's onclick attrs
 window.editSection = editSection;
+window.ProductFormReview = {
+  enter: enterReviewMode,
+  exit: exitReviewMode,
+};
 
 // ── Private ───────────────────────────────────────────
 
@@ -105,6 +111,8 @@ function _renderField(fieldSpec) {
 const SPECIAL_RESOLVERS = {
   productType: () => getActivePillText(document.getElementById("f-product-types"), "Estándar"),
 
+  primaryUnit: () => readFieldValue('select[name="unit"]') || resolveCurrentProductUnit("unitCode"),
+
   dimensions: () => {
     const l = readFieldValue('input[name="length"]');
     const w = readFieldValue('input[name="width"]');
@@ -112,6 +120,9 @@ const SPECIAL_RESOLVERS = {
     const parts = [l, w, h].filter(Boolean);
     return parts.length ? parts.join(" x ") + " cm" : "";
   },
+
+  saleUnit: () => readSelectedOptionText("#u-sale") || resolveCurrentProductUnit("saleUnitCode"),
+  purchaseUnit: () => readSelectedOptionText("#u-purch") || resolveCurrentProductUnit("purchaseUnitCode"),
 
   mainImage: () => {
     const input = document.querySelector('input[name="product_image"]');
@@ -124,6 +135,14 @@ const SPECIAL_RESOLVERS = {
     if (!input?.files?.length) return "";
     return Array.from(input.files)
       .map(f => `<span class="review-badge">${f.name}</span>`)
+      .join(" ");
+  },
+
+  customFields: () => {
+    const fields = window.ProductFormCustomFields?.getFields?.() || [];
+    if (!fields.length) return "";
+    return fields
+      .map((field) => `<span class="review-badge">${escapeHtml(field.name)}: ${escapeHtml(field.value || "Sin valor")}</span>`)
       .join(" ");
   },
 };
@@ -159,4 +178,46 @@ function _resolveFieldValue(fieldSpec) {
   if (fieldSpec.prefix) val = fieldSpec.prefix + val;
 
   return val;
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function readSelectedOptionText(selector) {
+  const select = document.querySelector(selector);
+  if (!select) return "";
+  const option = select.options[select.selectedIndex];
+  return option?.textContent?.trim() || "";
+}
+
+function resolveCurrentProductUnit(key) {
+  const form = document.getElementById("pf");
+  const productId = form?.dataset.draftId || window.__currentProductId || "";
+  const product = window.AppState?.products?.find((item) => {
+    if (!item) return false;
+    return [item.id, item.airtable_id, item.codigo].filter(Boolean).map(String).includes(String(productId));
+  });
+  const value = product?.[key] || (key === "unitCode" ? product?.unitCode : "");
+  return normalizeUnitLabel(value);
+}
+
+function normalizeUnitLabel(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const units = (window.ProductFormConfig || {}).UNITS || {};
+  if (units[raw]) return units[raw];
+
+  const exactLabel = Object.values(units).find(label => String(label).trim() === raw);
+  if (exactLabel) return exactLabel;
+
+  const alias = window.TaxonomyReconciliation?.resolveAlias?.("units", raw);
+  if (alias) return units[alias] || alias;
+
+  return raw;
 }

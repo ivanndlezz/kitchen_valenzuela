@@ -11,6 +11,8 @@ async function init() {
   setupToastContainer();
   trackReload();
   await loadProductsFromStorage();
+  window.WarehouseScope?.init?.();
+  window.UserScope?.init?.();
   setupEventListeners();
   setupScannerLogic();
   calculateMetrics();
@@ -218,7 +220,7 @@ function setupEventListeners() {
           window.populateProductFormFromProduct(p);
         }
         if (typeof window.setProductSheetHash === "function") {
-          window.setProductSheetHash("product", p);
+          window.setProductSheetHash("product", p, "edit");
         }
         } finally {
           window.__openingProductSheetRoute = false;
@@ -278,7 +280,7 @@ function setupEventListeners() {
       if (typeof window.openProductFormSheet === 'function') {
         window.openProductFormSheet();
         if (typeof window.setProductSheetHash === 'function') {
-          window.setProductSheetHash("product", draft);
+          window.setProductSheetHash("product", draft, "edit");
         }
       }
     });
@@ -385,11 +387,19 @@ function parseSheetHashRoute() {
 
   const id = params.get("id");
   if (!id) return null;
+  const tab = normalizeProductSheetTab(params.get("tab") || "general");
 
   return {
     type: path === "#/draft" ? "draft" : "product",
-    id: decodeURIComponent(id)
+    id: decodeURIComponent(id),
+    sheet: params.get("sheet") || "",
+    tab
   };
+}
+
+function normalizeProductSheetTab(tab) {
+  if (tab === "advanced") return "edit";
+  return ["general", "edit", "review", "web"].includes(tab) ? tab : "general";
 }
 
 function findProductForSheetRoute(route) {
@@ -446,16 +456,32 @@ function handleProductSheetRoute() {
           window.populateProductFormFromProduct(product);
         }
         if (typeof window.setProductSheetHash === "function") {
-          window.setProductSheetHash("product", product);
+          window.setProductSheetHash("product", product, route.tab === "review" ? "review" : "edit");
+        }
+        if (route.tab === "review") {
+          window.setTimeout(() => window.ProductFormReview?.enter?.(), 0);
         }
       }
     } else {
       if (typeof closeProductFormSheet === "function") closeProductFormSheet();
       if (typeof openProductDrawer === "function") {
-        openProductDrawer(product);
+        if (route.tab === "web" && typeof window.ProductDetailSheet?.openWeb === "function") {
+          window.ProductDetailSheet.openWeb(product);
+        } else if ((route.tab === "edit" || route.tab === "review") && typeof window.openProductFormSheet === "function") {
+          window.__currentProductId = product.id;
+          const form = document.getElementById("pf");
+          if (form) form.dataset.draftId = product.id;
+          window.openProductFormSheet();
+          window.populateProductFormFromProduct?.(product);
+          if (route.tab === "review") {
+            window.setTimeout(() => window.ProductFormReview?.enter?.(), 0);
+          }
+        } else {
+          openProductDrawer(product);
+        }
       }
       if (typeof window.setProductSheetHash === "function") {
-        window.setProductSheetHash("product", product);
+        window.setProductSheetHash("product", product, route.tab);
       }
     }
   } finally {
@@ -465,7 +491,7 @@ function handleProductSheetRoute() {
 
 window.handleProductSheetRoute = handleProductSheetRoute;
 
-function setProductSheetHash(type, product) {
+function setProductSheetHash(type, product, tab = "general") {
   if (!product) return;
 
   const id = type === "product"
@@ -474,7 +500,12 @@ function setProductSheetHash(type, product) {
 
   if (!id) return;
 
-  const nextHash = `#/${type}?id=${encodeURIComponent(id)}`;
+  const safeTab = normalizeProductSheetTab(tab);
+  const params = new URLSearchParams();
+  params.set("id", id);
+  params.set("sheet", "open");
+  params.set("tab", safeTab);
+  const nextHash = `#/${type}?${params.toString()}`;
   const nextUrl = `${window.location.pathname}${window.location.search}${nextHash}`;
   if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextUrl) {
     window.history.replaceState({}, document.title, nextUrl);
@@ -482,3 +513,16 @@ function setProductSheetHash(type, product) {
 }
 
 window.setProductSheetHash = setProductSheetHash;
+
+function setCurrentProductSheetTab(tab) {
+  const form = document.getElementById("pf");
+  const activeId = form?.dataset.draftId || window.__currentProductId || "";
+  if (!activeId || !window.AppState?.products) return;
+  const product = window.AppState.products.find((item) => {
+    if (!item) return false;
+    return [item.id, item.airtable_id, item.codigo].filter(Boolean).map(String).includes(String(activeId));
+  });
+  if (product) setProductSheetHash("product", product, tab);
+}
+
+window.setCurrentProductSheetTab = setCurrentProductSheetTab;

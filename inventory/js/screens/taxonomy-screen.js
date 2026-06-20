@@ -1,6 +1,6 @@
 /**
  * taxonomy-screen.js
- * Catalog screen for product categories, subcategories, brands, and sellers.
+ * Catalog screen for product categories, subcategories, brands, users, and roles.
  */
 
 (function () {
@@ -102,32 +102,36 @@
     return renderTextList(data.brands || [], "No hay marcas registradas.", "brand");
   }
 
-  function renderSellers(data) {
-    const sellers = (data.sellers || []).map((seller) => {
-      if (typeof seller === "string") {
-        return { name: seller, tel: "", email: "" };
+  function renderUsers(data) {
+    const users = (data.users || data.sellers || []).map((user) => {
+      if (typeof user === "string") {
+        return { name: user, tel: "", email: "", roles: ["vendedor"] };
       }
       return {
-        name: seller?.name || seller?.nombre || seller?.label || "",
-        tel: seller?.tel || seller?.telefono || seller?.phone || "",
-        email: seller?.email || seller?.correo || seller?.mail || "",
+        name: user?.name || user?.nombre || user?.label || "",
+        tel: user?.tel || user?.telefono || user?.phone || "",
+        email: user?.email || user?.correo || user?.mail || "",
+        roles: Array.isArray(user?.roles) ? user.roles : [user?.role || user?.rol || "vendedor"].filter(Boolean),
+        warehouseIds: Array.isArray(user?.warehouseIds) ? user.warehouseIds : [user?.warehouseIds || user?.warehouses || user?.almacenes].filter(Boolean),
       };
     });
 
-    if (!sellers.length) {
-      return `<div class="quote-empty-state">No hay vendedores registrados.</div>`;
+    if (!users.length) {
+      return `<div class="quote-empty-state">No hay usuarios registrados.</div>`;
     }
 
     return `
       <div class="taxonomy-list">
-        ${sellers.map((seller) => `
+        ${users.map((user) => `
           <div class="taxonomy-list__row taxonomy-list__row--seller">
             <div class="taxonomy-list__seller">
-              <strong>${escapeHtml(seller.name || "Sin nombre")}</strong>
-              <span>${escapeHtml(seller.tel || "Sin tel")}</span>
-              <span>${escapeHtml(seller.email || "Sin email")}</span>
+              <strong>${escapeHtml(user.name || "Sin nombre")}</strong>
+              <span>${escapeHtml((user.roles || []).join(", ") || "Sin rol")}</span>
+              <span>Almacenes: ${escapeHtml((user.warehouseIds || []).join(", ") || "Todos")}</span>
+              <span>${escapeHtml(user.tel || "Sin tel")}</span>
+              <span>${escapeHtml(user.email || "Sin email")}</span>
             </div>
-            <button type="button" class="taxonomy-card__action" data-open-taxonomy="seller">
+            <button type="button" class="taxonomy-card__action" data-open-taxonomy="user">
               Editar
             </button>
           </div>
@@ -170,21 +174,91 @@
     `;
   }
 
+  function renderWarehouses(data) {
+    const warehouses = data.warehouses || [];
+    if (!warehouses.length) {
+      return `<div class="quote-empty-state">No hay almacenes registrados.</div>`;
+    }
+
+    return `
+      <div class="taxonomy-list">
+        ${warehouses.map((warehouse) => `
+          <div class="taxonomy-list__row">
+            <div class="taxonomy-list__seller">
+              <strong>${escapeHtml(warehouse.name || "Sin nombre")}</strong>
+              <span>ID ${escapeHtml(warehouse.id || "")}</span>
+            </div>
+            <button type="button" class="taxonomy-card__action" data-open-taxonomy="warehouse">
+              Editar
+            </button>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderRoles(data) {
+    const roles = data.roles || [];
+    if (!roles.length) {
+      return `<div class="quote-empty-state">No hay roles registrados.</div>`;
+    }
+
+    return `
+      <div class="taxonomy-list">
+        ${roles.map((role) => `
+          <div class="taxonomy-list__row taxonomy-list__row--seller">
+            <div class="taxonomy-list__seller">
+              <strong>${escapeHtml(role.label || role.name || role.id || "Sin nombre")}</strong>
+              <span>${escapeHtml((role.uiScopes || []).join(", ") || "Sin UI scopes")}</span>
+              <span>${escapeHtml((role.capabilities || []).join(", ") || "Sin capabilities")}</span>
+            </div>
+            <button type="button" class="taxonomy-card__action" data-open-taxonomy="role">
+              Editar
+            </button>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
   function renderTaxonomyBody() {
     const body = getBody();
     if (!body) return;
 
     if (!cachedTaxonomy) {
-      body.innerHTML = `<div class="quote-empty-state">Cargando catálogos...</div>`;
+      body.innerHTML = `
+        <div class="taxonomy-grid" aria-busy="true">
+          ${Array.from({ length: 4 }).map(() => `
+            <article class="taxonomy-card">
+              <div class="taxonomy-card__top">
+                <div style="width: 100%;">
+                  <div class="skeleton-bone" style="width: 42px; height: 16px; margin-bottom: 12px;"></div>
+                  <div class="skeleton-bone" style="width: 70%; height: 22px;"></div>
+                </div>
+                <div class="skeleton-bone" style="width: 72px; height: 28px;"></div>
+              </div>
+              <div class="skeleton-bone" style="width: 38%; height: 14px; margin: 18px 0 14px;"></div>
+              <div class="taxonomy-chip-list">
+                <span class="skeleton-bone" style="width: 86px; height: 28px;"></span>
+                <span class="skeleton-bone" style="width: 112px; height: 28px;"></span>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      `;
       return;
     }
 
     if (activeTab === "categories") {
       body.innerHTML = renderCategories(cachedTaxonomy);
-    } else if (activeTab === "sellers") {
-      body.innerHTML = renderSellers(cachedTaxonomy);
+    } else if (activeTab === "users") {
+      body.innerHTML = renderUsers(cachedTaxonomy);
     } else if (activeTab === "suppliers") {
       body.innerHTML = renderSuppliers(cachedTaxonomy);
+    } else if (activeTab === "warehouses") {
+      body.innerHTML = renderWarehouses(cachedTaxonomy);
+    } else if (activeTab === "roles") {
+      body.innerHTML = renderRoles(cachedTaxonomy);
     } else {
       body.innerHTML = renderBrands(cachedTaxonomy);
     }
@@ -216,16 +290,28 @@ function bindTaxonomyScreen() {
       addBrand.dataset.bound = "true";
     }
 
-    const addSeller = document.getElementById("taxonomy-add-seller");
-    if (addSeller && addSeller.dataset.bound !== "true") {
-      addSeller.addEventListener("click", () => openManager("seller"));
-      addSeller.dataset.bound = "true";
+    const addUser = document.getElementById("taxonomy-add-user");
+    if (addUser && addUser.dataset.bound !== "true") {
+      addUser.addEventListener("click", () => openManager("user"));
+      addUser.dataset.bound = "true";
     }
 
     const addSupplier = document.getElementById("taxonomy-add-supplier");
     if (addSupplier && addSupplier.dataset.bound !== "true") {
       addSupplier.addEventListener("click", () => openManager("supplier"));
       addSupplier.dataset.bound = "true";
+    }
+
+    const addWarehouse = document.getElementById("taxonomy-add-warehouse");
+    if (addWarehouse && addWarehouse.dataset.bound !== "true") {
+      addWarehouse.addEventListener("click", () => openManager("warehouse"));
+      addWarehouse.dataset.bound = "true";
+    }
+
+    const addRole = document.getElementById("taxonomy-add-role");
+    if (addRole && addRole.dataset.bound !== "true") {
+      addRole.addEventListener("click", () => openManager("role"));
+      addRole.dataset.bound = "true";
     }
 
     const body = getBody();

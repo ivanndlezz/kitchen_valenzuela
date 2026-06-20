@@ -11,6 +11,7 @@
 import { STEPS, TOTAL_STEPS } from "./config.js";
 import { getCurrentStep, isQuickMode, isReviewEnabled, isInReview, isLastStep } from "./state.js";
 import { readFieldValue } from "./dom.js";
+import { isExistingProductContext } from "./updateState.js";
 
 // ── Public ────────────────────────────────────────────
 
@@ -74,13 +75,34 @@ function _hide(el) {
   el.style.display = "none";
 }
 
+function _setContinueMode(button, mode = "default") {
+  const isGlider = mode === "form" || mode === "review";
+  button.classList.toggle("bb-continue--review-glider", isGlider);
+  button.innerHTML = isGlider
+    ? `
+      <span class="bb-review-glider" aria-hidden="true">
+        <span class="bb-review-glider__item ${mode === "form" ? "is-active" : ""}">Form</span>
+        <span class="bb-review-glider__item ${mode === "review" ? "is-active" : ""}">Revisar</span>
+      </span>
+      <span class="bb-review-action">Actualizar</span>
+    `
+    : "Continuar";
+}
+
 function _applyBarState(backBtn, continueBtn, uploadBtn, s) {
   uploadBtn.disabled = !_isFormValid();
+  const isExisting = isExistingProductContext();
+  _setContinueMode(continueBtn, isExisting && s.reviewEnabled ? (s.inReview ? "review" : "form") : "default");
 
   if (s.inReview) {
     backBtn.disabled    = false;
-    _hide(continueBtn);
-    _show(uploadBtn, true);
+    if (isExisting && s.reviewEnabled) {
+      _show(continueBtn);
+      _hide(uploadBtn);
+    } else {
+      _hide(continueBtn);
+      _show(uploadBtn, true);
+    }
     return;
   }
 

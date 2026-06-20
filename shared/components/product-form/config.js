@@ -62,6 +62,8 @@ export const SUPPLIERS = {
   "": "Sin proveedor",
 };
 
+export const WAREHOUSES = [];
+
 /** Ordered step definitions — single source for titles, ids, and review spec. */
 export const STEPS = [
   {
@@ -97,11 +99,10 @@ export const STEPS = [
     num: 4,
     title: "Inventario",
     reviewFields: [
-      { label: "Unidad principal", selector: 'select[name="unit"]', required: true },
-      { label: "Unidad de venta",  selector: "#u-sale" },
-      { label: "Unidad de compra", selector: "#u-purch" },
-      { label: "Controlar stock",  selector: 'input[name="track_stock"]', type: "checkbox" },
-      { label: "Alerta stock mín.", selector: 'input[name="alert_min"]' },
+      { label: "Unidad principal", selector: 'select[name="unit"]', key: "primaryUnit", required: true },
+      { label: "Unidad de venta",  selector: "#u-sale", key: "saleUnit" },
+      { label: "Unidad de compra", selector: "#u-purch", key: "purchaseUnit" },
+      { label: "Alerta stock mín.", selector: 'input[name="alert_quantity"]' },
     ],
   },
   {
@@ -133,10 +134,9 @@ export const STEPS = [
   {
     num: 8,
     title: "Campos personalizados",
-    reviewFields: [1, 2, 3, 4, 5, 6].map(n => ({
-      label:    `Campo ${n} (cf${n})`,
-      selector: `input[name="cf${n}"]`,
-    })),
+    reviewFields: [
+      { label: "Atributos opcionales", key: "customFields" },
+    ],
   },
 ];
 
@@ -152,6 +152,7 @@ window.ProductFormConfig = Object.assign(window.ProductFormConfig || {}, {
   UNITS,
   SHIPPING_TYPES,
   SUPPLIERS,
+  WAREHOUSES,
 });
 
 /** Quick-form ↔ main-form field mapping (DRY: one definition used by both sync directions). */

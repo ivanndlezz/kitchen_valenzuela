@@ -8,7 +8,7 @@ function openProductDrawer(p) {
 
   // Update URL hash for the opened product
   if (typeof window.setProductSheetHash === "function") {
-    window.setProductSheetHash("product", p);
+    window.setProductSheetHash("product", p, "general");
   }
 
   if (!window.SheetManager || !window.ProductDetailSheet) return;
@@ -184,7 +184,7 @@ function renderDrawerViewProduct(p) {
            window.populateProductFormFromProduct(p);
          }
          if (typeof window.setProductSheetHash === "function") {
-           window.setProductSheetHash("product", p);
+           window.setProductSheetHash("product", p, "edit");
          }
        } finally {
          window.__openingProductSheetRoute = false;
@@ -357,7 +357,7 @@ function openProductFormSheet() {
         ? window.AppState.products.find(p => p.id === currentId)
       : null;
     if (product) {
-      window.setProductSheetHash("product", product);
+      window.setProductSheetHash("product", product, "edit");
     }
   }
 
@@ -377,6 +377,7 @@ function openProductFormSheet() {
     },
     onOpen(root) {
       window.ProductFormSheet.hydrate(root);
+      window.ProductFormUpdateState?.sync?.();
     },
     onBeforeClose() {
       window.ProductFormSheet.detach();
@@ -390,9 +391,10 @@ function openProductFormSheet() {
 function populateProductFormFromProduct(p) {
   const form = document.getElementById("pf");
   if (!form || !p) return;
+  clearTaxonomyGuardAlerts(form);
 
   const setValue = (selector, value) => {
-    const el = form.querySelector(selector);
+    const el = form.querySelector(selector) || document.querySelector(selector);
     if (!el || value === undefined || value === null) return;
     const nextValue = String(value);
     if (el.tagName === "SELECT" && nextValue) {
@@ -418,20 +420,41 @@ function populateProductFormFromProduct(p) {
   setValue('input[name="name"]', p.nombre || "");
   setValue('input[name="code"]', p.codigo || "");
   setValue('select[name="barcode_symbology"]', p.barcodeType || "code128");
-  setValue('select[name="brand"]', p.marca || "Generales");
-  setValue('select[name="category"]', p.categoriaCodigo || "");
+  setImportedSelectValue('select[name="brand"]', p.marca, "brands", "Marca importada");
+  setImportedSelectValue('select[name="category"]', p.categoriaCodigo, "categories", "Categoría importada");
+  setImportedSelectValue('select[name="subcategory"]', p.subCategoria, "subcategories", "Subcategoría importada");
   setValue('input[name="cost"]', p.costo || "");
   setValue('input[name="price"]', p.precio || "");
+  setValue('select[name="currency"]', p.currency || "MXN");
+  setValue('input[name="exchange_rate"]', p.exchangeRate || 1);
+  setValue('select[name="qf_currency"]', p.quoteCurrency || p.currency || "MXN");
+  setValue('input[name="qf_exchange_rate"]', p.quoteExchangeRate || p.exchangeRate || 1);
   setValue('select[name="tax_rate"]', p.tasaImpuesto === "IVA" ? "5" : "");
   setValue('select[name="tax_method"]', p.metodoImpuesto === "Inclusivo" ? "0" : "1");
-  setValue('select[name="unit"]', p.unitCode || "");
-  setValue('input[name="wh_qty_3"]', p.stock || "");
+  setImportedSelectValue('select[name="unit"]', getProductUnitValue(p, "unitCode"), "units", "Unidad importada");
+  setImportedSelectValue('#u-sale', getProductUnitValue(p, "saleUnitCode"), "units", "Unidad importada");
+  setImportedSelectValue('#u-purch', getProductUnitValue(p, "purchaseUnitCode"), "units", "Unidad importada");
+  setWarehouseStockValues(form, p);
   setValue('input[name="alert_quantity"]', p.alertaCantidad || "");
+  setValue('input[name="weight"]', p.weight || "");
+  setValue('input[name="length"]', p.length || "");
+  setValue('input[name="width"]', p.width || "");
+  setValue('input[name="height"]', p.height || "");
   setValue('textarea[name="details"]', p.especificaciones || "");
   setValue('textarea[name="history"]', p.especial3 || "");
-  setValue('input[name="cf1"]', p.especial4 || "");
-  setValue('input[name="cf2"]', p.especial5 || "");
-  setValue('input[name="cf3"]', p.especial6 || "");
+  window.ProductFormCustomFields?.setFields?.(
+    p.customFields?.length
+      ? p.customFields
+      : [
+          { name: p.cf1_name || "", value: p.cf1_data || p.especial4 || "" },
+          { name: p.cf2_name || "", value: p.cf2_data || p.especial5 || "" },
+          { name: p.cf3_name || "", value: p.cf3_data || p.especial6 || "" },
+          { name: p.cf4_name || "", value: p.cf4_data || "" },
+          { name: p.cf5_name || "", value: p.cf5_data || "" },
+          { name: p.cf6_name || "", value: p.cf6_data || "" },
+        ]
+  );
+  window.ProductFormUpdateState?.captureBaseline?.(p);
   setValue('select[name="supplier"]', p.supplier || "");
   setValue('input[name="supplier_part_no"]', p.supplier_part_no || "");
   setValue('input[name="supplier_price"]', p.supplier_price || "");
@@ -439,6 +462,449 @@ function populateProductFormFromProduct(p) {
   if (p.tipoProducto && window.CSS && CSS.escape) {
     setChecked(`input[name="type"][value="${CSS.escape(p.tipoProducto)}"]`, true);
   }
+}
+
+function normalizeCategoryForProductForm(value) {
+  const raw = String(value || "").trim();
+  const alias = window.TaxonomyReconciliation?.resolveAlias?.("categories", raw);
+  if (alias) return alias;
+  const optionValue = findSelectOptionValue('select[name="category"]', raw);
+  if (optionValue) return optionValue;
+  return raw;
+}
+
+function setWarehouseStockValues(form, product) {
+  const qtyInputs = Array.from(form.querySelectorAll('input[name^="wh_qty_"]'));
+  if (!qtyInputs.length) return;
+
+  qtyInputs.forEach((input) => {
+    input.value = "";
+  });
+
+  if (product?.warehouseStock && typeof product.warehouseStock === "object") {
+    qtyInputs.forEach((input) => {
+      const warehouseId = input.name.replace(/^wh_qty_/, "");
+      input.value = product.warehouseStock[warehouseId] ?? "";
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    return;
+  }
+
+  qtyInputs[0].value = product?.stock || "";
+  qtyInputs[0].dispatchEvent(new Event("input", { bubbles: true }));
+  qtyInputs[0].dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+function normalizeUnitForProductForm(value) {
+  const original = String(value || "").trim();
+  const alias = window.TaxonomyReconciliation?.resolveAlias?.("units", original);
+  if (alias) return alias;
+  const optionValue = findSelectOptionValue('select[name="unit"]', original);
+  if (optionValue) return optionValue;
+  return original;
+}
+
+function getProductUnitValue(product, key) {
+  if (!product) return "";
+  if (product[key]) return product[key];
+  if (key === "saleUnitCode") return product["Venta unit code"] || product.unitCode || product["unit code"] || "";
+  if (key === "purchaseUnitCode") return product["Comprar unit code"] || product.unitCode || product["unit code"] || "";
+  return product.unitCode || product["unit code"] || "";
+}
+
+function formOptionExists(selector, value) {
+  return Boolean(findSelectOptionValue(selector, value));
+}
+
+function findSelectOptionValue(selector, value) {
+  const form = document.getElementById("pf");
+  const select = form?.querySelector(selector);
+  const raw = String(value || "").trim();
+  if (!select || !raw) return "";
+  const rawComparable = normalizeTaxonomyComparableValue(raw);
+  const matchingOption = Array.from(select.options).find((option) => {
+    const optionValue = String(option.value || "").trim();
+    const optionLabel = String(option.textContent || "").trim();
+    return (
+      optionValue === raw ||
+      optionLabel === raw ||
+      normalizeTaxonomyComparableValue(optionLabel) === rawComparable
+    );
+  });
+  return matchingOption?.value || "";
+}
+
+function normalizeTaxonomyComparableValue(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s*\([^)]*\)\s*/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function ensureSelectOption(selector, value, label) {
+  const cleanValue = String(value || "").trim();
+  if (!cleanValue) return false;
+  const cleanLabel = String(label || cleanValue).trim();
+
+  const form = document.getElementById("pf");
+  const select = form?.querySelector(selector);
+  if (!select) return false;
+  if (select.disabled) select.disabled = false;
+  if (formOptionExists(selector, cleanValue)) return false;
+
+  const option = document.createElement("option");
+  option.value = cleanValue;
+  option.textContent = cleanLabel;
+  select.appendChild(option);
+  return true;
+}
+
+function setImportedSelectValue(selector, rawValue, scope, message) {
+  const raw = String(rawValue || "").trim();
+  if (!raw) return;
+
+  const normalizedValue = scope === "categories"
+    ? normalizeCategoryForProductForm(raw)
+    : scope === "units"
+      ? normalizeUnitForProductForm(raw)
+      : window.TaxonomyReconciliation?.resolveAlias?.(scope, raw) || raw;
+  const inserted = ensureSelectOption(selector, normalizedValue);
+  setValueWithEvents(selector, normalizedValue);
+
+  const rawIsDefined = isTaxonomyValueDefined(scope, raw);
+  const normalizedIsDefined = isTaxonomyValueDefined(scope, normalizedValue);
+  if (inserted || (!rawIsDefined && !normalizedIsDefined)) {
+    markTaxonomyGuardAlert(selector, {
+      scope,
+      rawValue: raw,
+      currentValue: normalizedValue,
+      message: normalizedValue !== raw ? `${message}: ${raw}` : message,
+    });
+  }
+}
+
+function isTaxonomyValueDefined(scope, value) {
+  const raw = String(value || "").trim();
+  const config = window.ProductFormConfig || {};
+  if (!raw) return true;
+
+  if (scope === "brands") {
+    const comparableRaw = normalizeTaxonomyComparableValue(raw);
+    return (config.BRANDS || []).some((brand) => {
+      const cleanBrand = String(brand || "").trim();
+      return cleanBrand === raw || normalizeTaxonomyComparableValue(cleanBrand) === comparableRaw;
+    });
+  }
+  if (scope === "categories") {
+    const comparableRaw = normalizeTaxonomyComparableValue(raw);
+    return Boolean((config.CATEGORIES || {})[raw]) || Object.values(config.CATEGORIES || {}).some((category) => {
+      const label = typeof category === "object" ? category.name : category;
+      const cleanLabel = String(label || "").trim();
+      return cleanLabel === raw || normalizeTaxonomyComparableValue(cleanLabel) === comparableRaw;
+    });
+  }
+  if (scope === "subcategories") {
+    const categoryKey = document.getElementById("f-cat")?.value || "";
+    const comparableRaw = normalizeTaxonomyComparableValue(raw);
+    return (config.CATEGORIES?.[categoryKey]?.subcategories || []).some((sub) => {
+      const cleanSub = String(sub || "").trim();
+      return cleanSub === raw || normalizeTaxonomyComparableValue(cleanSub) === comparableRaw;
+    });
+  }
+  if (scope === "units") {
+    const units = config.UNITS || {};
+    const comparableRaw = normalizeTaxonomyComparableValue(raw);
+    return Boolean(units[raw]) || Object.values(units).some((label) => {
+      const cleanLabel = String(label || "").trim();
+      return cleanLabel === raw || normalizeTaxonomyComparableValue(cleanLabel) === comparableRaw;
+    });
+  }
+  return true;
+}
+
+function setValueWithEvents(selector, value) {
+  const form = document.getElementById("pf");
+  const el = form?.querySelector(selector);
+  if (!el || value === undefined || value === null) return;
+  el.value = String(value);
+  el.dispatchEvent(new Event("change", { bubbles: true }));
+  el.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+function clearTaxonomyGuardAlerts(form) {
+  form.querySelectorAll(".has-taxonomy-guard").forEach((field) => {
+    field.classList.remove("has-taxonomy-guard");
+  });
+  form.querySelectorAll(".has-taxonomy-guard-control").forEach((control) => {
+    control.classList.remove("has-taxonomy-guard-control");
+  });
+  form.querySelectorAll("[data-taxonomy-guard-chip]").forEach((chip) => {
+    chip.remove();
+  });
+  form.querySelectorAll(".has-taxonomy-guard-chip").forEach((control) => {
+    control.classList.remove("has-taxonomy-guard-chip");
+  });
+}
+
+function markTaxonomyGuardAlert(selector, message) {
+  const form = document.getElementById("pf");
+  const control = form?.querySelector(selector);
+  if (!control) return;
+
+  const field = control.closest(".field");
+  field?.classList.add("has-taxonomy-guard");
+  getTaxonomyGuardVisualControl(control).classList.add("has-taxonomy-guard-control");
+
+  const chipHost = getTaxonomyGuardChipHost(control);
+  if (!chipHost || chipHost.querySelector("[data-taxonomy-guard-chip]")) return;
+  chipHost.classList.add("has-taxonomy-guard-chip");
+
+  const chip = document.createElement("button");
+  chip.type = "button";
+  chip.className = "taxonomy-guard-chip";
+  chip.dataset.taxonomyGuardChip = "";
+  chip.dataset.taxonomyScope = message.scope || "";
+  chip.dataset.taxonomyRawValue = message.rawValue || "";
+  chip.dataset.taxonomyCurrentValue = message.currentValue || "";
+  chip.dataset.taxonomySelector = selector;
+  chip.innerHTML = `
+    <span>${escapeTaxonomyHtml(message.rawValue || "Dato importado")}</span>
+    <small>importado</small>
+  `;
+  chip.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    openTaxonomyReconciliationModal({
+      scope: chip.dataset.taxonomyScope,
+      rawValue: chip.dataset.taxonomyRawValue,
+      currentValue: chip.dataset.taxonomyCurrentValue,
+      selector: chip.dataset.taxonomySelector,
+      label: field?.querySelector("label")?.childNodes?.[0]?.textContent?.trim() || "Dato",
+    });
+  });
+  chipHost.append(chip);
+}
+
+function getTaxonomyGuardVisualControl(control) {
+  return (
+    control.closest(".input-row--action") ||
+    control.closest(".input-row") ||
+    control.closest(".custom-select-wrapper")?.querySelector(".custom-select-trigger") ||
+    control
+  );
+}
+
+function getTaxonomyGuardChipHost(control) {
+  return (
+    control.closest(".custom-select-wrapper")?.querySelector(".custom-select-trigger") ||
+    getTaxonomyGuardVisualControl(control)
+  );
+}
+
+function getTaxonomyOptions(scope) {
+  const config = window.ProductFormConfig || {};
+  if (scope === "brands") {
+    return (config.BRANDS || []).map((brand) => ({ value: brand, label: brand }));
+  }
+  if (scope === "categories") {
+    return Object.entries(config.CATEGORIES || {}).map(([key, value]) => ({
+      value: key,
+      label: typeof value === "object" ? value.name : String(value || key),
+    }));
+  }
+  if (scope === "units") {
+    return Object.entries(config.UNITS || {}).map(([key, label]) => ({
+      value: key,
+      label,
+    }));
+  }
+  if (scope === "subcategories") {
+    const categoryKey = document.getElementById("f-cat")?.value || "";
+    const subcategories = config.CATEGORIES?.[categoryKey]?.subcategories || [];
+    return subcategories.map((label) => ({ value: label, label }));
+  }
+  return [];
+}
+
+function getTaxonomyScopeLabel(scope) {
+  const labels = {
+    brands: "Marcas",
+    categories: "Categorías",
+    subcategories: "Subcategorías",
+    units: "Unidades",
+  };
+  return labels[scope] || "Catálogo";
+}
+
+function canAddImportedTaxonomy(scope) {
+  return ["brands", "categories", "subcategories"].includes(scope);
+}
+
+function openTaxonomyReconciliationModal(detail) {
+  const options = getTaxonomyOptions(detail.scope);
+  let modal = document.getElementById("taxonomy-reconcile-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "taxonomy-reconcile-modal";
+    modal.className = "taxonomy-reconcile-modal";
+    modal.innerHTML = `
+      <div class="taxonomy-reconcile-modal__scrim" data-taxonomy-reconcile-close></div>
+      <section class="taxonomy-reconcile-modal__panel" role="dialog" aria-modal="true" aria-labelledby="taxonomy-reconcile-title">
+        <header class="taxonomy-reconcile-modal__header">
+          <div>
+            <span class="taxonomy-reconcile-modal__eyebrow">Conciliación</span>
+            <h3 id="taxonomy-reconcile-title">Dato importado</h3>
+          </div>
+          <button type="button" class="taxonomy-reconcile-modal__close" data-taxonomy-reconcile-close aria-label="Cerrar">×</button>
+        </header>
+        <div class="taxonomy-reconcile-modal__body"></div>
+      </section>
+    `;
+    document.body.append(modal);
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-taxonomy-reconcile-close]")) {
+        closeTaxonomyReconciliationModal();
+      }
+    });
+  }
+
+  modal.dataset.state = "open";
+  modal.dataset.selector = detail.selector || "";
+  modal.dataset.scope = detail.scope || "";
+  modal.dataset.rawValue = detail.rawValue || "";
+  const scopeLabel = getTaxonomyScopeLabel(detail.scope);
+  const canAddImported = canAddImportedTaxonomy(detail.scope);
+  modal.querySelector("#taxonomy-reconcile-title").textContent = `Conciliar ${detail.label || "dato"}`;
+  modal.querySelector(".taxonomy-reconcile-modal__body").innerHTML = `
+    <div class="taxonomy-reconcile-modal__value">
+      <span>Valor importado</span>
+      <strong>${escapeTaxonomyHtml(detail.rawValue || "")}</strong>
+    </div>
+    <label class="taxonomy-reconcile-modal__label">
+      Mapear a existente
+      <select data-taxonomy-reconcile-target>
+        ${options.map((option) => `
+          <option value="${escapeTaxonomyHtml(option.value)}" ${option.value === detail.currentValue ? "selected" : ""}>
+            ${escapeTaxonomyHtml(option.label)}
+          </option>
+        `).join("")}
+      </select>
+    </label>
+    ${canAddImported ? `
+      <div class="taxonomy-reconcile-modal__imported-option">
+        <span>Opción en estado importada</span>
+        <strong>${escapeTaxonomyHtml(detail.rawValue || "")}</strong>
+        <button type="button" class="taxonomy-reconcile-modal__import" data-taxonomy-reconcile-import>
+          Agregar a ${escapeTaxonomyHtml(scopeLabel)}
+        </button>
+      </div>
+    ` : ""}
+    <div class="taxonomy-reconcile-modal__actions">
+      <button type="button" class="taxonomy-reconcile-modal__secondary" data-taxonomy-reconcile-close>Después</button>
+      <button type="button" class="taxonomy-reconcile-modal__primary" data-taxonomy-reconcile-save>Guardar alias</button>
+    </div>
+  `;
+
+  modal.querySelector("[data-taxonomy-reconcile-save]")?.addEventListener("click", async () => {
+    const button = modal.querySelector("[data-taxonomy-reconcile-save]");
+    const target = modal.querySelector("[data-taxonomy-reconcile-target]")?.value || "";
+    if (!target) return;
+
+    button.disabled = true;
+    button.dataset.loading = "true";
+    try {
+      await window.TaxonomyReconciliation?.saveAlias?.(detail.scope, detail.rawValue, target);
+      setValueWithEvents(detail.selector, target);
+      clearSingleTaxonomyGuard(detail.selector);
+      window.ProductFormUpdateState?.sync?.();
+      window.showToast?.("Alias guardado en configs", "success");
+      closeTaxonomyReconciliationModal();
+    } catch (error) {
+      console.error("Taxonomy reconciliation failed:", error);
+      window.showToast?.(error.message || "No se pudo guardar el alias", "danger");
+    } finally {
+      button.disabled = false;
+      delete button.dataset.loading;
+    }
+  }, { once: true });
+
+  modal.querySelector("[data-taxonomy-reconcile-import]")?.addEventListener("click", async () => {
+    const button = modal.querySelector("[data-taxonomy-reconcile-import]");
+    button.disabled = true;
+    button.dataset.loading = "true";
+    try {
+      if (typeof window.TaxonomyReconciliation?.saveImportedValue !== "function") {
+        throw new Error("Conciliación de taxonomía no disponible");
+      }
+      const saved = await window.TaxonomyReconciliation.saveImportedValue(detail.scope, detail.rawValue, {
+        categoryKey: document.getElementById("f-cat")?.value || "",
+      });
+      await refreshTaxonomyAfterImport(saved);
+      const nextValue = getImportedAssignmentValue(detail.scope, detail.rawValue);
+      ensureSelectOption(detail.selector, nextValue, detail.rawValue);
+      setValueWithEvents(detail.selector, nextValue);
+      clearSingleTaxonomyGuard(detail.selector);
+      window.ProductFormUpdateState?.sync?.();
+      window.showToast?.(`Agregado a ${scopeLabel}`, "success");
+      closeTaxonomyReconciliationModal();
+    } catch (error) {
+      console.error("Imported taxonomy save failed:", error);
+      window.showToast?.(error.message || "No se pudo agregar el dato importado", "danger");
+    } finally {
+      button.disabled = false;
+      delete button.dataset.loading;
+    }
+  }, { once: true });
+}
+
+async function refreshTaxonomyAfterImport(saved) {
+  if (window.ProductFormSheet?.applyTaxonomyToFormConfig && saved) {
+    window.ProductFormSheet.applyTaxonomyToFormConfig({
+      categories: saved.categories,
+      brands: saved.brands,
+    });
+  }
+  window.ProductFormSheet?.updateTaxonomySelects?.();
+}
+
+function getImportedAssignmentValue(scope, value) {
+  if (scope === "subcategories") {
+    return slugifyTaxonomyValue(value);
+  }
+  return String(value || "").trim();
+}
+
+function slugifyTaxonomyValue(value) {
+  return String(value || "").trim().toLowerCase().replace(/\s/g, "_");
+}
+
+function closeTaxonomyReconciliationModal() {
+  const modal = document.getElementById("taxonomy-reconcile-modal");
+  if (modal) modal.dataset.state = "closed";
+}
+
+function clearSingleTaxonomyGuard(selector) {
+  const form = document.getElementById("pf");
+  const control = form?.querySelector(selector);
+  if (!control) return;
+  const field = control.closest(".field");
+  field?.classList.remove("has-taxonomy-guard");
+  getTaxonomyGuardVisualControl(control).classList.remove("has-taxonomy-guard-control");
+  getTaxonomyGuardChipHost(control)?.classList.remove("has-taxonomy-guard-chip");
+  getTaxonomyGuardChipHost(control)?.querySelector("[data-taxonomy-guard-chip]")?.remove();
+}
+
+function escapeTaxonomyHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function closeProductFormSheet() {

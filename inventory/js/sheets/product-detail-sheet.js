@@ -56,13 +56,21 @@
   }
 
   function renderSpecs(product) {
+    const customFields = Array.isArray(product.customFields)
+      ? product.customFields
+      : [1, 2, 3, 4, 5, 6].map((n) => ({
+          name: product[`cf${n}_name`] || "",
+          value: product[`cf${n}_data`] || "",
+        }));
+
     const fields = [
       ["Descripcion tienda", product.descripcion],
       ["Especificaciones", product.especificaciones],
       ["Ubicacion / Notas", product.especial3],
-      ["Dimensiones / Datos", product.especial4],
-      ["Campo Adicional 5", product.especial5],
-      ["Campo Adicional 6", product.especial6],
+      ...customFields.map((field, index) => [
+        field.name || `Campo personalizado ${index + 1}`,
+        field.value || "",
+      ]),
     ];
 
     return fields
@@ -103,6 +111,8 @@
 
   function renderWeb(product) {
     const ecommerceShipping = product.envioWeb == null ? "" : product.envioWeb;
+    const webCurrency = String(product.webCurrency || "MXN").toUpperCase() === "USD" ? "USD" : "MXN";
+    const webExchangeRate = Number(product.webExchangeRate) || 1;
 
     return `
       <form class="drawer__web-form" data-product-web-form>
@@ -116,6 +126,23 @@
           <div class="input-row">
             <span class="prefix">$</span>
             <input type="number" name="envio_web" value="${ecommerceShipping}" placeholder="0.00" step="0.01" min="0">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Divisa web</label>
+            <select name="web_currency" data-web-currency>
+              <option value="MXN" ${webCurrency === "MXN" ? "selected" : ""}>MXN</option>
+              <option value="USD" ${webCurrency === "USD" ? "selected" : ""}>USD</option>
+            </select>
+          </div>
+          <div class="field" data-web-exchange-rate ${webCurrency === "USD" ? "" : "hidden"}>
+            <label>Tipo de cambio web</label>
+            <div class="input-row">
+              <span class="prefix">MXN</span>
+              <input type="number" name="web_exchange_rate" value="${webExchangeRate}" placeholder="17.00" step="0.0001" min="0">
+            </div>
           </div>
         </div>
 
@@ -155,6 +182,7 @@
   }
 
   function openWeb(product) {
+    window.setProductSheetHash?.("product", product, "web");
     window.SheetManager?.open({
       id: "product-detail",
       title: "Ficha Técnica",
@@ -182,9 +210,12 @@
   }
 
   async function saveWebConfig(product, form) {
+    const webCurrency = String(form.querySelector('select[name="web_currency"]')?.value || "MXN").toUpperCase() === "USD" ? "USD" : "MXN";
     const nextValues = {
       descripcion: form.querySelector('textarea[name="web_description"]')?.value.trim() || "",
       envioWeb: Number(form.querySelector('input[name="envio_web"]')?.value) || 0,
+      webCurrency,
+      webExchangeRate: Number(form.querySelector('input[name="web_exchange_rate"]')?.value) || 1,
       featured: Boolean(form.querySelector('input[name="featured"]')?.checked),
       hidePos: Boolean(form.querySelector('input[name="hide_pos"]')?.checked),
       hideStore: Boolean(form.querySelector('input[name="hide"]')?.checked),
@@ -207,6 +238,8 @@
         data: {
           "Producto de campo personalizado 1": product.descripcion,
           "envio_web": product.envioWeb,
+          "web_currency": product.webCurrency,
+          "web_exchange_rate": product.webExchangeRate,
           "Mostrar en página de inicio": product.featured,
           "Ocultar en POS": product.hidePos,
           "Ocultar en tienda": product.hideStore,
@@ -277,6 +310,7 @@
 
   function hydrate(root, product) {
     root.querySelector('[data-product-action="view"]')?.addEventListener("click", () => {
+      window.setProductSheetHash?.("product", product, "general");
       window.openProductDrawer?.(product);
     });
 
@@ -296,7 +330,7 @@
         if (form) form.dataset.draftId = product.id;
         window.openProductFormSheet?.();
         window.populateProductFormFromProduct?.(product);
-        window.setProductSheetHash?.("product", product);
+        window.setProductSheetHash?.("product", product, "edit");
       } finally {
         window.__openingProductSheetRoute = false;
       }
@@ -315,6 +349,15 @@
         if (submitButton) submitButton.disabled = false;
       }
     });
+
+    const webCurrency = root.querySelector("[data-web-currency]");
+    const webExchangeField = root.querySelector("[data-web-exchange-rate]");
+    webCurrency?.addEventListener("change", () => {
+      const isUsd = String(webCurrency.value || "MXN").toUpperCase() === "USD";
+      if (webExchangeField) webExchangeField.hidden = !isUsd;
+      const input = webExchangeField?.querySelector("input");
+      if (isUsd && input && !input.value) input.value = "1";
+    });
   }
 
   window.ProductDetailSheet = {
@@ -322,5 +365,6 @@
     renderWeb,
     renderTopControls,
     hydrate,
+    openWeb,
   };
 })();

@@ -4,6 +4,11 @@
 **Fecha:** 16 de junio de 2026  
 **Objetivo:** Unificar la arquitectura de side sheets para reducir duplicación, facilitar mantenimiento y permitir hidratación dinámica de secciones sin hardcodear cada variante.
 
+## Estado
+
+**Implementado.**  
+La base común ya existe en código, `SheetManager` delega en ella y `taxonomy-manager__panel` quedó migrado a esa arquitectura. Este documento pasa a describir el contrato vigente y el criterio de mantenimiento del sistema de side sheets.
+
 ---
 
 ## Contexto
@@ -43,7 +48,7 @@ La excepción es `app-sheet__close`, que debe existir siempre.
 
 ### 1. Definir un shell base
 
-Crear una clase base para side sheets, responsable de:
+Creado en [`inventory/js/components/app-side-sheet.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/components/app-side-sheet.js:6). Es responsable de:
 
 - renderizar el contenedor general,
 - alojar los slots principales,
@@ -53,7 +58,7 @@ Crear una clase base para side sheets, responsable de:
 
 ### 2. Especializar por herencia
 
-La idea es que `taxonomy-manager__panel` no sea un bloque aislado, sino una clase hija o una implementación concreta del side sheet base.
+`taxonomy-manager__panel` ya está implementado como clase hija de `AppSideSheet` en [`inventory/js/sheets/taxonomy-manager-panel.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/sheets/taxonomy-manager-panel.js:6).
 
 Esto implica dos niveles:
 
@@ -69,7 +74,7 @@ La clase hija hereda la estructura y solo redefine:
 
 ### 3. Hidratar por partes
 
-En lugar de renderizar un sheet completo con HTML fijo, el shell debe permitir montar piezas independientes.
+El shell ya permite montar piezas independientes por slots y también ofrece métodos de hidratación directa para top, nav, main y controles inferiores.
 
 Propuesta de API:
 
@@ -158,7 +163,7 @@ Recomendación: usar **shell común + herencia formal** solo donde haya realment
 
 ### Fase 1. Inventario de shells actuales
 
-Auditar todos los side sheets y detectar:
+Hecho como base de migración. Queda como criterio de revisión cuando se agreguen nuevos sheets:
 
 - qué tienen en común,
 - qué partes son únicas,
@@ -167,7 +172,7 @@ Auditar todos los side sheets y detectar:
 
 ### Fase 2. Crear el shell base
 
-Construir la clase base con:
+Concluida en [`inventory/js/components/app-side-sheet.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/components/app-side-sheet.js:6).
 
 - top/header,
 - nav,
@@ -178,7 +183,7 @@ Construir la clase base con:
 
 ### Fase 3. Migrar taxonomy manager
 
-Convertir `taxonomy-manager__panel` en la primera implementación hija.
+Concluida en [`inventory/js/sheets/taxonomy-manager-panel.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/sheets/taxonomy-manager-panel.js:6).
 
 Esto sirve como prueba de concepto porque:
 
@@ -190,20 +195,23 @@ Esto sirve como prueba de concepto porque:
 
 ### Fase 4. Migrar product sheets
 
-Llevar después:
+También quedó integrada la familia de producto sobre el shell base mediante `SheetManager` y slots en:
 
-- product detail,
-- product form,
-- tabs o vistas internas relacionadas.
+- [`inventory/js/components/product-drawer.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/components/product-drawer.js:16)
+- [`inventory/js/components/product-drawer.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/components/product-drawer.js:364)
+- [`inventory/js/sheets/product-detail-sheet.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/sheets/product-detail-sheet.js:79)
+- [`inventory/js/sheets/product-form-sheet.js`](/Users/a74525/Documents/sites/kitchen_valenzuela/inventory/js/sheets/product-form-sheet.js:796)
 
 ### Fase 5. Normalizar hidratación
 
-Unificar cómo se montan secciones:
+Ya existe un contrato mínimo de hidratación:
 
 - `hydrateTop`
 - `hydrateNav`
 - `hydrateMain`
 - `hydrateBottomControls`
+
+Los métodos aceptan contenido como texto, HTML, `Node` o `function`, lo que deja al shell preparado para composición flexible sin perder consistencia.
 
 Y definir una convención para pasar contenido:
 
@@ -214,7 +222,7 @@ Y definir una convención para pasar contenido:
 
 ### Fase 6. Limpiar deuda
 
-Una vez migrados los primeros sheets:
+Queda como trabajo continuo de mantenimiento:
 
 - eliminar duplicación residual,
 - simplificar handlers específicos,
@@ -223,9 +231,9 @@ Una vez migrados los primeros sheets:
 
 ---
 
-## Resultado Esperado
+## Resultado Vigente
 
-Al terminar el refactor, el sistema debería permitir:
+El sistema ya permite:
 
 - crear nuevos side sheets sin rehacer la estructura base,
 - cambiar el chrome visual en un solo lugar,
@@ -243,3 +251,10 @@ La meta es que el sistema sea más fácil de mantener, más predecible y menos f
 Si una clase ayuda a encapsular el shell y su ciclo de vida, vale la pena.  
 Si una vista se resuelve mejor por composición, también debe poder hacerlo.
 
+## Pendientes Menores
+
+No quedan pendientes estructurales bloqueantes del refactor. Lo que sí conviene seguir afinando con calma es:
+
+- reducir más HTML inline dentro de paneles especializados,
+- mover fragmentos repetidos a helpers o componentes chicos,
+- seguir usando el shell base como contrato único para nuevos side sheets.

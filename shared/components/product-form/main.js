@@ -50,6 +50,8 @@ import { syncBottomBar }                   from "./bottomBar.js";
 import { enterReviewMode, exitReviewMode } from "./review.js";
 import { initQuickForm, toggleQuickMode, syncFromQuickForm } from "./quickForm.js";
 import { initSubmitHandler } from "./submitHandler.js";
+import { initCustomFields, resetCustomFields } from "./customFields.js";
+import { initUpdateState, isExistingProductContext, syncProductUpdateState } from "./updateState.js";
 
 // ── Form handlers ─────────────────────────────────────
 import {
@@ -91,6 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5. Initialise "Mark done" buttons
   document.querySelectorAll(".btn-done").forEach((btn) => {
     btn.addEventListener("click", () => {
+      if (isExistingProductContext()) {
+        if (isQuickMode()) syncFromQuickForm();
+        document.getElementById("pf")?.requestSubmit();
+        return;
+      }
       const n = parseInt(btn.getAttribute("data-step"), 10);
       _completStep(n);
     });
@@ -134,7 +141,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 10. Bottom bar — Continue button
-  document.getElementById("bb-continue")?.addEventListener("click", () => {
+  document.getElementById("bb-continue")?.addEventListener("click", (event) => {
+    const reviewTarget = event.target.closest(".bb-review-glider__item:not(.is-active)");
+    if (reviewTarget) {
+      if (isQuickMode()) syncFromQuickForm();
+      if (reviewTarget.textContent.trim() === "Form") {
+        exitReviewMode();
+      } else {
+        enterReviewMode();
+      }
+      return;
+    }
+
+    if (event.target.closest(".bb-review-action")) {
+      if (isQuickMode()) syncFromQuickForm();
+      document.getElementById("pf")?.requestSubmit();
+      return;
+    }
+
     if (isQuickMode()) {
       syncFromQuickForm();
       isReviewEnabled() ? enterReviewMode() : document.getElementById("pf")?.requestSubmit();
@@ -171,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("bb-menu-clear")?.addEventListener("click", () => {
     if (!confirm("¿Estás seguro de que deseas limpiar todo el formulario?")) return;
     document.getElementById("pf")?.reset();
+    resetCustomFields();
     clearAllDone();
     for (let i = 1; i <= TOTAL_STEPS; i++) clearSummary(i);
     syncPills();
@@ -180,9 +205,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 14. Initialise sub-systems
   initQuickForm();
+  initCustomFields();
+  initUpdateState();
   initStepPills();
   initSubmitHandler();
   openStep(1);
+  syncProductUpdateState();
   syncBottomBar();
 
   // 15. Listen to stepChange and form inputs to keep bottom bar updated in real-time
@@ -208,7 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
  * @param {number} n
  */
 function _completStep(n) {
-  markStepDone(n);
+  if (n < TOTAL_STEPS) {
+    markStepDone(n);
+  }
   showSummary(n);
   syncPills();
 

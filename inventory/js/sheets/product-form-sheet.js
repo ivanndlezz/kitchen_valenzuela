@@ -8,6 +8,7 @@
   let autosaveBound = false;
   let taxonomyActionsBound = false;
   let searchableSelectCloseBound = false;
+  let userScopeBound = false;
   let taxonomyConfigPromise = null;
   let taxonomyConfigRecord = null;
 
@@ -53,6 +54,37 @@
   function getNumber(form, selector) {
     const value = getValue(form, selector);
     return value ? Number(value) || 0 : 0;
+  }
+
+  function normalizeCurrency(value) {
+    return String(value || "MXN").toUpperCase() === "USD" ? "USD" : "MXN";
+  }
+
+  function getExchangeRate(form, selector, fallback = 1) {
+    const value = getNumber(form, selector);
+    return value > 0 ? value : fallback;
+  }
+
+  function syncCurrencyRateField(select) {
+    if (!select) return;
+    const scope = select.dataset.currencyScope;
+    const field = document.querySelector(`[data-currency-rate-field="${scope}"]`);
+    const input = field?.querySelector("input");
+    const isUsd = normalizeCurrency(select.value) === "USD";
+    if (field) field.hidden = !isUsd;
+    if (input && isUsd && !input.value) input.value = "1";
+  }
+
+  function bindCurrencyControls() {
+    document.querySelectorAll("[data-currency-scope]").forEach((select) => {
+      if (select.dataset.currencyBound === "true") {
+        syncCurrencyRateField(select);
+        return;
+      }
+      select.addEventListener("change", () => syncCurrencyRateField(select));
+      select.dataset.currencyBound = "true";
+      syncCurrencyRateField(select);
+    });
   }
 
   function getSelectedText(form, selector) {
@@ -234,6 +266,60 @@
       .filter(Boolean);
   }
 
+  function normalizeWarehouseList(rawWarehouses) {
+    const defaults = [];
+    const source = Array.isArray(rawWarehouses)
+      ? rawWarehouses
+      : rawWarehouses && typeof rawWarehouses === "object" && !isEmptyConfigObject(rawWarehouses)
+        ? Object.entries(rawWarehouses).map(([id, value]) => ({ id, ...(typeof value === "object" ? value : { name: value }) }))
+        : getFormConfig().WAREHOUSES || defaults;
+
+    const normalized = source
+      .map((item, index) => {
+        const id = getPrimitiveText(item?.id || item?.key || item?.slug).trim() || String(index + 1);
+        const name = getWarehouseText(item).trim();
+        if (!id || !name) return null;
+        return {
+          id,
+          name,
+          color: String(item?.color || "#111111").trim(),
+          active: item?.active !== false,
+        };
+      })
+      .filter(Boolean);
+
+    return normalized.length ? normalized : defaults;
+  }
+
+  function getPrimitiveText(value) {
+    if (value == null) return "";
+    if (typeof value === "string" || typeof value === "number") return String(value);
+    return "";
+  }
+
+  function getWarehouseText(value) {
+    if (value == null) return "";
+    if (typeof value === "string" || typeof value === "number") return String(value);
+    if (typeof value !== "object") return "";
+
+    for (const key of ["name", "nombre", "label", "title", "text", "value"]) {
+      const text = getWarehouseText(value[key]);
+      if (text) return text;
+    }
+
+    return "";
+  }
+
+  function parseAliasConfig(fields) {
+    const rawAliases = parseJsonField(
+      fields.Aliases || fields.aliases || fields.TaxonomyAliases || fields.taxonomy_aliases,
+      {}
+    );
+    return window.TaxonomyReconciliation?.normalizeAliasConfig
+      ? window.TaxonomyReconciliation.normalizeAliasConfig(rawAliases)
+      : rawAliases;
+  }
+
 
 
   function getSellerLabel(item) {
@@ -278,10 +364,12 @@
       const brands = normalizeBrandList(parseJsonField(fields.Marcas, []));
       const sellers = normalizeSellerList(parseJsonField(fields.vendedores, []));
       const suppliers = normalizeSupplierList(parseJsonField(fields.proveedores, []));
+      const warehouses = normalizeWarehouseList(parseJsonField(fields.Almacenes || fields.almacenes, []));
+      const aliases = parseAliasConfig(fields);
 
-      applyTaxonomyToFormConfig({ categories, brands, suppliers });
+      applyTaxonomyToFormConfig({ categories, brands, suppliers, warehouses, aliases });
       updateTaxonomySelects();
-      return { record, categories, brands, sellers, suppliers };
+      return { record, categories, brands, sellers, suppliers, warehouses, aliases };
     })();
 
     try {
@@ -292,7 +380,7 @@
     }
   }
 
-  function applyTaxonomyToFormConfig({ categories, brands, suppliers }) {
+  function applyTaxonomyToFormConfig({ categories, brands, suppliers, warehouses, aliases }) {
     const config = getFormConfig();
     if (config.CATEGORIES && categories) {
       Object.keys(config.CATEGORIES).forEach(key => delete config.CATEGORIES[key]);
@@ -310,11 +398,164 @@
         config.SUPPLIERS[supplier.id] = supplier.name;
       });
     }
+    if (aliases) {
+      config.TAXONOMY_ALIASES = aliases;
+      window.TaxonomyReconciliation?.setAliases?.(aliases);
+    }
+    if (warehouses) {
+      config.WAREHOUSES = normalizeWarehouseList(warehouses);
+      renderWarehouseFields();
+    }
   }
 
-  function syncNativeSelect(select, data, emptyText) {
+  function getWarehouses() {
+    return normalizeWarehouseList(getFormConfig().WAREHOUSES);
+  }
+
+  function renderWarehouseFields(selectedWarehouseId) {
+    const grid = document.querySelector("#pf [data-warehouse-grid]");
+    if (!grid) return;
+
+    const previous = {};
+    grid.querySelectorAll("input").forEach((input) => {
+      previous[input.name] = input.value;
+    });
+
+    const allWarehouses = getWarehouses().filter((warehouse) => warehouse.active !== false);
+    const warehouses = getAccessibleWarehouses(allWarehouses);
+
+    if (!warehouses.length) {
+      grid.innerHTML = `
+        <div class="wh-empty">
+          <button class="custom-fields__add" type="button" data-taxonomy-add="warehouse">
+            <i data-lucide="plus"></i>
+            Agregar almacén
+          </button>
+        </div>
+      `;
+      window.createLucideIcons?.();
+      return;
+    }
+
+    const currentSelectedId = String(
+      selectedWarehouseId ||
+      grid.querySelector("[data-warehouse-selector]")?.value ||
+      grid.dataset.selectedWarehouseId ||
+      warehouses[0]?.id ||
+      ""
+    );
+    const selected = warehouses.find((warehouse) => String(warehouse.id) === currentSelectedId) || warehouses[0];
+    const selectedId = String(selected.id);
+    grid.dataset.selectedWarehouseId = selectedId;
+
+    const hiddenInputs = allWarehouses
+      .filter((warehouse) => String(warehouse.id) !== selectedId)
+      .map((warehouse) => {
+        const id = String(warehouse.id);
+        return `
+          <input type="hidden" name="wh_qty_${escapeHtml(id)}" value="${escapeHtml(previous[`wh_qty_${id}`] || "")}" data-warehouse-hidden />
+          <input type="hidden" name="rack_${escapeHtml(id)}" value="${escapeHtml(previous[`rack_${id}`] || "")}" data-warehouse-hidden />
+          <input type="hidden" name="wh_${escapeHtml(id)}" value="${escapeHtml(id)}" data-warehouse-hidden />
+        `;
+      })
+      .join("");
+
+    grid.innerHTML = `
+      <div class="wh-editor" data-warehouse-editor>
+        <div class="field wh-editor__selector">
+          <label>Almacén</label>
+          <select name="warehouse_selector" data-warehouse-selector aria-label="Seleccionar almacén">
+            ${warehouses.map((warehouse) => `
+              <option value="${escapeHtml(warehouse.id)}" ${String(warehouse.id) === selectedId ? "selected" : ""}>${escapeHtml(warehouse.name)}</option>
+            `).join("")}
+          </select>
+        </div>
+        <div class="wh-editor__stock" data-warehouse-id="${escapeHtml(selectedId)}">
+          <input type="hidden" name="wh_${escapeHtml(selectedId)}" value="${escapeHtml(selectedId)}" />
+          <div class="field">
+            <label>Cantidad</label>
+            <input type="number" name="wh_qty_${escapeHtml(selectedId)}" value="${escapeHtml(previous[`wh_qty_${selectedId}`] || "")}" placeholder="0" min="0" />
+          </div>
+          <div class="field">
+            <label>Estante</label>
+            <input type="text" name="rack_${escapeHtml(selectedId)}" value="${escapeHtml(previous[`rack_${selectedId}`] || "")}" placeholder="Ej. A-12" />
+          </div>
+        </div>
+        <div class="wh-editor__hidden" hidden>${hiddenInputs}</div>
+      </div>
+    `;
+
+    const selector = grid.querySelector("[data-warehouse-selector]");
+    enhanceSearchableSelect(selector);
+    selector?.addEventListener("change", () => {
+      grid.dataset.selectedWarehouseId = selector.value;
+      renderWarehouseFields(selector.value);
+      window.ProductFormUpdateState?.sync?.();
+    });
+  }
+
+  function getAccessibleWarehouses(warehouses) {
+    const user = window.UserScope?.getActiveUser?.();
+    const role = window.UserScope?.getActiveRole?.();
+    const capabilities = normalizeStringList([
+      ...(user?.capabilities || []),
+      ...(role?.capabilities || []),
+    ]);
+    if (capabilities.includes("gestionar_almacenes") || capabilities.includes("gestionar_almacenes_todos") || role?.id === "admin") {
+      return warehouses;
+    }
+
+    const allowed = new Set(normalizeStringList([
+      ...(user?.warehouseIds || []),
+      ...(user?.warehouses || []),
+      ...(user?.almacenes || []),
+      ...(role?.warehouseIds || []),
+      ...(role?.warehouses || []),
+      ...(role?.almacenes || []),
+    ]));
+
+    if (!allowed.size) return warehouses;
+    return warehouses.filter((warehouse) => allowed.has(String(warehouse.id)));
+  }
+
+  function normalizeStringList(value) {
+    const source = Array.isArray(value) ? value : [value];
+    return source.flatMap((item) => {
+      if (Array.isArray(item)) return normalizeStringList(item);
+      if (item == null) return [];
+      if (typeof item === "string") return item.split(",").map(part => part.trim()).filter(Boolean);
+      return [String(item).trim()].filter(Boolean);
+    });
+  }
+
+  function getWarehouseStockTotal(form) {
+    return Array.from(form?.querySelectorAll('input[name^="wh_qty_"]') || [])
+      .reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+  }
+
+  function getWarehouseStockMap(form) {
+    return Object.fromEntries(
+      Array.from(form?.querySelectorAll('input[name^="wh_qty_"]') || []).map((input) => [
+        input.name.replace(/^wh_qty_/, ""),
+        Number(input.value) || 0,
+      ])
+    );
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function syncNativeSelect(select, data, emptyText, options = {}) {
     if (!select) return;
     const currentValue = select.value;
+    const currentOption = select.options[select.selectedIndex];
+    const currentLabel = currentOption?.textContent?.trim() || currentValue;
     select.innerHTML = "";
 
     if (emptyText) {
@@ -340,7 +581,14 @@
       });
     }
 
-    if (currentValue && Array.from(select.options).some(option => option.value === currentValue)) {
+    const hasCurrentValue = currentValue && Array.from(select.options).some(option => option.value === currentValue);
+    if (hasCurrentValue) {
+      select.value = currentValue;
+    } else if (options.preserveMissing && currentValue) {
+      const option = document.createElement("option");
+      option.value = currentValue;
+      option.textContent = currentLabel;
+      select.appendChild(option);
       select.value = currentValue;
     }
     select.dispatchEvent(new Event("change", { bubbles: true }));
@@ -370,7 +618,7 @@
     const config = getFormConfig();
     syncNativeSelect(document.getElementById("f-cat"), config.CATEGORIES || {}, "Seleccionar");
     syncNativeSelect(document.getElementById("qf-cat"), config.CATEGORIES || {}, "Seleccionar");
-    syncNativeSelect(document.querySelector('#pf select[name="brand"]'), config.BRANDS || [], "Sin marca");
+    syncNativeSelect(document.querySelector('#pf select[name="brand"]'), config.BRANDS || [], "Sin marca", { preserveMissing: true });
     syncNativeSelect(document.querySelector('#pf select[name="supplier"]'), config.SUPPLIERS || {}, "Sin proveedor");
     syncSubcategorySelect(document.getElementById("f-cat")?.value || "");
   }
@@ -417,15 +665,6 @@
     return meta[type] || meta.brand;
   }
 
-  function escapeHtml(value) {
-    return String(value || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
   function getTaxonomyItems(type, categories, brands, categoryKey, sellers = [], suppliers = []) {
     if (type === "category") {
       return Object.entries(categories || {}).map(([key, value]) => ({
@@ -458,156 +697,7 @@
     return (brands || []).map((label) => ({ key: label, label }));
   }
 
-  function ensureTaxonomySheet() {
-    let root = document.getElementById("taxonomy-manager");
-    if (root) return root;
 
-    root = document.createElement("div");
-    root.id = "taxonomy-manager";
-    root.className = "taxonomy-manager";
-    root.dataset.state = "closed";
-    root.innerHTML = `
-      <div class="taxonomy-manager__scrim" data-taxonomy-close></div>
-      <aside class="taxonomy-manager__panel" role="dialog" aria-modal="true" aria-labelledby="taxonomy-manager-title">
-        <header class="taxonomy-manager__header">
-          <div>
-            <span class="taxonomy-manager__eyebrow">Catálogo</span>
-            <h3 id="taxonomy-manager-title">Gestionar</h3>
-          </div>
-          <button class="taxonomy-manager__close" type="button" data-taxonomy-close aria-label="Cerrar">x</button>
-        </header>
-        <div class="taxonomy-manager__body">
-          <form class="taxonomy-manager__form" data-taxonomy-create-form>
-            <div data-taxonomy-create-fields></div>
-          </form>
-          <div class="taxonomy-manager__context" data-taxonomy-context></div>
-          <div class="taxonomy-manager__list" data-taxonomy-list></div>
-        </div>
-      </aside>
-    `;
-
-    root.addEventListener("click", handleTaxonomySheetClick);
-    root.querySelector("[data-taxonomy-create-form]").addEventListener("submit", handleTaxonomyCreate);
-    document.body.appendChild(root);
-    return root;
-  }
-
-  function closeTaxonomySheet() {
-    const root = document.getElementById("taxonomy-manager");
-    if (!root) return;
-    root.dataset.state = "closed";
-    root.removeAttribute("data-type");
-  }
-
-  function renderTaxonomySheet(state) {
-    const root = ensureTaxonomySheet();
-    const meta = getTaxonomyMeta(state.type);
-    const items = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers, state.suppliers);
-    const title = root.querySelector("#taxonomy-manager-title");
-    const createFields = root.querySelector("[data-taxonomy-create-fields]");
-    const context = root.querySelector("[data-taxonomy-context]");
-    const list = root.querySelector("[data-taxonomy-list]");
-
-    title.textContent = `Gestionar ${meta.title}`;
-    context.textContent = state.type === "subcategory"
-      ? `Categoría: ${state.categories[state.categoryKey]?.name || ""}`
-      : "";
-
-    if (createFields) {
-      if (state.type === "seller" || state.type === "supplier") {
-        const itemPlaceholder = state.type === "seller" ? "Nuevo vendedor" : "Nuevo proveedor";
-        const emailPlaceholder = state.type === "seller" ? "ventas@kitchencleanvalenzuela.com" : "proveedor@empresa.com";
-        createFields.innerHTML = `
-          <div class="taxonomy-manager__seller-form">
-            <div class="taxonomy-manager__seller-grid">
-              <label class="taxonomy-manager__label">
-                Nombre
-                <input id="taxonomy-manager-input" data-seller-name type="text" autocomplete="off" placeholder="${itemPlaceholder}" />
-              </label>
-              <label class="taxonomy-manager__label">
-                Tel
-                <input data-seller-tel type="tel" autocomplete="off" placeholder="6242250029" />
-              </label>
-              <label class="taxonomy-manager__label taxonomy-manager__seller-email">
-                Email
-                <input data-seller-email type="email" autocomplete="off" placeholder="${emailPlaceholder}" />
-              </label>
-            </div>
-            <div class="taxonomy-manager__input-row taxonomy-manager__input-row--seller">
-              <span></span>
-              <button type="submit" data-taxonomy-create-submit>Guardar</button>
-            </div>
-          </div>
-        `;
-      } else {
-        createFields.innerHTML = `
-          <label class="taxonomy-manager__label" for="taxonomy-manager-input">Agregar ${meta.singular}</label>
-          <div class="taxonomy-manager__input-row">
-            <input id="taxonomy-manager-input" type="text" autocomplete="off" placeholder="${escapeHtml(meta.placeholder)}" />
-            <button type="submit" data-taxonomy-create-submit>Guardar</button>
-          </div>
-        `;
-      }
-    }
-
-    list.innerHTML = items.length
-      ? items.map((item) => (state.type === "seller" || state.type === "supplier")
-        ? `
-        <div class="taxonomy-manager__item taxonomy-manager__item--seller" data-taxonomy-key="${escapeHtml(item.key)}">
-          <div class="taxonomy-manager__item-main">
-            <span class="taxonomy-manager__item-name">${escapeHtml(item.label || "Sin nombre")}</span>
-            <div class="taxonomy-manager__item-meta">
-              <span>${escapeHtml(item.tel || "Sin tel")}</span>
-              <span>${escapeHtml(item.email || "Sin email")}</span>
-            </div>
-          </div>
-          <div class="taxonomy-manager__item-actions">
-            <button type="button" data-taxonomy-edit="${escapeHtml(item.key)}">Editar</button>
-            <button type="button" data-taxonomy-delete="${escapeHtml(item.key)}">Eliminar</button>
-          </div>
-        </div>
-      `
-        : `
-        <div class="taxonomy-manager__item" data-taxonomy-key="${escapeHtml(item.key)}">
-          <span class="taxonomy-manager__item-name">${escapeHtml(item.label)}</span>
-          <div class="taxonomy-manager__item-actions">
-            <button type="button" data-taxonomy-edit="${escapeHtml(item.key)}">Editar</button>
-            <button type="button" data-taxonomy-delete="${escapeHtml(item.key)}">Eliminar</button>
-          </div>
-        </div>
-      `).join("")
-      : `<div class="taxonomy-manager__empty">Sin ${meta.title.toLowerCase()} todavía.</div>`;
-
-    root.__taxonomyState = state;
-    root.dataset.type = state.type;
-  }
-
-  async function openTaxonomySheet(type) {
-    const categoryKey = document.getElementById("f-cat")?.value || "";
-    if (type === "subcategory" && !categoryKey) {
-      window.showToast?.("Selecciona una categoría antes de agregar subcategoría.", "warning");
-      return;
-    }
-
-    const loaded = await loadTaxonomyConfig();
-    const root = ensureTaxonomySheet();
-    const state = {
-      type,
-      categoryKey,
-      categories: cloneJson(loaded.categories),
-      brands: [...loaded.brands],
-      sellers: cloneJson(loaded.sellers || []),
-      suppliers: cloneJson(loaded.suppliers || []),
-    };
-
-    renderTaxonomySheet(state);
-    root.dataset.state = "open";
-    window.setTimeout(() => {
-      const input = root.querySelector("#taxonomy-manager-input");
-      input.value = "";
-      input.focus();
-    }, 30);
-  }
 
   function selectTaxonomyValue(type, key, label) {
     if (type === "category") {
@@ -635,381 +725,12 @@
     select.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  async function persistTaxonomyState(state, selectedKey, selectedLabel, message) {
-    await saveTaxonomyConfig(state.categories, state.brands, state.sellers, state.suppliers);
-    taxonomyConfigPromise = null;
-    applyTaxonomyToFormConfig({ categories: state.categories, brands: state.brands, suppliers: state.suppliers });
-    updateTaxonomySelects();
-    if (selectedKey || selectedLabel) selectTaxonomyValue(state.type, selectedKey, selectedLabel);
-    renderTaxonomySheet(state);
-    window.dispatchEvent(new CustomEvent("taxonomy:updated", {
-      detail: { type: state.type },
-    }));
-    window.showToast?.(message, "success");
-  }
 
-  async function handleTaxonomyCreate(event) {
-    event.preventDefault();
-    const root = document.getElementById("taxonomy-manager");
-    const state = root?.__taxonomyState;
-    const meta = getTaxonomyMeta(state?.type);
-    const input = root?.querySelector("#taxonomy-manager-input");
-    const submitButton = root?.querySelector("[data-taxonomy-create-submit]");
-    const sellerNameInput = root?.querySelector("[data-seller-name]");
-    const sellerTelInput = root?.querySelector("[data-seller-tel]");
-    const sellerEmailInput = root?.querySelector("[data-seller-email]");
-    const value = input?.value.trim();
-    if (!state) return;
-    if (state.type === "seller" || state.type === "supplier") {
-      const name = sellerNameInput?.value.trim() || "";
-      const tel = sellerTelInput?.value.trim() || "";
-      const email = sellerEmailInput?.value.trim() || "";
-      if (!name) return;
-      if (!tel && !email) {
-        window.showToast?.(`Agrega al menos un teléfono o email para el ${meta.singular}.`, "warning");
-        return;
-      }
-      try {
-        if (submitButton) {
-          submitButton.disabled = true;
-          submitButton.dataset.loading = "true";
-          submitButton.textContent = "Guardando...";
-        }
-        if (sellerNameInput) sellerNameInput.disabled = true;
-        if (sellerTelInput) sellerTelInput.disabled = true;
-        if (sellerEmailInput) sellerEmailInput.disabled = true;
-
-        const isSeller = state.type === "seller";
-        const current = isSeller ? (state.sellers || []) : (state.suppliers || []);
-        const item = {
-          id: isSeller ? createSellerId(name, tel, email) : createSellerId(name, tel, email).replace(/^seller-/, "supplier-"),
-          name,
-          tel,
-          email,
-        };
-        if (isSeller) {
-          state.sellers = [...current, item];
-        } else {
-          state.suppliers = [...current, item];
-        }
-        await persistTaxonomyState(state, item.id, name, `Se agregó el ${meta.singular}.`);
-        sellerNameInput.value = "";
-        sellerTelInput.value = "";
-        sellerEmailInput.value = "";
-        sellerNameInput.focus();
-      } catch (error) {
-        console.error("ProductFormSheet: taxonomy create failed", error);
-        window.showToast?.(`No se pudo guardar el ${meta.singular}.`, "danger");
-      } finally {
-        const currentRoot = document.getElementById("taxonomy-manager");
-        const currentNameInput = currentRoot?.querySelector("[data-seller-name]");
-        const currentTelInput = currentRoot?.querySelector("[data-seller-tel]");
-        const currentEmailInput = currentRoot?.querySelector("[data-seller-email]");
-        const currentSubmit = currentRoot?.querySelector("[data-taxonomy-create-submit]");
-        if (currentSubmit) {
-          currentSubmit.disabled = false;
-          currentSubmit.dataset.loading = "false";
-          currentSubmit.textContent = "Guardar";
-        }
-        if (currentNameInput) currentNameInput.disabled = false;
-        if (currentTelInput) currentTelInput.disabled = false;
-        if (currentEmailInput) currentEmailInput.disabled = false;
-      }
-      return;
-    }
-    if (!value) return;
-
-    try {
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.dataset.loading = "true";
-        submitButton.textContent = "Guardando...";
-      }
-      if (input) input.disabled = true;
-
-      if (state.type === "category") {
-        const key = getNextCategoryKey(state.categories);
-        state.categories[key] = { name: value, subcategories: [] };
-        await persistTaxonomyState(state, key, value, `Se agregó la ${meta.singular}.`);
-        closeTaxonomySheet();
-        return;
-      } else if (state.type === "subcategory") {
-        const current = state.categories[state.categoryKey].subcategories || [];
-        state.categories[state.categoryKey].subcategories = Array.from(new Set([...current, value]));
-        await persistTaxonomyState(state, slugifyTaxonomyValue(value), value, `Se agregó la ${meta.singular}.`);
-        closeTaxonomySheet();
-        return;
-      } else if (state.type === "brand") {
-        const current = state.brands || [];
-        state.brands = Array.from(new Set([...current, value]));
-        await persistTaxonomyState(state, value, value, `Se agregó la ${meta.singular}.`);
-        closeTaxonomySheet();
-        return;
-      }
-      input.value = "";
-      input.focus();
-    } catch (error) {
-      console.error("ProductFormSheet: taxonomy create failed", error);
-      window.showToast?.(`No se pudo guardar la ${meta.singular}.`, "danger");
-    } finally {
-      const currentRoot = document.getElementById("taxonomy-manager");
-      const currentInput = currentRoot?.querySelector("#taxonomy-manager-input");
-      const currentSubmit = currentRoot?.querySelector("[data-taxonomy-create-submit]");
-      if (currentSubmit) {
-        currentSubmit.disabled = false;
-        currentSubmit.dataset.loading = "false";
-        currentSubmit.textContent = "Guardar";
-      }
-      if (currentInput) currentInput.disabled = false;
-    }
-  }
-
-  async function handleTaxonomyRename(root, state, key, value) {
-    const meta = getTaxonomyMeta(state.type);
-    if (!value) return;
-
-    if (state.type === "category") {
-      state.categories[key].name = value;
-      await persistTaxonomyState(state, key, value, `Se actualizó la ${meta.singular}.`);
-    } else if (state.type === "subcategory") {
-      const current = state.categories[state.categoryKey].subcategories || [];
-      const index = current.findIndex(item => slugifyTaxonomyValue(item) === key);
-      if (index === -1) return;
-      current[index] = value;
-      state.categories[state.categoryKey].subcategories = Array.from(new Set(current));
-      await persistTaxonomyState(state, slugifyTaxonomyValue(value), value, `Se actualizó la ${meta.singular}.`);
-    } else if (state.type === "brand") {
-      const current = state.brands || [];
-      const index = current.indexOf(key);
-      if (index === -1) return;
-      current[index] = value;
-      state.brands = Array.from(new Set(current));
-      await persistTaxonomyState(state, value, value, `Se actualizó la ${meta.singular}.`);
-    } else if (state.type === "supplier") {
-      const current = state.suppliers || [];
-      const index = current.findIndex(item => item.id === key);
-      if (index === -1) return;
-      current[index] = {
-        ...current[index],
-        name: value,
-      };
-      state.suppliers = [...current];
-      await persistTaxonomyState(state, current[index].id, value, `Se actualizó la ${meta.singular}.`);
-    } else {
-      const current = state.sellers || [];
-      const index = current.findIndex(item => item.id === key);
-      if (index === -1) return;
-      current[index] = {
-        ...current[index],
-        name: value,
-      };
-      state.sellers = [...current];
-      await persistTaxonomyState(state, current[index].id, value, `Se actualizó la ${meta.singular}.`);
-    }
-    root.querySelector((state.type === "seller" || state.type === "supplier") ? "[data-seller-name]" : "#taxonomy-manager-input")?.focus();
-  }
-
-  async function handleTaxonomyDelete(root, state, key) {
-    const meta = getTaxonomyMeta(state.type);
-    const deleteButton = Array.from(root.querySelectorAll("[data-taxonomy-delete]"))
-      .find(button => button.dataset.taxonomyDelete === key);
-    if (deleteButton) {
-      deleteButton.disabled = true;
-      deleteButton.dataset.loading = "true";
-      deleteButton.textContent = "Eliminando...";
-    }
-
-    if (state.type === "category") {
-      delete state.categories[key];
-    } else if (state.type === "subcategory") {
-      const current = state.categories[state.categoryKey].subcategories || [];
-      state.categories[state.categoryKey].subcategories = current.filter(item => slugifyTaxonomyValue(item) !== key);
-    } else if (state.type === "brand") {
-      state.brands = (state.brands || []).filter(item => item !== key);
-    } else if (state.type === "supplier") {
-      state.suppliers = (state.suppliers || []).filter(item => item.id !== key);
-    } else {
-      state.sellers = (state.sellers || []).filter(item => item.id !== key);
-    }
-
-    try {
-      await persistTaxonomyState(state, "", "", `Se eliminó la ${meta.singular}.`);
-      root.querySelector("#taxonomy-manager-input")?.focus();
-    } catch (error) {
-      console.error("ProductFormSheet: taxonomy delete failed", error);
-      window.showToast?.(`No se pudo eliminar la ${meta.singular}.`, "danger");
-    } finally {
-      const currentButton = Array.from(root.querySelectorAll("[data-taxonomy-delete]"))
-        .find(button => button.dataset.taxonomyDelete === key);
-      if (currentButton) {
-        currentButton.disabled = false;
-        currentButton.dataset.loading = "false";
-        currentButton.textContent = "Eliminar";
-      }
-    }
-  }
-
-  function renderTaxonomyEditRow(root, key) {
-    const state = root.__taxonomyState;
-    const item = getTaxonomyItems(state.type, state.categories, state.brands, state.categoryKey, state.sellers, state.suppliers)
-      .find(candidate => candidate.key === key);
-    const row = Array.from(root.querySelectorAll("[data-taxonomy-key]"))
-      .find(candidate => candidate.dataset.taxonomyKey === key);
-    if (!item || !row) return;
-
-    if (state.type === "seller" || state.type === "supplier") {
-      row.innerHTML = `
-        <div class="taxonomy-manager__seller-edit">
-          <label class="taxonomy-manager__label">
-            Nombre
-            <input class="taxonomy-manager__edit-input" data-seller-edit-name type="text" value="${escapeHtml(item.label)}" />
-          </label>
-          <label class="taxonomy-manager__label">
-            Tel
-            <input class="taxonomy-manager__edit-input" data-seller-edit-tel type="tel" value="${escapeHtml(item.tel || "")}" />
-          </label>
-          <label class="taxonomy-manager__label">
-            Email
-            <input class="taxonomy-manager__edit-input" data-seller-edit-email type="email" value="${escapeHtml(item.email || "")}" />
-          </label>
-        </div>
-        <div class="taxonomy-manager__item-actions">
-          <button type="button" data-taxonomy-save-edit="${escapeHtml(item.key)}">Guardar</button>
-          <button type="button" data-taxonomy-cancel-edit>Cancelar</button>
-        </div>
-      `;
-      row.querySelector("[data-seller-edit-name]")?.focus();
-      return;
-    }
-
-    row.innerHTML = `
-      <input class="taxonomy-manager__edit-input" type="text" value="${escapeHtml(item.label)}" />
-      <div class="taxonomy-manager__item-actions">
-        <button type="button" data-taxonomy-save-edit="${escapeHtml(item.key)}">Guardar</button>
-        <button type="button" data-taxonomy-cancel-edit>Cancelar</button>
-      </div>
-    `;
-    row.querySelector(".taxonomy-manager__edit-input")?.focus();
-  }
-
-  async function handleTaxonomySheetClick(event) {
-    const root = event.currentTarget;
-    const state = root.__taxonomyState;
-
-    if (event.target.closest("[data-taxonomy-close]")) {
-      closeTaxonomySheet();
-      return;
-    }
-    if (!state) return;
-
-    const editButton = event.target.closest("[data-taxonomy-edit]");
-    if (editButton) {
-      renderTaxonomyEditRow(root, editButton.dataset.taxonomyEdit);
-      return;
-    }
-
-    const cancelButton = event.target.closest("[data-taxonomy-cancel-edit]");
-    if (cancelButton) {
-      renderTaxonomySheet(state);
-      return;
-    }
-
-    const saveButton = event.target.closest("[data-taxonomy-save-edit]");
-    if (saveButton) {
-      const row = saveButton.closest("[data-taxonomy-key]");
-      const cancelButton = row?.querySelector("[data-taxonomy-cancel-edit]");
-      const inputs = row?.querySelectorAll("input");
-
-      const restoreButtonsAndInputs = () => {
-        if (saveButton) {
-          saveButton.disabled = false;
-          saveButton.dataset.loading = "false";
-          saveButton.textContent = "Guardar";
-        }
-        if (cancelButton) cancelButton.disabled = false;
-        if (inputs) inputs.forEach(input => input.disabled = false);
-      };
-
-      try {
-        if (saveButton) {
-          saveButton.disabled = true;
-          saveButton.dataset.loading = "true";
-          saveButton.textContent = "Guardando...";
-        }
-        if (cancelButton) cancelButton.disabled = true;
-        if (inputs) inputs.forEach(input => input.disabled = true);
-
-        if (state.type === "seller" || state.type === "supplier") {
-          const name = row?.querySelector("[data-seller-edit-name]")?.value.trim();
-          const tel = row?.querySelector("[data-seller-edit-tel]")?.value.trim();
-          const email = row?.querySelector("[data-seller-edit-email]")?.value.trim();
-          const isSeller = state.type === "seller";
-          const currentList = isSeller ? (state.sellers || []) : (state.suppliers || []);
-          const sellerItem = currentList.find(item => item.id === saveButton.dataset.taxonomySaveEdit);
-          if (!sellerItem) {
-            restoreButtonsAndInputs();
-            return;
-          }
-          if (!name) {
-            window.showToast?.(`El ${getTaxonomyMeta(state.type).singular} necesita un nombre.`, "warning");
-            restoreButtonsAndInputs();
-            return;
-          }
-          if (!tel && !email) {
-            window.showToast?.(`Agrega al menos un teléfono o email para el ${getTaxonomyMeta(state.type).singular}.`, "warning");
-            restoreButtonsAndInputs();
-            return;
-          }
-          sellerItem.name = name;
-          sellerItem.tel = tel || "";
-          sellerItem.email = email || "";
-          await persistTaxonomyState(state, sellerItem.id, name, `Se actualizó la ${getTaxonomyMeta(state.type).singular}.`);
-        } else {
-          const value = row?.querySelector(".taxonomy-manager__edit-input")?.value.trim();
-          if (!value) {
-            restoreButtonsAndInputs();
-            return;
-          }
-          await handleTaxonomyRename(root, state, saveButton.dataset.taxonomySaveEdit, value);
-        }
-      } catch (error) {
-        console.error("ProductFormSheet: taxonomy rename failed", error);
-        window.showToast?.("No se pudo actualizar.", "danger");
-        restoreButtonsAndInputs();
-      }
-      return;
-    }
-
-    const deleteButton = event.target.closest("[data-taxonomy-delete]");
-    if (deleteButton) {
-      await handleTaxonomyDelete(root, state, deleteButton.dataset.taxonomyDelete);
-    }
-  }
-
-  async function saveTaxonomyConfig(categories, brands, sellers = [], suppliers = []) {
-    const loaded = await loadTaxonomyConfig();
-    const recordId = loaded.record.id || taxonomyConfigRecord?.id;
-    if (!recordId) throw new Error("El registro configs no tiene id");
-
-    await window.SyncManager.shumRequest("update", {
-      baseId: window.SyncManager.config.baseId,
-      table: "configs",
-      recordId,
-      data: {
-        Categorias: JSON.stringify(categories),
-        Subcategorias: JSON.stringify(
-          Object.fromEntries(Object.entries(categories).map(([key, value]) => [key, value.subcategories || []]))
-        ),
-        Marcas: JSON.stringify(brands),
-        vendedores: JSON.stringify(sellers),
-        proveedores: JSON.stringify(suppliers),
-      },
-    });
-  }
 
   function readDraftValues(form) {
     const imageInput = form?.querySelector('input[name="product_image"]');
     const selectedType = form?.querySelector('input[name="type"]:checked');
+    const customFields = window.ProductFormCustomFields?.getFields?.() || [];
 
     return {
       nombre: getValue(form, 'input[name="name"]') || getValue(document, "#qf-name"),
@@ -1020,16 +741,26 @@
       unitCode: getSelectedText(form, 'select[name="unit"]') || getValue(document, "#qf-unit"),
       costo: getNumber(form, 'input[name="cost"]') || getNumber(document, "#qf-cost"),
       precio: getNumber(form, 'input[name="price"]') || getNumber(document, "#qf-price"),
+      currency: normalizeCurrency(getValue(form, 'select[name="currency"]') || "MXN"),
+      exchangeRate: getExchangeRate(form, 'input[name="exchange_rate"]'),
+      quoteCurrency: normalizeCurrency(getValue(document, "#qf-currency") || getValue(form, 'select[name="currency"]') || "MXN"),
+      quoteExchangeRate: getExchangeRate(document, "#qf-exchange-rate", getExchangeRate(form, 'input[name="exchange_rate"]')),
       alertaCantidad: getNumber(form, 'input[name="alert_quantity"]'),
       tasaImpuesto: getValue(form, 'select[name="tax_rate"]') === "5" ? "IVA" : "",
       metodoImpuesto: getValue(form, 'select[name="tax_method"]') === "0" ? "Inclusivo" : "Exclusivo",
       imagen: imageInput?.files?.[0]?.name || "",
+      weight: getNumber(form, 'input[name="weight"]'),
+      length: getNumber(form, 'input[name="length"]'),
+      width: getNumber(form, 'input[name="width"]'),
+      height: getNumber(form, 'input[name="height"]'),
       especificaciones: getValue(form, 'textarea[name="details"]'),
       especial3: getValue(form, 'textarea[name="history"]'),
-      especial4: getValue(form, 'input[name="cf1"]'),
-      especial5: getValue(form, 'input[name="cf2"]'),
-      especial6: getValue(form, 'input[name="cf3"]'),
-      stock: getNumber(form, 'input[name="wh_qty_3"]') + getNumber(form, 'input[name="wh_qty_4"]'),
+      especial4: customFields[0]?.value || "",
+      especial5: customFields[1]?.value || "",
+      especial6: customFields[2]?.value || "",
+      customFields,
+      stock: getWarehouseStockTotal(form),
+      warehouseStock: getWarehouseStockMap(form),
       tipoProducto: selectedType?.value || "standard",
       supplier: getValue(form, 'select[name="supplier"]'),
       supplier_part_no: getValue(form, 'input[name="supplier_part_no"]'),
@@ -1062,12 +793,13 @@
 
     const draft = window.AppState.products.find(product => product.id === draftId);
     if (!draft) return;
+    const isDraft = String(draft.id || "").startsWith("draft-") || draft.status === "draft" || draft.sync_status === "draft";
 
     Object.assign(draft, readDraftValues(form), {
       id: draft.id,
       airtable_id: draft.airtable_id || null,
-      status: "draft",
-      sync_status: "draft",
+      status: isDraft ? "draft" : (draft.status || "published"),
+      sync_status: isDraft ? "draft" : "dirty",
       createdAt: draft.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
@@ -1079,6 +811,7 @@
     }
 
     updateHeader();
+    window.ProductFormUpdateState?.sync?.();
   }
 
   function scheduleDraftAutosave() {
@@ -1280,11 +1013,16 @@
 
     try {
       button.disabled = true;
-      await openTaxonomySheet(button.dataset.taxonomyAdd);
+      window.ProductFormTaxonomy.open(button.dataset.taxonomyAdd).catch((error) => {
+        console.error("ProductFormSheet: taxonomy sheet failed", error);
+        window.showToast?.("No se pudo abrir el administrador.", "danger");
+      });
+      window.setTimeout(() => {
+        button.disabled = false;
+      }, 250);
     } catch (error) {
       console.error("ProductFormSheet: taxonomy sheet failed", error);
       window.showToast?.("No se pudo abrir el administrador.", "danger");
-    } finally {
       button.disabled = false;
     }
   }
@@ -1313,6 +1051,7 @@
   }
 
   function renderTopControls() {
+    const showWeb = window.__currentProductId ? "" : 'style="display:none;"';
     return `
       <div class="view-switch view-switch--single sheet-mode-switch" data-sheet-mode-switch="product-form">
         <button class="view-switch__toggle" type="button" aria-label="Volver al resumen del producto">
@@ -1322,6 +1061,9 @@
             </span>
             <span class="view-switch__btn" data-view="advanced" data-selected="true">
               Editar
+            </span>
+            <span class="view-switch__btn" data-view="web" data-selected="false" data-product-form-web ${showWeb}>
+              Web
             </span>
           </span>
         </button>
@@ -1335,7 +1077,19 @@
       if (window.__currentProductId) {
         const product = window.AppState?.products?.find(p => p.id === window.__currentProductId);
         if (product && typeof window.openProductDrawer === "function") {
+          window.setProductSheetHash?.("product", product, "general");
           window.openProductDrawer(product);
+        }
+      }
+    });
+
+    root.querySelector("[data-product-form-web]")?.addEventListener("click", () => {
+      window.closeProductFormSheet?.();
+      if (window.__currentProductId) {
+        const product = window.AppState?.products?.find(p => p.id === window.__currentProductId);
+        if (product && typeof window.ProductDetailSheet?.openWeb === "function") {
+          window.setProductSheetHash?.("product", product, "web");
+          window.ProductDetailSheet.openWeb(product);
         }
       }
     });
@@ -1344,12 +1098,20 @@
     if (form && !autosaveBound) {
       form.addEventListener("input", scheduleDraftAutosave);
       form.addEventListener("change", scheduleDraftAutosave);
+      document.getElementById("quick-form")?.addEventListener("input", scheduleDraftAutosave);
+      document.getElementById("quick-form")?.addEventListener("change", scheduleDraftAutosave);
       autosaveBound = true;
     }
     if (form && !taxonomyActionsBound) {
       form.addEventListener("click", handleTaxonomyAction);
       taxonomyActionsBound = true;
     }
+    if (!userScopeBound) {
+      window.addEventListener("user:scope-changed", () => renderWarehouseFields());
+      userScopeBound = true;
+    }
+    renderWarehouseFields();
+    bindCurrencyControls();
     enhanceSearchableSelects(form);
     loadTaxonomyConfig().catch((error) => {
       console.warn("ProductFormSheet: taxonomy config unavailable", error);
@@ -1385,14 +1147,8 @@
     hydrate,
     detach,
     saveDraftProgress,
-  };
-
-  window.ProductFormTaxonomy = {
-    load: loadTaxonomyConfig,
-    open: openTaxonomySheet,
-    refresh() {
-      taxonomyConfigPromise = null;
-      return loadTaxonomyConfig();
-    },
+    applyTaxonomyToFormConfig,
+    updateTaxonomySelects,
+    selectTaxonomyValue,
   };
 })();

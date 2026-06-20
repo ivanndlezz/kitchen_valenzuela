@@ -18,6 +18,9 @@ window.AppState = {
   theme: "dark",
   activeScannerTab: "photo",
   activeDrawerTab: "product",
+  activeWarehouseId: "all",
+  activeUserId: "",
+  activeRoleId: "",
   
   // Quotations & Clients
   quoteItems: [],

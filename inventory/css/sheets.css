@@ -219,7 +219,7 @@
 }
 
 .sheet-mode-switch .view-switch__btn[data-selected="true"] {
-  background-color: var(--bg-surface);
+  background-color: var(--bg-surface-raised);
   color: var(--text-main);
   box-shadow: var(--shadow-sm);
 }

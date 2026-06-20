@@ -4,6 +4,15 @@
  * and standard LocalStorage catalog synchronization. Also renders the Comparative Sync Panel.
  */
 
+function buildCustomFieldPayload(product = {}) {
+  return [1, 2, 3, 4, 5, 6].reduce((payload, n) => {
+    const field = product.customFields?.[n - 1] || {};
+    payload[`cf${n}_name`] = field.name || product[`cf${n}_name`] || "";
+    payload[`cf${n}_data`] = field.value || product[`cf${n}_data`] || "";
+    return payload;
+  }, {});
+}
+
 window.SyncManager = {
   config: {
     endpoint: "https://klef.newfacecards.com/shum-api/api.php",
@@ -12,6 +21,14 @@ window.SyncManager = {
     jsonUrl: "./data/kv_products_2026_05_05_19_31_43.json",
     saveServerUrl: "http://localhost:8765/save_inventory",
     priority: "airtable", // "airtable" > "local" > "json"
+    requestCounter: {
+      enabled: true,
+      table: "configs",
+      field: "peticiones",
+      trackedTables: ["products"],
+      storageKey: "kv-shum-request-counter",
+      flushDelayMs: 800
+    },
     quotes: {
       endpoint: "https://klef.newfacecards.com/shum-api/api.php",
       baseId: "appSVqxolsBlPACLH",
@@ -20,21 +37,163 @@ window.SyncManager = {
     }
   },
 
-  async shumRequest(action, params) {
+  requestCounterState: {
+    pending: 0,
+    timer: null,
+    flushing: false,
+    recordId: "",
+    value: null
+  },
+
+  async shumRequest(action, params, options = {}) {
+    let result = null;
     try {
       const response = await fetch(this.config.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, ...params })
       });
-      const result = await response.json();
+      result = await response.json();
       if (!result.success) {
         throw new Error(result.message || "API request failed");
       }
+      this.rememberRequestCounterRecord(action, params, result.data);
       return result.data;
     } catch (error) {
       console.error("SHUM API Error:", error);
       throw error;
+    } finally {
+      if (this.shouldTrackRequest(params, options)) {
+        this.queueRequestCounterIncrement(1);
+      }
+    }
+  },
+
+  shouldTrackRequest(params = {}, options = {}) {
+    const counter = this.config.requestCounter;
+    if (!counter?.enabled || options.skipRequestCounter) return false;
+    const trackedTables = counter.trackedTables;
+    if (!Array.isArray(trackedTables) || trackedTables.length === 0) return true;
+    return trackedTables.includes(params.table);
+  },
+
+  queueRequestCounterIncrement(amount = 1) {
+    const counter = this.config.requestCounter;
+    if (!counter?.enabled) return;
+
+    const increment = Number(amount);
+    if (Number.isFinite(increment) && increment > 0) {
+      this.requestCounterState.pending += increment;
+    }
+    window.clearTimeout(this.requestCounterState.timer);
+    this.requestCounterState.timer = window.setTimeout(() => {
+      this.flushRequestCounter().catch((error) => {
+        console.warn("SyncManager: Failed to update request counter.", error);
+      });
+    }, counter.flushDelayMs || 800);
+  },
+
+  getRequestCounterFieldValue(fields = {}) {
+    const field = this.config.requestCounter?.field || "peticiones";
+    const raw = fields[field] ?? fields.Peticiones ?? fields.peticiones;
+    const value = Number(raw);
+    return Number.isFinite(value) ? value : 0;
+  },
+
+  readCachedRequestCounter() {
+    const key = this.config.requestCounter?.storageKey;
+    if (!key) return null;
+    try {
+      return JSON.parse(localStorage.getItem(key) || "null");
+    } catch (error) {
+      console.warn("SyncManager: Failed to read cached request counter config.", error);
+      return null;
+    }
+  },
+
+  writeCachedRequestCounter(recordId, value) {
+    const key = this.config.requestCounter?.storageKey;
+    if (!key || !recordId) return;
+    localStorage.setItem(key, JSON.stringify({
+      recordId,
+      value: Number(value) || 0,
+      updatedAt: new Date().toISOString()
+    }));
+  },
+
+  rememberRequestCounterRecord(action, params = {}, data = {}) {
+    const counter = this.config.requestCounter;
+    if (!counter?.enabled || params.table !== counter.table) return;
+
+    const record = action === "list"
+      ? data?.records?.[0]
+      : (data?.id ? data : data?.record);
+    if (!record?.id) return;
+
+    this.requestCounterState.recordId = record.id;
+    this.requestCounterState.value = this.getRequestCounterFieldValue(record.fields || {});
+    this.writeCachedRequestCounter(record.id, this.requestCounterState.value);
+  },
+
+  async resolveRequestCounterRecord() {
+    const counter = this.config.requestCounter;
+    const cached = this.readCachedRequestCounter();
+    const state = this.requestCounterState;
+    const knownRecordId = state.recordId || cached?.recordId || "";
+
+    if (knownRecordId) {
+      state.recordId = knownRecordId;
+      state.value = Number(state.value ?? cached?.value) || 0;
+      return { recordId: knownRecordId, value: state.value, lookupRequests: 0 };
+    }
+
+    const result = await this.shumRequest("list", {
+      baseId: this.config.baseId,
+      table: counter.table
+    }, { skipRequestCounter: true });
+    const record = result?.records?.[0];
+    if (!record?.id) {
+      throw new Error("No se encontró el registro configs para contar peticiones");
+    }
+
+    const value = this.getRequestCounterFieldValue(record.fields || {});
+    state.recordId = record.id;
+    state.value = value;
+    this.writeCachedRequestCounter(record.id, value);
+    return { recordId: record.id, value, lookupRequests: 1 };
+  },
+
+  async flushRequestCounter() {
+    const counter = this.config.requestCounter;
+    const state = this.requestCounterState;
+    if (!counter?.enabled || state.flushing || state.pending <= 0) return;
+
+    state.flushing = true;
+    const originalRequests = state.pending;
+    state.pending = 0;
+
+    try {
+      const resolved = await this.resolveRequestCounterRecord();
+      const incrementBy = originalRequests + resolved.lookupRequests + 1;
+      const nextValue = (Number(resolved.value) || 0) + incrementBy;
+
+      const result = await this.shumRequest("update", {
+        baseId: this.config.baseId,
+        table: counter.table,
+        recordId: resolved.recordId,
+        data: {
+          [counter.field]: nextValue
+        }
+      }, { skipRequestCounter: true });
+
+      const returnedValue = this.getRequestCounterFieldValue(result?.fields || {});
+      state.value = returnedValue || nextValue;
+      this.writeCachedRequestCounter(resolved.recordId, state.value);
+    } finally {
+      state.flushing = false;
+      if (state.pending > 0) {
+        this.queueRequestCounterIncrement(0);
+      }
     }
   },
 
@@ -46,10 +205,14 @@ window.SyncManager = {
       "Marca": p.marca || "Generales",
       "Código de categoría": p.categoriaCodigo === "01" ? 1 : (p.categoriaCodigo === "02" ? 2 : (p.categoriaCodigo === "03" ? 3 : 0)),
       "unit code": p.unitCode || "Pieza",
-      "Venta unit code": p.unitCode || "Pieza",
-      "Comprar unit code": p.unitCode || "Pieza",
+      "Venta unit code": p.saleUnitCode || p.unitCode || "Pieza",
+      "Comprar unit code": p.purchaseUnitCode || p.unitCode || "Pieza",
       "Costo": Number(p.costo) || 0,
       "Precio": Number(p.precio) || 0,
+      "currency": p.currency || "MXN",
+      "exchange_rate": Number(p.exchangeRate) || 1,
+      "quote_currency": p.quoteCurrency || p.currency || "MXN",
+      "quote_exchange_rate": Number(p.quoteExchangeRate || p.exchangeRate) || 1,
       "Cantidad de alerta": Number(p.alertaCantidad) || 0,
       "Tasa de impuestos": p.tasaImpuesto || "IVA",
       "Método de impuestos": p.metodoImpuesto || "Exclusivo",
@@ -61,7 +224,15 @@ window.SyncManager = {
       "Producto Campo Personalizadoo 4": p.especial4 || "",
       "Producto Campo Personalizadoo 5": p.especial5 || "",
       "Producto Campo Personalizadoo 6": p.especial6 || "",
+      ...buildCustomFieldPayload({
+        ...p,
+        cf1_data: p.cf1_data || p.especial4 || "",
+        cf2_data: p.cf2_data || p.especial5 || "",
+        cf3_data: p.cf3_data || p.especial6 || "",
+      }),
       "envio_web": Number(p.envioWeb) || 0,
+      "web_currency": p.webCurrency || "MXN",
+      "web_exchange_rate": Number(p.webExchangeRate) || 1,
       "Mostrar en página de inicio": Boolean(p.featured),
       "Ocultar en POS": Boolean(p.hidePos),
       "Ocultar en tienda": Boolean(p.hideStore),
@@ -80,6 +251,13 @@ window.SyncManager = {
     else if (airtableCat === 2 || airtableCat === "02" || airtableCat === "2") cat = "02";
     else if (airtableCat === 3 || airtableCat === "03" || airtableCat === "3") cat = "03";
 
+    const customFields = [1, 2, 3, 4, 5, 6]
+      .map((n) => ({
+        name: f[`cf${n}_name`] || "",
+        value: f[`cf${n}_data`] || "",
+      }))
+      .filter((field) => field.name || field.value);
+
     return {
       id: code || id,
       nombre: f["Nombre"] || "",
@@ -88,9 +266,19 @@ window.SyncManager = {
       marca: f["Marca"] || "Generales",
       categoriaCodigo: cat,
       unitCode: f["unit code"] || "Pieza",
+      saleUnitCode: f["Venta unit code"] || f["unit code"] || "Pieza",
+      purchaseUnitCode: f["Comprar unit code"] || f["unit code"] || "Pieza",
       costo: Number(f["Costo"]) || 0,
       precio: Number(f["Precio"]) || 0,
+      currency: String(f["currency"] || "MXN").toUpperCase() === "USD" ? "USD" : "MXN",
+      exchangeRate: Number(f["exchange_rate"]) || 1,
+      quoteCurrency: String(f["quote_currency"] || f["currency"] || "MXN").toUpperCase() === "USD" ? "USD" : "MXN",
+      quoteExchangeRate: Number(f["quote_exchange_rate"] || f["exchange_rate"]) || 1,
       alertaCantidad: Number(f["Cantidad de alerta"]) || 0,
+      weight: Number(f["weight"] ?? f["Peso"]) || 0,
+      length: Number(f["length"] ?? f["Largo"]) || 0,
+      width: Number(f["width"] ?? f["Ancho"]) || 0,
+      height: Number(f["height"] ?? f["Alto"]) || 0,
       tasaImpuesto: f["Tasa de impuestos"] || "IVA",
       metodoImpuesto: f["Método de impuestos"] || "Exclusivo",
       imagen: f["Imagen"] || "no_image.png",
@@ -101,7 +289,22 @@ window.SyncManager = {
       especial4: f["Producto Campo Personalizadoo 4"] || "",
       especial5: f["Producto Campo Personalizadoo 5"] || "",
       especial6: f["Producto Campo Personalizadoo 6"] || "",
+      customFields,
+      cf1_name: f["cf1_name"] || "",
+      cf1_data: f["cf1_data"] || "",
+      cf2_name: f["cf2_name"] || "",
+      cf2_data: f["cf2_data"] || "",
+      cf3_name: f["cf3_name"] || "",
+      cf3_data: f["cf3_data"] || "",
+      cf4_name: f["cf4_name"] || "",
+      cf4_data: f["cf4_data"] || "",
+      cf5_name: f["cf5_name"] || "",
+      cf5_data: f["cf5_data"] || "",
+      cf6_name: f["cf6_name"] || "",
+      cf6_data: f["cf6_data"] || "",
       envioWeb: Number(f["envio_web"]) || 0,
+      webCurrency: String(f["web_currency"] || "MXN").toUpperCase() === "USD" ? "USD" : "MXN",
+      webExchangeRate: Number(f["web_exchange_rate"]) || 1,
       featured: Boolean(f["Mostrar en página de inicio"]),
       hidePos: Boolean(f["Ocultar en POS"]),
       hideStore: Boolean(f["Ocultar en tienda"]),
@@ -287,6 +490,16 @@ window.SyncManager = {
     return allRecords;
   },
 
+  extractReturnedRecord(result) {
+    if (!result) return null;
+    if (result.id && result.fields) return result;
+    if (result.record && result.record.id && result.record.fields) return result.record;
+    if (Array.isArray(result.records) && result.records[0]?.id && result.records[0]?.fields) {
+      return result.records[0];
+    }
+    return null;
+  },
+
   async syncProduct(p) {
     const mapped = this.mapLocalToAirtable(p);
     let result;
@@ -329,8 +542,28 @@ window.SyncManager = {
       }
     }
 
-    p.sync_status = "synced";
-    p.updatedAt = new Date().toISOString();
+    const returnedRecord = this.extractReturnedRecord(result);
+    if (returnedRecord) {
+      const syncedProduct = this.mapAirtableToLocal(returnedRecord);
+      Object.assign(p, syncedProduct, {
+        status: "published",
+        sync_status: "synced",
+        updatedAt: new Date().toISOString()
+      });
+      if (window.ProductCloudCache?.patch) {
+        window.ProductCloudCache.patch(p);
+      }
+    } else {
+      p.sync_status = "synced";
+      p.status = p.status === "draft" ? "published" : (p.status || "published");
+      p.updatedAt = new Date().toISOString();
+      if (result && result.id) {
+        p.airtable_id = result.id;
+      }
+      if (window.ProductCloudCache?.patch) {
+        window.ProductCloudCache.patch(p);
+      }
+    }
     return result;
   },
 
@@ -939,7 +1172,7 @@ async function handleSingleSyncToCloud(p) {
   try {
     showToast("Sincronizando con Airtable...", "info");
     await window.SyncManager.syncProduct(p);
-    localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
+    saveProductsToStorage();
     showToast("Producto sincronizado con Airtable 🎉", "success");
     
     closeCompareSheet();
@@ -992,6 +1225,7 @@ async function handleSingleSyncToJSON(p) {
         "Producto Campo Personalizadoo 4": item.especial4,
         "Producto Campo Personalizadoo 5": item.especial5,
         "Producto Campo Personalizadoo 6": item.especial6,
+        ...buildCustomFieldPayload(item),
         "Cantidad": item.stock
       };
     });
@@ -1073,6 +1307,7 @@ async function handleDeleteEverywhere(sku, row) {
           "Producto Campo Personalizadoo 4": item.especial4,
           "Producto Campo Personalizadoo 5": item.especial5,
           "Producto Campo Personalizadoo 6": item.especial6,
+          ...buildCustomFieldPayload(item),
           "Cantidad": item.stock
         };
       });
@@ -1130,8 +1365,8 @@ async function handleBulkSyncToCloud() {
 
     await Promise.all(promises);
     
-    // Save updated local storage
-    localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
+    // Save updated local storage through the product scope utility.
+    saveProductsToStorage();
     showToast(`¡Se sincronizaron ${successCount} productos con éxito!`, "success");
     await loadAllSyncSources();
   } catch (err) {
@@ -1186,6 +1421,18 @@ async function handleBulkCloudToJSON() {
         "Producto Campo Personalizadoo 4": f["Producto Campo Personalizadoo 4"] || "",
         "Producto Campo Personalizadoo 5": f["Producto Campo Personalizadoo 5"] || "",
         "Producto Campo Personalizadoo 6": f["Producto Campo Personalizadoo 6"] || "",
+        "cf1_name": f["cf1_name"] || "",
+        "cf1_data": f["cf1_data"] || "",
+        "cf2_name": f["cf2_name"] || "",
+        "cf2_data": f["cf2_data"] || "",
+        "cf3_name": f["cf3_name"] || "",
+        "cf3_data": f["cf3_data"] || "",
+        "cf4_name": f["cf4_name"] || "",
+        "cf4_data": f["cf4_data"] || "",
+        "cf5_name": f["cf5_name"] || "",
+        "cf5_data": f["cf5_data"] || "",
+        "cf6_name": f["cf6_name"] || "",
+        "cf6_data": f["cf6_data"] || "",
         "Cantidad": Number(f["Cantidad"]) || 0
       };
     });
@@ -1194,7 +1441,7 @@ async function handleBulkCloudToJSON() {
     
     // Also save in LocalStorage to mirror
     window.AppState.products = flatList.map(normalizeJsonProduct);
-    localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
+    saveProductsToStorage();
 
     if (saved) {
       showToast(`¡Éxito! Importados ${flatList.length} productos y guardados en kv_products...json.`, "success");

@@ -20,7 +20,7 @@ export function initSubmitHandler() {
     if (submitBtn) {
       submitBtn.disabled = true;
       originalHtml = submitBtn.innerHTML;
-      submitBtn.innerHTML = "Guardando...";
+      submitBtn.dataset.loading = "true";
     }
 
     try {
@@ -30,6 +30,7 @@ export function initSubmitHandler() {
       const existingDraft = draftId && window.AppState?.products
         ? window.AppState.products.find(p => p.id === draftId)
         : null;
+      const isExistingProduct = Boolean(existingDraft && !String(existingDraft.id || "").startsWith("draft-"));
 
       // Dual Save Step 1: Immediate local persistence
       const newLocalProduct = {
@@ -40,22 +41,42 @@ export function initSubmitHandler() {
         marca: data["Marca"] || "Generales",
         categoriaCodigo: String(data["Código de categoría"] || "other"),
         unitCode: data["unit code"] || "Pieza",
+        saleUnitCode: data["Venta unit code"] || data["unit code"] || "Pieza",
+        purchaseUnitCode: data["Comprar unit code"] || data["unit code"] || "Pieza",
         costo: Number(data["Costo"]) || 0,
         precio: Number(data["Precio"]) || 0,
         alertaCantidad: Number(data["Cantidad de alerta"]) || 0,
         tasaImpuesto: data["Tasa de impuestos"] || "IVA",
         metodoImpuesto: data["Método de impuestos"] || "Exclusivo",
         imagen: data["Imagen"] || "no_image.png",
+        weight: Number(data.weight) || 0,
+        length: Number(data.length) || 0,
+        width: Number(data.width) || 0,
+        height: Number(data.height) || 0,
         descripcion: data["Producto de campo personalizado 1"] || "",
         especificaciones: data["Producto Campo Personalizadoo 2"] || "",
         especial3: data["Producto Campo Personalizadoo 3"] || "",
-        especial4: data["Producto Campo Personalizadoo 4"] || "",
-        especial5: data["Producto Campo Personalizadoo 5"] || "",
-        especial6: data["Producto Campo Personalizadoo 6"] || "",
+        especial4: data["cf1_data"] || "",
+        especial5: data["cf2_data"] || "",
+        especial6: data["cf3_data"] || "",
+        customFields: getCustomFieldsFromData(data),
+        cf1_name: data["cf1_name"] || "",
+        cf1_data: data["cf1_data"] || "",
+        cf2_name: data["cf2_name"] || "",
+        cf2_data: data["cf2_data"] || "",
+        cf3_name: data["cf3_name"] || "",
+        cf3_data: data["cf3_data"] || "",
+        cf4_name: data["cf4_name"] || "",
+        cf4_data: data["cf4_data"] || "",
+        cf5_name: data["cf5_name"] || "",
+        cf5_data: data["cf5_data"] || "",
+        cf6_name: data["cf6_name"] || "",
+        cf6_data: data["cf6_data"] || "",
         stock: Number(data["Cantidad"]) || 0,
+        warehouseStock: getWarehouseStockMap(),
         airtable_id: existingDraft?.airtable_id || null,
-        status: "draft",
-        sync_status: "draft",
+        status: isExistingProduct ? (existingDraft?.status || "published") : "draft",
+        sync_status: isExistingProduct ? "dirty" : "draft",
         createdAt: existingDraft?.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -81,35 +102,22 @@ export function initSubmitHandler() {
 
       // Show success toast for local save
       if (typeof window.showToast === "function") {
-        window.showToast("Borrador guardado localmente", "info");
+        window.showToast(isExistingProduct ? "Cambios guardados localmente" : "Borrador guardado localmente", "info");
       }
 
-      // Dual Save Step 2: Upload to Airtable
-      const response = await fetch("https://klef.newfacecards.com/shum-api/api.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "create",
-          baseId: "apppjeEy9lY65U4On", // Products Base
-          table: "products",         // Products Table
-          data: data
-        })
-      });
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.message || "API request failed");
+      // Dual Save Step 2: create or patch Airtable
+      if (!window.SyncManager?.syncProduct) {
+        throw new Error("SyncManager no está disponible para guardar productos");
       }
+      await window.SyncManager.syncProduct(newLocalProduct);
 
       // Update sync status on success
-      const createdRecord = result.data?.records?.[0];
       const p = window.AppState.products.find(x => x.id === newLocalProduct.id || (newLocalProduct.codigo && x.codigo === newLocalProduct.codigo));
       if (p) {
-        if (createdRecord && createdRecord.id) {
-          p.airtable_id = createdRecord.id;
+        if (newLocalProduct.airtable_id) {
+          p.airtable_id = newLocalProduct.airtable_id;
         }
-        p.status = "published";
+        p.status = isExistingProduct ? (p.status || "published") : "published";
         p.sync_status = "synced";
         p.updatedAt = new Date().toISOString();
         if (typeof window.saveProductsToStorage === "function") {
@@ -121,14 +129,19 @@ export function initSubmitHandler() {
 
       // Show success toast for cloud upload
       if (typeof window.showToast === "function") {
-        window.showToast("Producto guardado exitosamente en Airtable 🎉", "success");
+        window.showToast(isExistingProduct ? "Producto actualizado exitosamente" : "Producto guardado exitosamente 🎉", "success");
       } else {
-        alert("Producto guardado exitosamente en Airtable.");
+        alert(isExistingProduct ? "Producto actualizado exitosamente." : "Producto guardado exitosamente.");
       }
 
-      // Reset form inputs
-      form.reset();
-      delete form.dataset.draftId;
+      if (isExistingProduct) {
+        window.ProductFormUpdateState?.captureBaseline?.(p || newLocalProduct);
+      } else {
+        // Reset form inputs
+        form.reset();
+        window.ProductFormCustomFields?.reset();
+        delete form.dataset.draftId;
+      }
       
       // Reset steps and UI
       const { clearAllDone } = await import("./state.js");
@@ -145,7 +158,9 @@ export function initSubmitHandler() {
         exitReviewMode();
       }
       
-      goToStep(1);
+      if (!isExistingProduct) {
+        goToStep(1);
+      }
 
       // Close the side sheet
       if (typeof window.closeProductFormSheet === "function") {
@@ -167,6 +182,7 @@ export function initSubmitHandler() {
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
+        delete submitBtn.dataset.loading;
         submitBtn.innerHTML = originalHtml || "Cargar producto";
       }
     }
@@ -212,9 +228,7 @@ function gatherFormData() {
   const purchaseUnitName = getSelectText("#u-purch") || unitName;
 
   // Stock quantities sum
-  const wh3Qty = getNum('input[name="wh_qty_3"]');
-  const wh4Qty = getNum('input[name="wh_qty_4"]');
-  const stockSum = wh3Qty + wh4Qty;
+  const stockSum = getWarehouseStockTotal();
 
   // File main image filename
   const imgInput = document.querySelector('input[name="product_image"]');
@@ -248,6 +262,10 @@ function gatherFormData() {
     
     "Cantidad": stockSum,
     "Cantidad de alerta": getNum('input[name="alert_quantity"]'),
+    weight: getNum('input[name="weight"]'),
+    length: getNum('input[name="length"]'),
+    width: getNum('input[name="width"]'),
+    height: getNum('input[name="height"]'),
     
     "traslado": transferCost || null,
     
@@ -260,15 +278,37 @@ function gatherFormData() {
     "Clave Unidad": getVal('input[name="claveUnidad"]'),
     "Clave Prod": getVal('input[name="claveProdServ"]'),
     
-    // Custom fields mapping
-    "Producto Campo Personalizadoo 4": getVal('input[name="cf1"]'),
-    "Producto Campo Personalizadoo 5": getVal('input[name="cf2"]'),
-    "Producto Campo Personalizadoo 6": getVal('input[name="cf3"]'),
-    "cf1_name": "cf1", "cf1_data": getVal('input[name="cf1"]'),
-    "cf2_name": "cf2", "cf2_data": getVal('input[name="cf2"]'),
-    "cf3_name": "cf3", "cf3_data": getVal('input[name="cf3"]'),
-    "cf4_name": "cf4", "cf4_data": getVal('input[name="cf4"]'),
-    "cf5_name": "cf5", "cf5_data": getVal('input[name="cf5"]'),
-    "cf6_name": "cf6", "cf6_data": getVal('input[name="cf6"]'),
+    "Producto Campo Personalizadoo 4": getVal('input[name="cf1_data"]'),
+    "Producto Campo Personalizadoo 5": getVal('input[name="cf2_data"]'),
+    "Producto Campo Personalizadoo 6": getVal('input[name="cf3_data"]'),
+    "cf1_name": getVal('input[name="cf1_name"]'), "cf1_data": getVal('input[name="cf1_data"]'),
+    "cf2_name": getVal('input[name="cf2_name"]'), "cf2_data": getVal('input[name="cf2_data"]'),
+    "cf3_name": getVal('input[name="cf3_name"]'), "cf3_data": getVal('input[name="cf3_data"]'),
+    "cf4_name": getVal('input[name="cf4_name"]'), "cf4_data": getVal('input[name="cf4_data"]'),
+    "cf5_name": getVal('input[name="cf5_name"]'), "cf5_data": getVal('input[name="cf5_data"]'),
+    "cf6_name": getVal('input[name="cf6_name"]'), "cf6_data": getVal('input[name="cf6_data"]'),
   };
+}
+
+function getWarehouseStockTotal() {
+  return Array.from(document.querySelectorAll('#pf input[name^="wh_qty_"]'))
+    .reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+}
+
+function getWarehouseStockMap() {
+  return Object.fromEntries(
+    Array.from(document.querySelectorAll('#pf input[name^="wh_qty_"]')).map((input) => [
+      input.name.replace(/^wh_qty_/, ""),
+      Number(input.value) || 0,
+    ])
+  );
+}
+
+function getCustomFieldsFromData(data) {
+  return [1, 2, 3, 4, 5, 6]
+    .map((n) => ({
+      name: data[`cf${n}_name`] || "",
+      value: data[`cf${n}_data`] || "",
+    }))
+    .filter((field) => field.name || field.value);
 }
