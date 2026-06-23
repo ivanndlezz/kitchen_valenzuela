@@ -2102,6 +2102,7 @@ function renderQuoteTable() {
     const lineName = escapeQuoteHtml(p.nombre || item.description || "Concepto sin nombre");
     const lineSku = escapeQuoteHtml(p.codigo || item.productId || "Sin SKU");
     const lineBrand = escapeQuoteHtml(p.marca || "Sin marca");
+    const lineProductId = escapeQuoteHtml(typeof encodeId === "function" ? encodeId(p.id || item.productId || p.codigo) : (p.id || item.productId || p.codigo || ""));
     const isReplacingLine = quoteInlineReplaceIndex === idx;
     const baseCost = Number(item.baseCost) || 0;
     const transferCost = Number(item.transferCost) || 0;
@@ -2127,7 +2128,7 @@ function renderQuoteTable() {
         ` : `
           <td class="quote-doc-concept quote-doc-concept--searchable" data-quote-replace-index="${idx}" role="button" tabindex="0" aria-label="Buscar y reemplazar ${lineName}">
             <div class="quote-doc-name">${lineName}</div>
-            <div class="quote-doc-meta">SKU ${lineSku}<span></span>${lineBrand}</div>
+            <div class="quote-doc-meta">SKU ${lineSku}<span></span>${lineBrand}<span></span><a href="#" class="quote-doc-product-link" data-open-id="${lineProductId}" data-open-mode="edit">Ver producto</a></div>
             <div class="quote-doc-delivery-note" data-quote-line-display="delivery" ${item.deliveryNote ? "" : "hidden"}>${escapeQuoteHtml(item.deliveryNote)}</div>
           </td>
         `}
@@ -2226,8 +2227,9 @@ function renderQuoteTable() {
   }).join("");
 
   tbody.querySelectorAll(".quote-doc-concept--searchable").forEach(cell => {
-    const startReplace = () => {
+    const startReplace = (event) => {
       if (isQuoteStepperReadonly()) return;
+      if (event?.target?.closest("[data-open-id]")) return;
       const idx = parseInt(cell.getAttribute("data-quote-replace-index"));
       if (!Number.isInteger(idx)) return;
       removeQuoteAddCaptureRow();

@@ -202,40 +202,9 @@ function setTheme(theme) {
 function setupEventListeners() {
   // Open Scanner
   window.DOM.scanBtn.addEventListener("click", openScanner);
-
-  // Product card click delegation (removes hardcoded inline onclick)
-  const handleProductCardClick = (e) => {
-    const card = e.target.closest("[data-open-id]");
-    if (card) {
-      const encodedId = card.getAttribute("data-open-id");
-      const decodedId = typeof decodeId === "function" ? decodeId(encodedId) : encodedId;
-      const p = window.AppState.products.find(x => x.id === decodedId);
-      if (!p) return;
-
-      const isDraft = p.status === "draft" || p.sync_status === "draft";
-      if (isDraft && typeof window.openProductFormSheet === "function") {
-        window.__openingProductSheetRoute = true;
-        try {
-        window.__currentProductId = p.id;
-        const form = document.getElementById("pf");
-        if (form) form.dataset.draftId = p.id;
-        window.openProductFormSheet();
-        if (typeof window.populateProductFormFromProduct === "function") {
-          window.populateProductFormFromProduct(p);
-        }
-        if (typeof window.setProductSheetHash === "function") {
-          window.setProductSheetHash("product", p, "edit");
-        }
-        } finally {
-          window.__openingProductSheetRoute = false;
-        }
-      } else if (typeof openProductDrawer === "function") {
-        openProductDrawer(p);
-      }
-    }
-  };
-  window.DOM.productsContainer.addEventListener("click", handleProductCardClick);
-  window.DOM.draftProductsContainer?.addEventListener("click", handleProductCardClick);
+  if (typeof window.setupGlobalClickHandlers === "function") {
+    window.setupGlobalClickHandlers();
+  }
 
   // FAB Add Product - create draft and open form
   const fabAddProduct = document.getElementById('fab-add-product');
