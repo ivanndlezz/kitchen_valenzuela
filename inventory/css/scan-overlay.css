@@ -1,0 +1,225 @@
+/* Component system: scanner modal and barcode/photo scan overlay. */
+
+/* ==========================================================================
+   BLOCK: scanner-modal
+   ========================================================================== */
+
+.scanner-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scanner-modal--active {
+  display: flex;
+  opacity: 1;
+}
+
+.scanner-modal__overlay {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.scanner-modal--active .scanner-modal__overlay {
+  transform: scale(1);
+}
+
+.scanner-modal__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scanner-modal__title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.scanner-modal__close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  outline: none;
+}
+
+.scanner-modal__close:hover {
+  background: var(--bg-surface-raised);
+  color: var(--text-main);
+}
+
+.scanner__tabs {
+  display: flex;
+  background: var(--bg-surface-raised);
+  padding: 4px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.scanner__tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  outline: none;
+}
+
+.scanner__tab:hover {
+  color: var(--text-main);
+}
+
+.scanner__tab--active {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.scanner__tab svg {
+  width: 16px;
+  height: 16px;
+}
+
+.scanner__panel {
+  display: none;
+  padding: 24px;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scanner__panel--active {
+  display: flex;
+}
+
+.scanner__file-input {
+  display: none;
+}
+
+.scanner__photo-box {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg-surface-raised);
+  transition: var(--transition-fast);
+}
+
+.scanner__photo-box:hover {
+  border-color: var(--color-accent);
+}
+
+.scanner__photo-btn {
+  background: var(--text-main);
+  color: var(--bg-surface);
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+}
+
+.scanner__photo-btn:hover {
+  transform: scale(1.03);
+}
+
+.scanner__photo-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.scanner__hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.scanner__reader-wrap {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.scanner__reader {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix for html5-qrcode standard visual adjustments */
+.scanner__reader video {
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.scanner__video-btn {
+  width: 100%;
+  height: 48px;
+  background: var(--color-success);
+  border: none;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.scanner__video-btn:hover {
+  background: #2cb04e;
+}
+
+.scanner__video-btn--stop {
+  background: var(--color-danger);
+}
+
+.scanner__video-btn--stop:hover {
+  background: #e0352b;
+}

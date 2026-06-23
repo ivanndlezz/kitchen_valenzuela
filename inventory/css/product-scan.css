@@ -1,0 +1,43 @@
+/* Component system: single-product lookup and scan result screen. */
+
+.single-product-search-wrapper {
+  max-width: 500px;
+  margin: 24px auto;
+}
+.single-product-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  margin-bottom: 80px;
+}
+.single-product-empty p {
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.single-product-empty p.small {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+  margin-top: 4px;
+}
+.single-product-view-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 80px;
+}
+@media (max-width: 768px) {
+  .single-product-view-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Mobile Responsive Enhancements for Quotation Stepper ---- */

@@ -286,12 +286,33 @@
   background: transparent;
 }
 
+.app-sheet-root[data-sheet-id="product-detail"] .app-sheet__fixed-controls {
+  padding: 0;
+  border-top: 0;
+  background: transparent;
+}
+
 .app-sheet-root[data-sheet-id="product-form"] .pf-sheet__body {
   height: 100%;
   padding: 0 20px 24px 20px;
 }
 
 .app-sheet-root[data-sheet-id="product-form"] .pf-bottom-bar {
+  position: relative;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.app-sheet-root[data-sheet-id="product-detail"] .pf-bottom-bar {
   position: relative;
   height: 80px;
   background: rgba(255, 255, 255, 0.95);

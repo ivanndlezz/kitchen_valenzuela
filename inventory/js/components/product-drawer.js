@@ -5,6 +5,12 @@
 
 function openProductDrawer(p) {
   window.DOM.detailDrawer.dataset.activeId = p.id;
+  window.__currentProductId = p.id;
+  const form = document.getElementById("pf");
+  if (form) form.dataset.draftId = p.id;
+  if (typeof window.populateProductFormFromProduct === "function") {
+    window.populateProductFormFromProduct(p);
+  }
 
   // Update URL hash for the opened product
   if (typeof window.setProductSheetHash === "function") {
@@ -28,10 +34,15 @@ function openProductDrawer(p) {
     data: { product: p },
     slots: {
       topControls: window.ProductDetailSheet.renderTopControls,
-      main: () => window.ProductDetailSheet.render(p)
+      main: () => window.ProductDetailSheet.render(p),
+      fixedControls: window.ProductFormSheet?.getBottomBar
     },
     onOpen(root) {
       window.ProductDetailSheet.hydrate(root, p);
+      window.ProductFormUpdateState?.sync?.();
+    },
+    onBeforeClose() {
+      window.ProductFormSheet?.detach?.();
     },
     onClose() {
       cleanProductSheetHash();

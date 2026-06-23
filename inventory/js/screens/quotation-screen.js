@@ -676,17 +676,7 @@ window.initStepperFromHash = function(quoteId, step) {
   if (quote) {
     console.log("[QuotationDebug] initStepperFromHash: quote found, mapping items");
     window.AppState.currentQuoteId = quoteId;
-    window.AppState.quoteItems = quote.items.map(item => ({
-      product: item.product,
-      quantity: item.quantity,
-      unitPrice: item.unitPrice,
-      baseCost: item.baseCost,
-      transferCost: item.transferCost,
-      clientShippingCost: item.clientShippingCost,
-      deliveryNote: item.deliveryNote,
-      utilityType: item.utilityType,
-      utilityValue: item.utilityValue
-    }));
+    window.AppState.quoteItems = quote.items.map(normalizeQuoteLine);
     window.AppState.quoteClientId = quote.clientId || "";
     window.AppState.quoteSellerId = quote.sellerId || "";
     window.AppState.quoteValidityDate = quote.validityDate || "";
@@ -719,17 +709,7 @@ window.initStepperFromHash = function(quoteId, step) {
 function initStepper(existingQuote, targetStep) {
   if (existingQuote) {
     window.AppState.currentQuoteId = existingQuote.id;
-    window.AppState.quoteItems = existingQuote.items.map(item => ({
-      product: item.product,
-      quantity: item.quantity,
-      unitPrice: item.unitPrice,
-      baseCost: item.baseCost,
-      transferCost: item.transferCost,
-      clientShippingCost: item.clientShippingCost,
-      deliveryNote: item.deliveryNote,
-      utilityType: item.utilityType,
-      utilityValue: item.utilityValue
-    }));
+    window.AppState.quoteItems = existingQuote.items.map(normalizeQuoteLine);
     window.AppState.quoteClientId = existingQuote.clientId || "";
     window.AppState.quoteSellerId = existingQuote.sellerId || "";
     window.AppState.quoteValidityDate = existingQuote.validityDate || "";
@@ -1929,32 +1909,36 @@ function getProductQuoteUtilityValue(product = {}) {
 }
 
 function createQuoteLine(product) {
-  const baseCost = getProductQuoteBaseCost(product);
-  const transferCost = getProductQuoteTransferCost(product);
-  const currency = String(product.quoteCurrency || product.currency || "MXN").toUpperCase() === "USD" ? "USD" : "MXN";
-  const exchangeRate = Number(product.quoteExchangeRate || product.exchangeRate) || 1;
-  const utilityType = getProductQuoteUtilityType(product);
-  const utilityValue = getProductQuoteUtilityValue(product);
+  const productSnapshot = window.QuoteFieldSync?.getProductQuoteSnapshot?.(product);
+  const baseCost = productSnapshot?.baseCost ?? getProductQuoteBaseCost(product);
+  const transferCost = productSnapshot?.transferCost ?? getProductQuoteTransferCost(product);
+  const currency = productSnapshot?.currency ?? (String(product.quoteCurrency || product.currency || "MXN").toUpperCase() === "USD" ? "USD" : "MXN");
+  const exchangeRate = productSnapshot?.exchangeRate ?? (Number(product.quoteExchangeRate || product.exchangeRate) || 1);
+  const utilityType = productSnapshot?.utilityType ?? getProductQuoteUtilityType(product);
+  const utilityValue = productSnapshot?.utilityValue ?? getProductQuoteUtilityValue(product);
   const line = {
     product,
     quantity: 1,
-    unitPrice: getProductQuoteSalePrice(product),
+    productId: product.codigo || product.id || "",
+    unitPrice: productSnapshot?.unitPrice ?? getProductQuoteSalePrice(product),
     baseCost,
     transferCost,
     currency,
     exchangeRate,
     clientShippingCost: 0,
-    deliveryNote: product.deliveryNote || "",
+    deliveryNote: productSnapshot?.deliveryNote ?? (product.deliveryNote || ""),
     utilityType,
-    utilityValue
+    utilityValue,
+    fieldBehavior: window.QuoteFieldSync?.normalizeFieldBehavior?.()
   };
   return utilityValue > 0 ? line : updateQuoteLineUtilityFromPrice(line);
 }
 
-function normalizeQuoteLine(item) {
+function normalizeQuoteLine(item = {}) {
   const product = item.product || {};
   const normalized = {
     product,
+    productId: item.productId || product.codigo || product.id || "",
     quantity: Number(item.quantity) || 1,
     unitPrice: getFirstQuoteNumber(item.unitPrice, getProductQuoteSalePrice(product)),
     baseCost: getFirstQuoteNumber(item.baseCost, getProductQuoteBaseCost(product)),
@@ -1964,7 +1948,8 @@ function normalizeQuoteLine(item) {
     clientShippingCost: Number(item.clientShippingCost) || 0,
     deliveryNote: item.deliveryNote || "",
     utilityType: item.utilityType || getProductQuoteUtilityType(product),
-    utilityValue: getFirstQuoteNumber(item.utilityValue, getProductQuoteUtilityValue(product))
+    utilityValue: getFirstQuoteNumber(item.utilityValue, getProductQuoteUtilityValue(product)),
+    fieldBehavior: window.QuoteFieldSync?.normalizeFieldBehavior?.(item.fieldBehavior) || item.fieldBehavior || {}
   };
   return normalized;
 }
@@ -2030,6 +2015,7 @@ function replaceQuoteLineProduct(idx, product) {
   next.deliveryNote = previous.deliveryNote || next.deliveryNote;
   next.utilityType = previous.utilityType;
   next.utilityValue = previous.utilityValue;
+  next.fieldBehavior = window.QuoteFieldSync?.normalizeFieldBehavior?.(previous.fieldBehavior) || previous.fieldBehavior || next.fieldBehavior;
 
   window.AppState.quoteItems[idx] = next.utilityValue > 0 ? next : updateQuoteLineUtilityFromPrice(next);
 
@@ -2077,6 +2063,25 @@ function addToQuote(product) {
   closeQuoteProductsOverlay();
 }
 
+function markQuoteFieldAsStandalone(line, field, input) {
+  if (!line || !window.QuoteFieldSync?.isSyncedField?.(field)) return;
+
+  window.QuoteFieldSync.markStandalone(line, field);
+
+  if (field === "utilityValue" || field === "utilityType") {
+    window.QuoteFieldSync.markStandalone(line, "unitPrice");
+  } else if (field === "unitPrice") {
+    window.QuoteFieldSync.markStandalone(line, "utilityValue");
+  }
+
+  if (input) input.dataset.fieldBehavior = window.QuoteFieldSync.STANDALONE;
+}
+
+function getQuoteFieldBehavior(line, field) {
+  const behavior = window.QuoteFieldSync?.ensureLineFieldBehavior?.(line) || line.fieldBehavior || {};
+  return behavior[field] || "retroactive";
+}
+
 function renderQuoteTable() {
   const tbody = document.getElementById("quote-items-tbody");
   const container = document.querySelector(".quote-items-container");
@@ -2111,6 +2116,7 @@ function renderQuoteTable() {
     const totalCost = getQuoteLineCost(item);
     const subtotal = getQuoteLineSubtotal(item);
     const margin = getQuoteLineMargin(item);
+    const fieldBehavior = (field) => getQuoteFieldBehavior(item, field);
     return `
       <tr class="quote-doc-row ${isReplacingLine ? "quote-replace-capture-row" : ""}" data-idx="${idx}">
         <td class="quote-doc-handle" aria-hidden="true">
@@ -2128,7 +2134,7 @@ function renderQuoteTable() {
         ` : `
           <td class="quote-doc-concept quote-doc-concept--searchable" data-quote-replace-index="${idx}" role="button" tabindex="0" aria-label="Buscar y reemplazar ${lineName}">
             <div class="quote-doc-name">${lineName}</div>
-            <div class="quote-doc-meta">SKU ${lineSku}<span></span>${lineBrand}<span></span><a href="#" class="quote-doc-product-link" data-open-id="${lineProductId}" data-open-mode="edit">Ver producto</a></div>
+            <div class="quote-doc-meta">SKU ${lineSku}<span></span>${lineBrand}<span></span><a href="#" class="quote-doc-product-link" data-open-id="${lineProductId}">Ver producto</a></div>
             <div class="quote-doc-delivery-note" data-quote-line-display="delivery" ${item.deliveryNote ? "" : "hidden"}>${escapeQuoteHtml(item.deliveryNote)}</div>
           </td>
         `}
@@ -2142,7 +2148,7 @@ function renderQuoteTable() {
         <td class="quote-doc-price">
           <label class="quote-money-ghost">
             <span>$</span>
-            <input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="unitPrice" aria-label="Precio unitario al cliente" />
+            <input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="unitPrice" data-field-behavior="${fieldBehavior("unitPrice")}" aria-label="Precio unitario al cliente" />
           </label>
         </td>
         <td class="quote-doc-subtotal">
@@ -2175,21 +2181,21 @@ function renderQuoteTable() {
                 <span>Costo base</span>
                 <div class="quote-popover-money">
                   <span>$</span>
-                  <input type="number" min="0" step="0.01" value="${baseCost.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="baseCost" />
+                  <input type="number" min="0" step="0.01" value="${baseCost.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="baseCost" data-field-behavior="${fieldBehavior("baseCost")}" />
                 </div>
               </label>
               <label class="quote-popover-field">
                 <span>Costo traslado</span>
                 <div class="quote-popover-money">
                   <span>$</span>
-                  <input type="number" min="0" step="0.01" value="${transferCost.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="transferCost" />
+                  <input type="number" min="0" step="0.01" value="${transferCost.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="transferCost" data-field-behavior="${fieldBehavior("transferCost")}" />
                 </div>
               </label>
             </div>
             <div class="quote-popover-grid">
               <label class="quote-popover-field">
                 <span>Divisa de línea</span>
-                <select class="quote-line-select" data-idx="${idx}" data-field="currency" aria-label="Divisa de línea">
+                <select class="quote-line-select" data-idx="${idx}" data-field="currency" data-field-behavior="${fieldBehavior("currency")}" aria-label="Divisa de línea">
                   <option value="MXN" ${lineCurrency === "MXN" ? "selected" : ""}>MXN</option>
                   <option value="USD" ${lineCurrency === "USD" ? "selected" : ""}>USD</option>
                 </select>
@@ -2198,23 +2204,23 @@ function renderQuoteTable() {
                 <span>Tipo de cambio</span>
                 <div class="quote-popover-money">
                   <span>MXN</span>
-                  <input type="number" min="0" step="0.0001" value="${lineExchangeRate.toFixed(4)}" class="quote-line-input" data-idx="${idx}" data-field="exchangeRate" />
+                  <input type="number" min="0" step="0.0001" value="${lineExchangeRate.toFixed(4)}" class="quote-line-input" data-idx="${idx}" data-field="exchangeRate" data-field-behavior="${fieldBehavior("exchangeRate")}" />
                 </div>
               </label>
             </div>
             <div class="quote-popover-utility">
               <label>Utilidad esperada</label>
               <div class="quote-popover-utility-control">
-                <select class="quote-line-select" data-idx="${idx}" data-field="utilityType" aria-label="Tipo de utilidad">
+                <select class="quote-line-select" data-idx="${idx}" data-field="utilityType" data-field-behavior="${fieldBehavior("utilityType")}" aria-label="Tipo de utilidad">
                   <option value="percent" ${item.utilityType === "percent" ? "selected" : ""}>%</option>
                   <option value="amount" ${item.utilityType === "amount" ? "selected" : ""}>$</option>
                 </select>
-                <input type="number" min="0" step="0.01" value="${item.utilityValue.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="utilityValue" aria-label="Utilidad aplicada" />
+                <input type="number" min="0" step="0.01" value="${item.utilityValue.toFixed(2)}" class="quote-line-input" data-idx="${idx}" data-field="utilityValue" data-field-behavior="${fieldBehavior("utilityValue")}" aria-label="Utilidad aplicada" />
               </div>
             </div>
             <label class="quote-popover-field quote-popover-field--wide">
               <span>Leyenda de entrega</span>
-              <input type="text" value="${escapeQuoteHtml(item.deliveryNote)}" class="quote-line-input quote-line-input--text" data-idx="${idx}" data-field="deliveryNote" placeholder="Ej. En stock, entrega inmediata" />
+              <input type="text" value="${escapeQuoteHtml(item.deliveryNote)}" class="quote-line-input quote-line-input--text" data-idx="${idx}" data-field="deliveryNote" data-field-behavior="${fieldBehavior("deliveryNote")}" placeholder="Ej. En stock, entrega inmediata" />
             </label>
             <div class="quote-popover-cost-note">
               Costo total interno: <strong data-quote-line-display="totalCost">$${totalCost.toFixed(2)}</strong>
@@ -2271,6 +2277,7 @@ function renderQuoteTable() {
       const val = isText ? input.value : parseFloat(input.value) || 0;
       if (field === "quantity" && val < 1) return;
       window.AppState.quoteItems[idx][field] = val;
+      markQuoteFieldAsStandalone(window.AppState.quoteItems[idx], field, input);
       if (field === "utilityValue" || field === "utilityType") {
         window.AppState.quoteItems[idx] = updateQuoteLinePriceFromUtility(window.AppState.quoteItems[idx]);
       } else if (field === "unitPrice") {
@@ -2296,6 +2303,7 @@ function renderQuoteTable() {
         return;
       }
       window.AppState.quoteItems[idx][field] = val;
+      markQuoteFieldAsStandalone(window.AppState.quoteItems[idx], field, input);
       if (field === "utilityValue" || field === "utilityType") {
         window.AppState.quoteItems[idx] = updateQuoteLinePriceFromUtility(window.AppState.quoteItems[idx]);
       } else if (field === "unitPrice") {
@@ -2370,6 +2378,13 @@ function updateQuoteInputValue(row, field, value) {
   input.value = value;
 }
 
+function syncQuoteFieldBehaviorAttributes(row, line) {
+  row?.querySelectorAll("[data-field-behavior][data-field]").forEach((input) => {
+    const field = input.getAttribute("data-field");
+    input.dataset.fieldBehavior = getQuoteFieldBehavior(line, field);
+  });
+}
+
 function syncQuoteLineDisplays(idx) {
   const row = document.querySelector(`.quote-doc-row[data-idx="${idx}"]`);
   const item = window.AppState.quoteItems[idx];
@@ -2402,6 +2417,7 @@ function syncQuoteLineDisplays(idx) {
   updateQuoteInputValue(row, "currency", line.currency);
   updateQuoteInputValue(row, "utilityValue", line.utilityValue.toFixed(2));
   updateQuoteInputValue(row, "clientShippingCost", line.clientShippingCost.toFixed(2));
+  syncQuoteFieldBehaviorAttributes(row, line);
 }
 
 function recalculateQuote() {
@@ -2596,10 +2612,13 @@ function buildCurrentQuoteObject() {
       unitPrice: line.unitPrice,
       baseCost: line.baseCost,
       transferCost: line.transferCost,
+      currency: line.currency,
+      exchangeRate: line.exchangeRate,
       clientShippingCost: line.clientShippingCost,
       deliveryNote: line.deliveryNote,
       utilityType: line.utilityType,
       utilityValue: line.utilityValue,
+      fieldBehavior: window.QuoteFieldSync?.normalizeFieldBehavior?.(line.fieldBehavior) || line.fieldBehavior || {},
       lineMargin: getQuoteLineMargin(line),
       lineSubtotal: sub
     };

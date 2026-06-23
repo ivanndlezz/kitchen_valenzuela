@@ -45,6 +45,13 @@ export function initSubmitHandler() {
         purchaseUnitCode: data["Comprar unit code"] || data["unit code"] || "Pieza",
         costo: Number(data["Costo"]) || 0,
         precio: Number(data["Precio"]) || 0,
+        CostoEnvio: Number(data["traslado"]) || 0,
+        currency: data.currency || "MXN",
+        exchangeRate: Number(data.exchange_rate) || 1,
+        quoteCurrency: data.quote_currency || data.currency || "MXN",
+        quoteExchangeRate: Number(data.quote_exchange_rate || data.exchange_rate) || 1,
+        quoteUtilityType: data.quote_utility_type || "percent",
+        quoteUtilityValue: Number(data.quote_utility_value) || 0,
         alertaCantidad: Number(data["Cantidad de alerta"]) || 0,
         tasaImpuesto: data["Tasa de impuestos"] || "IVA",
         metodoImpuesto: data["Método de impuestos"] || "Exclusivo",
@@ -100,6 +107,14 @@ export function initSubmitHandler() {
         localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
       }
 
+      if (window.QuoteFieldSync?.emitProductUpdated) {
+        window.QuoteFieldSync.emitProductUpdated(newLocalProduct, "product-form-submit-local");
+      } else {
+        window.dispatchEvent(new CustomEvent("product:updated", {
+          detail: { product: newLocalProduct, productId: newLocalProduct.id || newLocalProduct.codigo || "", source: "product-form-submit-local" }
+        }));
+      }
+
       // Show success toast for local save
       if (typeof window.showToast === "function") {
         window.showToast(isExistingProduct ? "Cambios guardados localmente" : "Borrador guardado localmente", "info");
@@ -124,6 +139,13 @@ export function initSubmitHandler() {
           window.saveProductsToStorage();
         } else {
           localStorage.setItem("kv-catalog-products", JSON.stringify(window.AppState.products));
+        }
+        if (window.QuoteFieldSync?.emitProductUpdated) {
+          window.QuoteFieldSync.emitProductUpdated(p, "product-form-submit-sync");
+        } else {
+          window.dispatchEvent(new CustomEvent("product:updated", {
+            detail: { product: p, productId: p.id || p.codigo || "", source: "product-form-submit-sync" }
+          }));
         }
       }
 
@@ -235,6 +257,12 @@ function gatherFormData() {
   const imgFilename = imgInput?.files?.[0]?.name || "no_image.png";
 
   const transferCost = getNum('input[name="CostoEnvio"]');
+  const normalizeCurrency = (value) => String(value || "MXN").toUpperCase() === "USD" ? "USD" : "MXN";
+  const inventoryCurrency = normalizeCurrency(getVal('select[name="currency"]') || "MXN");
+  const inventoryExchangeRate = getNum('input[name="exchange_rate"]') || 1;
+  const quoteCurrency = normalizeCurrency(getVal('select[name="qf_currency"]') || inventoryCurrency);
+  const quoteExchangeRate = getNum('input[name="qf_exchange_rate"]') || inventoryExchangeRate;
+  const quoteUtilityValue = getNum('input[name="quote_utility_value"]') || getNum('input[name="qf_quote_utility_value"]') || getNum('#qf-quote-utility-value');
 
   return {
     "Nombre": getVal('input[name="name"]') || getVal('#qf-name'),
@@ -268,6 +296,12 @@ function gatherFormData() {
     height: getNum('input[name="height"]'),
     
     "traslado": transferCost || null,
+    currency: inventoryCurrency,
+    exchange_rate: inventoryExchangeRate,
+    quote_currency: quoteCurrency,
+    quote_exchange_rate: quoteExchangeRate,
+    quote_utility_type: "percent",
+    quote_utility_value: quoteUtilityValue,
     
     "Producto Campo Personalizadoo 2": getVal('textarea[name="details"]'),
     "Producto Campo Personalizadoo 3": getVal('textarea[name="history"]'),

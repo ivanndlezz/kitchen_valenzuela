@@ -44,18 +44,25 @@ function openProductSheetFromClick(event, element) {
     event.preventDefault();
   }
 
-  const encodedId = element.getAttribute("data-open-id");
-  const decodedId = typeof decodeId === "function" ? decodeId(encodedId) : encodedId;
-  const product = window.AppState?.products?.find(item => item.id === decodedId);
+  const product = findProductByOpenId(element.getAttribute("data-open-id"));
   if (!product) return;
 
   const isDraft = product.status === "draft" || product.sync_status === "draft";
-  const openMode = element.dataset.openMode || "view";
-  if ((isDraft || openMode === "edit") && typeof window.openProductFormSheet === "function") {
+  if (isDraft && typeof window.openProductFormSheet === "function") {
     openProductEditSheet(product);
   } else if (typeof openProductDrawer === "function") {
     openProductDrawer(product);
   }
+}
+
+function findProductByOpenId(encodedId) {
+  const decodedId = typeof decodeId === "function" ? decodeId(encodedId) : encodedId;
+  const openId = String(decodedId || "");
+  return window.AppState?.products?.find(product => {
+    return String(product.id || "") === openId ||
+      String(product.codigo || "") === openId ||
+      String(product.productId || "") === openId;
+  });
 }
 
 function openProductEditSheet(product) {

@@ -868,6 +868,13 @@
 
     updateHeader();
     window.ProductFormUpdateState?.sync?.();
+    if (window.QuoteFieldSync?.emitProductUpdated) {
+      window.QuoteFieldSync.emitProductUpdated(draft, "product-form-autosave");
+    } else {
+      window.dispatchEvent(new CustomEvent("product:updated", {
+        detail: { product: draft, productId: draft.id || draft.codigo || "", source: "product-form-autosave" }
+      }));
+    }
   }
 
   function scheduleDraftAutosave() {
