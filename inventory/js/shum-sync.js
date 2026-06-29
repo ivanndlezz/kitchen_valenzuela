@@ -55,6 +55,24 @@ window.SyncManager = {
       });
       result = await response.json();
       if (!result.success) {
+        // Detect 401 / Unauthorized and prompt for token
+        if (response.status === 401 || /unauthorized/i.test(result.message || "")) {
+          const newToken = await this.promptForToken();
+          if (newToken) {
+            // Retry with the new token
+            const retryResponse = await fetch(this.config.endpoint, {
+              method: "POST",
+              headers: this.getProxyHeaders(),
+              body: JSON.stringify({ action, ...params })
+            });
+            const retryResult = await retryResponse.json();
+            if (!retryResult.success) {
+              throw new Error(retryResult.message || "API request failed after token retry");
+            }
+            this.rememberRequestCounterRecord(action, params, retryResult.data);
+            return retryResult.data;
+          }
+        }
         throw new Error(result.message || "API request failed");
       }
       this.rememberRequestCounterRecord(action, params, result.data);
@@ -67,6 +85,86 @@ window.SyncManager = {
         this.queueRequestCounterIncrement(1);
       }
     }
+  },
+
+  promptForToken() {
+    return new Promise((resolve) => {
+      // Prevent stacking multiple prompts
+      if (document.getElementById("kv-token-modal")) {
+        resolve(null);
+        return;
+      }
+
+      const overlay = document.createElement("div");
+      overlay.id = "kv-token-modal";
+      Object.assign(overlay.style, {
+        position: "fixed", inset: "0", zIndex: "99999",
+        background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      });
+
+      overlay.innerHTML = `
+        <div style="
+          background: var(--bg-surface, #1a1a2e); color: var(--text-primary, #e0e0e0);
+          border: 1px solid var(--border-color, #333); border-radius: 12px;
+          padding: 28px 24px 20px; width: 380px; max-width: 90vw;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: inherit;
+        ">
+          <h3 style="margin: 0 0 6px; font-size: 16px; font-weight: 700;">Token requerido</h3>
+          <p style="margin: 0 0 16px; font-size: 13px; opacity: 0.7; line-height: 1.4;">
+            La acción requiere un token de autenticación. Ingresa el valor de <code style="font-size:12px; background:rgba(255,255,255,0.08); padding:2px 5px; border-radius:4px;">kv_import_token</code> de tu configuración.
+          </p>
+          <input id="kv-token-input" type="password" placeholder="Token de acceso" autocomplete="off" style="
+            width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 14px;
+            border: 1px solid var(--border-color, #444); border-radius: 8px;
+            background: var(--bg-surface-raised, #252540); color: inherit;
+            outline: none; margin-bottom: 16px;
+          " />
+          <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button id="kv-token-cancel" type="button" style="
+              padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border-color, #444);
+              background: transparent; color: inherit; cursor: pointer; font-size: 13px;
+            ">Cancelar</button>
+            <button id="kv-token-save" type="button" style="
+              padding: 8px 16px; border-radius: 8px; border: none;
+              background: var(--accent, #6366f1); color: #fff; cursor: pointer;
+              font-size: 13px; font-weight: 600;
+            ">Guardar</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const input = overlay.querySelector("#kv-token-input");
+      const saveBtn = overlay.querySelector("#kv-token-save");
+      const cancelBtn = overlay.querySelector("#kv-token-cancel");
+
+      const cleanup = () => overlay.remove();
+
+      const save = () => {
+        const value = input.value.trim();
+        if (!value) { input.focus(); return; }
+        localStorage.setItem("kv-shum-import-token", value);
+        cleanup();
+        resolve(value);
+      };
+
+      const cancel = () => {
+        cleanup();
+        resolve(null);
+      };
+
+      saveBtn.addEventListener("click", save);
+      cancelBtn.addEventListener("click", cancel);
+      overlay.addEventListener("click", (e) => { if (e.target === overlay) cancel(); });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") save();
+        if (e.key === "Escape") cancel();
+      });
+
+      requestAnimationFrame(() => input.focus());
+    });
   },
 
   getProxyHeaders() {
