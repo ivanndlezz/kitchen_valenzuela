@@ -1,8 +1,27 @@
 <?php
 
+// ----------------------------------------------
+// 0. CORS / PREFLIGHT
+// ----------------------------------------------
+//
+// Origin stays open because the proxy is used from Postman, production,
+// Codex, and local dev servers with variable ports. Mutating actions are
+// protected by X-KV-Import-Token when configured in garden.php.
+
 header("Content-Type: application/json; charset=utf-8");
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-KV-Import-Token");
+header("Access-Control-Max-Age: 86400");
+
+if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+    http_response_code(204);
+    exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    respond(false, "Method not allowed. Use POST.");
+}
 
 // ----------------------------------------------
 // 1. LEER JSON DE ENTRADA
@@ -35,6 +54,8 @@ if (!$baseId || !$table || !$action) {
 }
 
 $config = require '/home/rccgaowg/zakra/garden.php';
+
+validateProxyToken($config, $action);
 
 if (!isset($config[$scope])) {
     respond(false, "Scope '$scope' not found in config.");
@@ -196,7 +217,43 @@ function airtableRequest($method, $url, $apiKey, $payload = null)
 
 
 // ----------------------------------------------
-// 6. FUNCIÓN GLOBAL DE RESPUESTA JSON
+// 6. AUTORIZACIÓN DEL PROXY
+// ----------------------------------------------
+
+function validateProxyToken($config, $action)
+{
+    // Backwards-compatible default:
+    // If garden.php does not define shum_proxy.kv_import_token, reads/writes keep working.
+    // Once configured, mutating actions require X-KV-Import-Token.
+    $writeActions = ["create", "update", "delete"];
+
+    if (!in_array($action, $writeActions, true)) {
+        return;
+    }
+
+    $expectedToken = $config["shum_proxy"]["kv_import_token"] ?? "";
+
+    if (!$expectedToken) {
+        return;
+    }
+
+    $clientToken = getRequestHeader("X-KV-Import-Token");
+
+    if (!$clientToken || !hash_equals($expectedToken, $clientToken)) {
+        http_response_code(401);
+        respond(false, "Unauthorized request.");
+    }
+}
+
+function getRequestHeader($name)
+{
+    $serverKey = "HTTP_" . strtoupper(str_replace("-", "_", $name));
+    return $_SERVER[$serverKey] ?? "";
+}
+
+
+// ----------------------------------------------
+// 7. FUNCIÓN GLOBAL DE RESPUESTA JSON
 // ----------------------------------------------
 
 function respond($success, $message, $data = null)

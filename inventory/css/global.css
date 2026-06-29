@@ -681,6 +681,52 @@ svg {
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
 }
 
+.drawer__barcode-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.drawer__barcode-header h4 {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.drawer__barcode-print-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.drawer__barcode-print-btn:hover {
+  background: var(--color-accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.drawer__barcode-print-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 .drawer__barcode-container {
   width: 100%;
   max-width: 320px;
@@ -695,6 +741,299 @@ svg {
   display: block;
   border-radius: 3px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+.print-label-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.print-label-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(90deg, rgba(17, 17, 17, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(17, 17, 17, 0.04) 1px, transparent 1px),
+    #f7f7f4;
+  background-size: 12px 12px;
+}
+
+.print-label-preview__label {
+  width: min(100%, calc(var(--label-width-mm) * 3px));
+  aspect-ratio: var(--label-width-mm) / var(--label-height-mm);
+  min-height: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 17, 17, 0.22);
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+.print-label-preview__barcode {
+  width: 100%;
+}
+
+.print-label-preview__barcode svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: none;
+}
+
+.print-label-preview__label strong,
+.print-label-preview__label span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.print-label-preview__label strong {
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.print-label-preview__label span {
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.print-label-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.print-label-sheet .field {
+  margin: 0;
+}
+
+.print-label-sheet .field > span,
+.print-label-sheet .field > label,
+.print-label-sheet .field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.print-label-sheet input[type="number"],
+.print-label-sheet input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font: inherit;
+}
+
+.print-label-sheet .input-row {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.print-label-preset-row {
+  position: relative;
+  align-items: stretch;
+}
+
+.print-label-preset-row .custom-select-trigger {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  background: transparent;
+}
+
+.print-label-preset-row .custom-select-input {
+  height: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.print-label-preset-row .icon-input-action {
+  width: 42px;
+  min-width: 42px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-left: 1px solid var(--border-color);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.print-label-preset-row .icon-input-action:hover {
+  background: var(--bg-surface-raised);
+}
+
+.print-label-sheet .input-row input {
+  border: 0;
+  background: transparent;
+}
+
+.print-label-sheet .input-row .suffix {
+  padding: 0 12px 0 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.print-label-select .custom-select-option {
+  justify-content: space-between;
+}
+
+.print-label-select .custom-select-option small {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.print-label-select__empty {
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.print-label-taxonomy-shape__fields {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-raised);
+}
+
+.print-label-taxonomy-shape code {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.print-label-toggles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.print-label-toggles label {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.print-label-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.print-label-actions .btn {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.print-label-actions svg {
+  width: 17px;
+  height: 17px;
+}
+
+.print-label-loading,
+.print-label-error {
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-raised);
+  color: var(--text-secondary);
+}
+
+.print-label-error {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.print-label-frame {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.print-label-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 12px 0;
+}
+
+.print-label-section-header span {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.print-label-section-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+@media (max-width: 520px) {
+  .print-label-grid,
+  .print-label-toggles {
+    grid-template-columns: 1fr;
+  }
+
+  .print-label-actions {
+    flex-direction: column;
+  }
 }
 
 .drawer__actions {

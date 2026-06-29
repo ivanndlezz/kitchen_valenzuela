@@ -2695,7 +2695,7 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
               >LocalStorage vs Backup JSON vs Nube (Airtable)</span
             >
           </div>
-          <div style="display: flex; gap: 8px">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
             <button
               class="sync-modal__btn"
               id="bulk-cloud-btn"
@@ -2705,10 +2705,24 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
             </button>
             <button
               class="sync-modal__btn"
+              id="bulk-json-cloud-btn"
+              title="Subir el JSON local a Airtable"
+            >
+              <i data-lucide="cloud-upload"></i> JSON a Nube
+            </button>
+            <button
+              class="sync-modal__btn"
               id="bulk-sync-btn"
               title="Sincronizar todo"
             >
               <i data-lucide="refresh-cw"></i> Sincronizar Todo
+            </button>
+            <button
+              class="sync-modal__btn"
+              id="purge-cache-btn"
+              title="Purgar caché local de productos y PWA"
+            >
+              <i data-lucide="trash-2"></i> Purgar Caché
             </button>
             <button
               class="sync-modal__close"
@@ -2760,7 +2774,7 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
               <i data-lucide="file-json"></i>
               <div>
                 <div class="source-banner-count" id="sync-count-json">0</div>
-                <div class="source-banner-label">kv_products...json</div>
+                <div class="source-banner-label">inventory-products.json</div>
               </div>
             </div>
             <div class="source-banner source-banner--cloud">
@@ -3293,6 +3307,7 @@ Tiempo de entrega sujeto a disponibilidad.</textarea
     <script src="js/sheets/compare-sheet.js"></script>
     <script src="js/sheets/client-sheet.js"></script>
     <script src="js/sheets/product-detail-sheet.js"></script>
+    <script src="js/sheets/print-label-sheet.js"></script>
     <script src="js/sheets/product-form-sheet.js?v=taxonomy-sellers-2"></script>
     <script src="js/sheets/taxonomy-manager-panel.js"></script>
     <!-- Screens -->

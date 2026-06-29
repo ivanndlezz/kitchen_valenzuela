@@ -119,6 +119,18 @@ window.loadSingleProduct = function(sku) {
           </div>
         </div>
         <div class="drawer__barcode-section" style="padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+          <div class="drawer__barcode-header">
+            <h4>Código de Barras (${(p.barcodeType || "code128").toUpperCase()})</h4>
+            <button
+              class="drawer__barcode-print-btn"
+              type="button"
+              data-product-action="print-label"
+              title="Imprimir código de barras"
+              aria-label="Imprimir código de barras"
+            >
+              <i data-lucide="printer"></i>
+            </button>
+          </div>
           <div class="drawer__barcode-container">
             ${barcodeSvg}
           </div>
@@ -179,6 +191,16 @@ window.loadSingleProduct = function(sku) {
   document.getElementById("btn-single-add-quote").addEventListener("click", () => {
     if (typeof addToQuote === "function") addToQuote(p);
   });
+
+  container
+    .querySelector('[data-product-action="print-label"]')
+    ?.addEventListener("click", () => {
+      if (!window.PrintLabelSheet?.open) {
+        window.showToast?.("Impresión de etiquetas no disponible.", "danger");
+        return;
+      }
+      window.PrintLabelSheet.open(p);
+    });
 
   createLucideIcons();
 };

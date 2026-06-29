@@ -28,7 +28,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 314,
@@ -36,11 +36,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Codo Calle 90° de 1/2\" DORMONT",
@@ -71,7 +71,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 120,
@@ -79,11 +79,11 @@
       "tienda": 6.0,
       "bodega": 0.0,
       "physicalFinal": 6.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 6.0,
       "importedQuantity": 6.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Interruptor de encendido ALTO-SHAAM",
@@ -114,7 +114,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 448,
@@ -122,11 +122,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Cartucho de filtro EVERPURE",
@@ -157,7 +157,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 390,
@@ -165,11 +165,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Sensor J SANSON",
@@ -200,7 +200,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 495,
@@ -208,11 +208,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Guante anticorte  de acero inoxidable grande CONCASSE",
@@ -243,7 +243,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 620,
@@ -251,11 +251,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Juegos de conectores para mezcladora KROWNE",
@@ -286,7 +286,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 102,
@@ -294,11 +294,11 @@
       "tienda": 5.0,
       "bodega": 0.0,
       "physicalFinal": 5.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 5.0,
       "importedQuantity": 5.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Manguera amarrilla lisa 3/4 x 60\" DORMONT",
@@ -329,7 +329,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 134,
@@ -337,11 +337,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Mezcladora a pared de 8\" DICA",
@@ -372,7 +372,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 110,
@@ -380,11 +380,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Quemador de salamandra Infrarrojos, 38,1 x 20,32 cm GARLAND",
@@ -415,7 +415,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 488,
@@ -423,11 +423,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Empaque universal dimensiones 61 x 140 cm negro",
@@ -458,7 +458,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 49,
@@ -466,11 +466,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Manguera de gas azul 1/2 x 48\" DORMONT",
@@ -501,7 +501,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 136,
@@ -509,11 +509,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Sonda, termistor, 3M",
@@ -544,7 +544,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 306,
@@ -552,11 +552,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Cortina Hawaianna",
@@ -587,7 +587,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 267,
@@ -595,11 +595,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Turbina jaula de ardilla de 27.5 x 4cm con flecha 5/8 comercial galvanizada rot. Izq",
@@ -655,7 +655,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 184,
@@ -663,11 +663,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Manguera para bin ICE O MATIC",
@@ -698,7 +698,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 402,
@@ -706,11 +706,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "COMBINADO DE GAS 8 18X26\" PLUS S/N:2024E0052332",
@@ -741,7 +741,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 69,
@@ -749,11 +749,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Perilla de control",
@@ -784,7 +784,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 357,
@@ -792,11 +792,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Tarjeta de control para deshidratador WARING/WDH10",
@@ -852,7 +852,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 248,
@@ -860,11 +860,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Modulo de ignición 3 Tfi, sin reinicio BAXTER",
@@ -895,7 +895,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 353,
@@ -903,11 +903,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Kit capacitor condensador 3.5 UF",
@@ -938,7 +938,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 545,
@@ -946,11 +946,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Sensor termisor 4m NTCEPC B57025M25",
@@ -981,7 +981,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 307,
@@ -989,11 +989,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Cepillo para manos y uñas de cerda CONCASSE",
@@ -1024,7 +1024,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 618,
@@ -1032,11 +1032,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Valvula de presion M-Lq MEIKO",
@@ -1067,7 +1067,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 323,
@@ -1075,11 +1075,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": " Termostato De Alto Límite, 350 °C",
@@ -1110,7 +1110,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 556,
@@ -1118,11 +1118,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "1950-001 Termopila milivolts ROBERTSHAW",
@@ -1153,7 +1153,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 524,
@@ -1161,11 +1161,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Gratinador de 24\" ME2310153HB",
@@ -1196,7 +1196,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 79,
@@ -1204,11 +1204,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Mando de control (perilla) EVO",
@@ -1239,7 +1239,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 454,
@@ -1247,11 +1247,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Rebanadora Bermex MS-300-CT Con Cuchilla De Acero",
@@ -1282,7 +1282,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 91,
@@ -1290,11 +1290,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Bowl kng 14 oz CARLISLE",
@@ -1325,7 +1325,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 616,
@@ -1333,11 +1333,11 @@
       "tienda": 47.0,
       "bodega": 0.0,
       "physicalFinal": 47.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 47.0,
       "importedQuantity": 47.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Resistencia plana",
@@ -1368,7 +1368,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 583,
@@ -1376,11 +1376,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Robertshaw 5300-40B, Termostato milivolts RX-10-24",
@@ -1436,7 +1436,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 182,
@@ -1444,11 +1444,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "\"Estufa de mesa a Gas 4 quemadores de 24",
@@ -1504,7 +1504,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 197,
@@ -1512,11 +1512,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Calentador línea de drenaje",
@@ -1547,7 +1547,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 255,
@@ -1555,11 +1555,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Empaque puerta horno Arianna",
@@ -1590,7 +1590,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 539,
@@ -1598,11 +1598,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Conexión rapida 3/4 A75 DORMONT",
@@ -1633,7 +1633,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 125,
@@ -1641,11 +1641,11 @@
       "tienda": 3.0,
       "bodega": 0.0,
       "physicalFinal": 3.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 3.0,
       "importedQuantity": 3.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Termostato para Horno ABJC",
@@ -1676,7 +1676,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 235,
@@ -1684,11 +1684,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Válvula de bola de gas de paso de 1/2\" DORMONT",
@@ -1719,7 +1719,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 150,
@@ -1727,11 +1727,11 @@
       "tienda": 3.0,
       "bodega": 0.0,
       "physicalFinal": 3.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 3.0,
       "importedQuantity": 3.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Kit de termostato 269 C",
@@ -1762,7 +1762,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 554,
@@ -1770,11 +1770,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Cabezal quemador, hornilla HOBART",
@@ -1805,7 +1805,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 214,
@@ -1813,11 +1813,11 @@
       "tienda": 6.0,
       "bodega": 0.0,
       "physicalFinal": 6.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 6.0,
       "importedQuantity": 6.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Montaje de válvula de drenaje, lado derecho",
@@ -1848,7 +1848,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 354,
@@ -1856,11 +1856,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Fabricacion de base para parrilla 25\" C18 con regatones",
@@ -1891,7 +1891,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 198,
@@ -1899,11 +1899,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Arrancador de compresor de pieza de climatización COPELAND EMERSON",
@@ -1934,7 +1934,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 240,
@@ -1942,11 +1942,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Sarten 8 in VOLLRATH",
@@ -1977,7 +1977,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 626,
@@ -1985,11 +1985,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Kit control de temperatura ERC112D",
@@ -2020,7 +2020,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 281,
@@ -2028,11 +2028,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Bisagras para refrigerador GENERICO",
@@ -2063,7 +2063,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 35,
@@ -2071,11 +2071,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Empaque universal dimensiones 73.5 X 50 cm negro",
@@ -2106,7 +2106,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 52,
@@ -2114,11 +2114,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Contactores 1 pole 115v MANITOWOC",
@@ -2149,7 +2149,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 395,
@@ -2157,11 +2157,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Motobomba de enjuague e 220/240v - 1PH - 60HZ - ECOMAX 603/503 Lavaloza",
@@ -2192,7 +2192,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 355,
@@ -2200,11 +2200,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Termostato CAEM 50-300 C bulvo largo UNIVERSAL",
@@ -2235,7 +2235,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 603,
@@ -2243,11 +2243,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "BARRIL-1/4",
@@ -2303,7 +2303,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 483,
@@ -2311,11 +2311,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Esprea para Válvula paso-53",
@@ -2346,7 +2346,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 228,
@@ -2354,11 +2354,11 @@
       "tienda": 10.0,
       "bodega": 0.0,
       "physicalFinal": 10.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 10.0,
       "importedQuantity": 10.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Camara fermentadora 2022D0039181",
@@ -2389,7 +2389,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 67,
@@ -2397,11 +2397,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Manguera de gas corrugada amarilla 3/4\" X 36\" DORMONT",
@@ -2432,7 +2432,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 138,
@@ -2440,11 +2440,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Carbones Para Motor Licuadora Vitamix San-son Omniblend Ceos",
@@ -2475,7 +2475,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 430,
@@ -2483,11 +2483,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Anillo de amoladora",
@@ -2518,7 +2518,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 330,
@@ -2526,11 +2526,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Niple camisa 1/4",
@@ -2561,7 +2561,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 456,
@@ -2569,11 +2569,11 @@
       "tienda": 3.0,
       "bodega": 0.0,
       "physicalFinal": 3.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 3.0,
       "importedQuantity": 3.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Motor de 120 voltios  GARLAND",
@@ -2604,7 +2604,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 180,
@@ -2612,11 +2612,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Llave mezcaldora a cubierta de 8\" con cuello recto 12",
@@ -2647,7 +2647,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 104,
@@ -2655,11 +2655,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Perilla beige para valvula de gas",
@@ -2690,7 +2690,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 517,
@@ -2698,11 +2698,11 @@
       "tienda": 3.0,
       "bodega": 0.0,
       "physicalFinal": 3.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 3.0,
       "importedQuantity": 3.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Bandeja de drenaje en espiral",
@@ -2733,7 +2733,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 246,
@@ -2741,11 +2741,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Kit de servicio de refrigerante R290 Propano",
@@ -2776,7 +2776,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 292,
@@ -2784,11 +2784,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Conjunto piloto y electrodo gas natural DUKE",
@@ -2819,7 +2819,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 434,
@@ -2827,11 +2827,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Resistencia plana de 9.5 mm x 1.58 mm de ancho x metro",
@@ -2862,7 +2862,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 584,
@@ -2870,11 +2870,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Engrane para batidora plastico KITCHEN AID",
@@ -2905,7 +2905,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 439,
@@ -2913,11 +2913,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Kit de reequipamiento, tornillo, pasador recto RATIONAL",
@@ -2948,7 +2948,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 451,
@@ -2956,11 +2956,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Charola semirrígida antiadherente Speed.Basket Small",
@@ -2991,7 +2991,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 568,
@@ -2999,11 +2999,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Manguera de gas, suelta, azul, 3/4\" X 48\" DORMONT",
@@ -3034,7 +3034,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 140,
@@ -3042,11 +3042,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Cable para alta temperatura silicón y fibra 300° Calibre 14 Cobre Niquelado, 600v x mt",
@@ -3077,7 +3077,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 253,
@@ -3085,11 +3085,11 @@
       "tienda": 60.0,
       "bodega": 0.0,
       "physicalFinal": 60.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 60.0,
       "importedQuantity": 60.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Mesa de trabajo acero T-304, C-18. 120 x 70 x 90 cm con entrepaño",
@@ -3120,7 +3120,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 201,
@@ -3128,11 +3128,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Cable 4 polos de comunicación de 3mts",
@@ -3163,7 +3163,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 546,
@@ -3171,11 +3171,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Control de presion dual automatica PENN",
@@ -3206,7 +3206,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 263,
@@ -3214,11 +3214,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "HOBART TABLERO CONJUNTO MAESTRO",
@@ -3249,7 +3249,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 373,
@@ -3257,11 +3257,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Aspa de ventilador, 7-3/4\", 5 aspas",
@@ -3292,7 +3292,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 243,
@@ -3300,11 +3300,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Piloto 3 vias tipo T Corto",
@@ -3335,7 +3335,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 518,
@@ -3343,11 +3343,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Gratinador de Queso a Gas VICM24-2",
@@ -3403,7 +3403,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 608,
@@ -3411,11 +3411,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Pastillas para Horno Rational Active Green",
@@ -3471,7 +3471,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 41,
@@ -3479,11 +3479,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Rueda locas fijas con freno de 5\" de alto x 1 1/8 \" de ancho GSW",
@@ -3514,7 +3514,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 188,
@@ -3522,11 +3522,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": " Sistema de filtración de resina BAKERY.PURE",
@@ -3557,7 +3557,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 570,
@@ -3565,11 +3565,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Valvula para estufa SANSON",
@@ -3600,7 +3600,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 506,
@@ -3608,11 +3608,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Goma espesor 73.5 c 59 x 1 mm Cafetera Simonelli",
@@ -3643,7 +3643,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 54,
@@ -3651,11 +3651,11 @@
       "tienda": 22.0,
       "bodega": 0.0,
       "physicalFinal": 22.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 22.0,
       "importedQuantity": 22.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Tarja tipo carnicero de una tina  calibre 18. Dimensiones 90 x 75 x 90",
@@ -3686,7 +3686,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 208,
@@ -3694,11 +3694,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Charola deflector B-800 HOSHIZAKI",
@@ -3729,7 +3729,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 391,
@@ -3737,11 +3737,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Bomba de agua MANITOWOC",
@@ -3772,7 +3772,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 387,
@@ -3780,11 +3780,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Aspa de 30\", 4A 5/8, 27 grados CW MARS",
@@ -3840,7 +3840,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 490,
@@ -3848,11 +3848,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Desengrasante Cítrico: Limpiador desengrasante multiusos",
@@ -3883,7 +3883,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 11,
@@ -3891,11 +3891,11 @@
       "tienda": 9.0,
       "bodega": 0.0,
       "physicalFinal": 8.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 8.0,
       "importedQuantity": 8.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Bisagra superior ASBER",
@@ -3926,7 +3926,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 34,
@@ -3934,11 +3934,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Válvula solenoide, EVR 3, Abocardada, 1/4 in, Función: NC",
@@ -3969,7 +3969,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 324,
@@ -3977,11 +3977,11 @@
       "tienda": 1.0,
       "bodega": 0.0,
       "physicalFinal": 1.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 1.0,
       "importedQuantity": 1.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Kit de elemento calefactor resistencia",
@@ -4012,7 +4012,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 346,
@@ -4020,11 +4020,11 @@
       "tienda": 2.0,
       "bodega": 0.0,
       "physicalFinal": 2.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 2.0,
       "importedQuantity": 2.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Quemador tipo polidoro 345mm",
@@ -4055,7 +4055,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 234,
@@ -4063,11 +4063,11 @@
       "tienda": 4.0,
       "bodega": 0.0,
       "physicalFinal": 4.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 4.0,
       "importedQuantity": 4.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Barril 3/8",
@@ -4098,7 +4098,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 422,
@@ -4106,11 +4106,11 @@
       "tienda": 3.0,
       "bodega": 0.0,
       "physicalFinal": 3.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 3.0,
       "importedQuantity": 3.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Resorte muelle HOSHIZAKI",
@@ -4141,7 +4141,7 @@
       "bodega": 0.0
     },
     "inventory_import": {
-      "id": "kcv-may-2026-apply-20260629-101533",
+      "id": "kcv-may-2026-apply-20260629-101516",
       "action": "update",
       "source": "Inventario de TIENDA KCV MAYO 2026 Final (CIERRE).xlsx",
       "sourceRow": 407,
@@ -4149,11 +4149,11 @@
       "tienda": 0.0,
       "bodega": 0.0,
       "physicalFinal": 0.0,
-      "updatedAt": "2026-06-29T10:15:33",
+      "updatedAt": "2026-06-29T10:15:16",
       "previousQuantity": 0.0,
       "importedQuantity": 0.0
     },
-    "updatedAt": "2026-06-29T10:15:33"
+    "updatedAt": "2026-06-29T10:15:16"
   },
   {
     "Nombre": "Conector en T Follet",

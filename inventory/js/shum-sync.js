@@ -18,7 +18,7 @@ window.SyncManager = {
     endpoint: "https://klef.newfacecards.com/shum-api/api.php",
     baseId: "apppjeEy9lY65U4On",
     table: "products",
-    jsonUrl: "./data/kv_products_2026_05_05_19_31_43.json",
+    jsonUrl: "./data/inventory-products.json",
     saveServerUrl: "http://localhost:8765/save_inventory",
     priority: "airtable", // "airtable" > "local" > "json"
     requestCounter: {
@@ -50,7 +50,7 @@ window.SyncManager = {
     try {
       const response = await fetch(this.config.endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: this.getProxyHeaders(),
         body: JSON.stringify({ action, ...params })
       });
       result = await response.json();
@@ -67,6 +67,20 @@ window.SyncManager = {
         this.queueRequestCounterIncrement(1);
       }
     }
+  },
+
+  getProxyHeaders() {
+    const headers = { "Content-Type": "application/json" };
+    const token = window.Config?.SHUM_PROXY_TOKEN
+      || localStorage.getItem("kv-shum-import-token")
+      || sessionStorage.getItem("kv-shum-import-token")
+      || "";
+
+    if (token) {
+      headers["X-KV-Import-Token"] = token;
+    }
+
+    return headers;
   },
 
   shouldTrackRequest(params = {}, options = {}) {
@@ -760,7 +774,9 @@ function setupSyncUI() {
   const sheetSyncBtn = document.getElementById("sync-btn-sheet");
   const syncCloseBtn = document.getElementById("sync-close-btn");
   const bulkCloudBtn = document.getElementById("bulk-cloud-btn");
+  const bulkJsonCloudBtn = document.getElementById("bulk-json-cloud-btn");
   const bulkSyncBtn = document.getElementById("bulk-sync-btn");
+  const purgeCacheBtn = document.getElementById("purge-cache-btn");
   const syncFilterTabs = document.getElementById("sync-filter-tabs");
 
   if (!syncBtn) return;
@@ -769,7 +785,9 @@ function setupSyncUI() {
   if (sheetSyncBtn) sheetSyncBtn.addEventListener("click", openSyncModal);
   syncCloseBtn.addEventListener("click", closeSyncModal);
   bulkCloudBtn.addEventListener("click", handleBulkCloudToJSON);
+  bulkJsonCloudBtn?.addEventListener("click", handleBulkJSONToCloud);
   bulkSyncBtn.addEventListener("click", handleBulkSyncToCloud);
+  purgeCacheBtn?.addEventListener("click", handlePurgeCache);
 
   // Tab selectors
   syncFilterTabs.querySelectorAll("[data-sync-filter]").forEach(tab => {
@@ -1336,7 +1354,7 @@ function triggerJSONDownload(dataList) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "kv_products_2026_05_05_19_31_43.json";
+  a.download = "inventory-products.json";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -1382,6 +1400,131 @@ async function handleBulkSyncToCloud() {
     btn.disabled = false;
     btn.innerHTML = `<i data-lucide="refresh-cw"></i> Sincronizar Todo`;
     createLucideIcons();
+  }
+}
+
+function delaySync(ms = 150) {
+  return new Promise(resolve => window.setTimeout(resolve, ms));
+}
+
+async function handleBulkJSONToCloud() {
+  const btn = document.getElementById("bulk-json-cloud-btn");
+  if (!btn) return;
+
+  if (!confirm("¿Subir el JSON local completo a Airtable? Se actualizarán productos existentes por Código y se crearán los que no existan.")) {
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = `<i data-lucide="loader" class="spinning"></i> Subiendo...`;
+  createLucideIcons();
+
+  let successCount = 0;
+  let errorCount = 0;
+
+  try {
+    showToast("Leyendo JSON local...", "info");
+    const rawJson = await window.SyncManager.loadFromLocalJSON();
+    const products = (rawJson || [])
+      .map(normalizeJsonProduct)
+      .filter(product => String(product.codigo || "").trim());
+
+    if (!products.length) {
+      showToast("El JSON local no contiene productos válidos.", "warning");
+      return;
+    }
+
+    const localByCode = new Map(
+      (window.AppState.products || [])
+        .filter(product => product?.codigo)
+        .map(product => [String(product.codigo).trim(), product])
+    );
+
+    showToast(`Subiendo ${products.length} productos del JSON a Airtable...`, "info");
+
+    for (let i = 0; i < products.length; i += 1) {
+      const product = products[i];
+      const existingLocal = localByCode.get(String(product.codigo).trim());
+      if (existingLocal?.airtable_id && !product.airtable_id) {
+        product.airtable_id = existingLocal.airtable_id;
+      }
+
+      try {
+        await window.SyncManager.syncProduct(product);
+        localByCode.set(String(product.codigo).trim(), product);
+        successCount += 1;
+      } catch (error) {
+        errorCount += 1;
+        console.error(`JSON to Airtable failed for ${product.codigo}:`, error);
+      }
+
+      if ((i + 1) % 10 === 0 || i === products.length - 1) {
+        btn.innerHTML = `<i data-lucide="loader" class="spinning"></i> ${i + 1}/${products.length}`;
+        createLucideIcons();
+      }
+
+      await delaySync(150);
+    }
+
+    window.AppState.products = Array.from(localByCode.values());
+    saveProductsToStorage();
+
+    showToast(`JSON a Airtable: ${successCount} sincronizados, ${errorCount} con error.`, errorCount ? "warning" : "success");
+    await loadAllSyncSources();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al subir JSON local a Airtable.", "danger");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<i data-lucide="cloud-upload"></i> JSON a Nube`;
+    createLucideIcons();
+  }
+}
+
+async function handlePurgeCache() {
+  const btn = document.getElementById("purge-cache-btn");
+  if (!confirm("¿Purgar caché local de catálogo y caché PWA? Se conservan borradores, clientes y cotizaciones.")) {
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<i data-lucide="loader" class="spinning"></i> Purgando...`;
+    createLucideIcons();
+  }
+
+  try {
+    [
+      "kv-catalog-products",
+      "kv-catalog-cloud-products",
+      "kv-catalog-cloud-products-meta",
+      "kv-shum-request-counter",
+      "kv-reload-tracker",
+      "kv-burst-log"
+    ].forEach(key => localStorage.removeItem(key));
+
+    if (window.caches?.keys) {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map(name => caches.delete(name)));
+    }
+
+    window.AppState.products = [];
+    await loadProductsFromStorage();
+    if (typeof calculateMetrics === "function") calculateMetrics();
+    if (typeof populateBrandFilter === "function") populateBrandFilter();
+    if (typeof applyFilters === "function") applyFilters();
+
+    showToast("Caché purgada. Catálogo recargado.", "success");
+    await loadAllSyncSources();
+  } catch (error) {
+    console.error("Purge cache failed:", error);
+    showToast("No se pudo purgar todo el caché.", "danger");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<i data-lucide="trash-2"></i> Purgar Caché`;
+      createLucideIcons();
+    }
   }
 }
 
@@ -1451,7 +1594,7 @@ async function handleBulkCloudToJSON() {
     saveProductsToStorage();
 
     if (saved) {
-      showToast(`¡Éxito! Importados ${flatList.length} productos y guardados en kv_products...json.`, "success");
+      showToast(`¡Éxito! Importados ${flatList.length} productos y guardados en inventory-products.json.`, "success");
     } else {
       showToast("Servidor local no disponible. Descargando archivo JSON...", "warning");
       triggerJSONDownload(flatList);

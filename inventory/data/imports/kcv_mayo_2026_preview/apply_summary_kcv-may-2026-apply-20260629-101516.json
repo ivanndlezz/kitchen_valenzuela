@@ -1,0 +1,2553 @@
+{
+  "import_id": "kcv-may-2026-apply-20260629-101516",
+  "backup_dir": "inventory/data/imports/kcv_mayo_2026_preview/backups/kcv-may-2026-apply-20260629-101516",
+  "local_json": [
+    {
+      "file": "inventory/data/local_products.json",
+      "updated": 92,
+      "created": 0,
+      "skipped_duplicate": 0,
+      "final_count": 169
+    },
+    {
+      "file": "inventory/data/kv_products_2026_05_05_19_31_43.json",
+      "updated": 92,
+      "created": 0,
+      "skipped_duplicate": 0,
+      "final_count": 169
+    }
+  ],
+  "local_csv": {
+    "file": "inventory/data/products-all.csv",
+    "updated": 433,
+    "created": 0,
+    "skipped_duplicate": 1,
+    "final_count": 555
+  },
+  "cloud": {
+    "updated": 0,
+    "created": 0,
+    "errors": [
+      {
+        "action": "update",
+        "code": "AEQ-03",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DB1044A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DB1076A0",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AEQ-04",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AEQ-02",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "56.00.562",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "56.00.210A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AEQ-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DB1085A0",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AEQ-06",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "12191309",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "480HP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "12216798",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "YL-1238-4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "12216800",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BIS-GEN",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "63762",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CSG-1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "12203287",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "12203286",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "GS-2398",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-ARRASTRE",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-IMP02",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-IMP01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-IMP03",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EKC-001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-UNI07",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-UNI01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-UNI06",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-UNI03",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-UNI02",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EMP-UNI05",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "12190016",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1190002",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1026313",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1186837",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "63698",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XWARC-07EF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XWVRC-0711-H",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BERMEXB2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XEKPT-08HS-B",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "5424ND2PSPFB",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XAVC-10FS-GPRM-",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "EVB32",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "SX36-6BP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VSP200F-1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VICM24-201",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XEVL-2021-GPRS",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XEFR-04HS-ETDV",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XEVC-1011-GPRM",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XEVC-0711-GPRM-MS",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VC4GD-21D150K",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "T043C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BN-813",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MS300CT",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CLUC-48R-SD",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "153A-3",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "54410",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3963",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2750",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "21-406L",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3510",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "15-812L",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "11-400L",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "26174",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "26131",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2913",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3248",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MEZ-CM10",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2210-1WB",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "24848",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "90-3041",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "90-3032",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "COD-11/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "COD-1/2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "COD-3/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "A50",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "A75",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1675KIT48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1650KIT48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "48-4142-60",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TAG-DE-DM1061",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1650BP48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1675BPQ48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "30c-4142-36",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "30C-4142-48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1675BP48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VAL-DORM11/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VAL-DORM1/2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VAL-DORM3/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "B28",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PO-A39",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PO-A40",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "27-0459-1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "27-0295-9",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "04-0642-1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "HCCY2XT02AA999CS",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CWB9-11-30D02",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AH102524",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "FNM-25",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ATMR12",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCHF30Z0456",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ATQR25",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCHF30Z1659",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "38-0441-6",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3044300",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "N00158OS1P56",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1150456NG2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "N00218OS1P56",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PCL5",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ROJAS-4X11/8F",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "GSW-5X11/8F",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RUEBAST-3X11/8",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RUEBAST-3X11/8F",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "JOKER",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BASE-12",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BASE-24",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BASE-25",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BASE-36",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MESA-TRAB120",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MESA-TRAB200RESP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BASE-SALAMANDRA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TARJA-100",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TARJACARN-90",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TORRE-MARISCOS",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-417608-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "223005-10",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-417258-000G1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "153027",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-417260-000G1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "UNI-CLIMP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AK002111",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AF000307",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "10269",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "160126",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "320199",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AK000004",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AC000402",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "AC000205",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "514-3277-33",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ASMTRE0101",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "801022",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "947039",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "997816",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "823089",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "870841",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "018F6264",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAB-CALEF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAB-NIQ10",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "996869",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAB-ATC14300",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "QHA-6E",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "801805",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "969245",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "920158",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "991567",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "189-227MFD",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "207872",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "P70LB-1C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "800382",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TC-900E",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CORT-HAW",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "810808",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "932588",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "810878",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "0-6602",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "945039",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "SLP25-80",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "54127037",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "800316",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MPS30-50",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "205014",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "211676",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "805143",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "836833",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "219717",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "219716",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "836834",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "802803",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "216345",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "823236",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "870842",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "870837",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "870838",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "991224",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "992987",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "801112",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "960602",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ECR2-0831",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "821639",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "225824",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "815594",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VA-PROD10",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "800182",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "994353",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RXM3AB7BD",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "835384",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "807408",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "807409",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "807414",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "807415",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "807416",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "973396",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KCD2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TAB-EQUI",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RV-100X204",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "846763",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "SL7490",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "9722131",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "831970",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "851142",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PCN802460",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "068Z3209",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "068Z3403",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "9652103",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "032F8107",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VERE12002",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-122555",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-077643-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "209042C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ITA-130976",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-119760-00003",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-748572",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-0158801",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-893074",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-919509",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-919758",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-290372",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-271008",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-893535",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-119922-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-413302-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "01-1000V8-00156",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-913153",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "230020C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-292910",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-913102-0049",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "01-1A1828-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TW-001-09",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "01-1M7311-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "01-1000V9-00170",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-958392-000G2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "80629",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-437044-00006",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-411242-0000",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-428300-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-938783",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-938782",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-938784",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-938785",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-938786",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-271123",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-950546-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-404060-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-110334",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1312641",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-353589-0001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-328994",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-919363-00PK",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-941944-00006",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-410839-00004",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-563609",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-709240-0000A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-959662-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-292909-00002",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-292909-00003",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-435968-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00-424940-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "020-000222",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2008939",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "GBR00969",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "443192-02",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "HQS-WF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "105012-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "426799-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2006589",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "576517",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "4A7080G01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "9101379-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "102147701",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3032819-01S",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "9161031-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "516101501",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2007579",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "LY2N-J",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "481332M01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2006549",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3013270-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00000-8309",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "4H2582G01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "00000-7965",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "11-0564-02",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PALISLA049",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BARRIL-3/8",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PILOTO-1/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BLOCK 3-16",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "156029",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "W10380496",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PK2CB",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CEPILLO",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "2J-306342",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "8003029",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "35-625906-011",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "44-1266044122",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "9706529",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "WPW10112253",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "ESPREA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "681027",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "FILTRO-PITCO",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BT-15",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "66740",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CBT-322-126",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "421167",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "8720.1571",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "5017541",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "8184652",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "11-0404-RP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "70100801619L",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "NIPLECAMISA-1/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PER-TRIAN-FERRO",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PER-60250",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PER-UNIV-N",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PER-UNIV-R",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PERILLAESTUFASANSON",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PER-200400",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PER-30-120",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PERILLASANSON",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1291",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PILOTOHONGOSANSON",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1542800",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "56463",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "511379",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "145010",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "REDBUSHING-3/4",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PT-100",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "BA-39987",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TUERCA-5/8",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "FBV-3C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "9043056",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VALVULASANSON",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1346G",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "311847",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "14496",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1830-707",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "41-225",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1751-012",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1830-491",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1980-024",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1980-036",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1980-048",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1980-060",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1980-072",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1950-001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "4200-514",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "4350-029",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "4626-001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TG905",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TG944",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KCE1095A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KCN1003A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVE1115A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVT1200A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1354A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1574A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1352A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1235B",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1631A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1432B",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVM2505A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XHC003",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KCN1010A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KCE1096A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KCE1065A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KEL1115A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XUC001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KPE1059A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KPE2038A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KSN1022A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KTM1005A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KTR1100A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KTR1136A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KTR1161A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVL1005A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVT1380A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KGN1628A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVL1102A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVE1020B",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KPE1438A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KPE2260A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KPE2102A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "GRP815",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "GRP806",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TG126",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "XHC010",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KVL1026A",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "R02.08.010D.00",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "LC-48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DZ-400",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "030S00",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RES-PLAN",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "TEFLONMT",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "LT221209",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "S-236-42",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KXP-336-48",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "SP-463-36",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "376988",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAEM-30110",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAEM-50300BL",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAEM-50300",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CAEM-60220",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RX-1-36",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "RX-2-24",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "1F-XBB-B0323",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "700-515",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "VS820",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "Q2BBC02-H",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "90282",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "KL10825",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCCF01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCLCEP06",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCCUAICIL",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCGACAIGDEE",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCGACAIME",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "MCGMT17",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "CLARB-1759",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "PINZAJOSPER",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "INOX-PORT01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "69108",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3900C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "3907C",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DU180FA1.0HP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DU180FA1.5HP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DU180HFA2HP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "update",
+        "code": "DU180HFA3HP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PD502923",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "4A1551-01",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "DB1015A0 X LITRO",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "40.06.625P",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "957910",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "CAFIZA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTR",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VJBPF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VBPS",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VA318R",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VJAPR",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VRI",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VJAPN",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBDR",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMCHROJA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "AEQ-07",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VAPEM",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "00-497586-00001",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBQR",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMTCROJA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "CTB",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "816682",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "CE",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTL",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTM",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "ER",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "YA3A0524",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "ECM35",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VJBPR",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VJBPN",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "MESA-ISLA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "AEQ-08",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTML",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTRN",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "XENA-1011-EXRS",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMTCNEGRA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "HIDAMP12",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTMG",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMCHNEGRA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "CEPF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "FREGA-MESA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "HIFANXEXHAUST-7",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "00-961683-000G1",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "HSR-CHGBMYN",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "39832",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "BNS23",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMTCAZUL",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "AEQ-09",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PBTC",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VJAPB",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "AEQ-05",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "EBTF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VAEBP",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VBPF",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "BCR300",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "BCR150",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMCHAZUL",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "PMTA",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VAEBV",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "TCABOS0002",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "ED",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "EB",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "ATMR20",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "959083",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "VCRG36-M2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "41-224",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      },
+      {
+        "action": "create",
+        "code": "LG300-2",
+        "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      }
+    ]
+  },
+  "ignored": {
+    "duplicates": "not applied",
+    "exists_other_code": "not applied",
+    "variant": "not applied"
+  }
+}

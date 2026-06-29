@@ -299,8 +299,19 @@
         ${renderSpecs(product)}
       </div>
 
-      <h4 style="font-size: 12.5px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; font-weight:700;">Codigo de Barras (${(product.barcodeType || "code128").toUpperCase()})</h4>
       <div class="drawer__barcode-section">
+        <div class="drawer__barcode-header">
+          <h4>Codigo de Barras (${(product.barcodeType || "code128").toUpperCase()})</h4>
+          <button
+            class="drawer__barcode-print-btn"
+            type="button"
+            data-product-action="print-label"
+            title="Imprimir codigo de barras"
+            aria-label="Imprimir codigo de barras"
+          >
+            <i data-lucide="printer"></i>
+          </button>
+        </div>
         <div class="drawer__barcode-container">
           ${barcodeSvg}
         </div>
@@ -334,6 +345,14 @@
       } finally {
         window.__openingProductSheetRoute = false;
       }
+    });
+
+    root.querySelector('[data-product-action="print-label"]')?.addEventListener("click", () => {
+      if (!window.PrintLabelSheet?.open) {
+        window.showToast?.("Impresion de etiquetas no disponible.", "danger");
+        return;
+      }
+      window.PrintLabelSheet.open(product);
     });
 
     root.querySelector("[data-product-web-form]")?.addEventListener("submit", async (event) => {

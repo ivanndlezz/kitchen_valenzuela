@@ -1,0 +1,6 @@
+﻿source_row,key,modelo,descripcion,stock,tienda,bodega,location_sum,inventario_fisico_final,cantidad_a_importar,costo_unitario_pesos,costo_unitario_dolares,total_costo_unitario_pesos,fecha_adq,vigencia,matched_sources
+244,989719,989719,"Aspa de ventilador, AD7CCW39 UBA TRUE",0.0,0.0,0.0,0.0,0.0,0.0,0.0,55.0,1155.0,,Act Nov 2051,inventory/data/products-all.csv
+298,989719,989719,"Motor, 115-120 V, 50/60 Hz TRUE",2.0,2.0,0.0,2.0,2.0,2.0,0.0,222.31,4668.51,,Act Nov 2065,inventory/data/products-all.csv
+374,S/N,S/N,Tarjeta electronica lavaloza H66,1.0,1.0,0.0,1.0,1.0,1.0,11500.0,0,11500.0,,,
+485,S/N,S/N,Piloto completo para boiler,1.0,1.0,0.0,1.0,1.0,1.0,212.73,0,212.73,,Vigencia de precio,
+501,S/N,S/N,"Tubo piloto de 3/16 24""",3.0,0.0,0.0,0.0,0.0,0.0,351.17,0,351.17,,,

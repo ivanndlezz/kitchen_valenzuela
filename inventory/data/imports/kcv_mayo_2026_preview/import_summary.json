@@ -1,0 +1,39 @@
+{
+  "import_id": "kcv-may-2026-20260629-100301",
+  "stock_source": "physical",
+  "apply_output": true,
+  "output_dir": "inventory/data/imports/kcv_mayo_2026_preview",
+  "excel_rows_clean": 564,
+  "excel_unique_keys": 561,
+  "excel_duplicate_keys": 2,
+  "matches_to_update": 434,
+  "unmatched_review": 125,
+  "duplicate_excel_review": 5,
+  "duplicate_catalog_review": 1,
+  "apply_results": [
+    {
+      "source": "inventory/data/local_products.json",
+      "output": "inventory/data/imports/kcv_mayo_2026_preview/updated_local_products.json",
+      "product_count": 100,
+      "updates_written": 92,
+      "duplicate_catalog_keys": 0,
+      "skipped_duplicate_catalog": 0
+    },
+    {
+      "source": "inventory/data/kv_products_2026_05_05_19_31_43.json",
+      "output": "inventory/data/imports/kcv_mayo_2026_preview/updated_kv_products_2026_05_05_19_31_43.json",
+      "product_count": 100,
+      "updates_written": 92,
+      "duplicate_catalog_keys": 0,
+      "skipped_duplicate_catalog": 0
+    },
+    {
+      "source": "inventory/data/products-all.csv",
+      "output": "inventory/data/imports/kcv_mayo_2026_preview/updated_products-all.csv",
+      "product_count": 486,
+      "updates_written": 433,
+      "duplicate_catalog_keys": 1,
+      "skipped_duplicate_catalog": 1
+    }
+  ]
+}

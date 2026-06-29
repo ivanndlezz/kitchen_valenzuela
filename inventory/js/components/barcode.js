@@ -14,7 +14,7 @@ function decodeId(encoded) {
 }
 
 // BARCODE SVG SIMULATOR (Code 128 dynamic generator)
-function generateBarcodeSVG(code) {
+function generateBarcodeSVG(code, barHeight = 70) {
   const str = String(code);
 
   const C128 = [
@@ -72,7 +72,7 @@ function generateBarcodeSVG(code) {
   STOP.forEach((w, idx) => mods.push({ w, bar: idx % 2 === 0 }));
 
   const QUIET = 10;
-  const BAR_H = 70;
+  const BAR_H = Number(barHeight) || 70;
   const TEXT_H = 16;
   const TOTAL_H = BAR_H + TEXT_H;
 

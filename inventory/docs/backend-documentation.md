@@ -21,12 +21,80 @@ This project integrates with the **SHUM API** and uses **Airtable** as a backend
   - Performs the requested CRUD operation against Airtable and returns a JSON response with `success`, `message`, and optional `data`.
 - **Error Handling:** Errors are returned in the JSON response (`success: false`) with a descriptive message; the client displays them via the UI error handler.
 - **Authentication:** API key passed via `Authorization: Bearer <TOKEN>` header.
+- **Proxy write token:** Mutating actions (`create`, `update`, `delete`) can require `X-KV-Import-Token` when `garden.php` defines `shum_proxy.kv_import_token`.
 - **Main Endpoints Used:**
   - `GET /products` – Retrieve product catalog.
   - `POST /products` – Create a new product entry.
   - `PUT /products/:id` – Update product information.
   - `DELETE /products/:id` – Remove a product.
 - **Error Handling:** Standard HTTP status codes are mapped to UI alerts; see `shared/components/product-form/errorHandler.js` for implementation details.
+
+---
+
+## CORS and Proxy Token
+
+The SHUM proxy intentionally allows any origin:
+
+```php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-KV-Import-Token");
+```
+
+This is required because the same proxy is used from:
+
+- The production PWA.
+- Live Server or other local development servers with variable ports.
+- Postman/cURL during maintenance.
+- Codex or other local automation tools.
+
+Origin is not the security boundary. Write protection is handled by the optional proxy token.
+
+### Server-side token
+
+Store the token outside the repository in `/home/rccgaowg/zakra/garden.php`:
+
+```php
+"shum_proxy" => [
+    "kv_import_token" => "REPLACE_WITH_LONG_SECRET_TOKEN"
+]
+```
+
+When this value exists, the proxy requires the request header below for mutating actions:
+
+```text
+X-KV-Import-Token: REPLACE_WITH_LONG_SECRET_TOKEN
+```
+
+Applies to:
+
+- `create`
+- `update`
+- `delete`
+
+Does not apply to:
+
+- `list`
+- `get`
+
+This keeps Postman and read-only checks easy while protecting writes.
+
+### PWA token storage
+
+The PWA sends the token automatically when it exists in one of these places:
+
+```js
+window.Config.SHUM_PROXY_TOKEN
+localStorage.getItem("kv-shum-import-token")
+sessionStorage.getItem("kv-shum-import-token")
+```
+
+For local testing, set it in DevTools:
+
+```js
+localStorage.setItem("kv-shum-import-token", "REPLACE_WITH_LONG_SECRET_TOKEN");
+```
+
+Do not commit the real token to the repository. Because browser-side tokens are visible in DevTools, this is a practical admin safeguard, not a replacement for a full authenticated backend.
 
 ---
 

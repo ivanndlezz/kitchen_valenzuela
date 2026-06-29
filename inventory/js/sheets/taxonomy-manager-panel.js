@@ -49,6 +49,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
         suppliers: this.cloneJson(loaded.suppliers || []),
         warehouses: this.cloneJson(loaded.warehouses || []),
         roles: this.cloneJson(loaded.roles || []),
+        printLabels: this.cloneJson(loaded.printLabels || { presets: [] }),
       };
       this.slots.main = () => this.renderBodyHTML();
       this.hydrateMain();
@@ -154,6 +155,47 @@ class TaxonomyManagerPanel extends AppSideSheet {
           </div>
         </div>
       `;
+    } else if (this.state.type === "print-label" || this.state.type === "printer" || this.state.type === "print_labels") {
+      createFieldsHTML = `
+        <div class="taxonomy-manager__seller-form">
+          <div class="taxonomy-manager__seller-grid" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+            <label class="taxonomy-manager__label" style="display: flex; flex-direction: column; font-size: 13px;">
+              Nombre
+              <input id="taxonomy-manager-input" data-preset-name type="text" autocomplete="off" placeholder="Ej. Ribtec RT-420 BE" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); margin-top: 4px;" />
+            </label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <label class="taxonomy-manager__label" style="display: flex; flex-direction: column; font-size: 13px;">
+                Ancho (mm)
+                <input data-preset-width type="number" min="10" max="110" step="0.1" value="50" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); margin-top: 4px;" />
+              </label>
+              <label class="taxonomy-manager__label" style="display: flex; flex-direction: column; font-size: 13px;">
+                Alto (mm)
+                <input data-preset-height type="number" min="10" max="80" step="0.1" value="30" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); margin-top: 4px;" />
+              </label>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <label class="taxonomy-manager__label" style="display: flex; flex-direction: column; font-size: 13px;">
+                Altura barras (px)
+                <input data-preset-bar-height type="number" min="10" max="200" step="1" value="70" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); margin-top: 4px;" />
+              </label>
+              <label class="taxonomy-manager__label" style="display: flex; flex-direction: column; font-size: 13px;">
+                Tamaño fuente (pt)
+                <input data-preset-font-size type="number" min="4" max="24" step="0.5" value="8" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); margin-top: 4px;" />
+              </label>
+            </div>
+            <div style="margin-top: 4px;">
+              <label class="taxonomy-manager__label" style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                <input data-preset-show-name type="checkbox" checked style="cursor: pointer;" />
+                Mostrar nombre por defecto
+              </label>
+            </div>
+          </div>
+          <div class="taxonomy-manager__input-row taxonomy-manager__input-row--seller" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <span></span>
+            <button type="submit" data-taxonomy-create-submit class="drawer__primary-btn" style="padding: 8px 16px;">Guardar</button>
+          </div>
+        </div>
+      `;
     } else {
       createFieldsHTML = `
         <label class="taxonomy-manager__label" for="taxonomy-manager-input" style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">Agregar ${meta.singular}</label>
@@ -191,6 +233,21 @@ class TaxonomyManagerPanel extends AppSideSheet {
               ${this.state.type === "user" ? `<span>Almacenes: ${this.escapeHtml((item.warehouseIds || []).join(", ") || "Todos")}</span>` : ""}
               <span>${this.escapeHtml(item.tel || "Sin tel")}</span>
               <span>${this.escapeHtml(item.email || "Sin email")}</span>
+            </div>
+          </div>
+          <div class="taxonomy-manager__item-actions" style="display: flex; gap: 8px;">
+            <button type="button" class="btn-action-small" data-taxonomy-edit="${this.escapeHtml(item.key)}"><i data-lucide="edit"></i></button>
+            <button type="button" class="btn-action-small btn-action-small--danger" data-taxonomy-delete="${this.escapeHtml(item.key)}"><i data-lucide="trash-2"></i></button>
+          </div>
+        </div>
+      `
+        : (this.state.type === "print-label" || this.state.type === "printer" || this.state.type === "print_labels")
+        ? `
+        <div class="taxonomy-manager__item taxonomy-manager__item--seller" data-taxonomy-key="${this.escapeHtml(item.key)}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border-color);">
+          <div class="taxonomy-manager__item-main">
+            <span class="taxonomy-manager__item-name" style="font-weight: bold; font-size: 14px;">${this.escapeHtml(item.label || "Sin nombre")}</span>
+            <div class="taxonomy-manager__item-meta" style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+              <span>${this.escapeHtml(item.widthMm)} x ${this.escapeHtml(item.heightMm)} mm · Barras: ${this.escapeHtml(item.barHeight || 70)}px · Fuente: ${this.escapeHtml(item.fontSize || 8)}pt</span>
             </div>
           </div>
           <div class="taxonomy-manager__item-actions" style="display: flex; gap: 8px;">
@@ -332,6 +389,51 @@ class TaxonomyManagerPanel extends AppSideSheet {
       return;
     }
 
+    if (this.state.type === "print-label" || this.state.type === "printer" || this.state.type === "print_labels") {
+      row.innerHTML = `
+        <div style="flex: 1; margin-right: 12px;">
+          <div class="taxonomy-manager__seller-edit" style="display: flex; flex-direction: column; gap: 6px;">
+            <label class="taxonomy-manager__label" style="font-size: 12px; display: flex; flex-direction: column;">
+              Nombre
+              <input class="taxonomy-manager__edit-input" data-preset-edit-name type="text" value="${this.escapeHtml(item.label)}" style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;" />
+            </label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+              <label class="taxonomy-manager__label" style="font-size: 12px; display: flex; flex-direction: column;">
+                Ancho (mm)
+                <input class="taxonomy-manager__edit-input" data-preset-edit-width type="number" min="10" max="110" step="0.1" value="${this.escapeHtml(item.widthMm)}" style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;" />
+              </label>
+              <label class="taxonomy-manager__label" style="font-size: 12px; display: flex; flex-direction: column;">
+                Alto (mm)
+                <input class="taxonomy-manager__edit-input" data-preset-edit-height type="number" min="10" max="80" step="0.1" value="${this.escapeHtml(item.heightMm)}" style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;" />
+              </label>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+              <label class="taxonomy-manager__label" style="font-size: 12px; display: flex; flex-direction: column;">
+                Altura barras (px)
+                <input class="taxonomy-manager__edit-input" data-preset-edit-bar-height type="number" min="10" max="200" step="1" value="${this.escapeHtml(item.barHeight || 70)}" style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;" />
+              </label>
+              <label class="taxonomy-manager__label" style="font-size: 12px; display: flex; flex-direction: column;">
+                Tamaño fuente (pt)
+                <input class="taxonomy-manager__edit-input" data-preset-edit-font-size type="number" min="4" max="24" step="0.5" value="${this.escapeHtml(item.fontSize || 8)}" style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;" />
+              </label>
+            </div>
+            <div style="margin-top: 4px;">
+              <label class="taxonomy-manager__label" style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+                <input class="taxonomy-manager__edit-input" data-preset-edit-show-name type="checkbox" ${item.showName !== false ? "checked" : ""} style="cursor: pointer;" />
+                Mostrar nombre por defecto
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="taxonomy-manager__item-actions" style="display: flex; gap: 6px;">
+          <button type="button" class="drawer__primary-btn" data-taxonomy-save-edit="${this.escapeHtml(item.key)}" style="padding: 6px 12px;">Guardar</button>
+          <button type="button" class="btn-action-small" data-taxonomy-cancel-edit style="padding: 6px 12px;">Cancelar</button>
+        </div>
+      `;
+      row.querySelector("[data-preset-edit-name]")?.focus();
+      return;
+    }
+
     row.innerHTML = `
       <input class="taxonomy-manager__edit-input" type="text" value="${this.escapeHtml(item.label)}" style="flex: 1; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; margin-right: 12px;" />
       <div class="taxonomy-manager__item-actions" style="display: flex; gap: 6px;">
@@ -415,6 +517,32 @@ class TaxonomyManagerPanel extends AppSideSheet {
         if (isUser) sellerItem.warehouseIds = warehouseIds;
         if (isUser) this.state.users = [...currentList];
         await this.persistTaxonomyState(this.state, sellerItem.id, name, `Se actualizó la ${this.getTaxonomyMeta(this.state.type).singular}.`);
+      } else if (this.state.type === "print-label" || this.state.type === "printer" || this.state.type === "print_labels") {
+        const name = row?.querySelector("[data-preset-edit-name]")?.value.trim();
+        const widthMm = Number(row?.querySelector("[data-preset-edit-width]")?.value) || 50;
+        const heightMm = Number(row?.querySelector("[data-preset-edit-height]")?.value) || 30;
+        const barHeight = Number(row?.querySelector("[data-preset-edit-bar-height]")?.value) || 70;
+        const fontSize = Number(row?.querySelector("[data-preset-edit-font-size]")?.value) || 8;
+        const showName = row?.querySelector("[data-preset-edit-show-name]")?.checked !== false;
+        const presetsList = this.state.printLabels?.presets || [];
+        const presetItem = presetsList.find(item => item.id === saveButton.dataset.taxonomySaveEdit);
+        if (!presetItem) {
+          restoreButtonsAndInputs();
+          return;
+        }
+        if (!name) {
+          window.showToast?.("El preset necesita un nombre.", "warning");
+          restoreButtonsAndInputs();
+          return;
+        }
+        presetItem.name = name;
+        presetItem.widthMm = widthMm;
+        presetItem.heightMm = heightMm;
+        presetItem.barHeight = barHeight;
+        presetItem.fontSize = fontSize;
+        presetItem.showName = showName;
+        this.state.printLabels.presets = [...presetsList];
+        await this.persistTaxonomyState(this.state, presetItem.id, name, "Se actualizó el preset.");
       } else {
         const value = row?.querySelector(".taxonomy-manager__edit-input")?.value.trim();
         if (!value) {
@@ -502,6 +630,11 @@ class TaxonomyManagerPanel extends AppSideSheet {
       state.warehouses = (state.warehouses || []).filter(item => item.id !== key);
     } else if (state.type === "role") {
       state.roles = (state.roles || []).filter(item => item.id !== key);
+    } else if (state.type === "print-label" || state.type === "printer" || state.type === "print_labels") {
+      state.printLabels.presets = (state.printLabels.presets || []).filter(item => item.id !== key);
+      if (state.printLabels.activePresetId === key) {
+        state.printLabels.activePresetId = state.printLabels.presets[0]?.id || "";
+      }
     } else if (state.type === "user") {
       state.users = (state.users || []).filter(item => item.id !== key);
     } else if (state.type === "supplier") {
@@ -585,6 +718,75 @@ class TaxonomyManagerPanel extends AppSideSheet {
         if (currentLabelInput) currentLabelInput.disabled = false;
         if (currentUiScopesInput) currentUiScopesInput.disabled = false;
         if (currentCapabilitiesInput) currentCapabilitiesInput.disabled = false;
+      }
+      return;
+    }
+
+    if (state.type === "print-label" || state.type === "printer" || state.type === "print_labels") {
+      const presetNameInput = this.root.querySelector("[data-preset-name]");
+      const presetWidthInput = this.root.querySelector("[data-preset-width]");
+      const presetHeightInput = this.root.querySelector("[data-preset-height]");
+      const presetBarHeightInput = this.root.querySelector("[data-preset-bar-height]");
+      const presetFontSizeInput = this.root.querySelector("[data-preset-font-size]");
+      const presetShowNameInput = this.root.querySelector("[data-preset-show-name]");
+      const name = presetNameInput?.value.trim() || "";
+      const widthMm = Number(presetWidthInput?.value) || 50;
+      const heightMm = Number(presetHeightInput?.value) || 30;
+      const barHeight = Number(presetBarHeightInput?.value) || 70;
+      const fontSize = Number(presetFontSizeInput?.value) || 8;
+      const showName = presetShowNameInput ? presetShowNameInput.checked : true;
+      if (!name) return;
+
+      try {
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.dataset.loading = "true";
+        }
+        if (presetNameInput) presetNameInput.disabled = true;
+        if (presetWidthInput) presetWidthInput.disabled = true;
+        if (presetHeightInput) presetHeightInput.disabled = true;
+        if (presetBarHeightInput) presetBarHeightInput.disabled = true;
+        if (presetFontSizeInput) presetFontSizeInput.disabled = true;
+        if (presetShowNameInput) presetShowNameInput.disabled = true;
+
+        const slugify = (val) => String(val || "preset").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 48);
+        const item = {
+          id: slugify(name) || `preset-${Date.now()}`,
+          name,
+          widthMm,
+          heightMm,
+          copies: 1,
+          showName,
+          showPrice: false,
+          barHeight,
+          fontSize,
+        };
+        state.printLabels.presets = [...(state.printLabels.presets || []), item];
+        state.printLabels.activePresetId = item.id;
+        await this.persistTaxonomyState(state, item.id, name, "Se agregó el preset.");
+        this.close();
+      } catch (error) {
+        console.error("TaxonomyManagerPanel: create preset failed", error);
+        window.showToast?.("No se pudo guardar el preset de etiqueta.", "danger");
+      } finally {
+        const currentNameInput = this.root.querySelector("[data-preset-name]");
+        const currentWidthInput = this.root.querySelector("[data-preset-width]");
+        const currentHeightInput = this.root.querySelector("[data-preset-height]");
+        const currentBarHeightInput = this.root.querySelector("[data-preset-bar-height]");
+        const currentFontSizeInput = this.root.querySelector("[data-preset-font-size]");
+        const currentShowNameInput = this.root.querySelector("[data-preset-show-name]");
+        const currentSubmit = this.root.querySelector("[data-taxonomy-create-submit]");
+        if (currentSubmit) {
+          currentSubmit.disabled = false;
+          currentSubmit.dataset.loading = "false";
+          currentSubmit.textContent = "Guardar";
+        }
+        if (currentNameInput) currentNameInput.disabled = false;
+        if (currentWidthInput) currentWidthInput.disabled = false;
+        if (currentHeightInput) currentHeightInput.disabled = false;
+        if (currentBarHeightInput) currentBarHeightInput.disabled = false;
+        if (currentFontSizeInput) currentFontSizeInput.disabled = false;
+        if (currentShowNameInput) currentShowNameInput.disabled = false;
       }
       return;
     }
@@ -732,6 +934,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
       const suppliers = this.normalizeSupplierList(this.parseJsonField(fields.proveedores, []));
       const warehouses = this.normalizeWarehouseList(this.parseJsonField(fields.Almacenes || fields.almacenes, []));
       const roles = this.normalizeRoleList(this.parseJsonField(fields.Roles || fields.roles, []));
+      const printLabels = this.normalizePrintLabels(this.parseJsonField(fields.print_labels || fields.PrintLabels || fields.printLabels || fields["Print Labels"], null));
       const aliases = window.TaxonomyReconciliation?.normalizeAliasConfig
         ? window.TaxonomyReconciliation.normalizeAliasConfig(
             this.parseJsonField(fields.Aliases || fields.aliases || fields.TaxonomyAliases || fields.taxonomy_aliases, {})
@@ -745,7 +948,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
         window.ProductFormSheet.updateTaxonomySelects();
       }
 
-      return { record, categories, brands, users, sellers, suppliers, warehouses, roles, aliases };
+      return { record, categories, brands, users, sellers, suppliers, warehouses, roles, aliases, printLabels };
     })();
 
     try {
@@ -756,7 +959,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
     }
   }
 
-  async saveTaxonomyConfig(categories, brands, users = [], suppliers = [], warehouses = [], roles = []) {
+  async saveTaxonomyConfig(categories, brands, users = [], suppliers = [], warehouses = [], roles = [], printLabels = null) {
     const loaded = await this.loadTaxonomyConfig();
     const recordId = loaded.record.id || this.taxonomyConfigRecord?.id;
     if (!recordId) throw new Error("El registro configs no tiene id");
@@ -781,6 +984,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
         ? "Usuarios"
         : "usuarios";
     const sellers = this.deriveSellersFromUsers(users);
+    const resolvedPrintLabels = printLabels || this.state?.printLabels || loaded.printLabels || this.normalizePrintLabels(this.parseJsonField(configFields.print_labels || configFields.PrintLabels || configFields.printLabels || configFields["Print Labels"], null));
     const data = {
       Categorias: JSON.stringify(categories),
       Subcategorias: JSON.stringify(
@@ -790,6 +994,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
       [usersFieldName]: JSON.stringify(users),
       vendedores: JSON.stringify(sellers),
       proveedores: JSON.stringify(suppliers),
+      print_labels: JSON.stringify(resolvedPrintLabels),
     };
     if (warehousesFieldName) {
       data[warehousesFieldName] = JSON.stringify(warehouses);
@@ -807,7 +1012,7 @@ class TaxonomyManagerPanel extends AppSideSheet {
   }
 
   async persistTaxonomyState(state, selectedKey, selectedLabel, message) {
-    await this.saveTaxonomyConfig(state.categories, state.brands, state.users, state.suppliers, state.warehouses, state.roles);
+    await this.saveTaxonomyConfig(state.categories, state.brands, state.users, state.suppliers, state.warehouses, state.roles, state.printLabels);
     this.taxonomyConfigPromise = null;
 
     if (window.ProductFormSheet && typeof window.ProductFormSheet.applyTaxonomyToFormConfig === "function") {
@@ -918,6 +1123,59 @@ class TaxonomyManagerPanel extends AppSideSheet {
 
   cloneJson(value) {
     return JSON.parse(JSON.stringify(value));
+  }
+
+  normalizePrintLabels(raw) {
+    if (!raw) {
+      // First-time initialization
+      return {
+        version: 1,
+        activePresetId: "ribtec-rt-420-be",
+        presets: [{
+          id: "ribtec-rt-420-be",
+          name: "Ribtec RT-420 BE",
+          widthMm: 50,
+          heightMm: 30,
+          copies: 1,
+          showName: true,
+          showPrice: false,
+          barHeight: 70,
+          fontSize: 8,
+        }],
+        updatedAt: "",
+      };
+    }
+
+    const source = raw && typeof raw === "object" ? raw : {};
+    const rawPresets = Array.isArray(source.presets)
+      ? source.presets
+      : source && typeof source === "object" && Object.keys(source).length > 0
+        ? Object.values(source)
+        : [];
+    const presets = rawPresets
+      .map((item) => {
+        const base = item && typeof item === "object" ? item : {};
+        const name = String(base.name || base.label || "Ribtec RT-420 BE").trim();
+        return {
+          id: String(base.id || name.toLowerCase().replace(/[^a-z0-9]+/g, "-")).trim(),
+          name,
+          widthMm: Number(base.widthMm || base.width || 50),
+          heightMm: Number(base.heightMm || base.height || 30),
+          copies: Number(base.copies || 1),
+          showName: base.showName == null ? true : Boolean(base.showName),
+          showPrice: base.showPrice == null ? false : Boolean(base.showPrice),
+          barHeight: Number(base.barHeight ?? base.bar_height ?? 70),
+          fontSize: Number(base.fontSize ?? base.font_size ?? 8),
+        };
+      })
+      .filter((item) => item.id && item.name);
+
+    return {
+      version: 1,
+      activePresetId: source.activePresetId || presets[0]?.id || "",
+      presets,
+      updatedAt: source.updatedAt || "",
+    };
   }
 
   isEmptyConfigObject(value) {
@@ -1227,6 +1485,13 @@ class TaxonomyManagerPanel extends AppSideSheet {
         placeholder: "Ej. Encargado de almacén",
       };
     }
+    if (type === "print-label" || type === "printer" || type === "print_labels") {
+      return {
+        title: "Presets de etiqueta",
+        singular: "preset de etiqueta",
+        placeholder: "Ej. Ribtec RT-420 BE",
+      };
+    }
     return { title: "Catálogo", singular: "elemento", placeholder: "" };
   }
 
@@ -1275,6 +1540,17 @@ class TaxonomyManagerPanel extends AppSideSheet {
         label: item.label || item.name || item.id,
         uiScopes: item.uiScopes || [],
         capabilities: item.capabilities || [],
+      }));
+    }
+    if (type === "print-label" || type === "printer" || type === "print_labels") {
+      return (this.state?.printLabels?.presets || []).map((item) => ({
+        key: item.id,
+        label: item.name,
+        widthMm: item.widthMm,
+        heightMm: item.heightMm,
+        barHeight: item.barHeight,
+        fontSize: item.fontSize,
+        showName: item.showName,
       }));
     }
     return (brands || []).map((label) => ({ key: label, label }));

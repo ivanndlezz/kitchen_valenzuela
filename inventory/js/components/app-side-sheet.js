@@ -216,6 +216,11 @@ class AppSideSheet {
   open() {
     if (!this.root) return null;
 
+    // Move to end of body to guarantee DOM stacking order
+    if (this.root.parentNode === document.body) {
+      document.body.appendChild(this.root);
+    }
+
     this.root._sheetInstance = this;
     this.root._sheetData = this.data || null;
 
@@ -236,6 +241,9 @@ class AppSideSheet {
     if (!AppSideSheet.activeSheets.includes(this)) {
       AppSideSheet.activeSheets.push(this);
     }
+
+    // Set z-index dynamically based on stack position
+    this.root.style.zIndex = String(2000 + AppSideSheet.activeSheets.length * 10);
 
     return this.root;
   }
