@@ -53,10 +53,33 @@ window.SyncManager = {
         headers: this.getProxyHeaders(),
         body: JSON.stringify({ action, ...params })
       });
+
+      // Detect 401 / Unauthorized before trying to parse JSON to avoid parsing errors
+      if (response.status === 401) {
+        const newToken = await this.promptForToken();
+        if (newToken) {
+          // Retry with the new token
+          const retryResponse = await fetch(this.config.endpoint, {
+            method: "POST",
+            headers: this.getProxyHeaders(),
+            body: JSON.stringify({ action, ...params })
+          });
+          if (retryResponse.status === 401) {
+            throw new Error("API request failed with 401 Unauthorized even with new token");
+          }
+          const retryResult = await retryResponse.json();
+          if (!retryResult.success) {
+            throw new Error(retryResult.message || "API request failed after token retry");
+          }
+          this.rememberRequestCounterRecord(action, params, retryResult.data);
+          return retryResult.data;
+        }
+        throw new Error("Unauthorized request (401)");
+      }
+
       result = await response.json();
       if (!result.success) {
-        // Detect 401 / Unauthorized and prompt for token
-        if (response.status === 401 || /unauthorized/i.test(result.message || "")) {
+        if (/unauthorized/i.test(result.message || "")) {
           const newToken = await this.promptForToken();
           if (newToken) {
             // Retry with the new token
