@@ -3055,6 +3055,14 @@ function exportQuoteToPDF() {
   }).join("");
 
   const barcodeSVG = generateBarcodeSVG(quote.id);
+
+  if (window.PrintTitleManager) {
+    window.PrintTitleManager.set(`Cotización ${quote.id}`);
+    setTimeout(() => {
+      window.PrintTitleManager.restore();
+    }, 2000);
+  }
+
   const printWin = window.open("", "_blank");
   printWin.document.write(`<!DOCTYPE html>
 <html lang="es">

@@ -535,17 +535,31 @@
     doc.write(buildPrintHtml(activeProduct, preset));
     doc.close();
 
+    const tempTitle = `Etiqueta ${activeProduct?.codigo || ""}`;
+    if (window.PrintTitleManager) {
+      window.PrintTitleManager.set(tempTitle);
+    }
+
+    const cleanUpAndRestore = () => {
+      if (document.body.contains(iframe)) {
+        iframe.remove();
+      }
+      if (window.PrintTitleManager) {
+        window.PrintTitleManager.restore();
+      }
+    };
+
     iframe.onload = () => {
       iframe.contentWindow?.focus();
       iframe.contentWindow?.print();
-      window.setTimeout(() => iframe.remove(), 1000);
+      window.setTimeout(cleanUpAndRestore, 1000);
     };
 
     window.setTimeout(() => {
       if (document.body.contains(iframe)) {
         iframe.contentWindow?.focus();
         iframe.contentWindow?.print();
-        window.setTimeout(() => iframe.remove(), 1000);
+        window.setTimeout(cleanUpAndRestore, 1000);
       }
     }, 150);
   }

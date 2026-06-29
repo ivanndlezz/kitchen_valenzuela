@@ -3,6 +3,33 @@
  * Main application orchestrator: lifecycle manager, global event binder, and theme engine.
  */
 
+// --- Global Print Title Utility ---
+window.PrintTitleManager = {
+  originalTitle: "",
+  set(newTitle) {
+    if (!this.originalTitle) {
+      this.originalTitle = document.title;
+    }
+    document.title = newTitle;
+  },
+  restore() {
+    if (this.originalTitle) {
+      document.title = this.originalTitle;
+      this.originalTitle = "";
+    }
+  },
+  async runWithTitle(temporaryTitle, actionCallback) {
+    this.set(temporaryTitle);
+    try {
+      await actionCallback();
+    } finally {
+      setTimeout(() => {
+        this.restore();
+      }, 1500);
+    }
+  }
+};
+
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
