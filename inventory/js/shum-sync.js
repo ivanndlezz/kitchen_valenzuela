@@ -120,39 +120,18 @@ window.SyncManager = {
 
       const overlay = document.createElement("div");
       overlay.id = "kv-token-modal";
-      Object.assign(overlay.style, {
-        position: "fixed", inset: "0", zIndex: "99999",
-        background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-      });
+      overlay.className = "kv-token-modal";
 
       overlay.innerHTML = `
-        <div style="
-          background: var(--bg-surface, #1a1a2e); color: var(--text-primary, #e0e0e0);
-          border: 1px solid var(--border-color, #333); border-radius: 12px;
-          padding: 28px 24px 20px; width: 380px; max-width: 90vw;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: inherit;
-        ">
-          <h3 style="margin: 0 0 6px; font-size: 16px; font-weight: 700;">Token requerido</h3>
-          <p style="margin: 0 0 16px; font-size: 13px; opacity: 0.7; line-height: 1.4;">
-            La acción requiere un token de autenticación. Ingresa el valor de <code style="font-size:12px; background:rgba(255,255,255,0.08); padding:2px 5px; border-radius:4px;">kv_import_token</code> de tu configuración.
+        <div class="kv-token-modal__content">
+          <h3 class="kv-token-modal__title">Token requerido</h3>
+          <p class="kv-token-modal__desc">
+            La acción requiere un token de autenticación. Ingresa el valor de <code class="kv-token-modal__code">kv_import_token</code> de tu configuración.
           </p>
-          <input id="kv-token-input" type="password" placeholder="Token de acceso" autocomplete="off" style="
-            width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 14px;
-            border: 1px solid var(--border-color, #444); border-radius: 8px;
-            background: var(--bg-surface-raised, #252540); color: inherit;
-            outline: none; margin-bottom: 16px;
-          " />
-          <div style="display: flex; gap: 8px; justify-content: flex-end;">
-            <button id="kv-token-cancel" type="button" style="
-              padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border-color, #444);
-              background: transparent; color: inherit; cursor: pointer; font-size: 13px;
-            ">Cancelar</button>
-            <button id="kv-token-save" type="button" style="
-              padding: 8px 16px; border-radius: 8px; border: none;
-              background: var(--accent, #6366f1); color: #fff; cursor: pointer;
-              font-size: 13px; font-weight: 600;
-            ">Guardar</button>
+          <input id="kv-token-input" class="kv-token-modal__input" type="password" placeholder="Token de acceso" autocomplete="off" />
+          <div class="kv-token-modal__actions">
+            <button id="kv-token-cancel" class="kv-token-modal__btn kv-token-modal__btn--cancel" type="button">Cancelar</button>
+            <button id="kv-token-save" class="kv-token-modal__btn kv-token-modal__btn--save" type="button">Guardar</button>
           </div>
         </div>
       `;

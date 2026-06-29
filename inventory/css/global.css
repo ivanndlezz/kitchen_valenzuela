@@ -2372,3 +2372,117 @@ body:has([data-sheet-state="open"]) {
 body div input:not(.quotes-layout input) {
   min-height: 48px !important;
 }
+
+/* ---- Token Prompt Modal ---- */
+.kv-token-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: kvModalFadeIn 0.2s ease-out;
+}
+
+.kv-token-modal__content {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 12px);
+  padding: 28px 24px 20px;
+  width: 380px;
+  max-width: 90vw;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  animation: kvModalSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kv-token-modal__title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.kv-token-modal__desc {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.kv-token-modal__code {
+  font-size: 12px;
+  background: var(--bg-surface-raised);
+  color: var(--color-accent);
+  padding: 2px 5px;
+  border-radius: var(--radius-sm, 4px);
+  font-family: monospace;
+}
+
+.kv-token-modal__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-surface-raised);
+  color: var(--text-main);
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kv-token-modal__input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
+}
+
+.kv-token-modal__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.kv-token-modal__btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-md, 8px);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.kv-token-modal__btn--cancel {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.kv-token-modal__btn--cancel:hover {
+  background: var(--bg-surface-raised);
+  color: var(--text-main);
+}
+
+.kv-token-modal__btn--save {
+  border: none;
+  background: var(--color-accent);
+  color: var(--text-inverted);
+}
+
+.kv-token-modal__btn--save:hover {
+  opacity: 0.9;
+}
+
+@keyframes kvModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes kvModalSlideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
