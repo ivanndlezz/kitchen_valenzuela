@@ -168,12 +168,23 @@
       updatedAt: new Date().toISOString(),
     });
 
+    const configFields = configRecord?.fields || {};
+    const printLabelsFieldName = Object.prototype.hasOwnProperty.call(configFields, "print_labels")
+      ? "print_labels"
+      : Object.prototype.hasOwnProperty.call(configFields, "PrintLabels")
+        ? "PrintLabels"
+        : Object.prototype.hasOwnProperty.call(configFields, "printLabels")
+          ? "printLabels"
+          : Object.prototype.hasOwnProperty.call(configFields, "Print Labels")
+            ? "Print Labels"
+            : "print_labels";
+
     await window.SyncManager.shumRequest("update", {
       baseId: window.SyncManager.config.baseId,
       table: "configs",
       recordId: resolvedRecordId,
       data: {
-        [FIELD_NAME]: JSON.stringify(labelConfig),
+        [printLabelsFieldName]: JSON.stringify(labelConfig),
       },
     });
 
@@ -309,10 +320,6 @@
               <span class="suffix">px</span>
             </div>
           </label>
-          <label class="field">
-            <span>Copias</span>
-            <input name="copies" type="number" min="1" max="200" step="1" value="${escapeHtml(preset.copies)}" />
-          </label>
         </div>
 
         <div class="print-label-section-header">
@@ -366,7 +373,6 @@
       heightMm: form?.querySelector('[name="height_mm"]')?.value,
       barHeight: form?.querySelector('[name="bar_height"]')?.value,
       fontSize: form?.querySelector('[name="font_size"]')?.value,
-      copies: form?.querySelector('[name="copies"]')?.value,
       showName: form?.querySelector('[name="show_name"]')?.checked,
       showPrice: form?.querySelector('[name="show_price"]')?.checked,
     });
@@ -407,7 +413,6 @@
     root.querySelector('[name="preset_name"]').value = preset.name;
     root.querySelector('[name="width_mm"]').value = preset.widthMm;
     root.querySelector('[name="height_mm"]').value = preset.heightMm;
-    root.querySelector('[name="copies"]').value = preset.copies;
     root.querySelector('[name="show_name"]').checked = preset.showName;
     root.querySelector('[name="show_price"]').checked = preset.showPrice;
     root.querySelector('[name="bar_height"]').value = preset.barHeight;
@@ -460,13 +465,13 @@
     const priceHtml = preset.showPrice
       ? `<div class="label-price">$${price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>`
       : "";
-    const copies = Array.from({ length: preset.copies }, () => `
+    const labelHtml = `
       <section class="label">
         <div class="barcode">${barcodeSvg}</div>
         ${preset.showName ? `<strong>${escapeHtml(product.nombre || "")}</strong>` : ""}
         ${priceHtml}
       </section>
-    `).join("");
+    `;
 
     return `
       <!doctype html>
@@ -508,7 +513,7 @@
             }
           </style>
         </head>
-        <body>${copies}</body>
+        <body>${labelHtml}</body>
       </html>
     `;
   }
