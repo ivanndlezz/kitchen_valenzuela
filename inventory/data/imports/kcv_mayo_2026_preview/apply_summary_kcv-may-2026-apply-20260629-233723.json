@@ -1,0 +1,37 @@
+{
+  "import_id": "kcv-may-2026-apply-20260629-233723",
+  "backup_dir": "inventory/data/imports/kcv_mayo_2026_preview/backups/kcv-may-2026-apply-20260629-233723",
+  "local_json": [
+    {
+      "file": "inventory/data/local_products.json",
+      "updated": 92,
+      "created": 0,
+      "skipped_duplicate": 0,
+      "final_count": 169
+    },
+    {
+      "file": "inventory/data/inventory-products.json",
+      "updated": 430,
+      "created": 69,
+      "skipped_duplicate": 4,
+      "final_count": 562
+    }
+  ],
+  "local_csv": {
+    "file": "inventory/data/products-all.csv",
+    "updated": 433,
+    "created": 0,
+    "skipped_duplicate": 1,
+    "final_count": 555
+  },
+  "cloud": {
+    "updated": 434,
+    "created": 69,
+    "errors": []
+  },
+  "ignored": {
+    "duplicates": "not applied",
+    "exists_other_code": "not applied",
+    "variant": "not applied"
+  }
+}

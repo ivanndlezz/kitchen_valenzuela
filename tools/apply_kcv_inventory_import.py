@@ -14,6 +14,7 @@ import argparse
 import csv
 import json
 import math
+import os
 import re
 import shutil
 import sys
@@ -257,10 +258,18 @@ def airtable_payload(product: dict[str, Any]) -> dict[str, Any]:
 
 def shum_request(action: str, payload: dict[str, Any]) -> dict[str, Any]:
     body = json.dumps({"action": action, **payload}).encode("utf-8")
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": "KitchenValenzuelaInventoryImport/1.0",
+    }
+    proxy_token = os.environ.get("KV_SHUM_IMPORT_TOKEN", "").strip()
+    if proxy_token:
+        headers["X-KV-Import-Token"] = proxy_token
     request = urllib.request.Request(
         ENDPOINT,
         data=body,
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
     with urllib.request.urlopen(request, timeout=30) as response:

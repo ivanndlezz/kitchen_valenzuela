@@ -1,0 +1,504 @@
+﻿source_row,key,modelo,descripcion,stock,tienda,bodega,location_sum,inventario_fisico_final,cantidad_a_importar,costo_unitario_pesos,costo_unitario_dolares,total_costo_unitario_pesos,fecha_adq,vigencia,matched_sources
+6,AEQ-08,AEQ-08,Abrillantador para Inoxidable 1lts,2.0,1.0,0.0,1.0,0.0,0.0,60.34,0,60.34,2024-03-12T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+7,AEQ-07,AEQ-07,Abrillantador para Inoxidable Galón,2.0,1.0,0.0,1.0,1.0,1.0,297.55,0,297.55,2024-03-12T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+11,AEQ-03,AEQ-03,Desengrasante citrico Galón,10.0,9.0,0.0,9.0,8.0,8.0,263.6,0,263.6,2026-03-25T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+12,DB1044A,DB1044A,Detergente en SPRAY&RINSE 12x750ML,5.0,4.0,0.0,4.0,2.0,2.0,1808.39,0,1808.39,03-en-26,Act Feb 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+13,DB1015A0 X LITRO,DB1015A0 X LITRO,Detergente Rinse & PLUS x lt,10.0,7.0,0.0,7.0,7.0,7.0,189.533,0,189.533,,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+14,DB1076A0,DB1076A0,Detergente Rinse & ULTRA/PLUS 10 bts,10.0,7.0,0.0,7.0,1.0,1.0,1891.0,0,1891.0,2026-03-24T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+16,AEQ-04,AEQ-04,Gel antibacterial Galón,4.0,4.0,0.0,4.0,4.0,4.0,226.03,0,226.03,2024-03-12T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+17,AEQ-02,AEQ-02,Limpiaparrillas Galón,13.0,10.0,0.0,10.0,8.0,8.0,245.11,0,245.11,2026-03-25T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+18,CAFIZA,CAFIZA,Limpiador para máquina de cafes,2.0,0.0,0.0,0.0,2.0,2.0,379.0,0,379.0,2026-05-23T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+19,56.00.562,56.00.562,Pastillas de mantenimiento CARE 150 Tabs,39.0,11.0,0.0,11.0,7.0,7.0,1761.2,0,1761.2,2026-02-28T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+20,56.00.210A,56.00.210A,Pastillas detergentes 100 Tabs,65.0,36.0,0.0,36.0,22.0,22.0,1319.92,0,1319.92,2026-02-28T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+22,AEQ-01,AEQ-01,Quitacochambre Galon,13.0,7.0,0.0,7.0,7.0,7.0,240.54,0,240.54,2026-11-25T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+23,DB1085A0,DB1085A0,Removedor de cal UNOX.D&CAL,3.0,1.0,0.0,1.0,1.0,1.0,1282.85,0,1282.85,2026-03-11T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+24,AEQ-06,AEQ-06,Sarricida Galón,1.0,1.0,0.0,1.0,1.0,1.0,184.66,0,184.66,2024-03-12T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+25,AEQ-09,AEQ-09,Shampo líquido para manos manzana Galón,1.0,2.0,0.0,2.0,1.0,1.0,123.28,0,123.28,2024-03-12T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+26,AEQ-05,AEQ-05,Shampoo liquido para manos sin olor Galón,11.0,11.0,0.0,11.0,11.0,11.0,123.28,0,123.28,2024-03-12T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+30,12191309,12191309,"Biasagra de puerta, superior izquierda, mesa ASBER",1.0,1.0,0.0,1.0,1.0,1.0,0.0,14.0,294.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+31,480HP,480HP,Bisagra compuesta para puertas superpuestasFERMOD,6.0,6.0,0.0,6.0,6.0,6.0,0,15.3,321.3,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+32,12216798,12216798,Bisagra inferior ASBER,2.0,2.0,0.0,2.0,2.0,2.0,535.0,0,535.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+33,YL-1238-4,YL-1238-4,Bisagra para cámara de refrigeración COLDTEK,2.0,0.0,0.0,0.0,0.0,0.0,950.0,0,950.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+34,12216800,12216800,Bisagra superior ASBER,2.0,2.0,0.0,2.0,2.0,2.0,535.0,0,535.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+35,BIS-GEN,BIS-GEN,Bisagras para refrigerador GENERICO,4.0,4.0,0.0,4.0,4.0,4.0,290.0,0,290.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+36,63762,63762,Cerradura con llave cilindro PERLICK,2.0,3.0,0.0,3.0,3.0,3.0,1014.84,0,1014.84,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+37,CSG-1,CSG-1,Cierre para camara frigorifica,1.0,1.0,0.0,1.0,1.0,1.0,0,130.0,2730.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+38,12203287,12203287,Conjunto de bisagras derecho ASBER,1.0,1.0,0.0,1.0,1.0,1.0,850.0,0,850.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+39,12203286,12203286,"Conjunto de bisagras mesa, lado izquierdo ASBER",2.0,2.0,0.0,2.0,2.0,2.0,720.0,0,720.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+40,GS-2398,GS-2398,Empaque Alto-Shaam 1000-TH1,2.0,2.0,0.0,2.0,2.0,2.0,853.6,0,853.6,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+41,EMP-ARRASTRE,EMP-ARRASTRE,Empaque de arrastre para camara frigorifica,2.0,2.0,0.0,2.0,2.0,2.0,300.0,0,300.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+42,EMP-IMP02,EMP-IMP02,Empaque importado dimensiones 53 x 74 cm negro,2.0,0.0,0.0,0.0,0.0,0.0,1300.0,0,1300.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+43,EMP-IMP01,EMP-IMP01,Empaque importado dimensiones 57 x 62 cm negro,1.0,1.0,0.0,1.0,1.0,1.0,1300.0,0,1300.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+44,EMP-IMP03,EMP-IMP03,Empaque importado dimensiones 64.5 x 30 cm,3.0,3.0,0.0,3.0,3.0,3.0,750.0,0,750.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+46,EKC-001,EKC-001,Empaque universal con ceja dimensiones Torrey 68 X 62.5 cm negro,2.0,2.0,0.0,2.0,2.0,2.0,450.0,0,450.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+47,EMP-UNI07,EMP-UNI07,Empaque universal dimensiones 177.5 x 52.5 cm negro,3.0,3.0,0.0,3.0,3.0,3.0,603.44,0,603.44,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+48,EMP-UNI01,EMP-UNI01,Empaque universal dimensiones 54.5 x 63.5 cm negro,2.0,2.0,0.0,2.0,2.0,2.0,450.0,0,450.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+49,EMP-UNI06,EMP-UNI06,Empaque universal dimensiones 61 x 140 cm negro,1.0,1.0,0.0,1.0,1.0,1.0,650.0,0,650.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+50,EMP-UNI03,EMP-UNI03,Empaque universal dimensiones 64 X 55.5 cm negro,2.0,2.0,0.0,2.0,0.0,0.0,450.0,0,450.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+51,EMP-UNI02,EMP-UNI02,Empaque universal dimensiones 70.5 x 66 cm negro,2.0,0.0,0.0,0.0,0.0,0.0,500.0,0,500.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+52,EMP-UNI05,EMP-UNI05,Empaque universal dimensiones 73.5 X 50 cm negro,1.0,1.0,0.0,1.0,1.0,1.0,500.0,0,500.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+53,12190016,12190016,"Espaciador, cuadrado, nylon, puerta, pelaje, a/c ASBER",1.0,1.0,0.0,1.0,1.0,1.0,0,3.35,70.35000000000001,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+54,1190002,1190002,Goma espesor 73.5 c 59 x 1 mm Cafetera Simonelli,1.0,22.0,0.0,22.0,22.0,22.0,42.0,0,42.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+55,1026313,1026313,Interruptor de puerta PERLICK,1.0,1.0,0.0,1.0,1.0,1.0,303.0,0,303.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+56,1186837,1186837,"Junta portafolio 72 x 58x 7 mm, cafetera Simonelli",11.0,11.0,0.0,11.0,11.0,11.0,54.0,0,54.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+57,63698,63698,"Sonda de temperatura NTC 10K, PERLICK",1.0,0.0,0.0,0.0,0.0,0.0,878.92,0,878.92,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+62,BCR150,BCR150,Bascula electronica Tipo plataforma de 150kg,1.0,3.0,0.0,3.0,3.0,3.0,1350.0,0,1350.0,2026-02-05T00:00:00,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+63,BCR300,BCR300,Bascula electronica Tipo plataforma de 300kg,1.0,1.0,0.0,1.0,1.0,1.0,1650.0,0,1650.0,2026-02-05T00:00:00,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+64,XWARC-07EF,XWARC-07EF,Base Stand Alto Horno Combinado 7 Bandejas,0.0,0.0,0.0,0.0,0.0,0.0,11157.3,0,11157.3,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+65,XWVRC-0711-H,XWVRC-0711-H,Base Stand Alto Horno Combinado Multifuncional,1.0,1.0,0.0,1.0,1.0,1.0,9853.2,0,9853.2,2024-08-05T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+66,BERMEXB2,BERMEXB2,Batidora Planetaria Comercial 20Ltt 1.5 Hp 6kg Amasa Rojo 60 Hz BERMEX B2,1.0,3.0,0.0,3.0,3.0,3.0,13700.0,0,13700.0,2025-07-08T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+67,XEKPT-08HS-B,XEKPT-08HS-B,Camara fermentadora 2022D0039181,0.0,0.0,0.0,0.0,0.0,0.0,24777.9,0,24777.9,2024-08-05T00:00:00,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+68,5424ND2PSPFB,5424ND2PSPFB,Campana de acero inoxidable de 8 pies,1.0,1.0,0.0,1.0,1.0,1.0,150768.39,0,150768.39,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+69,XAVC-10FS-GPRM-,XAVC-10FS-GPRM-,"COMBINADO DE GAS 8 18X26"" PLUS S/N:2024E0052332",0.0,0.0,0.0,0.0,0.0,0.0,166320.0,0,166320.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+70,EVB32,EVB32,Empacadora Al Alto Vacio Bermex EVB-32,1.0,0.0,0.0,0.0,0.0,0.0,18300.0,0,18300.0,2025-07-08T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+71,ECM35,ECM35,"Empacadora Cobacorp, barra selladora 5cm",1.0,1.0,0.0,1.0,1.0,1.0,39950.0,0,39950.0,2026-02-05T00:00:00,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+72,SX36-6BP,SX36-6BP,Estufa con horno de 6 quemadores ME2401019HB,1.0,0.0,0.0,0.0,0.0,0.0,0,2318.96,0.0,2024-06-25T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+77,VSP200F-1,VSP200F-1,Fogon para ollas a gas DV1152764,1.0,1.0,0.0,1.0,1.0,1.0,0,4950.0,103950.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+78,LG300-2,LG300-2,"Freidora a gas 16kg  ME2310092HB, ME2406338HB, ME2310100HB, ME2402066HB, ME2406334HB, ME2406445HB, ME2406444HB",2.0,1.0,2.0,3.0,3.0,3.0,0,1189.0,24969.0,2024-07-07T00:00:00,Act Feb 2027,inventory/data/local_products.json; inventory/data/products-all.csv
+79,VICM24-201,VICM24-201,"Gratinador de 24"" ME2310153HB",1.0,1.0,0.0,1.0,1.0,1.0,0,1060.4,22268.4,2024-06-25T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+80,XEVL-2021-GPRS,XEVL-2021-GPRS,Horno a gas combinado BIG PLUS 20 GN 2/1 bandejas 2022E0053800,0.0,1.0,0.0,1.0,0.0,0.0,352840.95,0,352840.95,2024-08-05T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+81,XEFR-04HS-ETDV,XEFR-04HS-ETDV,Horno BakerLux Arianna 4 bandejas 2024F0056841,1.0,0.0,0.0,0.0,0.0,0.0,24633.0,0,24633.0,2024-08-05T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+82,XEVC-1011-GPRM,XEVC-1011-GPRM,"Horno combinado a gas CHEF TOP 10 GN1/1 plus, serie 2023A0005377",1.0,1.0,0.0,1.0,1.0,1.0,152460.0,0,152460.0,2024-04-25T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+83,XEVC-0711-GPRM-MS,XEVC-0711-GPRM-MS,Horno combinado a gas CHEF TOP 7 GN 1/1 bandejas 2024D0039296,0.0,0.0,0.0,0.0,0.0,0.0,119196.0,0,119196.0,2024-08-05T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+84,VC4GD-21D150K,VC4GD-21D150K,Horno de convección a gas 482045201,1.0,1.0,0.0,1.0,1.0,1.0,0.0,8784.96,184484.15999999997,2022-12-07T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+85,T043C,T043C,Horno De Convección Venix Torcello,1.0,1.0,0.0,1.0,1.0,1.0,15500.0,0,15500.0,2025-07-08T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+86,XENA-1011-EXRS,XENA-1011-EXRS,Horno mixto electrico Cheftop x,1.0,1.0,0.0,1.0,1.0,1.0,215326.0,0,215326.0,2026-02-05T00:00:00,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+87,BNS23,BNS23,Lavamanos accionador de rodilla a pared,1.0,0.0,0.0,0.0,0.0,0.0,8550.0,0,8550.0,2026-02-05T00:00:00,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+89,VCRG36-M2,VCRG36-M2,"Plancha a gas de 36"" ME2402220HB, ME2401083HB, ME2502060HB, ME2502061HB",1.0,1.0,0.0,1.0,1.0,1.0,0,1141.8,23977.8,2024-06-25T00:00:00,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+90,BN-813,BN-813,Plancha Panini Electrica Doble 50 a 300,0.0,0.0,0.0,0.0,0.0,0.0,6981.0,0,6981.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+91,MS300CT,MS300CT,Rebanadora Bermex MS-300-CT Con Cuchilla De Acero,1.0,1.0,0.0,1.0,1.0,1.0,9700.0,0,9700.0,2025-07-08T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+92,CLUC-48R-SD,CLUC-48R-SD,"Refrigerador compacto bajo mostrador 48"" 23E01219",0.0,0.0,0.0,0.0,0.0,0.0,36617.93,0,36617.93,2024-01-17T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+93,153A-3,153A-3,Torre Dispensadora de Cerveza de Barril TURBO AIR,1.0,1.0,0.0,1.0,1.0,1.0,0.0,398.0,8358.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+99,54410,54410,"Cuello curvo para mezcladora 12"" FISHER",2.0,2.0,0.0,2.0,2.0,2.0,768.6,0,768.6,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+100,3963,3963,"Cuello recto para mezcladora 12"" FISHER",1.0,1.0,0.0,1.0,1.0,1.0,752.91,0,752.91,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+101,2750,2750,Grifo para llenado de ollas FISHER,1.0,1.0,0.0,1.0,1.0,1.0,6347.25,0,6347.25,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+102,21-406L,21-406L,Juegos de conectores para mezcladora KROWNE,5.0,5.0,0.0,5.0,5.0,5.0,252.17,0,252.17,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+103,3510,3510,"Llave de montaje en cubierta de 4 pulgadas cuello osilante 6"" FISHER",1.0,0.0,0.0,0.0,0.0,0.0,2804.82,0,2804.82,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+104,15-812L,15-812L,"Llave mezcaldora a cubierta de 8"" con cuello recto 12"" KROWNE",2.0,1.0,0.0,1.0,1.0,1.0,2824.45,0,2824.45,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+105,11-400L,11-400L,"Llave mezcladora a cubierta de 4"" con cuello de ganzo KROWNE",1.0,0.0,0.0,0.0,0.0,0.0,1563.45,0,1563.45,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+106,26174,26174,"Llave mezcladora de 4"" a cubierta cuello 6"" FISHER",1.0,0.0,0.0,0.0,0.0,0.0,1649.1,0,1649.1,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+107,26131,26131,"Llave mezcladora de 8"" a cubierta FISHER",1.0,0.0,0.0,0.0,0.0,0.0,1350.0,0,1350.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+108,2913,2913,"Mango, aislado, 3/4-14 X 3/4-14 FISHER",1.0,1.0,0.0,1.0,1.0,1.0,387.9,0,387.9,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+110,3248,3248,"Mezcladora a pared de 8"" DICA",1.0,1.0,0.0,1.0,1.0,1.0,978.0,0,978.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+111,MEZ-CM10,MEZ-CM10,"Mezcladora de cubierta de 4"" cuello recto INOXIPLUS",1.0,0.0,0.0,0.0,0.0,0.0,1500.0,0,1500.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+112,2210-1WB,2210-1WB,Mezcladora de pared prelavado FISHER,1.0,2.0,0.0,2.0,2.0,2.0,5782.33,0,5782.33,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+113,24848,24848,Válvula Desagüe para Fregadero 1 1/2 FISHER,2.0,3.0,0.0,3.0,3.0,3.0,1339.8,0,1339.8,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+117,90-3041,90-3041,Adaptador de gas niple de 5/8 a 3/4 DORMONT,1.0,0.0,0.0,0.0,0.0,0.0,0,3.79,79.59,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+118,90-3032,90-3032,Adaptador macho a gas 3/4 a 5/8 DORMONT,5.0,4.0,0.0,4.0,4.0,4.0,0,3.14,65.94,2025-02-07T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+119,COD-11/4,COD-11/4,"Codo Calle 90° de 1 1/4"" DORMONT",1.0,1.0,0.0,1.0,1.0,1.0,100.0,0,100.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+120,COD-1/2,COD-1/2,"Codo Calle 90° de 1/2"" DORMONT",3.0,6.0,0.0,6.0,6.0,6.0,100.0,0,100.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+121,COD-3/4,COD-3/4,"Codo Calle 90° de 3/4"" DORMONT",3.0,0.0,0.0,0.0,0.0,0.0,120.0,0,120.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+122,CTB,CTB,"Conector de barril 3/8"" T y B",5.0,0.0,0.0,0.0,5.0,5.0,55.0,0,55.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+123,CEPF,CEPF,"Conector esprea para fleer 3/8""",3.0,0.0,0.0,0.0,3.0,3.0,34.0,0,34.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+124,A50,A50,Conexión rapida 1/2 A50 DORMONT,1.0,1.0,0.0,1.0,1.0,1.0,0,46.38,973.98,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+125,A75,A75,Conexión rapida 3/4 A75 DORMONT,3.0,3.0,0.0,3.0,3.0,3.0,0,61.95,1300.95,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+126,ED,ED,"Esprea alta presión drago 1/4"" NPT x 1/"" 20",10.0,8.0,0.0,8.0,13.0,13.0,30.0,0,30.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+127,EB,EB,"Esprea barber 35mm 1/8"" NPT",5.0,0.0,0.0,0.0,5.0,5.0,18.0,0,18.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+128,EBTF,EBTF,"Esprea conector de barril 1/4"" para tipo F",5.0,0.0,0.0,0.0,5.0,5.0,42.0,0,42.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+129,CE,CE,"Esprea macho 1/8"" NPT",5.0,0.0,0.0,0.0,5.0,5.0,28.0,0,28.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+130,ER,ER,"Esprea ranson 1/4"" a 1/4""",5.0,16.0,0.0,16.0,21.0,21.0,36.0,0,36.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+132,1675KIT48,1675KIT48,"Kit de sistema de seguridad, 3/4 x48"" pulgadas de diámetro DORMONT",2.0,1.0,3.0,4.0,4.0,4.0,0,197.0,4137.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+133,1650KIT48,1650KIT48,"Kit Manguera de gas con sistema de seguridad 1/2 X 48"" DORMONT",1.0,1.0,1.0,2.0,2.0,2.0,0,147.0,3087.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+134,48-4142-60,48-4142-60,"Manguera amarrilla lisa 3/4 x 60"" DORMONT",0.0,0.0,0.0,0.0,0.0,0.0,1751.51,0,1751.51,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+135,TAG-DE-DM1061,TAG-DE-DM1061,"Manguera de acero inoxidable 3/4 x 48"" DORMONT",0.0,0.0,0.0,0.0,0.0,0.0,379.1,0,379.1,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+136,1650BP48,1650BP48,"Manguera de gas azul 1/2 x 48"" DORMONT",1.0,1.0,0.0,1.0,1.0,1.0,0,95.48,2005.0800000000002,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+137,1675BPQ48,1675BPQ48,"Manguera de gas azul 3/4"" x 48"" con desconexión rápida Snapfast DORMONT",3.0,3.0,0.0,3.0,3.0,3.0,0,180.39,3788.1899999999996,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+138,30C-4142-36,30c-4142-36,"Manguera de gas corrugada amarilla 3/4"" X 36"" DORMONT",4.0,0.0,0.0,0.0,0.0,0.0,429.24,0,429.24,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+139,30C-4142-48,30C-4142-48,"Manguera de gas corrugada amarilla 3/4"" X 48"" DORMONT",0.0,0.0,0.0,0.0,0.0,0.0,429.24,0,429.24,2025-03-24T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+140,1675BP48,1675BP48,"Manguera de gas, suelta, azul, 3/4"" X 48"" DORMONT",4.0,4.0,0.0,4.0,4.0,4.0,0,119.43,2508.03,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+142,VAEBV,VAEBV,Valvula alta presión economica bastago grueso uso rudo volante,5.0,0.0,0.0,0.0,5.0,5.0,160.0,0,160.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+145,VA318R,VA318R,Valvula alta presión para estufa media caña reforzada,5.0,0.0,0.0,0.0,5.0,5.0,100.0,0,100.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+146,VAPEM,VAPEM,Valvula de alta presión economico bastago delgado con mariposa,5.0,0.0,0.0,0.0,5.0,5.0,19.0,0,19.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+147,VAEBP,VAEBP,Valvula de alta presión economico con bastago grueso uso rudo,5.0,0.0,0.0,0.0,5.0,5.0,125.0,0,125.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+148,VBPS,VBPS,Valvula de baja presión tipo sanson corte bajo,3.0,0.0,0.0,0.0,3.0,3.0,300.0,0,300.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+149,VAL-DORM11/4,VAL-DORM11/4,"Válvula de bola de gas de paso de 1 1/4"" DORMONT",1.0,1.0,0.0,1.0,1.0,1.0,550.0,0,550.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+150,VAL-DORM1/2,VAL-DORM1/2,"Válvula de bola de gas de paso de 1/2"" DORMONT",3.0,3.0,0.0,3.0,3.0,3.0,250.0,0,250.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+151,VAL-DORM3/4,VAL-DORM3/4,"Válvula de bola de gas de paso de 3/4"" DORMONT",2.0,2.0,0.0,2.0,2.0,2.0,390.0,0,390.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+152,VJAPN,VJAPN,Valvula jr alta presión esprea normal,3.0,0.0,0.0,0.0,3.0,3.0,300.0,0,300.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+153,VJAPR,VJAPR,Valvula Jr alta presión regulable,3.0,0.0,0.0,0.0,3.0,3.0,330.0,0,330.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+154,VJBPN,VJBPN,Valvula junior baja presión esprea normal,3.0,0.0,0.0,0.0,3.0,3.0,300.0,0,300.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+155,VJBPF,VJBPF,Valvula junior baja presión p 3/8 fleer,3.0,0.0,0.0,0.0,3.0,3.0,290.0,0,290.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+156,VJAPB,VJAPB,"Valvula Junior baja presión para barril de 3/8""",3.0,0.0,0.0,0.0,3.0,3.0,300.0,0,300.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+157,VJBPR,VJBPR,Valvula junior baja presión regulable,3.0,0.0,0.0,0.0,3.0,3.0,330.0,0,330.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+158,VBPF,VBPF,"Valvula junior baja presiónmod fc/ tuerca y barril 1/4""",5.0,0.0,0.0,0.0,5.0,5.0,300.0,0,300.0,2026-05-18T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+163,B28,B28,Banda ancho 16.7mm longitu 787 mm GATE,1.0,1.0,0.0,1.0,1.0,1.0,210.0,0,210.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+164,PO-A39,PO-A39,Banda V lisa estirada para uso industrial PRO ONE,1.0,1.0,0.0,1.0,1.0,1.0,240.0,0,240.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+165,PO-A40,PO-A40,Banda V lisa estirada para uso industrial PRO ONE,1.0,1.0,0.0,1.0,1.0,1.0,240.0,0,240.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+166,27-0459-1,27-0459-1,Bujia de encendido KOBLENS -1,2.0,4.0,0.0,4.0,4.0,4.0,150.0,0,150.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+167,27-0295-9,27-0295-9,Bujia de encendido KOBLENS -9,2.0,2.0,0.0,2.0,2.0,2.0,150.0,0,150.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+168,04-0642-1,04-0642-1,Candado KOBLENS,2.0,2.0,0.0,2.0,2.0,2.0,20.0,0,20.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+169,HCCY2XT02AA999CS,HCCY2XT02AA999CS,Contactor 2P 120V 30A terminal/cubierta HATLAND,1.0,0.0,0.0,0.0,0.0,0.0,875.0,0,875.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+170,CWB9-11-30D02,CWB9-11-30D02,Contactor 9 A 24V 50/60Hz WEG,1.0,1.0,0.0,1.0,1.0,1.0,800.0,0,800.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+171,AH102524,AH102524,Controlador de temperatura BLODGETT 33152,1.0,1.0,0.0,1.0,1.0,1.0,0,210.0,4410.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+172,ATMR20,ATMR20,"Fusible 600V, 20A rápido 10 x 38",2.0,3.0,0.0,3.0,3.0,3.0,220.0,17.0,577.0,2025-06-01T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+173,FNM-25,FNM-25,Fusible Bussman de 250vac,0.0,1.0,0.0,1.0,1.0,1.0,120.0,0,120.0,2025-10-16T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+174,ATMR12,ATMR12,Fusible de ceramica 12A 600V,2.0,2.0,0.0,2.0,2.0,2.0,417.37,0,417.37,2025-02-27T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+175,MCHF30Z0456,MCHF30Z0456,Fusible de ceramica 13 A para horno MERRYCHEF,2.0,2.0,0.0,2.0,2.0,2.0,0,17.0,357.0,2025-06-01T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+176,ATQR25,ATQR25,Fusible de ceramica para horno,2.0,1.0,0.0,1.0,1.0,1.0,290.0,0,290.0,2025-02-27T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+178,MCHF30Z1659,MCHF30Z1659,"Fusible, 250 Voltios, 25 Amperios para horno MERRY CHEF",1.0,0.0,0.0,0.0,0.0,0.0,0,62.5,1312.5,2025-06-01T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+179,38-0441-6,38-0441-6,Modulo de encendido electronico KOBLENS,1.0,1.0,0.0,1.0,1.0,1.0,150.0,0,150.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+180,3044300,3044300,Motor de 120 voltios  GARLAND,1.0,1.0,0.0,1.0,1.0,1.0,0.0,1600.0,33600.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+181,N00158OS1P56,N00158OS1P56,Motor eléctrico weg monofásico 1.5 hp 4 polos 120v/220v WEG,1.0,0.0,0.0,0.0,0.0,0.0,2854.99,0,2854.99,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+182,1150456NG2,1150456NG2,Motor Monofásico 1.5Hp 115/230V 1800Rp High Power ELECTROMEX,1.0,0.0,0.0,0.0,0.0,0.0,2800.0,0,2800.0,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+183,N00218OS1P56,N00218OS1P56,Motor Monofasico 2 Hp 1750 Rpm en Baja 110/220v WEG,1.0,0.0,1.0,1.0,1.0,1.0,3903.67,0,3903.67,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+184,PCL5,PCL5,"Polea BandaV diametro 4.92"" para flecha 5/8",1.0,0.0,0.0,0.0,0.0,0.0,518.0,0,518.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+186,ROJAS-4X11/8F,ROJAS-4X11/8F,"Rueda loca con freno fijas de 4"" de alto x 1 1/8 de ancho ROJAS",2.0,2.0,0.0,2.0,2.0,2.0,550.0,0,550.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+188,GSW-5X11/8F,GSW-5X11/8F,"Rueda locas fijas con freno de 5"" de alto x 1 1/8 "" de ancho GSW",4.0,4.0,0.0,4.0,4.0,4.0,650.0,0,650.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+190,RUEBAST-3X11/8,RUEBAST-3X11/8,"Ruedas locas con bastago de 3"" de alto x 1 1/8 de ancho",2.0,0.0,0.0,0.0,0.0,0.0,490.0,0,490.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+191,RUEBAST-3X11/8F,RUEBAST-3X11/8F,"Ruedas locas con bastago freno de 3"" de alto x 1 1/8 de ancho",2.0,0.0,0.0,0.0,0.0,0.0,490.0,0,490.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+195,JOKER,JOKER,Elaboracion especial de jokey bar en acero inoxidable C-18 grado 304. Dimensiones 1.50 m x 0.62 m x 0.75 m,0.0,0.0,0.0,0.0,0.0,0.0,20422.39053708333,0,20422.39053708333,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+196,BASE-12,BASE-12,"Fabricacion de base para estufa 12"" C18 con regatones",1.0,1.0,0.0,1.0,1.0,1.0,4882.376799157219,0,4882.376799157219,,Act Mar 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+197,BASE-24,BASE-24,"Fabricacion de base para estufa 24""  C18 con regatones",1.0,0.0,0.0,0.0,0.0,0.0,4882.376799157219,0,4882.376799157219,,Act Mar 2026,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+198,BASE-25,BASE-25,"Fabricacion de base para parrilla 25"" C18 con regatones",2.0,2.0,0.0,2.0,2.0,2.0,5397.037221657219,0,5397.037221657219,,Act Mar 2026,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+199,BASE-36,BASE-36,"Fabricacion de base para plancha 36"" C18 con regatones",2.0,3.0,0.0,3.0,3.0,3.0,5875.877900407218,0,5875.877900407218,,Act Mar 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+200,FREGA-MESA,FREGA-MESA,Fregadero con mesa en acero T-304 C-18. Medidas: 90x74x90,1.0,1.0,0.0,1.0,1.0,1.0,11038.6,0,11038.6,,,inventory/data/local_products.json; inventory/data/products-all.csv
+201,MESA-TRAB120,MESA-TRAB120,"Mesa de trabajo acero T-304, C-18. 120 x 70 x 90 cm con entrepaño",1.0,1.0,0.0,1.0,1.0,1.0,8486.139129157218,0,8486.139129157218,,Act Mar 2026,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+202,MESA-TRAB200RESP,MESA-TRAB200RESP,"Mesa de trabajo con respaldo acero T-304, C18. 200 x 70 x 90 cm con entrepaño",1.0,1.0,0.0,1.0,1.0,1.0,13391.57900415722,0,13391.57900415722,,Act Mar 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+203,MESA-ISLA,MESA-ISLA,Mesa isla en acero T-304 C-18 con regatones. Medida: 77 x 90 x 90,0.0,0.0,0.0,0.0,0.0,0.0,5677.42,0,5677.42,,,inventory/data/local_products.json; inventory/data/products-all.csv
+206,BASE-SALAMANDRA,BASE-SALAMANDRA,"Soporte para salamandra fabricado en acero inoxidable t-304, C18",1.0,1.0,0.0,1.0,1.0,1.0,2021.409625,0,2021.409625,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+207,TARJA-100,TARJA-100,Tarja Sencilla 100 cm con descanso C18 con descanso,1.0,1.0,0.0,1.0,1.0,1.0,7898.5,0,7898.5,,Act Mar 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+208,TARJACARN-90,TARJACARN-90,Tarja tipo carnicero de una tina  calibre 18. Dimensiones 90 x 75 x 90,1.0,1.0,0.0,1.0,1.0,1.0,7637.88,0,7637.88,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+209,TORRE-MARISCOS,TORRE-MARISCOS,Torre de mariscos con bandejas de 50 y 42cm con soportes,1.0,1.0,0.0,1.0,1.0,1.0,2911.98,0,2911.98,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+214,00-417608-00001,00-417608-00001,"Cabezal quemador, hornilla HOBART",6.0,6.0,0.0,6.0,6.0,6.0,750.0,0,750.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+215,223005-10,223005-10,"Obturador de aire 1"" GARGLAND",6.0,6.0,0.0,6.0,6.0,6.0,198.0,0,198.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+219,00-417258-000G1,00-417258-000G1,Quemador frontal HOBART,3.0,3.0,0.0,3.0,3.0,3.0,1190.0,0,1190.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+220,153027,153027,Quemador horno calentador izquierda DUKE,4.0,4.0,0.0,4.0,4.0,4.0,686.43,0,686.43,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+222,00-417260-000G1,00-417260-000G1,Quemador trasero HOBART,3.0,3.0,0.0,3.0,3.0,3.0,1380.0,0,1380.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+223,UNI-CLIMP,UNI-CLIMP,Quemadores Tipo Imperial Corto y Largo UNIVERSAL,5.0,2.0,3.0,5.0,5.0,5.0,1200.0,0,1200.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+228,AK002111,AK002111,Espreas para valvula paso-53 CORIAT,10.0,10.0,0.0,10.0,10.0,10.0,13.68,0,13.68,2025-05-14T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+229,AF000307,AF000307,Parrillas para estufon CORIAT,4.0,3.0,0.0,3.0,3.0,3.0,719.0,0,719.0,2025-05-10T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+230,10269,10269,Perilla para estufa CORIAT,2.0,2.0,0.0,2.0,2.0,2.0,232.37,0,232.37,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+231,160126,160126,Piloto completo para freidora CORIAT,2.0,2.0,0.0,2.0,2.0,2.0,566.29,0,566.29,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+233,320199,320199,Quemador en U 54 cm CORIAT,2.0,2.0,0.0,2.0,2.0,2.0,682.88,0,682.88,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+234,AK000004,AK000004,Quemador tipo polidoro 345mm CORIAT,4.0,4.0,0.0,4.0,4.0,4.0,209.0,0,209.0,2025-04-14T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+235,AC000402,AC000402,Termostato para horno ABJC CORIAT,2.0,2.0,0.0,2.0,2.0,2.0,1942.94,0,1942.94,2025-05-07T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+236,AC000205,AC000205,Valvula para estufa CORIAT,5.0,4.0,0.0,4.0,4.0,4.0,277.59,0,277.59,2025-05-14T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+240,514-3277-33,514-3277-33,Arrancador de compresor de pieza de climatización COPELAND EMERSON,1.0,1.0,0.0,1.0,1.0,1.0,0,160.0,3360.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+241,ASMTRE0101,ASMTRE0101,"Aspa 4"" para motor esqueleto GENERICO",2.0,2.0,0.0,2.0,2.0,2.0,40.0,0,40.0,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+243,801022,801022,"Aspa de ventilador, 7-3/4"", 5 aspas TRUE",2.0,2.0,0.0,2.0,2.0,2.0,0.0,35.4,743.4,,Act Nov 2052,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+245,947039,947039,"Aspa del ventilador, condensador, 8-3/4"" de diámetro, 5 aspas TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,35.4,743.4,,Act Nov 2053,inventory/data/inventory-products.json; inventory/data/products-all.csv
+246,997816,997816,Bandeja de drenaje en espiral TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,205.72,4320.12,,Act Nov 2046,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+247,823089,823089,Bisagra con muelle para puerta TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,118.12,2480.52,,Act Nov 2030,inventory/data/inventory-products.json; inventory/data/products-all.csv
+248,870841,870841,Bisagra inferior izquierda TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,92.67,1946.07,,Act Nov 2066,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+249,018F6264,018F6264,"Bobina para solenoide, BF220BS, Cable, 1.000 DANFOSS",1.0,1.0,0.0,1.0,1.0,1.0,827.0,0,827.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+250,CAB-CALEF,CAB-CALEF,Cable calefactor para puertas de camara frigorifica por metro,17.0,17.0,0.0,17.0,17.0,17.0,120.0,0,120.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+251,CAB-NIQ10,CAB-NIQ10,Cable cobre niquelado forro de F.V. y silicon 200-300 cal 10 x metro,90.0,90.0,0.0,90.0,90.0,90.0,33.92,0,33.92,2025-07-28T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+252,996869,996869,"Cable de alimentación, 126"", NEMA 5-15P, 14/3, SJTOW TRUE",2.0,2.0,0.0,2.0,2.0,2.0,0.0,57.59,1209.39,,Act Nov 2054,inventory/data/inventory-products.json; inventory/data/products-all.csv
+253,CAB-ATC14300,CAB-ATC14300,"Cable para alta temperatura silicón y fibra 300° Calibre 14 Cobre Niquelado, 600v x mt",60.0,60.0,0.0,60.0,60.0,60.0,32.85,0,32.85,2025-09-25T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+254,QHA-6E,QHA-6E,"Cables para calentadores de puertas, 6ft, 42w, 120v QUALITY",1.0,1.0,0.0,1.0,1.0,1.0,1200.0,0,1200.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+255,801805,801805,Calentador línea de drenaje TRUE,1.0,0.0,0.0,0.0,0.0,0.0,0.0,44.56,935.76,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+256,969245,969245,"Capacitor, Run, 250 Volt, 12uf TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,35.44,744.24,,Act Nov 2064,inventory/data/inventory-products.json; inventory/data/products-all.csv
+257,920158,920158,Clip de estanteria TRUE,13.0,13.0,0.0,13.0,13.0,13.0,0.0,4.18,87.78,,Act Nov 2047,inventory/data/inventory-products.json; inventory/data/products-all.csv
+258,991567,991567,Componente de arranque True,1.0,1.0,0.0,1.0,1.0,1.0,0,18.0,378.0,,Act Nov 2075,inventory/data/inventory-products.json; inventory/data/products-all.csv
+259,959083,959083,Compressor Overload True MST16AFN-3265,1.0,1.0,0.0,1.0,1.0,1.0,0,36.0,756.0,2026-04-30T00:00:00,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+260,189-227MFD,189-227MFD,Condensador Capacitor Arranque COLDTEK,1.0,1.0,0.0,1.0,1.0,1.0,125.0,0,125.0,,Cancelado,inventory/data/inventory-products.json; inventory/data/products-all.csv
+261,207872,207872,"Conjunto de sonda LAE N.° TM-CBL-40M-01 4,0 con cable de cinta TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0,86.19,1809.99,,Act Nov 2068,inventory/data/inventory-products.json; inventory/data/products-all.csv
+262,816682,816682,Control Danffos ERC 113D TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,131.42,2759.8199999999997,,Act Nov 2045,inventory/data/local_products.json; inventory/data/products-all.csv
+263,P70LB-1C,P70LB-1C,Control de presion dual automatica PENN,1.0,1.0,0.0,1.0,1.0,1.0,1960.0,0,1960.0,,Act Nov 2076,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+265,800382,800382,"Control De Temperatura, 077B6856 Kit #077B7163 TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,65.55,1376.55,,Act Nov 2042,inventory/data/inventory-products.json; inventory/data/products-all.csv
+266,TC-900E,TC-900E,Controlador digital baja temperatura,1.0,0.0,0.0,0.0,0.0,0.0,739.39,0,739.39,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+267,CORT-HAW,CORT-HAW,Cortina Hawaianna,0.0,0.0,0.0,0.0,0.0,0.0,1200.0,0,1200.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+268,810808,810808,"Empaque 25-5/8 ""x 26-5/8"", T-23-2/49-4 TRUE",2.0,2.0,0.0,2.0,2.0,2.0,0.0,70.93,1489.5300000000002,,Act Nov 2049,inventory/data/inventory-products.json; inventory/data/products-all.csv
+269,932588,932588,Empaque de puerta TRUE,2.0,3.0,0.0,3.0,3.0,3.0,0.0,70.93,1489.5300000000002,,Act Nov 2050,inventory/data/inventory-products.json; inventory/data/products-all.csv
+270,810878,810878,"Empaque Empaque, T-23-2/49-4 BTM BLK 2910 TRUE",2.0,2.0,0.0,2.0,2.0,2.0,0.0,70.93,1489.5300000000002,,Act Nov 2048,inventory/data/inventory-products.json; inventory/data/products-all.csv
+271,0-6602,0-6602,Filtro deshidratador EMERSON,1.0,1.0,0.0,1.0,1.0,1.0,265.0,0,265.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+272,945039,945039,Filtro dos entradas TRUE,1.0,0.0,0.0,0.0,0.0,0.0,0.0,40.86,858.06,,Act Nov 2027,inventory/data/inventory-products.json; inventory/data/products-all.csv
+274,SLP25-80,SLP25-80,"Interrumpor baja presion Abre 25 psi Cierra 80 psi, 500 PP 3500 BP 1/4  SMART ELECTRIC",1.0,1.0,0.0,1.0,1.0,1.0,0.0,65.0,1365.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+275,54127037,54127037,Interruptor controlador limit para horno AMANA,2.0,2.0,0.0,2.0,2.0,2.0,150.0,0,150.0,2025-05-08T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+276,800316,800316,Interruptor de congelación TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,78.3,1644.3,,Act Nov 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+277,MPS30-50,MPS30-50,Interruptor De Presion AQUEX,1.0,1.0,0.0,1.0,1.0,1.0,650.0,0,650.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+278,205014,205014,"Junta de puerta, negra, 22-3/8"" x 25-3/8"", Tssu/Tuc/Twt-48/72",2.0,2.0,0.0,2.0,2.0,2.0,0,70.93,1489.5300000000002,2025-06-17T00:00:00,Act Nov 2072,inventory/data/inventory-products.json; inventory/data/products-all.csv
+279,211676,211676,"Junta de puerta, negra, 25-11/16 x 25-1/2"", T-23G-2",1.0,1.0,0.0,1.0,1.0,1.0,0,70.93,1489.5300000000002,2025-06-17T00:00:00,Act Nov 2073,inventory/data/inventory-products.json; inventory/data/products-all.csv
+280,805143,805143,Kit conector de cables TRUE,2.0,3.0,0.0,3.0,3.0,3.0,0.0,47.21,991.41,,Act Nov 2041,inventory/data/inventory-products.json; inventory/data/products-all.csv
+281,836833,836833,Kit control de temperatura ERC112D TRUE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,223.47,4692.87,,Act Nov 2039,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+282,219717,219717,Kit control de temperatura LAEBIT25 TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,339.15,7122.15,2025-06-09T00:00:00,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+283,219716,219716,Kit control de temperatura LAEBR1 TRUE,2.0,2.0,0.0,2.0,2.0,2.0,0.0,356.67,7490.070000000001,,Act Nov 2032,inventory/data/inventory-products.json; inventory/data/products-all.csv
+284,836834,836834,Kit control de temperatura sustituido por 848244 TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,303.17,6366.570000000001,,Act Nov 2060,inventory/data/inventory-products.json; inventory/data/products-all.csv
+285,802803,802803,Kit control universal BIT25 TRUE,2.0,3.0,0.0,3.0,2.0,2.0,0.0,356.67,7490.070000000001,,Act Nov 2037,inventory/data/inventory-products.json; inventory/data/products-all.csv
+286,216345,216345,Kit de arranque EMC3121U TRUE,1.0,0.0,0.0,0.0,0.0,0.0,0.0,108.54,2279.34,,Act Nov 2063,inventory/data/inventory-products.json; inventory/data/products-all.csv
+287,823236,823236,"Kit de bandeja de desague, 220v TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,304.31,6390.51,,Act Nov 2056,inventory/data/inventory-products.json; inventory/data/products-all.csv
+288,870842,870842,"Kit de bisagra de puerta, inferior derecha TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,92.67,1946.07,,Act Nov 2043,inventory/data/inventory-products.json; inventory/data/products-all.csv
+289,870837,870837,Kit de bisagra superior derecha TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0,118.06,2479.26,2025-03-18T00:00:00,Act Nov 2070,inventory/data/inventory-products.json; inventory/data/products-all.csv
+290,870838,870838,Kit de bisagra Superior izquierda TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,118.06,2479.26,,Act Nov 2067,inventory/data/inventory-products.json; inventory/data/products-all.csv
+291,991224,991224,Kit de reacondicionamiento de control electrico KITGDM TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,199.17,4182.57,,Act Nov 2038,inventory/data/inventory-products.json; inventory/data/products-all.csv
+292,992987,992987,Kit de servicio de refrigerante R290 Propano TRUE,2.0,2.0,0.0,2.0,2.0,2.0,0.0,820.21,17224.41,,Act Nov 2058,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+293,801112,801112,Lampara TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,34.27,719.6700000000001,,Act Nov 2062,inventory/data/inventory-products.json; inventory/data/products-all.csv
+294,960602,960602,Modulo led TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,88.4,1856.4,,Act Nov 2029,inventory/data/inventory-products.json; inventory/data/products-all.csv
+295,ECR2-0831,ECR2-0831,"Motor INPUT 100-240vac,50-60 Hz, 0.19-0.10 A OUTPUT 13w 18000rpm, DUAL SPEED 1550rpm DOR:CCW-DE. WELLIGTON",22.0,14.0,0.0,14.0,12.0,12.0,0.0,37.25,782.25,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+296,821639,821639,Motor retrofit TRUE,1.0,0.0,0.0,0.0,0.0,0.0,0,387.06,8128.26,,Act Nov 2069,inventory/data/inventory-products.json; inventory/data/products-all.csv
+297,225824,225824,"Motor ventilador 100-240 V, 50/60 Hz, 13 W, 1550 RPM TRUE",2.0,2.0,0.0,2.0,2.0,2.0,0.0,248.01,5208.21,,Act Nov 2055,inventory/data/inventory-products.json; inventory/data/products-all.csv
+299,815594,815594,"Pantalla Remota, Led Azul, 12 Vcc Sustituido por 816682 TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,76.57,1607.9699999999998,,Act Nov 2061,inventory/data/inventory-products.json; inventory/data/products-all.csv
+300,VA-PROD10,VA-PROD10,Protector y relay universal AVALY,2.0,2.0,0.0,2.0,2.0,2.0,80.92,0,80.92,2025-04-10T00:00:00,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+301,800182,800182,Relay 25 A TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,33.54,704.34,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+302,994353,994353,Relay 832AW-1C-F-S1 12VDC 30A-277VAC TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,45.12,947.52,,Act Nov 2057,inventory/data/inventory-products.json; inventory/data/products-all.csv
+303,RXM3AB7BD,RXM3AB7BD,Relé de miniatura enchufable para maquina al vacio SCHNEIDER,3.0,3.0,0.0,3.0,3.0,3.0,250.0,0,250.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+304,835384,835384,Sellador de silicon TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,22.54,473.34,,Act Nov 2040,inventory/data/inventory-products.json; inventory/data/products-all.csv
+305,807408,807408,Sensor de descarche TRUE,2.0,0.0,0.0,0.0,0.0,0.0,0.0,18.55,389.55,,Act Nov 2028,inventory/data/inventory-products.json; inventory/data/products-all.csv
+306,807409,807409,Sensor de temperatura TRUE,2.0,4.0,0.0,4.0,4.0,4.0,0.0,20.76,435.96000000000004,,Act Nov 2033,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+307,807414,807414,Sensor termisor 4m NTCEPC B57025M25,1.0,1.0,0.0,1.0,1.0,1.0,0.0,20.76,435.96000000000004,,Act Nov 2034,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+308,807415,807415,Sensor termisor 4m NTCEPC B57025M2502AZ,2.0,2.0,0.0,2.0,2.0,2.0,0.0,20.76,435.96000000000004,,Act Nov 2035,inventory/data/inventory-products.json; inventory/data/products-all.csv
+309,807416,807416,Sensor termisor TRUE,6.0,6.0,0.0,6.0,6.0,6.0,0.0,20.76,435.96000000000004,,Act Nov 2036,inventory/data/inventory-products.json; inventory/data/products-all.csv
+310,973396,973396,Serpentin de evaporador TUC/TWT-27F,1.0,1.0,0.0,1.0,1.0,1.0,0,332.69,6986.49,2025-08-27T00:00:00,Act Nov 2075,inventory/data/inventory-products.json; inventory/data/products-all.csv
+311,KCD2,KCD2,Switch 4 polos Universal para vitrina,3.0,3.0,0.0,3.0,3.0,3.0,85.0,0,85.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+312,TAB-EQUI,TAB-EQUI,Tablero de control para baja temperatura con selectores EQUIPSA,1.0,1.0,0.0,1.0,1.0,1.0,6800.0,0,6800.0,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+313,RV-100X204,RV-100X204,Tanque de liquido 1.3L RV 100x204 FIGOMEC,1.0,1.0,0.0,1.0,1.0,1.0,980.0,0,980.0,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+314,846763,846763,Temperatura de control sustituido por 844950 TRUE,1.0,1.0,0.0,1.0,1.0,1.0,0.0,250.37,5257.77,,Act Nov 2059,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+315,SL7490,SL7490,Termostato de descongelación para frigorífico SUPCO,1.0,1.0,0.0,1.0,1.0,1.0,250.0,0,250.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+316,9722131,9722131,Timing switch MEIKO,0.0,0.0,0.0,0.0,0.0,0.0,3860.12,0,3860.12,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+317,831970,831970,Transformador de 120v-24v TRUE,2.0,2.0,0.0,2.0,2.0,2.0,0.0,52.92,1111.32,,Act Nov 2031,inventory/data/inventory-products.json; inventory/data/products-all.csv
+318,851142,851142,"Tubo capilar, 0,106"" de diámetro exterior X 0,054"" TRUE",1.0,1.0,0.0,1.0,1.0,1.0,0.0,32.41,680.6099999999999,,Act Nov 2044,inventory/data/inventory-products.json; inventory/data/products-all.csv
+320,PCN802460,PCN802460,Válvula de expansión EMERSON,1.0,1.0,0.0,1.0,1.0,1.0,2100.0,0,2100.0,CANCELADO,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+321,068Z3209,068Z3209,"Válvula de expansión termostática de rosca, TE 2, R22/R407C. DANFOSS",1.0,1.0,0.0,1.0,1.0,1.0,1230.0,0,1230.0,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+322,068Z3403,068Z3403,"Válvula de expansión termostática, TE 2, DANFOSS",0.0,0.0,0.0,0.0,0.0,0.0,967.0,0,967.0,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+323,9652103,9652103,Valvula de presion M-Lq MEIKO,0.0,0.0,0.0,0.0,0.0,0.0,1488.14,0,1488.14,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+324,032F8107,032F8107,"Válvula Solenoide Sin Bobina, Tipo Evr 3, Conexión 1/4 Flare DANFOSS",1.0,1.0,0.0,1.0,1.0,1.0,1120.0,0,1120.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+325,VERE12002,VERE12002,Ventilador motor con 2 cables para refrigerador COLDTEK,1.0,1.0,0.0,1.0,1.0,1.0,250.0,0,250.0,,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+329,00-122555,00-122555,Alimentacion de bandeja,1.0,1.0,0.0,1.0,1.0,1.0,11450.0,0,11450.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+330,00-077643-00001,00-077643-00001,Anillo de amoladora,1.0,1.0,0.0,1.0,1.0,1.0,7151.0,0,7151.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+331,209042C,209042C,Bomba dosificadora,1.0,1.0,0.0,1.0,1.0,1.0,6776.03,0,6776.03,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+332,ITA-130976,ITA-130976,Bomba lavaloza E500,1.0,1.0,0.0,1.0,1.0,1.0,12745.69,0,12745.69,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+333,00-119760-00003,00-119760-00003,Conjunto de cilindros,1.0,1.0,0.0,1.0,1.0,1.0,24303.74,0,24303.74,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+334,00-748572,00-748572,Conjunto de electrodos,3.0,0.0,0.0,0.0,0.0,0.0,1367.78,0,1367.78,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+335,00-0158801,00-0158801,Conjunto de gusanos,1.0,1.0,0.0,1.0,1.0,1.0,12338.0,0,12338.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+336,00-893074,00-893074,Conjunto de rodamientos,1.0,1.0,0.0,1.0,1.0,1.0,3095.91,0,3095.91,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+337,00-919509,00-919509,Cortina para lavaloza corta,1.0,1.0,0.0,1.0,1.0,1.0,1859.9,0,1859.9,,Act Feb 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+338,00-919758,00-919758,Cortinas para salpicaduras lavaloza 4 capas,6.0,5.0,0.0,5.0,5.0,5.0,5594.0,0,5594.0,,Act Feb 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+339,00-290372,00-290372,Cuchillo para picadoras de carne puntas de afilado,1.0,1.0,0.0,1.0,1.0,1.0,1169.0,0,1169.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+340,00-271008,00-271008,"Disyuntor de vacío, 3/8""",1.0,1.0,0.0,1.0,1.0,1.0,2672.89,0,2672.89,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+341,00-893535,00-893535,Embalaje de boquillas,1.0,6.0,0.0,6.0,6.0,6.0,1526.89,0,1526.89,2025-06-09T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+342,00-119922-00001,00-119922-00001,"Empujador de alimentos, picadora/trituradora",1.0,1.0,0.0,1.0,1.0,1.0,1623.84,0,1623.84,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+343,00-413302-00001,00-413302-00001,"Enganche, soporte del piloto",5.0,5.0,0.0,5.0,5.0,5.0,107.5,0,107.5,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+344,01-1000V8-00156,01-1000V8-00156,Extractor para horno,1.0,1.0,0.0,1.0,1.0,1.0,10233.79,0,10233.79,2025-02-22T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+345,00-913153,00-913153,Juego de termostato con perilla y tornillos,4.0,2.0,0.0,2.0,2.0,2.0,3127.96,0,3127.96,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+346,230020C,230020C,Kit de elemento calefactor resistencia Lavaloza E800,2.0,2.0,0.0,2.0,2.0,2.0,4538.12,0,4538.12,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+347,00-961683-000G1,00-961683-000G1,Kit de mantenimiento de cables de alta tensión Vulcan,1.0,1.0,0.0,1.0,1.0,1.0,1300.0,0,1300.0,2026-04-22T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+348,00-292910,00-292910,Kit de servicio valvula de vacio CL44,1.0,1.0,0.0,1.0,1.0,1.0,5036.83,0,5036.83,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+349,00-913102-0049,00-913102-0049,Kit de soldaduras para perro,1.0,4.0,0.0,4.0,4.0,4.0,1366.37,0,1366.37,2025-06-09T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+350,01-1A1828-00001,01-1A1828-00001,Kit de sondas termopar,1.0,1.0,0.0,1.0,1.0,1.0,5663.4225,0,5663.4225,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+351,TW-001-09,TW-001-09,Kit de terminales,1.0,1.0,0.0,1.0,1.0,1.0,290.0,0,290.0,2025-06-11T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+352,01-1M7311-00001,01-1M7311-00001,Kit sustitucion de luces,2.0,2.0,0.0,2.0,2.0,2.0,1511.18,0,1511.18,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+353,01-1000V9-00170,01-1000V9-00170,"Modulo de ignición 3 Tfi, sin reinicio BAXTER",1.0,1.0,0.0,1.0,1.0,1.0,11094.69,0,11094.69,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+354,00-958392-000G2,00-958392-000G2,"Montaje de válvula de drenaje, lado derecho",2.0,2.0,0.0,2.0,2.0,2.0,7677.0,0,7677.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+355,80629,80629,Motobomba de enjuague e 220/240v - 1PH - 60HZ - ECOMAX 603/503 Lavaloza,1.0,1.0,0.0,1.0,1.0,1.0,10360.0,0,10360.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+356,00-437044-00006,00-437044-00006,"Motor, accionamiento del transportador, 208-240/480 V, 60 Hz, 3 PH LAVALOZA C54A",1.0,1.0,0.0,1.0,1.0,1.0,67890.58,0,67890.58,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+357,00-411242-0000,00-411242-0000,Perilla de control,1.0,1.0,0.0,1.0,1.0,1.0,230.0,0,230.0,2025-06-11T00:00:00,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+358,00-428300-00001,00-428300-00001,"Perilla negra, 2,75 de diámetro",3.0,3.0,0.0,3.0,3.0,3.0,234.01,0,234.01,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+359,00-938783,00-938783,Placa de fijacion permanente,1.0,1.0,0.0,1.0,1.0,1.0,3617.0,0,3617.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+360,00-938782,00-938782,Placa moledora de carne,1.0,1.0,0.0,1.0,1.0,1.0,3617.0,0,3617.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+361,00-938784,00-938784,Placa moledora de carne,1.0,1.0,0.0,1.0,1.0,1.0,3617.0,0,3617.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+362,00-938785,00-938785,Placa moledora de carne,1.0,1.0,0.0,1.0,1.0,1.0,3617.0,0,3617.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+363,00-938786,00-938786,Placa picadora de carne,1.0,1.0,0.0,1.0,1.0,1.0,3617.0,0,3617.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+364,00-271123,00-271123,Protector de límite alto,1.0,1.0,0.0,1.0,1.0,1.0,2155.0,0,2155.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+365,00-950546-00001,00-950546-00001,Puerta sensor temperatura AM16,1.0,1.0,0.0,1.0,1.0,1.0,99.92,0,99.92,2025-02-22T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+366,00-404060-00001,00-404060-00001,Regulador,9.0,9.0,0.0,9.0,9.0,9.0,0.0,9.4,197.4,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+367,HSR-CHGBMYN,HSR-CHGBMYN,Regulador fisher,0.0,1.0,0.0,1.0,0.0,0.0,4991.47,0,4991.47,2026-04-30T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+368,00-110334,00-110334,"Retén, planetario, HL300",1.0,1.0,0.0,1.0,1.0,1.0,205.96,0,205.96,2025-07-31T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+369,1312641,1312641,"Sierra de 126"" 5/8  x 0.022 Thk. 4T",6.0,6.0,0.0,6.0,6.0,6.0,351.3,0,351.3,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+370,00-353589-0001,00-353589-0001,Sonda de temperatura,1.0,0.0,0.0,0.0,0.0,0.0,2033.29,0,2033.29,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+371,00-328994,00-328994,Soporte para sonda,5.0,5.0,0.0,5.0,5.0,5.0,2846.16,0,2846.16,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+372,00-919363-00PK,00-919363-00PK,Tapón para lavaloza,3.0,3.0,0.0,3.0,3.0,3.0,548.8,0,548.8,2025-02-27T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+373,00-941944-00006,00-941944-00006,Tarjeta de control Master Exe,1.0,1.0,0.0,1.0,1.0,1.0,0.0,855.0,17955.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+375,00-410839-00004,00-410839-00004,Termopila VULCAN,2.0,1.0,0.0,1.0,1.0,1.0,1579.04,0,1579.04,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+376,00-563609,00-563609,Trampa de aire CL44-AM16-LX,1.0,1.0,0.0,1.0,1.0,1.0,3824.94,0,3824.94,2025-02-22T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+377,00-709240-0000A,00-709240-0000A,"Tubo piloto de 3/16"" X 24"", acero revestido de cobre",4.0,4.0,0.0,4.0,4.0,4.0,2424.0,0,2424.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+378,00-959662-00001,00-959662-00001,"Valvula de gas Maxitron 24 V, natural/propano",1.0,1.0,0.0,1.0,1.0,1.0,4050.0,0,4050.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+379,00-292909-00002,00-292909-00002,"Válvula reguladora de vacío, 1/2""",1.0,1.0,0.0,1.0,1.0,1.0,2446.75,0,2446.75,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+380,00-292909-00003,00-292909-00003,"Válvula reguladora de vacío, 1/2"" Lavaloza AM15",1.0,1.0,0.0,1.0,1.0,1.0,2446.75,0,2446.75,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+381,00-435968-00001,00-435968-00001,"Válvula solenoide, 1/2"", 120 V",2.0,2.0,0.0,2.0,2.0,2.0,7013.75,0,7013.75,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+382,00-424940-00001,00-424940-00001,Ventilador para refrigerador de 115v,2.0,0.0,0.0,0.0,0.0,0.0,1537.52,0,1537.52,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+386,020-000222,020-000222,Agitador de temporizador 115/230  MANITOWOC,1.0,1.0,0.0,1.0,1.0,1.0,2600.0,0,2600.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+387,2008939,2008939,Bomba de agua MANITOWOC,1.0,1.0,0.0,1.0,1.0,1.0,7230.0,0,7230.0,2025-10-23T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+388,GBR00969,GBR00969,"Brazo de leva con muelle, delantero KOLD-DRAFT",2.0,2.0,0.0,2.0,2.0,2.0,1700.0,0,1700.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+389,443192-02,443192-02,"Capacitor para motor, 5,0MFD, 250 Volt HOSHIZAKI",1.0,1.0,0.0,1.0,1.0,1.0,574.19,0,574.19,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+390,HQS-WF,HQS-WF,Cartucho de filtro EVERPURE,1.0,0.0,0.0,0.0,0.0,0.0,799.0,0,799.0,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+391,105012-01,105012-01,Charola deflector B-800 HOSHIZAKI,1.0,1.0,0.0,1.0,1.0,1.0,2901.91,0,2901.91,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+392,PD502923,PD502923,Conector en T Follet,1.0,1.0,0.0,1.0,1.0,1.0,220.0,0,220.0,2026-04-15T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+393,426799-01,426799-01,Conector para interruptor HOSHIZAKI,4.0,2.0,0.0,2.0,2.0,2.0,426.93,0,426.93,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+394,957910,957910,"Conjunto de tapa, deposito serie 7 follet",1.0,1.0,0.0,1.0,1.0,1.0,3639.9,0,3639.9,2026-04-15T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+395,2006589,2006589,Contactores 1 pole 115v MANITOWOC,2.0,2.0,0.0,2.0,2.0,2.0,793.0,0,793.0,2025-10-23T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+396,576517,576517,Control de espesor de hielo GENERICO,10.0,10.0,0.0,10.0,10.0,10.0,211.27,0,211.27,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+397,4A7080G01,4A7080G01,Flotador de control de nivel de agua HOSHIZAKI,1.0,1.0,0.0,1.0,1.0,1.0,1025.86,0,1025.86,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+400,9101379-01,9101379-01,Interruptor Magnetico ICE O MATIC,2.0,2.0,0.0,2.0,2.0,2.0,0,19.86,417.06,2025-03-25T00:00:00,Act Nov 2076,inventory/data/inventory-products.json; inventory/data/products-all.csv
+401,102147701,102147701,Kit interruptor magnetico KOLD-DRAFT,2.0,2.0,0.0,2.0,2.0,2.0,0,106.23,0.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+402,3032819-01S,3032819-01S,Manguera para bin ICE O MATIC,1.0,1.0,0.0,1.0,1.0,1.0,2300.0,0,2300.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+403,9161031-01,9161031-01,Motor reductor 3W 230V ICE O MATIC,1.0,1.0,0.0,1.0,1.0,1.0,1102.0,0,1102.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+404,516101501,516101501,"Motorreductor actuador, 115 V, 50/60 Hz KOLD-DRAFT",1.0,1.0,0.0,1.0,1.0,1.0,0,155.0,0.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+405,2007579,2007579,Relay 400 VAC MANITOWOC,1.0,1.0,0.0,1.0,1.0,1.0,800.0,0,800.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+406,LY2N-J,LY2N-J,Relay para maquina de hielo UNIVERSAL,3.0,3.0,0.0,3.0,3.0,3.0,390.0,0,390.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+407,481332M01,481332M01,Resorte muelle HOSHIZAKI,2.0,0.0,0.0,0.0,0.0,0.0,1158.57,0,1158.57,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+408,2006549,2006549,Sonda de nivel de agua MANITOWOC,1.0,1.0,0.0,1.0,1.0,1.0,1323.0,0,1323.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+409,3013270-01,3013270-01,Soporte en Z para agua ICE O MATIC,1.0,1.0,0.0,1.0,1.0,1.0,890.0,0,890.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+410,00000-8309,00000-8309,Tarjeta de control  MANITOWOC,1.0,1.0,0.0,1.0,1.0,1.0,13424.0,0,13424.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+411,4H2582G01,4H2582G01,Tornillo para deposito de agua HOSHIZAKI,2.0,2.0,0.0,2.0,2.0,2.0,741.95,0,741.95,2025-02-27T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+412,4A1551-01,4A1551-01,Tubo de goma HOSHIZAKI,1.0,1.0,0.0,1.0,1.0,1.0,910.3,0,910.3,2025-02-27T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+414,00000-7965,00000-7965,Valvula entrada de agua MANITOWOC,2.0,2.0,0.0,2.0,2.0,2.0,3457.0,0,3457.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+415,11-0564-02,11-0564-02,Valvula selenoide de 240v SCOTTMAN,1.0,1.0,0.0,1.0,1.0,1.0,0,102.1,2144.1,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+419,40.06.625P,40.06.625P,"Arnés De Cables, Bomba Rational",1.0,1.0,0.0,1.0,1.0,1.0,629.65,0,629.65,2026-04-23T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+420,PALISLA049,PALISLA049,Aspa grande de licuadora INTERNATIONAL,1.0,0.0,0.0,0.0,0.0,0.0,719.52,0,719.52,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+422,BARRIL-3/8,BARRIL-3/8,Barril 3/8,3.0,3.0,0.0,3.0,3.0,3.0,7.78,0,7.78,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+423,PILOTO-1/4,PILOTO-1/4,Block piloto 1/4,1.0,1.0,0.0,1.0,1.0,1.0,266.45,0,266.45,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+426,BLOCK 3-16,BLOCK 3-16,Block piloto sencillo de 3/16,3.0,0.0,0.0,0.0,0.0,0.0,144.83,0,144.83,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+428,156029,156029,"Bombilla transparente W 40 ,V 130 DUKE",4.0,4.0,0.0,4.0,4.0,4.0,188.06,0,188.06,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+429,W10380496,W10380496,Carbones para batidora,3.0,3.0,0.0,3.0,1.0,1.0,147.5,0,147.5,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+430,PK2CB,PK2CB,Carbones para motor Licuadora Vitamix San-son Omniblend Ceos,1.0,1.0,0.0,1.0,1.0,1.0,600.0,0,600.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+431,CEPILLO,CEPILLO,Cepillo de alambre con mango curvo,4.0,4.0,0.0,4.0,4.0,4.0,100.0,0,100.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+432,00-497586-00001,00-497586-00001,Cerradura de rodillo para puerta Vulcan,1.0,2.0,0.0,2.0,2.0,2.0,774.93,0,774.93,2026-04-23T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+433,2J-306342,2J-306342,"Conjunto de tubo piloto y punta, 3/16"", H-241 WELLS",1.0,1.0,0.0,1.0,1.0,1.0,398.5,0,398.5,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+434,8003029,8003029,Conjunto piloto y electrodo gas natural DUKE,4.0,4.0,0.0,4.0,4.0,4.0,671.75,0,671.75,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+435,35-625906-011,35-625906-011,Control de encendido 24 vac FENWAL,1.0,1.0,0.0,1.0,1.0,1.0,5900.0,0,5900.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+436,44-1266044122,44-1266044122,Control de encendido FENWAL/BLODGETT,1.0,1.0,0.0,1.0,1.0,1.0,3100.0,0,3100.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+438,9706529,9706529,Engrane metalico inferior Batidora KITCHEN AID,2.0,2.0,0.0,2.0,2.0,2.0,450.0,0,450.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+439,WPW10112253,WPW10112253,Engrane para batidora plastico KITCHEN AID,2.0,2.0,0.0,2.0,2.0,2.0,199.9,0,199.9,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+440,ESPREA,ESPREA,Esprea de capote,4.0,4.0,0.0,4.0,4.0,4.0,25.65,0,25.65,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+442,681027,681027,Fan motor 120v ALTO-SHAAM,1.0,1.0,0.0,1.0,1.0,1.0,0,135.0,2835.0,2025-08-06T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+443,FILTRO-PITCO,FILTRO-PITCO,Filtros de papel para freidora Pitco PP10613 14.5 x 22.5cm,19.0,10.0,9.0,19.0,19.0,19.0,2200.0,0,2200.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+444,BT-15,BT-15,Foco acorazanado 95watts,5.0,1.0,0.0,1.0,1.0,1.0,120.0,0,120.0,2025-03-18T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+445,66740,66740,Foco Halogeno para Horno 25w EUROPAN,2.0,2.0,0.0,2.0,2.0,2.0,344.0,0,344.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+446,CBT-322-126,CBT-322-126,"Hoja De Sierra De Cinta, 126"" X 5/8"" X 0,22"", 3 Dientes Por Pulgada TORREY",3.0,3.0,0.0,3.0,3.0,3.0,250.0,0,250.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+448,421167,421167,Interruptor de encendido ALTO-SHAAM,1.0,1.0,0.0,1.0,1.0,1.0,842.6,0,842.6,2025-08-06T00:00:00,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+451,8720.1571,8720.1571,"Kit de reequipamiento, tornillo, pasador recto RATIONAL",1.0,1.0,0.0,1.0,1.0,1.0,626.52,0,626.52,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+452,5017541,5017541,Kit de servicio de encendido ALTO-SHAAM,1.0,1.0,0.0,1.0,1.0,1.0,4900.0,0,4900.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+453,8184652,8184652,Magnetron para horno,4.0,4.0,0.0,4.0,4.0,4.0,800.0,0,800.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+454,11-0404-RP,11-0404-RP,Mando de control (perilla) EVO,2.0,0.0,0.0,0.0,0.0,0.0,813.0,0,813.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+455,70100801619L,70100801619L,Micro switch para horno DRAGO 21A 250V,1.0,1.0,0.0,1.0,1.0,1.0,101.25,0,101.25,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+456,NIPLECAMISA-1/4,NIPLECAMISA-1/4,Niple camisa 1/4,3.0,3.0,0.0,3.0,3.0,3.0,123.87,0,123.87,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+457,PBDR,PBDR,Perilla bakelita doble roja QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,50.0,0,50.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+458,PBTL,PBTL,Perilla bakelita linea QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+459,PBTMG,PBTMG,Perilla bakelita moño grande QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+460,PBTML,PBTML,Perilla bakelita moño largo QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+461,PBTM,PBTM,Perilla bakelita moño QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+462,PBTP,PBTP,Perilla bakelita punto QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+463,PBTRN,PBTRN,Perilla bakelita rombo negra QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+464,PBTR,PBTR,Perilla bakelita rombo QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+465,PBTC,PBTC,Perilla bakelita tipo c QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+466,PBTF,PBTF,Perilla bakelita tipo flama QUEMAID,5.0,2.0,0.0,2.0,2.0,2.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+467,PBQR,PBQR,Perilla bakelita tipo q roja QUEMAID,5.0,0.0,0.0,0.0,0.0,0.0,25.0,0,25.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+469,39832,39832,Perilla de acero linea indicadora IMPERIAL,8.0,8.0,0.0,8.0,8.0,8.0,1050.0,0,1050.0,,Act Nov 2025,inventory/data/local_products.json; inventory/data/products-all.csv
+470,PER-TRIAN-FERRO,PER-TRIAN-FERRO,Perilla Ferro triangular FERRO,5.0,2.0,0.0,2.0,2.0,2.0,65.3,0,65.3,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+471,PMCHAZUL,PMCHAZUL,Perilla metalica chica azul QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,110.0,0,110.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+472,PMCHNEGRA,PMCHNEGRA,Perilla metalica chica negra QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,110.0,0,110.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+473,PMCHROJA,PMCHROJA,Perilla metalica chica roja QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,110.0,0,110.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+474,PMTA,PMTA,Perilla metalica tipo asber QUEMAID,5.0,5.0,0.0,5.0,4.0,4.0,150.0,0,150.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+475,PMTCAZUL,PMTCAZUL,Perilla metalica tipo c azul QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,150.0,0,150.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+476,PMTCNEGRA,PMTCNEGRA,Perilla metalica tipo c negra QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,150.0,0,150.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+477,PMTCROJA,PMTCROJA,Perilla metalica tipo c roja QUEMAID,5.0,5.0,0.0,5.0,5.0,5.0,150.0,0,150.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+478,PER-60250,PER-60250,Perilla Negra 60-250 C,10.0,10.0,0.0,10.0,10.0,10.0,152.0,0,152.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+479,PER-UNIV-N,PER-UNIV-N,Perilla negra s/n,0.0,0.0,0.0,0.0,0.0,0.0,145.0,0,145.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+480,PER-UNIV-R,PER-UNIV-R,Perilla para estufa roja,3.0,3.0,0.0,3.0,3.0,3.0,190.0,0,190.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+481,PERILLAESTUFASANSON,PERILLAESTUFASANSON,Perilla para estufa SANSON,1.0,1.0,0.0,1.0,1.0,1.0,100.0,0,100.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+482,PER-200400,PER-200400,Perilla para freidora 200-400C,1.0,1.0,0.0,1.0,1.0,1.0,190.0,0,190.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+483,PER-30-120,PER-30-120,Perilla para termostato 30-120,1.0,1.0,0.0,1.0,1.0,1.0,180.0,0,180.0,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+484,PERILLASANSON,PERILLASANSON,Perilla para termostato horno SANSON,1.0,1.0,0.0,1.0,1.0,1.0,100.0,0,100.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+486,1291,1291,Piloto para horno IMPERIAL,0.0,0.0,0.0,0.0,0.0,0.0,1085.58,0,1085.58,2025-05-02T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+487,PILOTOHONGOSANSON,PILOTOHONGOSANSON,Piloto tipo hongo con opresor SANSON,4.0,4.0,0.0,4.0,4.0,4.0,60.0,0,60.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+488,1542800,1542800,"Quemador de salamandra Infrarrojos, 38,1 x 20,32 cm GARLAND",1.0,1.0,0.0,1.0,1.0,1.0,6500.0,0,6500.0,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+489,56463,56463,Quemador piloto gas natural BLODGETT,0.0,0.0,0.0,0.0,0.0,0.0,4111.95,0,4111.95,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+490,511379,511379,Quemador piloto natural GARGLAND,0.0,0.0,0.0,0.0,0.0,0.0,380.0,0,380.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+491,145010,145010,Quemador piloto TARGET SIT 1 Llama Dx 0.145.010 GARGLAND,2.0,2.0,0.0,2.0,2.0,2.0,450.0,0,450.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+492,REDBUSHING-3/4,REDBUSHING-3/4,Reducción Bushing 1 1/4 a 3/4,2.0,2.0,0.0,2.0,2.0,2.0,127.03,0,127.03,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+495,PT-100,PT-100,Sensor J SANSON,1.0,1.0,0.0,1.0,1.0,1.0,900.0,0,900.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+496,BA-39987,BA-39987,Tablero de adaptadores ALTO-SHAAM,2.0,2.0,0.0,2.0,2.0,2.0,3200.0,0,3200.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+498,TCABOS0002,TCABOS0002,Tarjeta electronica HC SANSON/ASSERT,1.0,1.0,0.0,1.0,1.0,1.0,9500.0,0,9500.0,,,inventory/data/local_products.json; inventory/data/products-all.csv
+503,TUERCA-5/8,TUERCA-5/8,Tuerca de 5/8,5.0,5.0,0.0,5.0,5.0,5.0,20.0,0,20.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+504,FBV-3C,FBV-3C,Válvula de bola de latón WATTS,0.0,0.0,0.0,0.0,0.0,0.0,430.0,0,430.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+505,9043056,9043056,Válvula de Paso 3/4(25) DURMAN,1.0,1.0,0.0,1.0,1.0,1.0,195.0,0,195.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+506,VALVULASANSON,VALVULASANSON,Valvula para estufa SANSON,1.0,1.0,0.0,1.0,1.0,1.0,250.0,0,250.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+507,1346G,1346G,Valvula para horno,5.0,5.0,0.0,5.0,5.0,5.0,390.0,0,390.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+508,311847,311847,Valvula para horno tuerca 3/8 IUSA,1.0,1.0,0.0,1.0,1.0,1.0,86.16,0,86.16,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+509,VRI,VRI,Valvula regulable importada QUEMAID,4.0,4.0,0.0,4.0,4.0,4.0,150.0,0,150.0,,Act Feb 2026,inventory/data/local_products.json; inventory/data/products-all.csv
+510,14496,14496,"Valvula solenoide a 220 V, triturador InSinkerator",1.0,1.0,0.0,1.0,1.0,1.0,0,306.0,6426.0,2025-06-24T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+514,1830-707,1830-707,Conjunto piloto electrodo 2SL-6EL,5.0,5.0,0.0,5.0,5.0,5.0,1100.0,0,1100.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+515,41-224,41-224,Encendedor de superficie SOUTHBEND RANGE Modelo BGS CG GB GS SLGB STRG,1.0,1.0,0.0,1.0,1.0,1.0,890.0,0,890.0,,,inventory/data/local_products.json; inventory/data/products-all.csv
+516,41-225,41-225,Encendedor ignitor Bakers Pride M2140A 24 V,1.0,1.0,0.0,1.0,1.0,1.0,890.0,0,890.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+517,1751-012,1751-012,Perilla beige para valvula de gas,3.0,3.0,0.0,3.0,3.0,3.0,109.0,0,109.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+518,1830-491,1830-491,Piloto 3 vias tipo T Corto,2.0,0.0,0.0,0.0,0.0,0.0,388.66,0,388.66,2026-02-03T00:00:00,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+519,1980-024,1980-024,"Termocople universal de 24""",10.0,0.0,0.0,0.0,0.0,0.0,142.76,0,142.76,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+520,1980-036,1980-036,"Termocople universal de 36""",10.0,2.0,0.0,2.0,2.0,2.0,162.07,0,162.07,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+521,1980-048,1980-048,"Termocople universal de 48""",10.0,7.0,0.0,7.0,7.0,7.0,149.5,0,149.5,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+522,1980-060,1980-060,"Termocople universal de 60""",10.0,9.0,0.0,9.0,9.0,9.0,169.99,0,169.99,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+523,1980-072,1980-072,"Termocople universal de 72""",10.0,4.0,0.0,4.0,4.0,4.0,183.57,0,183.57,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+524,1950-001,1950-001,Termopila para valvula minivolt,4.0,4.0,0.0,4.0,4.0,4.0,607.07,0,607.07,,Act Feb 2026,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+525,4200-514,4200-514,Termostato para horno 149°C a 343°C,2.0,2.0,0.0,2.0,2.0,2.0,4000.0,0,4000.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+526,4350-029,4350-029,Termostato para horno GARGLAND/ROBERTSHAW,2.0,3.0,0.0,3.0,3.0,3.0,4410.0,0,4410.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+527,4626-001,4626-001,Valvula para estufa universal,5.0,1.0,0.0,1.0,1.0,1.0,325.0,0,325.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+531,TG905,TG905,Bandeja GN 1/1 H20 esmaltada,4.0,4.0,0.0,4.0,4.0,4.0,790.02,0,790.02,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+532,TG944,TG944,Bandeja plana inoxidable tocino simple,4.0,4.0,0.0,4.0,4.0,4.0,942.48,0,942.48,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+533,KCE1095A,KCE1095A,"Cable De La Placa De Control, 4 polos, 2M",2.0,1.0,0.0,1.0,1.0,1.0,779.6,0,779.6,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+534,KCN1003A,KCN1003A,Capacitor 6.5 UF,5.0,2.0,0.0,2.0,0.0,0.0,634.7,0,634.7,2025-08-13T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+535,KVE1115A,KVE1115A,"Contactor, Mini, 230 Volt, 20 Amp, 4 Pole",3.0,3.0,0.0,3.0,2.0,2.0,996.95,0,996.95,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+536,KVT1200A,KVT1200A,Cubierta de lampara para horno,2.0,2.0,0.0,2.0,2.0,2.0,417.35,0,417.35,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+537,KGN1354A,KGN1354A,Empaque Horno Rossella,2.0,1.0,0.0,1.0,1.0,1.0,953.48,0,953.48,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+538,KGN1574A,KGN1574A,Empaque para fermentadora,2.0,2.0,0.0,2.0,2.0,2.0,1286.75,0,1286.75,2025-06-06T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+539,KGN1352A,KGN1352A,Empaque para horno Arianna,2.0,0.0,0.0,0.0,0.0,0.0,881.03,0,881.03,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+540,KGN1235B,KGN1235B,Empaque para horno Line micro XF023,1.0,1.0,0.0,1.0,1.0,1.0,707.0799999999999,0,707.0799999999999,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+541,KGN1631A,KGN1631A,Empaque para horno XEVC-1011-GPRM,1.0,1.0,0.0,1.0,1.0,1.0,1504.1,0,1504.1,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+542,KGN1432B,KGN1432B,Empaque para Speed Pro,3.0,3.0,0.0,3.0,3.0,3.0,3437.8,0,3437.8,2025-05-07T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+543,KVM2505A,KVM2505A,Empuja cristal doble puerta,3.0,2.0,0.0,2.0,2.0,2.0,410.82,0,410.82,2025-09-30T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+544,XHC003,XHC003,Filtro pure,1.0,1.0,0.0,1.0,0.0,0.0,5002.72,0,5002.72,2024-05-02T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+545,KCN1010A,KCN1010A,Kit capacitor condensador 3.5 UF,2.0,2.0,0.0,2.0,2.0,2.0,497.76,0,497.76,2025-08-28T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+546,KCE1096A,KCE1096A,"Kit De Cable Control De Alimentación, 4 Polos, 3M",2.0,0.0,0.0,0.0,0.0,0.0,852.05,0,852.05,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+547,KCE1065A,KCE1065A,Kit de cable microfit 4P-500MM,1.0,1.0,0.0,1.0,1.0,1.0,533.27,0,533.27,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+548,KEL1115A,KEL1115A,Kit de fijación en T (10 pzs),2.0,2.0,0.0,2.0,2.0,2.0,1069.4,0,1069.4,2025-02-20T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+549,XUC001,XUC001,Kit de primera instalacion,1.0,0.0,0.0,0.0,0.0,0.0,3226.98,0,3226.98,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+550,KPE1059A,KPE1059A,Kit de soporte USB,1.0,1.0,0.0,1.0,1.0,1.0,1431.65,0,1431.65,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+551,KPE2038A,KPE2038A,Kit de tarjeta de energia,0.0,0.0,0.0,0.0,0.0,0.0,8694.0,0,8694.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+552,KSN1022A,KSN1022A,Kit de temperatura para camara,1.0,1.0,0.0,1.0,1.0,1.0,2121.41,0,2121.41,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+553,KTM1005A,KTM1005A,Kit de temperizador 60 min,3.0,2.0,0.0,2.0,2.0,2.0,1141.85,0,1141.85,2025-08-13T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+554,KTR1100A,KTR1100A,Kit de termostato 269 C,2.0,2.0,0.0,2.0,1.0,1.0,779.6,0,779.6,2025-08-13T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+555,KTR1136A,KTR1136A,"Kit De Termostato De Seguridad, 330C",3.0,3.0,0.0,3.0,2.0,2.0,1504.1,0,1504.1,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+556,KTR1161A,KTR1161A,"Kit De Termostato De Seguridad, 350C",1.0,1.0,0.0,1.0,1.0,1.0,1504.1,0,1504.1,2025-07-10T00:00:00,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+557,KVL1005A,KVL1005A,Kit De Trampa En U,3.0,3.0,0.0,3.0,3.0,3.0,779.6,0,779.6,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+558,KVT1380A,KVT1380A,Kit de vidrio de cierre de guía de ondas speed X,1.0,1.0,0.0,1.0,1.0,1.0,2518.0,0,2518.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+559,KGN1628A,KGN1628A,Kit empaque 0311,1.0,1.0,0.0,1.0,1.0,1.0,1286.75,0,1286.75,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+560,KVL1102A,KVL1102A,Kit filtro de valvula no retorno detergente,2.0,1.0,0.0,1.0,1.0,1.0,634.7,0,634.7,2025-09-30T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+561,KVE1020B,KVE1020B,Kit micro porta,2.0,2.0,0.0,2.0,2.0,2.0,779.6,0,779.6,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+562,KPE1438A,KPE1438A,Kit panel de control cap speed.pro,1.0,0.0,0.0,0.0,0.0,0.0,10682.8,0,10682.8,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+563,KPE2260A,KPE2260A,Kit tarjeta de potencia BL SHOP.PRO 230V,1.0,1.0,0.0,1.0,1.0,1.0,3437.8,0,3437.8,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+564,KPE2102A,KPE2102A,Kit tarjeta de potencia LED/TOUCH/MASTER speed,1.0,1.0,0.0,1.0,1.0,1.0,3270.45,0,3270.45,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+565,GRP815,GRP815,Parrilla GN 1/1 inoxidable a vapor,4.0,4.0,0.0,4.0,4.0,4.0,1219.68,0,1219.68,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+566,GRP806,GRP806,Parrilla inox GN 1/1 lisa abrillantadora,3.0,3.0,0.0,3.0,3.0,3.0,635.1,0,635.1,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+567,YA3A0524,YA3A0524,Prueba de dureza de carbonos,3.0,3.0,0.0,3.0,3.0,3.0,150.0,0,150.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/products-all.csv
+568,TG126,TG126,Recipiente semirrígido antiadherente,1.0,1.0,0.0,1.0,1.0,1.0,690.0,0,690.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+570,XHC010,XHC010,Sistema de filtracion resina,1.0,0.0,0.0,0.0,0.0,0.0,1938.8,0,1938.8,2024-08-20T00:00:00,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+571,KVL1026A,KVL1026A,Tubo De Drenaje Codo,1.0,1.0,0.0,1.0,1.0,1.0,541.23,0,541.23,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+576,HIDAMP12,HIDAMP12,"Persiana de ventilación 12"" de 14.96 x 14.39 x 1.38""",5.0,0.0,0.0,0.0,5.0,5.0,400.0,0,400.0,2026-05-18T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+577,R02.08.010D.00,R02.08.010D.00,"Resistencia 120 V, 800 W, GR-48 HATCO",2.0,2.0,0.0,2.0,2.0,2.0,868.0,0,868.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+580,LC-48,LC-48,Resistencia electrica 120V 1100W INTERNATIONAL,1.0,1.0,0.0,1.0,1.0,1.0,812.7,0,812.7,2025-02-27T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+582,DZ-400,DZ-400,Resistencia para maquina al vacio dz-400 MIGSA,2.0,1.0,0.0,1.0,1.0,1.0,219.0,0,219.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+583,030S00,030S00,Resistencia plana,1.0,1.0,0.0,1.0,1.0,1.0,290.0,0,290.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+584,RES-PLAN,RES-PLAN,Resistencia plana de 9.5 mm x 1.58 mm de ancho x metro,2.0,2.0,0.0,2.0,2.0,2.0,1074.0,0,1074.0,,,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+588,TEFLONMT,TEFLONMT,Teflon para maquina al vacio CAJA,3.0,1.0,0.0,1.0,1.0,1.0,345.0,0,345.0,2025-02-14T00:00:00,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+593,HIFANXEXHAUST-7,HIFANXEXHAUST-7,"Ventilador Extractor de aluminio por persiana de 7""",1.0,0.0,0.0,0.0,1.0,1.0,1500.0,0,1500.0,2026-05-18T00:00:00,,inventory/data/local_products.json; inventory/data/products-all.csv
+597,LT221209,LT221209,Termometro asador horno Ataud parrilla de 50 a 500,4.0,3.0,0.0,3.0,3.0,3.0,226.0,0,226.0,2025-04-25T00:00:00,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+598,S-236-42,S-236-42,"Termostato 175-550F, 42"" ROBERTSHAW",1.0,1.0,0.0,1.0,1.0,1.0,2900.0,0,2900.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+599,KXP-336-48,KXP-336-48,"Termostato 200 a 500 F, bulbo de 3/16″ x 12″, tapa de 48″ DUKE",1.0,1.0,0.0,1.0,1.0,1.0,0,99.0,0.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+600,SP-463-36,SP-463-36,Termostato 200-450F Tapa 36″ ROBERTSHAW,2.0,2.0,0.0,2.0,2.0,2.0,2600.0,0,2600.0,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+601,376988,376988,Termostato automatico para calentador IUSA,1.0,1.0,0.0,1.0,1.0,1.0,690.0,0,690.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+602,CAEM-30110,CAEM-30110,Termostato CAEM 30-110 C UNIVERSAL,4.0,10.0,0.0,10.0,10.0,10.0,275.72,0,275.72,2025-05-06T00:00:00,Act Nov 2027,inventory/data/inventory-products.json; inventory/data/products-all.csv
+603,CAEM-50300BL,CAEM-50300BL,Termostato CAEM 50-300 C bulvo largo UNIVERSAL,4.0,4.0,0.0,4.0,4.0,4.0,275.72,0,275.72,,Act Nov 2028,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+604,CAEM-50300,CAEM-50300,Termostato CAEM 50-300 C UNIVERSAL,5.0,8.0,0.0,8.0,8.0,8.0,275.72,0,275.72,2025-05-06T00:00:00,Act Nov 2026,inventory/data/inventory-products.json; inventory/data/products-all.csv
+605,CAEM-60220,CAEM-60220,"Termostato CAEM 60-220 tuerca 1/2, bulbo acero inoxidable UNIVERSAL",4.0,4.0,0.0,4.0,4.0,4.0,430.0,0,430.0,,Act Nov 2029,inventory/data/inventory-products.json; inventory/data/products-all.csv
+606,RX-1-36,RX-1-36,Termostato para freidora ROBERTSHAW,3.0,9.0,0.0,9.0,9.0,9.0,1282.0,0,1282.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+607,RX-2-24,RX-2-24,Termostato para freidora VULCAN/ROBERTSHAW,1.0,0.0,0.0,0.0,0.0,0.0,710.0,0,710.0,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+608,1F-XBB-B0323,1F-XBB-B0323,Termostato vastago largo 575F Calibrado TORREY,1.0,1.0,0.0,1.0,1.0,1.0,1520.0,0,1520.0,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+609,700-515,700-515,"Válvula de control Gas LP 750 mV 3/4"" x 3/4"" 485k BTU Freidora ROBERTSHAW",1.0,0.0,0.0,0.0,0.0,0.0,2909.48,0,2909.48,2025-01-31T00:00:00,Act Nov 2029,inventory/data/inventory-products.json; inventory/data/products-all.csv
+610,VS820,VS820,"Valvula de gas 1/2"" 225,000 BTU 1/4"" CCT para Freidora HONEYWELL",2.0,3.0,0.0,3.0,3.0,3.0,3550.0,0,3550.0,,Act Nov 2029,inventory/data/inventory-products.json; inventory/data/products-all.csv
+611,Q2BBC02-H,Q2BBC02-H,Valvula solenoide uso vapor 1/4 a 12v TECSN,1.0,4.0,0.0,4.0,4.0,4.0,620.0,0,620.0,2025-02-07T00:00:00,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+615,90282,90282,Bandeja/Recipiente para Alimentos 1/2 GN VOLLRATH,2.0,2.0,0.0,2.0,2.0,2.0,1039.6,0,1039.6,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+616,KL10825,KL10825,Bowl kng 14 oz CARLISLE,47.0,47.0,0.0,47.0,47.0,47.0,51.6,0,51.6,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+617,MCCF01,MCCF01,Canastas para freidora CONCASSE,6.0,4.0,0.0,4.0,2.0,2.0,523.6,0,523.6,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+618,MCLCEP06,MCLCEP06,Cepillo para manos y uñas de cerda CONCASSE,4.0,2.0,0.0,2.0,2.0,2.0,66.74000000000001,0,66.74000000000001,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+619,MCCUAICIL,MCCUAICIL,Clilindro portacubiertos de aluminio CONCASSE,5.0,5.0,0.0,5.0,5.0,5.0,57.12,0,57.12,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+620,MCGACAIGDEE,MCGACAIGDEE,Guante anticorte  de acero inoxidable grande CONCASSE,2.0,2.0,0.0,2.0,2.0,2.0,705.738,0,705.738,,Act Nov 2025,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+621,MCGACAIME,MCGACAIME,Guante anticorte  de acero inoxidable mediano CONCASSE,2.0,2.0,0.0,2.0,2.0,2.0,705.738,0,705.738,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+622,MCGMT17,MCGMT17,"Guante de algodón 17"" CONCASSE",1.0,1.0,0.0,1.0,1.0,1.0,217.4,0,217.4,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+623,CLARB-1759,CLARB-1759,Luminaria Exterior Cooper Crouse Hinds,4.0,0.0,0.0,0.0,0.0,0.0,1250.0,0,1250.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+624,PINZAJOSPER,PINZAJOSPER,Pinza inoxidable 35cm carne y volteo de jaul JOSPER,1.0,1.0,0.0,1.0,1.0,1.0,1984.8,0,1984.8,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+625,INOX-PORT01,INOX-PORT01,Porta tacos de cero inoxidable KCV,36.0,36.0,0.0,36.0,36.0,36.0,51.0,0,51.0,,,inventory/data/inventory-products.json; inventory/data/products-all.csv
+626,69108,69108,Sarten 8 in VOLLRATH,1.0,1.0,0.0,1.0,1.0,1.0,1313.4,0,1313.4,,Vigencia de precio,inventory/data/local_products.json; inventory/data/inventory-products.json; inventory/data/products-all.csv
+627,3900C,3900C,Tapadera de acero inoxidable 13.97cm VOLLRATH,7.0,7.0,0.0,7.0,7.0,7.0,150.8,0,150.8,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+628,3907C,3907C,Tapadera de acero inoxidable 5/8 VOLLRATH,1.0,1.0,0.0,1.0,1.0,1.0,178.2,0,178.2,,Vigencia de precio,inventory/data/inventory-products.json; inventory/data/products-all.csv
+633,DU180FA1.0HP,DU180FA1.0HP,"Motor de extracción 1.00 HP, 1 fase, 115v, 60 Hz, Monofasico",1.0,0.0,0.0,0.0,4.0,4.0,31925.32,0,31925.32,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+634,DU180FA1.5HP,DU180FA1.5HP,"Motor de extracción 1.500 HP, 3 fases, 230 V, 60 Hz. Trifasico",1.0,1.0,0.0,1.0,3.0,3.0,57175.18,0,57175.18,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+635,DU180HFA2HP,DU180HFA2HP,"Motor de extracción 2.000 HP, 3 fases, 230 V, 60 Hz. Trifasico",1.0,1.0,0.0,1.0,3.0,3.0,61860.67,0,61860.67,,Act Nov 2025,inventory/data/inventory-products.json; inventory/data/products-all.csv
+636,DU180HFA3HP,DU180HFA3HP,"Motor de extracción 3.000 HP, 3 fases, 230 V, 60 Hz. Trifasico",1.0,0.0,0.0,0.0,2.0,2.0,61860.67,0,61860.67,,,inventory/data/inventory-products.json; inventory/data/products-all.csv

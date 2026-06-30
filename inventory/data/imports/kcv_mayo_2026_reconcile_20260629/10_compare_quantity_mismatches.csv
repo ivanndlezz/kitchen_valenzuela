@@ -1,0 +1,575 @@
+﻿source,codigo,descripcion,excel_quantity,source_quantity,difference
+JSON activo inventory-products.json,AEQ-03,Desengrasante citrico Galón,8.0,12.0,4.0
+JSON activo inventory-products.json,DB1044A,Detergente en SPRAY&RINSE 12x750ML,2.0,5.0,3.0
+JSON activo inventory-products.json,DB1076A0,Detergente Rinse & ULTRA/PLUS 10 bts,1.0,2.0,1.0
+JSON activo inventory-products.json,AEQ-02,Limpiaparrillas Galón,8.0,14.0,6.0
+JSON activo inventory-products.json,56.00.562,Pastillas de mantenimiento CARE 150 Tabs,7.0,17.0,10.0
+JSON activo inventory-products.json,56.00.210A,Pastillas detergentes 100 Tabs,22.0,6.0,-16.0
+JSON activo inventory-products.json,AEQ-01,Quitacochambre Galon,7.0,11.0,4.0
+JSON activo inventory-products.json,DB1085A0,Removedor de cal UNOX.D&CAL,1.0,0.0,-1.0
+JSON activo inventory-products.json,12191309,"Biasagra de puerta, superior izquierda, mesa ASBER",1.0,0.0,-1.0
+JSON activo inventory-products.json,480HP,Bisagra compuesta para puertas superpuestasFERMOD,6.0,0.0,-6.0
+JSON activo inventory-products.json,12216798,Bisagra inferior ASBER,2.0,0.0,-2.0
+JSON activo inventory-products.json,12216800,Bisagra superior ASBER,2.0,0.0,-2.0
+JSON activo inventory-products.json,BIS-GEN,Bisagras para refrigerador GENERICO,4.0,0.0,-4.0
+JSON activo inventory-products.json,63762,Cerradura con llave cilindro PERLICK,3.0,0.0,-3.0
+JSON activo inventory-products.json,CSG-1,Cierre para camara frigorifica,1.0,0.0,-1.0
+JSON activo inventory-products.json,12203287,Conjunto de bisagras derecho ASBER,1.0,2.0,1.0
+JSON activo inventory-products.json,12203286,"Conjunto de bisagras mesa, lado izquierdo ASBER",2.0,4.0,2.0
+JSON activo inventory-products.json,GS-2398,Empaque Alto-Shaam 1000-TH1,2.0,0.0,-2.0
+JSON activo inventory-products.json,EMP-ARRASTRE,Empaque de arrastre para camara frigorifica,2.0,0.0,-2.0
+JSON activo inventory-products.json,EMP-IMP01,Empaque importado dimensiones 57 x 62 cm negro,1.0,0.0,-1.0
+JSON activo inventory-products.json,EMP-IMP03,Empaque importado dimensiones 64.5 x 30 cm,3.0,0.0,-3.0
+JSON activo inventory-products.json,EKC-001,Empaque universal con ceja dimensiones Torrey 68 X 62.5 cm negro,2.0,0.0,-2.0
+JSON activo inventory-products.json,EMP-UNI07,Empaque universal dimensiones 177.5 x 52.5 cm negro,3.0,0.0,-3.0
+JSON activo inventory-products.json,EMP-UNI01,Empaque universal dimensiones 54.5 x 63.5 cm negro,2.0,0.0,-2.0
+JSON activo inventory-products.json,EMP-UNI06,Empaque universal dimensiones 61 x 140 cm negro,1.0,0.0,-1.0
+JSON activo inventory-products.json,EMP-UNI03,Empaque universal dimensiones 64 X 55.5 cm negro,0.0,2.0,2.0
+JSON activo inventory-products.json,EMP-UNI05,Empaque universal dimensiones 73.5 X 50 cm negro,1.0,0.0,-1.0
+JSON activo inventory-products.json,12190016,"Espaciador, cuadrado, nylon, puerta, pelaje, a/c ASBER",1.0,0.0,-1.0
+JSON activo inventory-products.json,1190002,Goma espesor 73.5 c 59 x 1 mm Cafetera Simonelli,22.0,0.0,-22.0
+JSON activo inventory-products.json,1026313,Interruptor de puerta PERLICK,1.0,0.0,-1.0
+JSON activo inventory-products.json,1186837,"Junta portafolio 72 x 58x 7 mm, cafetera Simonelli",11.0,0.0,-11.0
+JSON activo inventory-products.json,XWVRC-0711-H,Base Stand Alto Horno Combinado Multifuncional,1.0,0.0,-1.0
+JSON activo inventory-products.json,BERMEXB2,Batidora Planetaria Comercial 20Ltt 1.5 Hp 6kg Amasa Rojo 60 Hz BERMEX B2,3.0,0.0,-3.0
+JSON activo inventory-products.json,5424ND2PSPFB,Campana de acero inoxidable de 8 pies,1.0,0.0,-1.0
+JSON activo inventory-products.json,SX36-6BP,Estufa con horno de 6 quemadores ME2401019HB,0.0,1.0,1.0
+JSON activo inventory-products.json,VSP200F-1,Fogon para ollas a gas DV1152764,1.0,0.0,-1.0
+JSON activo inventory-products.json,VICM24-201,"Gratinador de 24"" ME2310153HB",1.0,0.0,-1.0
+JSON activo inventory-products.json,XEVC-1011-GPRM,"Horno combinado a gas CHEF TOP 10 GN1/1 plus, serie 2023A0005377",1.0,0.0,-1.0
+JSON activo inventory-products.json,VC4GD-21D150K,Horno de convección a gas 482045201,1.0,0.0,-1.0
+JSON activo inventory-products.json,T043C,Horno De Convección Venix Torcello,1.0,0.0,-1.0
+JSON activo inventory-products.json,MS300CT,Rebanadora Bermex MS-300-CT Con Cuchilla De Acero,1.0,0.0,-1.0
+JSON activo inventory-products.json,153A-3,Torre Dispensadora de Cerveza de Barril TURBO AIR,1.0,0.0,-1.0
+JSON activo inventory-products.json,54410,"Cuello curvo para mezcladora 12"" FISHER",2.0,0.0,-2.0
+JSON activo inventory-products.json,3963,"Cuello recto para mezcladora 12"" FISHER",1.0,0.0,-1.0
+JSON activo inventory-products.json,21-406L,Juegos de conectores para mezcladora KROWNE,5.0,0.0,-5.0
+JSON activo inventory-products.json,3248,"Mezcladora a pared de 8"" DICA",1.0,0.0,-1.0
+JSON activo inventory-products.json,90-3032,Adaptador macho a gas 3/4 a 5/8 DORMONT,4.0,0.0,-4.0
+JSON activo inventory-products.json,COD-11/4,"Codo Calle 90° de 1 1/4"" DORMONT",1.0,0.0,-1.0
+JSON activo inventory-products.json,COD-1/2,"Codo Calle 90° de 1/2"" DORMONT",6.0,0.0,-6.0
+JSON activo inventory-products.json,A50,Conexión rapida 1/2 A50 DORMONT,1.0,0.0,-1.0
+JSON activo inventory-products.json,A75,Conexión rapida 3/4 A75 DORMONT,3.0,0.0,-3.0
+JSON activo inventory-products.json,1675KIT48,"Kit de sistema de seguridad, 3/4 x48"" pulgadas de diámetro DORMONT",4.0,3.0,-1.0
+JSON activo inventory-products.json,1650KIT48,"Kit Manguera de gas con sistema de seguridad 1/2 X 48"" DORMONT",2.0,3.0,1.0
+JSON activo inventory-products.json,TAG-DE-DM1061,"Manguera de acero inoxidable 3/4 x 48"" DORMONT",0.0,6.0,6.0
+JSON activo inventory-products.json,30c-4142-36,"Manguera de gas corrugada amarilla 3/4"" X 36"" DORMONT",0.0,1.0,1.0
+JSON activo inventory-products.json,VAL-DORM11/4,"Válvula de bola de gas de paso de 1 1/4"" DORMONT",1.0,0.0,-1.0
+JSON activo inventory-products.json,VAL-DORM1/2,"Válvula de bola de gas de paso de 1/2"" DORMONT",3.0,0.0,-3.0
+JSON activo inventory-products.json,VAL-DORM3/4,"Válvula de bola de gas de paso de 3/4"" DORMONT",2.0,0.0,-2.0
+JSON activo inventory-products.json,PO-A39,Banda V lisa estirada para uso industrial PRO ONE,1.0,0.0,-1.0
+JSON activo inventory-products.json,PO-A40,Banda V lisa estirada para uso industrial PRO ONE,1.0,0.0,-1.0
+JSON activo inventory-products.json,27-0459-1,Bujia de encendido KOBLENS -1,4.0,0.0,-4.0
+JSON activo inventory-products.json,27-0295-9,Bujia de encendido KOBLENS -9,2.0,0.0,-2.0
+JSON activo inventory-products.json,04-0642-1,Candado KOBLENS,2.0,0.0,-2.0
+JSON activo inventory-products.json,CWB9-11-30D02,Contactor 9 A 24V 50/60Hz WEG,1.0,0.0,-1.0
+JSON activo inventory-products.json,AH102524,Controlador de temperatura BLODGETT 33152,1.0,0.0,-1.0
+JSON activo inventory-products.json,FNM-25,Fusible Bussman de 250vac,1.0,0.0,-1.0
+JSON activo inventory-products.json,ATMR12,Fusible de ceramica 12A 600V,2.0,0.0,-2.0
+JSON activo inventory-products.json,MCHF30Z0456,Fusible de ceramica 13 A para horno MERRYCHEF,2.0,0.0,-2.0
+JSON activo inventory-products.json,ATQR25,Fusible de ceramica para horno,1.0,0.0,-1.0
+JSON activo inventory-products.json,38-0441-6,Modulo de encendido electronico KOBLENS,1.0,0.0,-1.0
+JSON activo inventory-products.json,3044300,Motor de 120 voltios  GARLAND,1.0,0.0,-1.0
+JSON activo inventory-products.json,N00158OS1P56,Motor eléctrico weg monofásico 1.5 hp 4 polos 120v/220v WEG,0.0,2.0,2.0
+JSON activo inventory-products.json,1150456NG2,Motor Monofásico 1.5Hp 115/230V 1800Rp High Power ELECTROMEX,0.0,1.0,1.0
+JSON activo inventory-products.json,N00218OS1P56,Motor Monofasico 2 Hp 1750 Rpm en Baja 110/220v WEG,1.0,2.0,1.0
+JSON activo inventory-products.json,ROJAS-4X11/8F,"Rueda loca con freno fijas de 4"" de alto x 1 1/8 de ancho ROJAS",2.0,0.0,-2.0
+JSON activo inventory-products.json,GSW-5X11/8F,"Rueda locas fijas con freno de 5"" de alto x 1 1/8 "" de ancho GSW",4.0,0.0,-4.0
+JSON activo inventory-products.json,BASE-12,"Fabricacion de base para estufa 12"" C18 con regatones",1.0,0.0,-1.0
+JSON activo inventory-products.json,BASE-25,"Fabricacion de base para parrilla 25"" C18 con regatones",2.0,0.0,-2.0
+JSON activo inventory-products.json,BASE-36,"Fabricacion de base para plancha 36"" C18 con regatones",3.0,0.0,-3.0
+JSON activo inventory-products.json,MESA-TRAB120,"Mesa de trabajo acero T-304, C-18. 120 x 70 x 90 cm con entrepaño",1.0,0.0,-1.0
+JSON activo inventory-products.json,MESA-TRAB200RESP,"Mesa de trabajo con respaldo acero T-304, C18. 200 x 70 x 90 cm con entrepaño",1.0,0.0,-1.0
+JSON activo inventory-products.json,BASE-SALAMANDRA,"Soporte para salamandra fabricado en acero inoxidable t-304, C18",1.0,0.0,-1.0
+JSON activo inventory-products.json,TARJA-100,Tarja Sencilla 100 cm con descanso C18 con descanso,1.0,0.0,-1.0
+JSON activo inventory-products.json,TARJACARN-90,Tarja tipo carnicero de una tina  calibre 18. Dimensiones 90 x 75 x 90,1.0,0.0,-1.0
+JSON activo inventory-products.json,TORRE-MARISCOS,Torre de mariscos con bandejas de 50 y 42cm con soportes,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-417608-00001,"Cabezal quemador, hornilla HOBART",6.0,0.0,-6.0
+JSON activo inventory-products.json,00-417258-000G1,Quemador frontal HOBART,3.0,0.0,-3.0
+JSON activo inventory-products.json,153027,Quemador horno calentador izquierda DUKE,4.0,0.0,-4.0
+JSON activo inventory-products.json,00-417260-000G1,Quemador trasero HOBART,3.0,0.0,-3.0
+JSON activo inventory-products.json,UNI-CLIMP,Quemadores Tipo Imperial Corto y Largo UNIVERSAL,5.0,0.0,-5.0
+JSON activo inventory-products.json,AK002111,Espreas para valvula paso-53 CORIAT,10.0,9.0,-1.0
+JSON activo inventory-products.json,10269,Perilla para estufa CORIAT,2.0,11.0,9.0
+JSON activo inventory-products.json,AC000402,Termostato para horno ABJC CORIAT,2.0,4.0,2.0
+JSON activo inventory-products.json,AC000205,Valvula para estufa CORIAT,4.0,9.0,5.0
+JSON activo inventory-products.json,ASMTRE0101,"Aspa 4"" para motor esqueleto GENERICO",2.0,0.0,-2.0
+JSON activo inventory-products.json,947039,"Aspa del ventilador, condensador, 8-3/4"" de diámetro, 5 aspas TRUE",1.0,2.0,1.0
+JSON activo inventory-products.json,997816,Bandeja de drenaje en espiral TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,823089,Bisagra con muelle para puerta TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,CAB-CALEF,Cable calefactor para puertas de camara frigorifica por metro,17.0,0.0,-17.0
+JSON activo inventory-products.json,CAB-NIQ10,Cable cobre niquelado forro de F.V. y silicon 200-300 cal 10 x metro,90.0,0.0,-90.0
+JSON activo inventory-products.json,CAB-ATC14300,"Cable para alta temperatura silicón y fibra 300° Calibre 14 Cobre Niquelado, 600v x mt",60.0,0.0,-60.0
+JSON activo inventory-products.json,QHA-6E,"Cables para calentadores de puertas, 6ft, 42w, 120v QUALITY",1.0,0.0,-1.0
+JSON activo inventory-products.json,801805,Calentador línea de drenaje TRUE,0.0,2.0,2.0
+JSON activo inventory-products.json,920158,Clip de estanteria TRUE,13.0,0.0,-13.0
+JSON activo inventory-products.json,189-227MFD,Condensador Capacitor Arranque COLDTEK,1.0,0.0,-1.0
+JSON activo inventory-products.json,P70LB-1C,Control de presion dual automatica PENN,1.0,0.0,-1.0
+JSON activo inventory-products.json,800382,"Control De Temperatura, 077B6856 Kit #077B7163 TRUE",1.0,2.0,1.0
+JSON activo inventory-products.json,TC-900E,Controlador digital baja temperatura,0.0,1.0,1.0
+JSON activo inventory-products.json,810808,"Empaque 25-5/8 ""x 26-5/8"", T-23-2/49-4 TRUE",2.0,4.0,2.0
+JSON activo inventory-products.json,0-6602,Filtro deshidratador EMERSON,1.0,0.0,-1.0
+JSON activo inventory-products.json,945039,Filtro dos entradas TRUE,0.0,2.0,2.0
+JSON activo inventory-products.json,SLP25-80,"Interrumpor baja presion Abre 25 psi Cierra 80 psi, 500 PP 3500 BP 1/4  SMART ELECTRIC",1.0,0.0,-1.0
+JSON activo inventory-products.json,54127037,Interruptor controlador limit para horno AMANA,2.0,0.0,-2.0
+JSON activo inventory-products.json,MPS30-50,Interruptor De Presion AQUEX,1.0,0.0,-1.0
+JSON activo inventory-products.json,805143,Kit conector de cables TRUE,3.0,2.0,-1.0
+JSON activo inventory-products.json,836833,Kit control de temperatura ERC112D TRUE,0.0,3.0,3.0
+JSON activo inventory-products.json,219717,Kit control de temperatura LAEBIT25 TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,836834,Kit control de temperatura sustituido por 848244 TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,802803,Kit control universal BIT25 TRUE,2.0,3.0,1.0
+JSON activo inventory-products.json,823236,"Kit de bandeja de desague, 220v TRUE",1.0,2.0,1.0
+JSON activo inventory-products.json,870842,"Kit de bisagra de puerta, inferior derecha TRUE",1.0,2.0,1.0
+JSON activo inventory-products.json,991224,Kit de reacondicionamiento de control electrico KITGDM TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,992987,Kit de servicio de refrigerante R290 Propano TRUE,2.0,4.0,2.0
+JSON activo inventory-products.json,ECR2-0831,"Motor INPUT 100-240vac,50-60 Hz, 0.19-0.10 A OUTPUT 13w 18000rpm, DUAL SPEED 1550rpm DOR:CCW-DE. WELLIGTON",12.0,0.0,-12.0
+JSON activo inventory-products.json,821639,Motor retrofit TRUE,0.0,1.0,1.0
+JSON activo inventory-products.json,VA-PROD10,Protector y relay universal AVALY,2.0,0.0,-2.0
+JSON activo inventory-products.json,800182,Relay 25 A TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,994353,Relay 832AW-1C-F-S1 12VDC 30A-277VAC TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,835384,Sellador de silicon TRUE,1.0,2.0,1.0
+JSON activo inventory-products.json,807408,Sensor de descarche TRUE,0.0,2.0,2.0
+JSON activo inventory-products.json,807409,Sensor de temperatura TRUE,4.0,8.0,4.0
+JSON activo inventory-products.json,807414,Sensor termisor 4m NTCEPC B57025M25,1.0,0.0,-1.0
+JSON activo inventory-products.json,807415,Sensor termisor 4m NTCEPC B57025M2502AZ,2.0,0.0,-2.0
+JSON activo inventory-products.json,807416,Sensor termisor TRUE,6.0,3.0,-3.0
+JSON activo inventory-products.json,973396,Serpentin de evaporador TUC/TWT-27F,1.0,0.0,-1.0
+JSON activo inventory-products.json,KCD2,Switch 4 polos Universal para vitrina,3.0,0.0,-3.0
+JSON activo inventory-products.json,TAB-EQUI,Tablero de control para baja temperatura con selectores EQUIPSA,1.0,0.0,-1.0
+JSON activo inventory-products.json,RV-100X204,Tanque de liquido 1.3L RV 100x204 FIGOMEC,1.0,0.0,-1.0
+JSON activo inventory-products.json,831970,Transformador de 120v-24v TRUE,2.0,4.0,2.0
+JSON activo inventory-products.json,851142,"Tubo capilar, 0,106"" de diámetro exterior X 0,054"" TRUE",1.0,2.0,1.0
+JSON activo inventory-products.json,PCN802460,Válvula de expansión EMERSON,1.0,0.0,-1.0
+JSON activo inventory-products.json,068Z3209,"Válvula de expansión termostática de rosca, TE 2, R22/R407C. DANFOSS",1.0,0.0,-1.0
+JSON activo inventory-products.json,068Z3403,"Válvula de expansión termostática, TE 2, DANFOSS",0.0,1.0,1.0
+JSON activo inventory-products.json,VERE12002,Ventilador motor con 2 cables para refrigerador COLDTEK,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-122555,Alimentacion de bandeja,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-077643-00001,Anillo de amoladora,1.0,0.0,-1.0
+JSON activo inventory-products.json,209042C,Bomba dosificadora,1.0,0.0,-1.0
+JSON activo inventory-products.json,ITA-130976,Bomba lavaloza E500,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-119760-00003,Conjunto de cilindros,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-748572,Conjunto de electrodos,0.0,3.0,3.0
+JSON activo inventory-products.json,00-0158801,Conjunto de gusanos,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-893074,Conjunto de rodamientos,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-290372,Cuchillo para picadoras de carne puntas de afilado,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-271008,"Disyuntor de vacío, 3/8""",1.0,0.0,-1.0
+JSON activo inventory-products.json,00-893535,Embalaje de boquillas,6.0,0.0,-6.0
+JSON activo inventory-products.json,00-119922-00001,"Empujador de alimentos, picadora/trituradora",1.0,0.0,-1.0
+JSON activo inventory-products.json,00-413302-00001,"Enganche, soporte del piloto",5.0,0.0,-5.0
+JSON activo inventory-products.json,01-1000V8-00156,Extractor para horno,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-913153,Juego de termostato con perilla y tornillos,2.0,0.0,-2.0
+JSON activo inventory-products.json,230020C,Kit de elemento calefactor resistencia Lavaloza E800,2.0,0.0,-2.0
+JSON activo inventory-products.json,00-292910,Kit de servicio valvula de vacio CL44,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-913102-0049,Kit de soldaduras para perro,4.0,0.0,-4.0
+JSON activo inventory-products.json,01-1A1828-00001,Kit de sondas termopar,1.0,0.0,-1.0
+JSON activo inventory-products.json,TW-001-09,Kit de terminales,1.0,0.0,-1.0
+JSON activo inventory-products.json,01-1000V9-00170,"Modulo de ignición 3 Tfi, sin reinicio BAXTER",1.0,0.0,-1.0
+JSON activo inventory-products.json,00-958392-000G2,"Montaje de válvula de drenaje, lado derecho",2.0,0.0,-2.0
+JSON activo inventory-products.json,80629,Motobomba de enjuague e 220/240v - 1PH - 60HZ - ECOMAX 603/503 Lavaloza,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-437044-00006,"Motor, accionamiento del transportador, 208-240/480 V, 60 Hz, 3 PH LAVALOZA C54A",1.0,0.0,-1.0
+JSON activo inventory-products.json,00-411242-0000,Perilla de control,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-428300-00001,"Perilla negra, 2,75 de diámetro",3.0,0.0,-3.0
+JSON activo inventory-products.json,00-938783,Placa de fijacion permanente,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-938782,Placa moledora de carne,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-938784,Placa moledora de carne,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-938785,Placa moledora de carne,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-938786,Placa picadora de carne,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-271123,Protector de límite alto,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-950546-00001,Puerta sensor temperatura AM16,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-110334,"Retén, planetario, HL300",1.0,0.0,-1.0
+JSON activo inventory-products.json,1312641,"Sierra de 126"" 5/8  x 0.022 Thk. 4T",6.0,0.0,-6.0
+JSON activo inventory-products.json,00-353589-0001,Sonda de temperatura,0.0,1.0,1.0
+JSON activo inventory-products.json,00-328994,Soporte para sonda,5.0,0.0,-5.0
+JSON activo inventory-products.json,00-919363-00PK,Tapón para lavaloza,3.0,0.0,-3.0
+JSON activo inventory-products.json,00-563609,Trampa de aire CL44-AM16-LX,1.0,0.0,-1.0
+JSON activo inventory-products.json,00-709240-0000A,"Tubo piloto de 3/16"" X 24"", acero revestido de cobre",4.0,0.0,-4.0
+JSON activo inventory-products.json,00-292909-00002,"Válvula reguladora de vacío, 1/2""",1.0,0.0,-1.0
+JSON activo inventory-products.json,00-292909-00003,"Válvula reguladora de vacío, 1/2"" Lavaloza AM15",1.0,0.0,-1.0
+JSON activo inventory-products.json,00-435968-00001,"Válvula solenoide, 1/2"", 120 V",2.0,0.0,-2.0
+JSON activo inventory-products.json,2008939,Bomba de agua MANITOWOC,1.0,0.0,-1.0
+JSON activo inventory-products.json,105012-01,Charola deflector B-800 HOSHIZAKI,1.0,0.0,-1.0
+JSON activo inventory-products.json,426799-01,Conector para interruptor HOSHIZAKI,2.0,4.0,2.0
+JSON activo inventory-products.json,2006589,Contactores 1 pole 115v MANITOWOC,2.0,0.0,-2.0
+JSON activo inventory-products.json,9101379-01,Interruptor Magnetico ICE O MATIC,2.0,0.0,-2.0
+JSON activo inventory-products.json,2006549,Sonda de nivel de agua MANITOWOC,1.0,11.0,10.0
+JSON activo inventory-products.json,BARRIL-3/8,Barril 3/8,3.0,0.0,-3.0
+JSON activo inventory-products.json,PILOTO-1/4,Block piloto 1/4,1.0,0.0,-1.0
+JSON activo inventory-products.json,156029,"Bombilla transparente W 40 ,V 130 DUKE",4.0,0.0,-4.0
+JSON activo inventory-products.json,W10380496,Carbones para batidora,1.0,0.0,-1.0
+JSON activo inventory-products.json,CEPILLO,Cepillo de alambre con mango curvo,4.0,0.0,-4.0
+JSON activo inventory-products.json,2J-306342,"Conjunto de tubo piloto y punta, 3/16"", H-241 WELLS",1.0,0.0,-1.0
+JSON activo inventory-products.json,35-625906-011,Control de encendido 24 vac FENWAL,1.0,0.0,-1.0
+JSON activo inventory-products.json,44-1266044122,Control de encendido FENWAL/BLODGETT,1.0,0.0,-1.0
+JSON activo inventory-products.json,9706529,Engrane metalico inferior Batidora KITCHEN AID,2.0,0.0,-2.0
+JSON activo inventory-products.json,WPW10112253,Engrane para batidora plastico KITCHEN AID,2.0,0.0,-2.0
+JSON activo inventory-products.json,ESPREA,Esprea de capote,4.0,0.0,-4.0
+JSON activo inventory-products.json,681027,Fan motor 120v ALTO-SHAAM,1.0,0.0,-1.0
+JSON activo inventory-products.json,FILTRO-PITCO,Filtros de papel para freidora Pitco PP10613 14.5 x 22.5cm,19.0,0.0,-19.0
+JSON activo inventory-products.json,BT-15,Foco acorazanado 95watts,1.0,0.0,-1.0
+JSON activo inventory-products.json,421167,Interruptor de encendido ALTO-SHAAM,1.0,0.0,-1.0
+JSON activo inventory-products.json,8720.1571,"Kit de reequipamiento, tornillo, pasador recto RATIONAL",1.0,0.0,-1.0
+JSON activo inventory-products.json,5017541,Kit de servicio de encendido ALTO-SHAAM,1.0,0.0,-1.0
+JSON activo inventory-products.json,70100801619L,Micro switch para horno DRAGO 21A 250V,1.0,0.0,-1.0
+JSON activo inventory-products.json,NIPLECAMISA-1/4,Niple camisa 1/4,3.0,0.0,-3.0
+JSON activo inventory-products.json,PER-TRIAN-FERRO,Perilla Ferro triangular FERRO,2.0,0.0,-2.0
+JSON activo inventory-products.json,PER-60250,Perilla Negra 60-250 C,10.0,0.0,-10.0
+JSON activo inventory-products.json,PER-UNIV-R,Perilla para estufa roja,3.0,0.0,-3.0
+JSON activo inventory-products.json,PERILLAESTUFASANSON,Perilla para estufa SANSON,1.0,0.0,-1.0
+JSON activo inventory-products.json,PER-200400,Perilla para freidora 200-400C,1.0,0.0,-1.0
+JSON activo inventory-products.json,PER-30-120,Perilla para termostato 30-120,1.0,0.0,-1.0
+JSON activo inventory-products.json,PERILLASANSON,Perilla para termostato horno SANSON,1.0,0.0,-1.0
+JSON activo inventory-products.json,PILOTOHONGOSANSON,Piloto tipo hongo con opresor SANSON,4.0,0.0,-4.0
+JSON activo inventory-products.json,1542800,"Quemador de salamandra Infrarrojos, 38,1 x 20,32 cm GARLAND",1.0,0.0,-1.0
+JSON activo inventory-products.json,145010,Quemador piloto TARGET SIT 1 Llama Dx 0.145.010 GARGLAND,2.0,0.0,-2.0
+JSON activo inventory-products.json,REDBUSHING-3/4,Reducción Bushing 1 1/4 a 3/4,2.0,0.0,-2.0
+JSON activo inventory-products.json,PT-100,Sensor J SANSON,1.0,0.0,-1.0
+JSON activo inventory-products.json,BA-39987,Tablero de adaptadores ALTO-SHAAM,2.0,0.0,-2.0
+JSON activo inventory-products.json,TUERCA-5/8,Tuerca de 5/8,5.0,0.0,-5.0
+JSON activo inventory-products.json,9043056,Válvula de Paso 3/4(25) DURMAN,1.0,0.0,-1.0
+JSON activo inventory-products.json,VALVULASANSON,Valvula para estufa SANSON,1.0,0.0,-1.0
+JSON activo inventory-products.json,1346G,Valvula para horno,5.0,0.0,-5.0
+JSON activo inventory-products.json,311847,Valvula para horno tuerca 3/8 IUSA,1.0,0.0,-1.0
+JSON activo inventory-products.json,41-225,Encendedor ignitor Bakers Pride M2140A 24 V,1.0,0.0,-1.0
+JSON activo inventory-products.json,1751-012,Perilla beige para valvula de gas,3.0,0.0,-3.0
+JSON activo inventory-products.json,1980-024,"Termocople universal de 24""",0.0,1.0,1.0
+JSON activo inventory-products.json,1980-036,"Termocople universal de 36""",2.0,6.0,4.0
+JSON activo inventory-products.json,1980-048,"Termocople universal de 48""",7.0,9.0,2.0
+JSON activo inventory-products.json,1950-001,Termopila para valvula minivolt,4.0,1.0,-3.0
+JSON activo inventory-products.json,KCE1095A,"Cable De La Placa De Control, 4 polos, 2M",1.0,3.0,2.0
+JSON activo inventory-products.json,KVE1115A,"Contactor, Mini, 230 Volt, 20 Amp, 4 Pole",2.0,4.0,2.0
+JSON activo inventory-products.json,KGN1354A,Empaque Horno Rossella,1.0,2.0,1.0
+JSON activo inventory-products.json,KGN1352A,Empaque para horno Arianna,0.0,2.0,2.0
+JSON activo inventory-products.json,KGN1432B,Empaque para Speed Pro,3.0,5.0,2.0
+JSON activo inventory-products.json,KVM2505A,Empuja cristal doble puerta,2.0,0.0,-2.0
+JSON activo inventory-products.json,XHC003,Filtro pure,0.0,4.0,4.0
+JSON activo inventory-products.json,KCN1010A,Kit capacitor condensador 3.5 UF,2.0,0.0,-2.0
+JSON activo inventory-products.json,KPE2038A,Kit de tarjeta de energia,0.0,1.0,1.0
+JSON activo inventory-products.json,KTM1005A,Kit de temperizador 60 min,2.0,0.0,-2.0
+JSON activo inventory-products.json,KTR1100A,Kit de termostato 269 C,1.0,0.0,-1.0
+JSON activo inventory-products.json,KTR1136A,"Kit De Termostato De Seguridad, 330C",2.0,3.0,1.0
+JSON activo inventory-products.json,KTR1161A,"Kit De Termostato De Seguridad, 350C",1.0,3.0,2.0
+JSON activo inventory-products.json,KVL1102A,Kit filtro de valvula no retorno detergente,1.0,0.0,-1.0
+JSON activo inventory-products.json,KPE1438A,Kit panel de control cap speed.pro,0.0,1.0,1.0
+JSON activo inventory-products.json,XHC010,Sistema de filtracion resina,0.0,1.0,1.0
+JSON activo inventory-products.json,R02.08.010D.00,"Resistencia 120 V, 800 W, GR-48 HATCO",2.0,0.0,-2.0
+JSON activo inventory-products.json,LC-48,Resistencia electrica 120V 1100W INTERNATIONAL,1.0,0.0,-1.0
+JSON activo inventory-products.json,DZ-400,Resistencia para maquina al vacio dz-400 MIGSA,1.0,0.0,-1.0
+JSON activo inventory-products.json,030S00,Resistencia plana,1.0,0.0,-1.0
+JSON activo inventory-products.json,RES-PLAN,Resistencia plana de 9.5 mm x 1.58 mm de ancho x metro,2.0,0.0,-2.0
+JSON activo inventory-products.json,TEFLONMT,Teflon para maquina al vacio CAJA,1.0,0.0,-1.0
+JSON activo inventory-products.json,LT221209,Termometro asador horno Ataud parrilla de 50 a 500,3.0,0.0,-3.0
+JSON activo inventory-products.json,S-236-42,"Termostato 175-550F, 42"" ROBERTSHAW",1.0,0.0,-1.0
+JSON activo inventory-products.json,KXP-336-48,"Termostato 200 a 500 F, bulbo de 3/16″ x 12″, tapa de 48″ DUKE",1.0,0.0,-1.0
+JSON activo inventory-products.json,SP-463-36,Termostato 200-450F Tapa 36″ ROBERTSHAW,2.0,0.0,-2.0
+JSON activo inventory-products.json,376988,Termostato automatico para calentador IUSA,1.0,0.0,-1.0
+JSON activo inventory-products.json,CAEM-50300BL,Termostato CAEM 50-300 C bulvo largo UNIVERSAL,4.0,0.0,-4.0
+JSON activo inventory-products.json,CAEM-60220,"Termostato CAEM 60-220 tuerca 1/2, bulbo acero inoxidable UNIVERSAL",4.0,0.0,-4.0
+JSON activo inventory-products.json,RX-1-36,Termostato para freidora ROBERTSHAW,9.0,0.0,-9.0
+JSON activo inventory-products.json,1F-XBB-B0323,Termostato vastago largo 575F Calibrado TORREY,1.0,0.0,-1.0
+JSON activo inventory-products.json,700-515,"Válvula de control Gas LP 750 mV 3/4"" x 3/4"" 485k BTU Freidora ROBERTSHAW",0.0,1.0,1.0
+JSON activo inventory-products.json,VS820,"Valvula de gas 1/2"" 225,000 BTU 1/4"" CCT para Freidora HONEYWELL",3.0,0.0,-3.0
+JSON activo inventory-products.json,Q2BBC02-H,Valvula solenoide uso vapor 1/4 a 12v TECSN,4.0,0.0,-4.0
+JSON activo inventory-products.json,90282,Bandeja/Recipiente para Alimentos 1/2 GN VOLLRATH,2.0,0.0,-2.0
+JSON activo inventory-products.json,KL10825,Bowl kng 14 oz CARLISLE,47.0,0.0,-47.0
+JSON activo inventory-products.json,MCCF01,Canastas para freidora CONCASSE,2.0,0.0,-2.0
+JSON activo inventory-products.json,MCLCEP06,Cepillo para manos y uñas de cerda CONCASSE,2.0,0.0,-2.0
+JSON activo inventory-products.json,MCCUAICIL,Clilindro portacubiertos de aluminio CONCASSE,5.0,0.0,-5.0
+JSON activo inventory-products.json,MCGACAIGDEE,Guante anticorte  de acero inoxidable grande CONCASSE,2.0,0.0,-2.0
+JSON activo inventory-products.json,MCGACAIME,Guante anticorte  de acero inoxidable mediano CONCASSE,2.0,0.0,-2.0
+JSON activo inventory-products.json,MCGMT17,"Guante de algodón 17"" CONCASSE",1.0,0.0,-1.0
+JSON activo inventory-products.json,PINZAJOSPER,Pinza inoxidable 35cm carne y volteo de jaul JOSPER,1.0,0.0,-1.0
+JSON activo inventory-products.json,INOX-PORT01,Porta tacos de cero inoxidable KCV,36.0,0.0,-36.0
+JSON activo inventory-products.json,69108,Sarten 8 in VOLLRATH,1.0,0.0,-1.0
+JSON activo inventory-products.json,3900C,Tapadera de acero inoxidable 13.97cm VOLLRATH,7.0,0.0,-7.0
+JSON activo inventory-products.json,3907C,Tapadera de acero inoxidable 5/8 VOLLRATH,1.0,0.0,-1.0
+JSON activo inventory-products.json,DU180FA1.0HP,"Motor de extracción 1.00 HP, 1 fase, 115v, 60 Hz, Monofasico",4.0,0.0,-4.0
+JSON activo inventory-products.json,DU180FA1.5HP,"Motor de extracción 1.500 HP, 3 fases, 230 V, 60 Hz. Trifasico",3.0,0.0,-3.0
+JSON activo inventory-products.json,DU180HFA2HP,"Motor de extracción 2.000 HP, 3 fases, 230 V, 60 Hz. Trifasico",3.0,0.0,-3.0
+JSON activo inventory-products.json,DU180HFA3HP,"Motor de extracción 3.000 HP, 3 fases, 230 V, 60 Hz. Trifasico",2.0,0.0,-2.0
+Nube Airtable via SHUM API,AEQ-03,Desengrasante citrico Galón,8.0,12.0,4.0
+Nube Airtable via SHUM API,DB1044A,Detergente en SPRAY&RINSE 12x750ML,2.0,5.0,3.0
+Nube Airtable via SHUM API,DB1076A0,Detergente Rinse & ULTRA/PLUS 10 bts,1.0,2.0,1.0
+Nube Airtable via SHUM API,AEQ-02,Limpiaparrillas Galón,8.0,14.0,6.0
+Nube Airtable via SHUM API,56.00.562,Pastillas de mantenimiento CARE 150 Tabs,7.0,17.0,10.0
+Nube Airtable via SHUM API,56.00.210A,Pastillas detergentes 100 Tabs,22.0,6.0,-16.0
+Nube Airtable via SHUM API,AEQ-01,Quitacochambre Galon,7.0,11.0,4.0
+Nube Airtable via SHUM API,DB1085A0,Removedor de cal UNOX.D&CAL,1.0,0.0,-1.0
+Nube Airtable via SHUM API,12191309,"Biasagra de puerta, superior izquierda, mesa ASBER",1.0,0.0,-1.0
+Nube Airtable via SHUM API,480HP,Bisagra compuesta para puertas superpuestasFERMOD,6.0,0.0,-6.0
+Nube Airtable via SHUM API,12216798,Bisagra inferior ASBER,2.0,0.0,-2.0
+Nube Airtable via SHUM API,12216800,Bisagra superior ASBER,2.0,0.0,-2.0
+Nube Airtable via SHUM API,BIS-GEN,Bisagras para refrigerador GENERICO,4.0,0.0,-4.0
+Nube Airtable via SHUM API,63762,Cerradura con llave cilindro PERLICK,3.0,0.0,-3.0
+Nube Airtable via SHUM API,CSG-1,Cierre para camara frigorifica,1.0,0.0,-1.0
+Nube Airtable via SHUM API,12203287,Conjunto de bisagras derecho ASBER,1.0,2.0,1.0
+Nube Airtable via SHUM API,12203286,"Conjunto de bisagras mesa, lado izquierdo ASBER",2.0,4.0,2.0
+Nube Airtable via SHUM API,GS-2398,Empaque Alto-Shaam 1000-TH1,2.0,0.0,-2.0
+Nube Airtable via SHUM API,EMP-ARRASTRE,Empaque de arrastre para camara frigorifica,2.0,0.0,-2.0
+Nube Airtable via SHUM API,EMP-IMP01,Empaque importado dimensiones 57 x 62 cm negro,1.0,0.0,-1.0
+Nube Airtable via SHUM API,EMP-IMP03,Empaque importado dimensiones 64.5 x 30 cm,3.0,0.0,-3.0
+Nube Airtable via SHUM API,EKC-001,Empaque universal con ceja dimensiones Torrey 68 X 62.5 cm negro,2.0,0.0,-2.0
+Nube Airtable via SHUM API,EMP-UNI07,Empaque universal dimensiones 177.5 x 52.5 cm negro,3.0,0.0,-3.0
+Nube Airtable via SHUM API,EMP-UNI01,Empaque universal dimensiones 54.5 x 63.5 cm negro,2.0,0.0,-2.0
+Nube Airtable via SHUM API,EMP-UNI06,Empaque universal dimensiones 61 x 140 cm negro,1.0,0.0,-1.0
+Nube Airtable via SHUM API,EMP-UNI03,Empaque universal dimensiones 64 X 55.5 cm negro,0.0,2.0,2.0
+Nube Airtable via SHUM API,EMP-UNI05,Empaque universal dimensiones 73.5 X 50 cm negro,1.0,0.0,-1.0
+Nube Airtable via SHUM API,12190016,"Espaciador, cuadrado, nylon, puerta, pelaje, a/c ASBER",1.0,0.0,-1.0
+Nube Airtable via SHUM API,1190002,Goma espesor 73.5 c 59 x 1 mm Cafetera Simonelli,22.0,0.0,-22.0
+Nube Airtable via SHUM API,1026313,Interruptor de puerta PERLICK,1.0,0.0,-1.0
+Nube Airtable via SHUM API,1186837,"Junta portafolio 72 x 58x 7 mm, cafetera Simonelli",11.0,0.0,-11.0
+Nube Airtable via SHUM API,XWVRC-0711-H,Base Stand Alto Horno Combinado Multifuncional,1.0,0.0,-1.0
+Nube Airtable via SHUM API,BERMEXB2,Batidora Planetaria Comercial 20Ltt 1.5 Hp 6kg Amasa Rojo 60 Hz BERMEX B2,3.0,0.0,-3.0
+Nube Airtable via SHUM API,5424ND2PSPFB,Campana de acero inoxidable de 8 pies,1.0,0.0,-1.0
+Nube Airtable via SHUM API,SX36-6BP,Estufa con horno de 6 quemadores ME2401019HB,0.0,1.0,1.0
+Nube Airtable via SHUM API,VSP200F-1,Fogon para ollas a gas DV1152764,1.0,0.0,-1.0
+Nube Airtable via SHUM API,VICM24-201,"Gratinador de 24"" ME2310153HB",1.0,0.0,-1.0
+Nube Airtable via SHUM API,XEVC-1011-GPRM,"Horno combinado a gas CHEF TOP 10 GN1/1 plus, serie 2023A0005377",1.0,0.0,-1.0
+Nube Airtable via SHUM API,VC4GD-21D150K,Horno de convección a gas 482045201,1.0,0.0,-1.0
+Nube Airtable via SHUM API,T043C,Horno De Convección Venix Torcello,1.0,0.0,-1.0
+Nube Airtable via SHUM API,MS300CT,Rebanadora Bermex MS-300-CT Con Cuchilla De Acero,1.0,0.0,-1.0
+Nube Airtable via SHUM API,153A-3,Torre Dispensadora de Cerveza de Barril TURBO AIR,1.0,0.0,-1.0
+Nube Airtable via SHUM API,54410,"Cuello curvo para mezcladora 12"" FISHER",2.0,0.0,-2.0
+Nube Airtable via SHUM API,3963,"Cuello recto para mezcladora 12"" FISHER",1.0,0.0,-1.0
+Nube Airtable via SHUM API,21-406L,Juegos de conectores para mezcladora KROWNE,5.0,0.0,-5.0
+Nube Airtable via SHUM API,3248,"Mezcladora a pared de 8"" DICA",1.0,0.0,-1.0
+Nube Airtable via SHUM API,90-3032,Adaptador macho a gas 3/4 a 5/8 DORMONT,4.0,0.0,-4.0
+Nube Airtable via SHUM API,COD-11/4,"Codo Calle 90° de 1 1/4"" DORMONT",1.0,0.0,-1.0
+Nube Airtable via SHUM API,COD-1/2,"Codo Calle 90° de 1/2"" DORMONT",6.0,0.0,-6.0
+Nube Airtable via SHUM API,A50,Conexión rapida 1/2 A50 DORMONT,1.0,0.0,-1.0
+Nube Airtable via SHUM API,A75,Conexión rapida 3/4 A75 DORMONT,3.0,0.0,-3.0
+Nube Airtable via SHUM API,1675KIT48,"Kit de sistema de seguridad, 3/4 x48"" pulgadas de diámetro DORMONT",4.0,3.0,-1.0
+Nube Airtable via SHUM API,1650KIT48,"Kit Manguera de gas con sistema de seguridad 1/2 X 48"" DORMONT",2.0,3.0,1.0
+Nube Airtable via SHUM API,TAG-DE-DM1061,"Manguera de acero inoxidable 3/4 x 48"" DORMONT",0.0,6.0,6.0
+Nube Airtable via SHUM API,30c-4142-36,"Manguera de gas corrugada amarilla 3/4"" X 36"" DORMONT",0.0,1.0,1.0
+Nube Airtable via SHUM API,VAL-DORM11/4,"Válvula de bola de gas de paso de 1 1/4"" DORMONT",1.0,0.0,-1.0
+Nube Airtable via SHUM API,VAL-DORM1/2,"Válvula de bola de gas de paso de 1/2"" DORMONT",3.0,0.0,-3.0
+Nube Airtable via SHUM API,VAL-DORM3/4,"Válvula de bola de gas de paso de 3/4"" DORMONT",2.0,0.0,-2.0
+Nube Airtable via SHUM API,PO-A39,Banda V lisa estirada para uso industrial PRO ONE,1.0,0.0,-1.0
+Nube Airtable via SHUM API,PO-A40,Banda V lisa estirada para uso industrial PRO ONE,1.0,0.0,-1.0
+Nube Airtable via SHUM API,27-0459-1,Bujia de encendido KOBLENS -1,4.0,0.0,-4.0
+Nube Airtable via SHUM API,27-0295-9,Bujia de encendido KOBLENS -9,2.0,0.0,-2.0
+Nube Airtable via SHUM API,04-0642-1,Candado KOBLENS,2.0,0.0,-2.0
+Nube Airtable via SHUM API,CWB9-11-30D02,Contactor 9 A 24V 50/60Hz WEG,1.0,0.0,-1.0
+Nube Airtable via SHUM API,AH102524,Controlador de temperatura BLODGETT 33152,1.0,0.0,-1.0
+Nube Airtable via SHUM API,FNM-25,Fusible Bussman de 250vac,1.0,0.0,-1.0
+Nube Airtable via SHUM API,ATMR12,Fusible de ceramica 12A 600V,2.0,0.0,-2.0
+Nube Airtable via SHUM API,MCHF30Z0456,Fusible de ceramica 13 A para horno MERRYCHEF,2.0,0.0,-2.0
+Nube Airtable via SHUM API,ATQR25,Fusible de ceramica para horno,1.0,0.0,-1.0
+Nube Airtable via SHUM API,38-0441-6,Modulo de encendido electronico KOBLENS,1.0,0.0,-1.0
+Nube Airtable via SHUM API,3044300,Motor de 120 voltios  GARLAND,1.0,0.0,-1.0
+Nube Airtable via SHUM API,N00158OS1P56,Motor eléctrico weg monofásico 1.5 hp 4 polos 120v/220v WEG,0.0,2.0,2.0
+Nube Airtable via SHUM API,1150456NG2,Motor Monofásico 1.5Hp 115/230V 1800Rp High Power ELECTROMEX,0.0,1.0,1.0
+Nube Airtable via SHUM API,N00218OS1P56,Motor Monofasico 2 Hp 1750 Rpm en Baja 110/220v WEG,1.0,2.0,1.0
+Nube Airtable via SHUM API,ROJAS-4X11/8F,"Rueda loca con freno fijas de 4"" de alto x 1 1/8 de ancho ROJAS",2.0,0.0,-2.0
+Nube Airtable via SHUM API,GSW-5X11/8F,"Rueda locas fijas con freno de 5"" de alto x 1 1/8 "" de ancho GSW",4.0,0.0,-4.0
+Nube Airtable via SHUM API,BASE-12,"Fabricacion de base para estufa 12"" C18 con regatones",1.0,0.0,-1.0
+Nube Airtable via SHUM API,BASE-25,"Fabricacion de base para parrilla 25"" C18 con regatones",2.0,0.0,-2.0
+Nube Airtable via SHUM API,BASE-36,"Fabricacion de base para plancha 36"" C18 con regatones",3.0,0.0,-3.0
+Nube Airtable via SHUM API,MESA-TRAB120,"Mesa de trabajo acero T-304, C-18. 120 x 70 x 90 cm con entrepaño",1.0,0.0,-1.0
+Nube Airtable via SHUM API,MESA-TRAB200RESP,"Mesa de trabajo con respaldo acero T-304, C18. 200 x 70 x 90 cm con entrepaño",1.0,0.0,-1.0
+Nube Airtable via SHUM API,BASE-SALAMANDRA,"Soporte para salamandra fabricado en acero inoxidable t-304, C18",1.0,0.0,-1.0
+Nube Airtable via SHUM API,TARJA-100,Tarja Sencilla 100 cm con descanso C18 con descanso,1.0,0.0,-1.0
+Nube Airtable via SHUM API,TARJACARN-90,Tarja tipo carnicero de una tina  calibre 18. Dimensiones 90 x 75 x 90,1.0,0.0,-1.0
+Nube Airtable via SHUM API,TORRE-MARISCOS,Torre de mariscos con bandejas de 50 y 42cm con soportes,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-417608-00001,"Cabezal quemador, hornilla HOBART",6.0,0.0,-6.0
+Nube Airtable via SHUM API,00-417258-000G1,Quemador frontal HOBART,3.0,0.0,-3.0
+Nube Airtable via SHUM API,153027,Quemador horno calentador izquierda DUKE,4.0,0.0,-4.0
+Nube Airtable via SHUM API,00-417260-000G1,Quemador trasero HOBART,3.0,0.0,-3.0
+Nube Airtable via SHUM API,UNI-CLIMP,Quemadores Tipo Imperial Corto y Largo UNIVERSAL,5.0,0.0,-5.0
+Nube Airtable via SHUM API,AK002111,Espreas para valvula paso-53 CORIAT,10.0,9.0,-1.0
+Nube Airtable via SHUM API,10269,Perilla para estufa CORIAT,2.0,11.0,9.0
+Nube Airtable via SHUM API,AC000402,Termostato para horno ABJC CORIAT,2.0,4.0,2.0
+Nube Airtable via SHUM API,AC000205,Valvula para estufa CORIAT,4.0,9.0,5.0
+Nube Airtable via SHUM API,ASMTRE0101,"Aspa 4"" para motor esqueleto GENERICO",2.0,0.0,-2.0
+Nube Airtable via SHUM API,947039,"Aspa del ventilador, condensador, 8-3/4"" de diámetro, 5 aspas TRUE",1.0,2.0,1.0
+Nube Airtable via SHUM API,997816,Bandeja de drenaje en espiral TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,823089,Bisagra con muelle para puerta TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,CAB-CALEF,Cable calefactor para puertas de camara frigorifica por metro,17.0,0.0,-17.0
+Nube Airtable via SHUM API,CAB-NIQ10,Cable cobre niquelado forro de F.V. y silicon 200-300 cal 10 x metro,90.0,0.0,-90.0
+Nube Airtable via SHUM API,CAB-ATC14300,"Cable para alta temperatura silicón y fibra 300° Calibre 14 Cobre Niquelado, 600v x mt",60.0,0.0,-60.0
+Nube Airtable via SHUM API,QHA-6E,"Cables para calentadores de puertas, 6ft, 42w, 120v QUALITY",1.0,0.0,-1.0
+Nube Airtable via SHUM API,801805,Calentador línea de drenaje TRUE,0.0,2.0,2.0
+Nube Airtable via SHUM API,920158,Clip de estanteria TRUE,13.0,0.0,-13.0
+Nube Airtable via SHUM API,189-227MFD,Condensador Capacitor Arranque COLDTEK,1.0,0.0,-1.0
+Nube Airtable via SHUM API,P70LB-1C,Control de presion dual automatica PENN,1.0,0.0,-1.0
+Nube Airtable via SHUM API,800382,"Control De Temperatura, 077B6856 Kit #077B7163 TRUE",1.0,2.0,1.0
+Nube Airtable via SHUM API,TC-900E,Controlador digital baja temperatura,0.0,1.0,1.0
+Nube Airtable via SHUM API,810808,"Empaque 25-5/8 ""x 26-5/8"", T-23-2/49-4 TRUE",2.0,4.0,2.0
+Nube Airtable via SHUM API,0-6602,Filtro deshidratador EMERSON,1.0,0.0,-1.0
+Nube Airtable via SHUM API,945039,Filtro dos entradas TRUE,0.0,2.0,2.0
+Nube Airtable via SHUM API,SLP25-80,"Interrumpor baja presion Abre 25 psi Cierra 80 psi, 500 PP 3500 BP 1/4  SMART ELECTRIC",1.0,0.0,-1.0
+Nube Airtable via SHUM API,54127037,Interruptor controlador limit para horno AMANA,2.0,0.0,-2.0
+Nube Airtable via SHUM API,MPS30-50,Interruptor De Presion AQUEX,1.0,0.0,-1.0
+Nube Airtable via SHUM API,805143,Kit conector de cables TRUE,3.0,2.0,-1.0
+Nube Airtable via SHUM API,836833,Kit control de temperatura ERC112D TRUE,0.0,3.0,3.0
+Nube Airtable via SHUM API,219717,Kit control de temperatura LAEBIT25 TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,836834,Kit control de temperatura sustituido por 848244 TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,802803,Kit control universal BIT25 TRUE,2.0,3.0,1.0
+Nube Airtable via SHUM API,823236,"Kit de bandeja de desague, 220v TRUE",1.0,2.0,1.0
+Nube Airtable via SHUM API,870842,"Kit de bisagra de puerta, inferior derecha TRUE",1.0,2.0,1.0
+Nube Airtable via SHUM API,991224,Kit de reacondicionamiento de control electrico KITGDM TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,992987,Kit de servicio de refrigerante R290 Propano TRUE,2.0,4.0,2.0
+Nube Airtable via SHUM API,ECR2-0831,"Motor INPUT 100-240vac,50-60 Hz, 0.19-0.10 A OUTPUT 13w 18000rpm, DUAL SPEED 1550rpm DOR:CCW-DE. WELLIGTON",12.0,0.0,-12.0
+Nube Airtable via SHUM API,821639,Motor retrofit TRUE,0.0,1.0,1.0
+Nube Airtable via SHUM API,VA-PROD10,Protector y relay universal AVALY,2.0,0.0,-2.0
+Nube Airtable via SHUM API,800182,Relay 25 A TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,994353,Relay 832AW-1C-F-S1 12VDC 30A-277VAC TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,835384,Sellador de silicon TRUE,1.0,2.0,1.0
+Nube Airtable via SHUM API,807408,Sensor de descarche TRUE,0.0,2.0,2.0
+Nube Airtable via SHUM API,807409,Sensor de temperatura TRUE,4.0,8.0,4.0
+Nube Airtable via SHUM API,807414,Sensor termisor 4m NTCEPC B57025M25,1.0,0.0,-1.0
+Nube Airtable via SHUM API,807415,Sensor termisor 4m NTCEPC B57025M2502AZ,2.0,0.0,-2.0
+Nube Airtable via SHUM API,807416,Sensor termisor TRUE,6.0,3.0,-3.0
+Nube Airtable via SHUM API,973396,Serpentin de evaporador TUC/TWT-27F,1.0,0.0,-1.0
+Nube Airtable via SHUM API,KCD2,Switch 4 polos Universal para vitrina,3.0,0.0,-3.0
+Nube Airtable via SHUM API,TAB-EQUI,Tablero de control para baja temperatura con selectores EQUIPSA,1.0,0.0,-1.0
+Nube Airtable via SHUM API,RV-100X204,Tanque de liquido 1.3L RV 100x204 FIGOMEC,1.0,0.0,-1.0
+Nube Airtable via SHUM API,831970,Transformador de 120v-24v TRUE,2.0,4.0,2.0
+Nube Airtable via SHUM API,851142,"Tubo capilar, 0,106"" de diámetro exterior X 0,054"" TRUE",1.0,2.0,1.0
+Nube Airtable via SHUM API,PCN802460,Válvula de expansión EMERSON,1.0,0.0,-1.0
+Nube Airtable via SHUM API,068Z3209,"Válvula de expansión termostática de rosca, TE 2, R22/R407C. DANFOSS",1.0,0.0,-1.0
+Nube Airtable via SHUM API,068Z3403,"Válvula de expansión termostática, TE 2, DANFOSS",0.0,1.0,1.0
+Nube Airtable via SHUM API,VERE12002,Ventilador motor con 2 cables para refrigerador COLDTEK,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-122555,Alimentacion de bandeja,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-077643-00001,Anillo de amoladora,1.0,0.0,-1.0
+Nube Airtable via SHUM API,209042C,Bomba dosificadora,1.0,0.0,-1.0
+Nube Airtable via SHUM API,ITA-130976,Bomba lavaloza E500,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-119760-00003,Conjunto de cilindros,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-748572,Conjunto de electrodos,0.0,3.0,3.0
+Nube Airtable via SHUM API,00-0158801,Conjunto de gusanos,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-893074,Conjunto de rodamientos,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-290372,Cuchillo para picadoras de carne puntas de afilado,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-271008,"Disyuntor de vacío, 3/8""",1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-893535,Embalaje de boquillas,6.0,0.0,-6.0
+Nube Airtable via SHUM API,00-119922-00001,"Empujador de alimentos, picadora/trituradora",1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-413302-00001,"Enganche, soporte del piloto",5.0,0.0,-5.0
+Nube Airtable via SHUM API,01-1000V8-00156,Extractor para horno,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-913153,Juego de termostato con perilla y tornillos,2.0,0.0,-2.0
+Nube Airtable via SHUM API,230020C,Kit de elemento calefactor resistencia Lavaloza E800,2.0,0.0,-2.0
+Nube Airtable via SHUM API,00-292910,Kit de servicio valvula de vacio CL44,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-913102-0049,Kit de soldaduras para perro,4.0,0.0,-4.0
+Nube Airtable via SHUM API,01-1A1828-00001,Kit de sondas termopar,1.0,0.0,-1.0
+Nube Airtable via SHUM API,TW-001-09,Kit de terminales,1.0,0.0,-1.0
+Nube Airtable via SHUM API,01-1000V9-00170,"Modulo de ignición 3 Tfi, sin reinicio BAXTER",1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-958392-000G2,"Montaje de válvula de drenaje, lado derecho",2.0,0.0,-2.0
+Nube Airtable via SHUM API,80629,Motobomba de enjuague e 220/240v - 1PH - 60HZ - ECOMAX 603/503 Lavaloza,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-437044-00006,"Motor, accionamiento del transportador, 208-240/480 V, 60 Hz, 3 PH LAVALOZA C54A",1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-411242-0000,Perilla de control,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-428300-00001,"Perilla negra, 2,75 de diámetro",3.0,0.0,-3.0
+Nube Airtable via SHUM API,00-938783,Placa de fijacion permanente,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-938782,Placa moledora de carne,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-938784,Placa moledora de carne,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-938785,Placa moledora de carne,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-938786,Placa picadora de carne,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-271123,Protector de límite alto,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-950546-00001,Puerta sensor temperatura AM16,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-110334,"Retén, planetario, HL300",1.0,0.0,-1.0
+Nube Airtable via SHUM API,1312641,"Sierra de 126"" 5/8  x 0.022 Thk. 4T",6.0,0.0,-6.0
+Nube Airtable via SHUM API,00-353589-0001,Sonda de temperatura,0.0,1.0,1.0
+Nube Airtable via SHUM API,00-328994,Soporte para sonda,5.0,0.0,-5.0
+Nube Airtable via SHUM API,00-919363-00PK,Tapón para lavaloza,3.0,0.0,-3.0
+Nube Airtable via SHUM API,00-563609,Trampa de aire CL44-AM16-LX,1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-709240-0000A,"Tubo piloto de 3/16"" X 24"", acero revestido de cobre",4.0,0.0,-4.0
+Nube Airtable via SHUM API,00-292909-00002,"Válvula reguladora de vacío, 1/2""",1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-292909-00003,"Válvula reguladora de vacío, 1/2"" Lavaloza AM15",1.0,0.0,-1.0
+Nube Airtable via SHUM API,00-435968-00001,"Válvula solenoide, 1/2"", 120 V",2.0,0.0,-2.0
+Nube Airtable via SHUM API,2008939,Bomba de agua MANITOWOC,1.0,0.0,-1.0
+Nube Airtable via SHUM API,105012-01,Charola deflector B-800 HOSHIZAKI,1.0,0.0,-1.0
+Nube Airtable via SHUM API,426799-01,Conector para interruptor HOSHIZAKI,2.0,4.0,2.0
+Nube Airtable via SHUM API,2006589,Contactores 1 pole 115v MANITOWOC,2.0,0.0,-2.0
+Nube Airtable via SHUM API,9101379-01,Interruptor Magnetico ICE O MATIC,2.0,0.0,-2.0
+Nube Airtable via SHUM API,2006549,Sonda de nivel de agua MANITOWOC,1.0,11.0,10.0
+Nube Airtable via SHUM API,BARRIL-3/8,Barril 3/8,3.0,0.0,-3.0
+Nube Airtable via SHUM API,PILOTO-1/4,Block piloto 1/4,1.0,0.0,-1.0
+Nube Airtable via SHUM API,156029,"Bombilla transparente W 40 ,V 130 DUKE",4.0,0.0,-4.0
+Nube Airtable via SHUM API,W10380496,Carbones para batidora,1.0,0.0,-1.0
+Nube Airtable via SHUM API,CEPILLO,Cepillo de alambre con mango curvo,4.0,0.0,-4.0
+Nube Airtable via SHUM API,2J-306342,"Conjunto de tubo piloto y punta, 3/16"", H-241 WELLS",1.0,0.0,-1.0
+Nube Airtable via SHUM API,35-625906-011,Control de encendido 24 vac FENWAL,1.0,0.0,-1.0
+Nube Airtable via SHUM API,44-1266044122,Control de encendido FENWAL/BLODGETT,1.0,0.0,-1.0
+Nube Airtable via SHUM API,9706529,Engrane metalico inferior Batidora KITCHEN AID,2.0,0.0,-2.0
+Nube Airtable via SHUM API,WPW10112253,Engrane para batidora plastico KITCHEN AID,2.0,0.0,-2.0
+Nube Airtable via SHUM API,ESPREA,Esprea de capote,4.0,0.0,-4.0
+Nube Airtable via SHUM API,681027,Fan motor 120v ALTO-SHAAM,1.0,0.0,-1.0
+Nube Airtable via SHUM API,FILTRO-PITCO,Filtros de papel para freidora Pitco PP10613 14.5 x 22.5cm,19.0,0.0,-19.0
+Nube Airtable via SHUM API,BT-15,Foco acorazanado 95watts,1.0,0.0,-1.0
+Nube Airtable via SHUM API,421167,Interruptor de encendido ALTO-SHAAM,1.0,0.0,-1.0
+Nube Airtable via SHUM API,8720.1571,"Kit de reequipamiento, tornillo, pasador recto RATIONAL",1.0,0.0,-1.0
+Nube Airtable via SHUM API,5017541,Kit de servicio de encendido ALTO-SHAAM,1.0,0.0,-1.0
+Nube Airtable via SHUM API,70100801619L,Micro switch para horno DRAGO 21A 250V,1.0,0.0,-1.0
+Nube Airtable via SHUM API,NIPLECAMISA-1/4,Niple camisa 1/4,3.0,0.0,-3.0
+Nube Airtable via SHUM API,PER-TRIAN-FERRO,Perilla Ferro triangular FERRO,2.0,0.0,-2.0
+Nube Airtable via SHUM API,PER-60250,Perilla Negra 60-250 C,10.0,0.0,-10.0
+Nube Airtable via SHUM API,PER-UNIV-R,Perilla para estufa roja,3.0,0.0,-3.0
+Nube Airtable via SHUM API,PERILLAESTUFASANSON,Perilla para estufa SANSON,1.0,0.0,-1.0
+Nube Airtable via SHUM API,PER-200400,Perilla para freidora 200-400C,1.0,0.0,-1.0
+Nube Airtable via SHUM API,PER-30-120,Perilla para termostato 30-120,1.0,0.0,-1.0
+Nube Airtable via SHUM API,PERILLASANSON,Perilla para termostato horno SANSON,1.0,0.0,-1.0
+Nube Airtable via SHUM API,PILOTOHONGOSANSON,Piloto tipo hongo con opresor SANSON,4.0,0.0,-4.0
+Nube Airtable via SHUM API,1542800,"Quemador de salamandra Infrarrojos, 38,1 x 20,32 cm GARLAND",1.0,0.0,-1.0
+Nube Airtable via SHUM API,145010,Quemador piloto TARGET SIT 1 Llama Dx 0.145.010 GARGLAND,2.0,0.0,-2.0
+Nube Airtable via SHUM API,REDBUSHING-3/4,Reducción Bushing 1 1/4 a 3/4,2.0,0.0,-2.0
+Nube Airtable via SHUM API,PT-100,Sensor J SANSON,1.0,0.0,-1.0
+Nube Airtable via SHUM API,BA-39987,Tablero de adaptadores ALTO-SHAAM,2.0,0.0,-2.0
+Nube Airtable via SHUM API,TUERCA-5/8,Tuerca de 5/8,5.0,0.0,-5.0
+Nube Airtable via SHUM API,9043056,Válvula de Paso 3/4(25) DURMAN,1.0,0.0,-1.0
+Nube Airtable via SHUM API,VALVULASANSON,Valvula para estufa SANSON,1.0,0.0,-1.0
+Nube Airtable via SHUM API,1346G,Valvula para horno,5.0,0.0,-5.0
+Nube Airtable via SHUM API,311847,Valvula para horno tuerca 3/8 IUSA,1.0,0.0,-1.0
+Nube Airtable via SHUM API,41-225,Encendedor ignitor Bakers Pride M2140A 24 V,1.0,0.0,-1.0
+Nube Airtable via SHUM API,1751-012,Perilla beige para valvula de gas,3.0,0.0,-3.0
+Nube Airtable via SHUM API,1980-024,"Termocople universal de 24""",0.0,1.0,1.0
+Nube Airtable via SHUM API,1980-036,"Termocople universal de 36""",2.0,6.0,4.0
+Nube Airtable via SHUM API,1980-048,"Termocople universal de 48""",7.0,9.0,2.0
+Nube Airtable via SHUM API,1950-001,Termopila para valvula minivolt,4.0,1.0,-3.0
+Nube Airtable via SHUM API,KCE1095A,"Cable De La Placa De Control, 4 polos, 2M",1.0,3.0,2.0
+Nube Airtable via SHUM API,KVE1115A,"Contactor, Mini, 230 Volt, 20 Amp, 4 Pole",2.0,4.0,2.0
+Nube Airtable via SHUM API,KGN1354A,Empaque Horno Rossella,1.0,2.0,1.0
+Nube Airtable via SHUM API,KGN1352A,Empaque para horno Arianna,0.0,2.0,2.0
+Nube Airtable via SHUM API,KGN1432B,Empaque para Speed Pro,3.0,5.0,2.0
+Nube Airtable via SHUM API,KVM2505A,Empuja cristal doble puerta,2.0,0.0,-2.0
+Nube Airtable via SHUM API,XHC003,Filtro pure,0.0,4.0,4.0
+Nube Airtable via SHUM API,KCN1010A,Kit capacitor condensador 3.5 UF,2.0,0.0,-2.0
+Nube Airtable via SHUM API,KPE2038A,Kit de tarjeta de energia,0.0,1.0,1.0
+Nube Airtable via SHUM API,KTM1005A,Kit de temperizador 60 min,2.0,0.0,-2.0
+Nube Airtable via SHUM API,KTR1100A,Kit de termostato 269 C,1.0,0.0,-1.0
+Nube Airtable via SHUM API,KTR1136A,"Kit De Termostato De Seguridad, 330C",2.0,3.0,1.0
+Nube Airtable via SHUM API,KTR1161A,"Kit De Termostato De Seguridad, 350C",1.0,3.0,2.0
+Nube Airtable via SHUM API,KVL1102A,Kit filtro de valvula no retorno detergente,1.0,0.0,-1.0
+Nube Airtable via SHUM API,KPE1438A,Kit panel de control cap speed.pro,0.0,1.0,1.0
+Nube Airtable via SHUM API,XHC010,Sistema de filtracion resina,0.0,1.0,1.0
+Nube Airtable via SHUM API,R02.08.010D.00,"Resistencia 120 V, 800 W, GR-48 HATCO",2.0,0.0,-2.0
+Nube Airtable via SHUM API,LC-48,Resistencia electrica 120V 1100W INTERNATIONAL,1.0,0.0,-1.0
+Nube Airtable via SHUM API,DZ-400,Resistencia para maquina al vacio dz-400 MIGSA,1.0,0.0,-1.0
+Nube Airtable via SHUM API,030S00,Resistencia plana,1.0,0.0,-1.0
+Nube Airtable via SHUM API,RES-PLAN,Resistencia plana de 9.5 mm x 1.58 mm de ancho x metro,2.0,0.0,-2.0
+Nube Airtable via SHUM API,TEFLONMT,Teflon para maquina al vacio CAJA,1.0,0.0,-1.0
+Nube Airtable via SHUM API,LT221209,Termometro asador horno Ataud parrilla de 50 a 500,3.0,0.0,-3.0
+Nube Airtable via SHUM API,S-236-42,"Termostato 175-550F, 42"" ROBERTSHAW",1.0,0.0,-1.0
+Nube Airtable via SHUM API,KXP-336-48,"Termostato 200 a 500 F, bulbo de 3/16″ x 12″, tapa de 48″ DUKE",1.0,0.0,-1.0
+Nube Airtable via SHUM API,SP-463-36,Termostato 200-450F Tapa 36″ ROBERTSHAW,2.0,0.0,-2.0
+Nube Airtable via SHUM API,376988,Termostato automatico para calentador IUSA,1.0,0.0,-1.0
+Nube Airtable via SHUM API,CAEM-50300BL,Termostato CAEM 50-300 C bulvo largo UNIVERSAL,4.0,0.0,-4.0
+Nube Airtable via SHUM API,CAEM-60220,"Termostato CAEM 60-220 tuerca 1/2, bulbo acero inoxidable UNIVERSAL",4.0,0.0,-4.0
+Nube Airtable via SHUM API,RX-1-36,Termostato para freidora ROBERTSHAW,9.0,0.0,-9.0
+Nube Airtable via SHUM API,1F-XBB-B0323,Termostato vastago largo 575F Calibrado TORREY,1.0,0.0,-1.0
+Nube Airtable via SHUM API,700-515,"Válvula de control Gas LP 750 mV 3/4"" x 3/4"" 485k BTU Freidora ROBERTSHAW",0.0,1.0,1.0
+Nube Airtable via SHUM API,VS820,"Valvula de gas 1/2"" 225,000 BTU 1/4"" CCT para Freidora HONEYWELL",3.0,0.0,-3.0
+Nube Airtable via SHUM API,Q2BBC02-H,Valvula solenoide uso vapor 1/4 a 12v TECSN,4.0,0.0,-4.0
+Nube Airtable via SHUM API,90282,Bandeja/Recipiente para Alimentos 1/2 GN VOLLRATH,2.0,0.0,-2.0
+Nube Airtable via SHUM API,KL10825,Bowl kng 14 oz CARLISLE,47.0,0.0,-47.0
+Nube Airtable via SHUM API,MCCF01,Canastas para freidora CONCASSE,2.0,0.0,-2.0
+Nube Airtable via SHUM API,MCLCEP06,Cepillo para manos y uñas de cerda CONCASSE,2.0,0.0,-2.0
+Nube Airtable via SHUM API,MCCUAICIL,Clilindro portacubiertos de aluminio CONCASSE,5.0,0.0,-5.0
+Nube Airtable via SHUM API,MCGACAIGDEE,Guante anticorte  de acero inoxidable grande CONCASSE,2.0,0.0,-2.0
+Nube Airtable via SHUM API,MCGACAIME,Guante anticorte  de acero inoxidable mediano CONCASSE,2.0,0.0,-2.0
+Nube Airtable via SHUM API,MCGMT17,"Guante de algodón 17"" CONCASSE",1.0,0.0,-1.0
+Nube Airtable via SHUM API,PINZAJOSPER,Pinza inoxidable 35cm carne y volteo de jaul JOSPER,1.0,0.0,-1.0
+Nube Airtable via SHUM API,INOX-PORT01,Porta tacos de cero inoxidable KCV,36.0,0.0,-36.0
+Nube Airtable via SHUM API,69108,Sarten 8 in VOLLRATH,1.0,0.0,-1.0
+Nube Airtable via SHUM API,3900C,Tapadera de acero inoxidable 13.97cm VOLLRATH,7.0,0.0,-7.0
+Nube Airtable via SHUM API,3907C,Tapadera de acero inoxidable 5/8 VOLLRATH,1.0,0.0,-1.0
+Nube Airtable via SHUM API,DU180FA1.0HP,"Motor de extracción 1.00 HP, 1 fase, 115v, 60 Hz, Monofasico",4.0,0.0,-4.0
+Nube Airtable via SHUM API,DU180FA1.5HP,"Motor de extracción 1.500 HP, 3 fases, 230 V, 60 Hz. Trifasico",3.0,0.0,-3.0
+Nube Airtable via SHUM API,DU180HFA2HP,"Motor de extracción 2.000 HP, 3 fases, 230 V, 60 Hz. Trifasico",3.0,0.0,-3.0
+Nube Airtable via SHUM API,DU180HFA3HP,"Motor de extracción 3.000 HP, 3 fases, 230 V, 60 Hz. Trifasico",2.0,0.0,-2.0

@@ -9,6 +9,7 @@ import argparse
 import csv
 import json
 import math
+import os
 import ssl
 import unicodedata
 import urllib.request
@@ -188,10 +189,18 @@ def skipped_comparison(source_name: str, error: Exception) -> dict[str, Any]:
 
 def shum_request(endpoint: str, payload: dict[str, Any]) -> dict[str, Any]:
     body = json.dumps(payload).encode("utf-8")
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": "KitchenValenzuelaInventoryReconcile/1.0",
+    }
+    proxy_token = os.environ.get("KV_SHUM_IMPORT_TOKEN", "").strip()
+    if proxy_token:
+        headers["X-KV-Import-Token"] = proxy_token
     request = urllib.request.Request(
         endpoint,
         data=body,
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
     context = ssl.create_default_context()
